@@ -1,0 +1,6 @@
+USER(user_id, name, email, username, password)
+ServicePackage(package_id, name, validity_period)
+OptionalService(opt_id,name,price,quantity_sold)
+OptionalServiceAdded(package_id, opt_id)
+Order(order_id, status, subscription_start, timestamp, total_price, user_id, package_id)
+Employee(employee_id, email, password, authorized)
