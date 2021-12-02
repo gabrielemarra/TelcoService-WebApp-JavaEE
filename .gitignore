@@ -21,3 +21,23 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Intellij
+.idea/
+intellij_project/.idea/
+*.iml
+*.iws
+.idea/**
+intellij_project/.idea/**
+out/**
+intellij_project/out/**
+out/
+intellij_project/out/
+
+# Mac
+.DS_Store
+.idea/**
+intellij_project/.idea/**
+.debris/**
+intellij_project/.debris/**
+Rubbish/tmp/lock
