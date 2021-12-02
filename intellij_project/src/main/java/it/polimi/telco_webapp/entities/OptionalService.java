@@ -23,7 +23,7 @@ public class OptionalService {
     private Integer quantitySold;
 
     @ManyToMany
-    @JoinTable(name = "optional_service_orderered", joinColumns = @JoinColumn(name = "opt_id"),
+    @JoinTable(name = "optional_service_ordered", joinColumns = @JoinColumn(name = "opt_id"),
             inverseJoinColumns = @JoinColumn(name = "order_id"))
     private List<Order> orders;
 

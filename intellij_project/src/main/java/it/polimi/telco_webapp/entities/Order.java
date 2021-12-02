@@ -35,19 +35,19 @@ public class Order {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "package_id", nullable = false)
-    private ServicePackage _package;
+    private ServicePackage packageId;
 
     @ManyToMany
-    @JoinTable(name = "optional_service_orderered",joinColumns = @JoinColumn(name = "order_id"),
+    @JoinTable(name = "optional_service_ordered",joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "opt_id"))
     private List<OptionalService> optionalServices;
 
-    public ServicePackage get_package() {
-        return _package;
+    public ServicePackage getPackageId() {
+        return packageId;
     }
 
-    public void set_package(ServicePackage _package) {
-        this._package = _package;
+    public void setPackageId(ServicePackage packageId) {
+        this.packageId = packageId;
     }
 
     public User getUser() {
