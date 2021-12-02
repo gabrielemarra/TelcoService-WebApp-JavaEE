@@ -3,6 +3,7 @@ package it.polimi.telco_webapp.entities;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Table(name = "service")
 @Entity
@@ -41,6 +42,11 @@ public class Service {
 
     @Column(name = "sms_extra")
     private Integer smsExtra;
+
+    @ManyToMany
+    @JoinTable(name = "service_bundles", joinColumns = @JoinColumn(name = "service_id"),
+            inverseJoinColumns = @JoinColumn(name = "package_id"))
+    private List<ServicePackage> servicePackages;
 
     public Integer getSmsExtra() {
         return smsExtra;
