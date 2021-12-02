@@ -3,6 +3,7 @@ package it.polimi.telco_webapp.entities;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Table(name = "optional_service")
 @Entity
@@ -20,6 +21,11 @@ public class OptionalService {
 
     @Column(name = "quantity_sold")
     private Integer quantitySold;
+
+    @ManyToMany
+    @JoinTable(name = "optional_service_orderered", joinColumns = @JoinColumn(name = "opt_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id"))
+    private List<Order> orders;
 
     public Integer getQuantitySold() {
         return quantitySold;

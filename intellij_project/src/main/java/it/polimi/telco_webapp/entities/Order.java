@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 @Table(name = "`order`", indexes = {
         @Index(name = "user_id_idx", columnList = "user_id")
@@ -35,6 +36,11 @@ public class Order {
     @ManyToOne(optional = false)
     @JoinColumn(name = "package_id", nullable = false)
     private ServicePackage _package;
+
+    @ManyToMany
+    @JoinTable(name = "optional_service_orderered",joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "opt_id"))
+    private List<OptionalService> optionalServices;
 
     public ServicePackage get_package() {
         return _package;
