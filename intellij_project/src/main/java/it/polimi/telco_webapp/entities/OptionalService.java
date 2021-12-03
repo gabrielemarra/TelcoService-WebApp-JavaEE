@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Table(name = "optional_service")
+@Table(name = "optional_service", schema = "telco_db")
 @Entity
 public class OptionalService {
     @Id
@@ -57,5 +57,13 @@ public class OptionalService {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }

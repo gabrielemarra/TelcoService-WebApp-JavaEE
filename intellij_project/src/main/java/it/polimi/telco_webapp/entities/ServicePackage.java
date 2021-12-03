@@ -2,10 +2,9 @@ package it.polimi.telco_webapp.entities;
 
 import jakarta.persistence.*;
 
-import java.util.Collection;
 import java.util.List;
 
-@Table(name = "service_package")
+@Table(name = "service_package", schema = "telco_db")
 @Entity
 public class ServicePackage {
     @Id
@@ -46,5 +45,13 @@ public class ServicePackage {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public List<Service> getServices() {
+        return services;
+    }
+
+    public void setServices(List<Service> services) {
+        this.services = services;
     }
 }

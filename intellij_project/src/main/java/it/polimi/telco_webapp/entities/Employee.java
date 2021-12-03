@@ -2,7 +2,7 @@ package it.polimi.telco_webapp.entities;
 
 import jakarta.persistence.*;
 
-@Table(name = "employee", indexes = {
+@Table(name = "employee", schema = "telco_db", indexes = {
         @Index(name = "email_UNIQUE", columnList = "email", unique = true)
 })
 @Entity

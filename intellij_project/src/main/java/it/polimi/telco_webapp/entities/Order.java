@@ -7,7 +7,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
-@Table(name = "`order`", indexes = {
+@Table(name = "`order`", schema = "telco_db", indexes = {
         @Index(name = "user_id_idx", columnList = "user_id")
 })
 @Entity
@@ -38,7 +38,7 @@ public class Order {
     private ServicePackage packageId;
 
     @ManyToMany
-    @JoinTable(name = "optional_service_ordered",joinColumns = @JoinColumn(name = "order_id"),
+    @JoinTable(name = "optional_service_ordered", joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "opt_id"))
     private List<OptionalService> optionalServices;
 
@@ -96,5 +96,13 @@ public class Order {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public List<OptionalService> getOptionalServices() {
+        return optionalServices;
+    }
+
+    public void setOptionalServices(List<OptionalService> optionalServices) {
+        this.optionalServices = optionalServices;
     }
 }
