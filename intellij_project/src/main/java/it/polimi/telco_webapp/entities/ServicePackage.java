@@ -22,7 +22,13 @@ public class ServicePackage {
             inverseJoinColumns = @JoinColumn(name = "opt_id"))
     private List<OptionalService> optionalServices;
 
+    public List<OptionalService> getOptionalServices() {
+        return optionalServices;
+    }
 
+    public void setOptionalServices(List<OptionalService> optionalServices) {
+        this.optionalServices = optionalServices;
+    }
 
     public Integer getValidityPeriod() {
         return validityPeriod;
