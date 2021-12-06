@@ -1,6 +1,7 @@
 package it.polimi.telco_webapp.entities;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Table(name = "service_package")
 @Entity
@@ -15,6 +16,13 @@ public class ServicePackage {
 
     @Column(name = "validity_period", nullable = false)
     private Integer validityPeriod;
+
+    @ManyToMany
+    @JoinTable(name = "optional_service_available", joinColumns = @JoinColumn(name = "package_id"),
+            inverseJoinColumns = @JoinColumn(name = "opt_id"))
+    private List<OptionalService> optionalServices;
+
+
 
     public Integer getValidityPeriod() {
         return validityPeriod;
