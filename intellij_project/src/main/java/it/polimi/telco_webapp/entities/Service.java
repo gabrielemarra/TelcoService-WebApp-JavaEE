@@ -25,14 +25,14 @@ public class Service {
     @Column(name = "base_price3", nullable = false, precision = 2)
     private BigDecimal basePrice3;
 
-    @Column(name = "gig_jncluded")
-    private Integer gigJncluded;
+    @Column(name = "gig_included")
+    private Integer gigIncluded;
 
-    @Column(name = "min_jncluded")
-    private Integer minJncluded;
+    @Column(name = "min_included")
+    private Integer minIncluded;
 
-    @Column(name = "sms_jncluded")
-    private Integer smsJncluded;
+    @Column(name = "sms_included")
+    private Integer smsIncluded;
 
     @Column(name = "gig_extra")
     private Integer gigExtra;
@@ -72,28 +72,28 @@ public class Service {
         this.gigExtra = gigExtra;
     }
 
-    public Integer getSmsJncluded() {
-        return smsJncluded;
+    public Integer getSmsIncluded() {
+        return smsIncluded;
     }
 
-    public void setSmsJncluded(Integer smsJncluded) {
-        this.smsJncluded = smsJncluded;
+    public void setSmsIncluded(Integer smsJncluded) {
+        this.smsIncluded = smsJncluded;
     }
 
-    public Integer getMinJncluded() {
-        return minJncluded;
+    public Integer getMinIncluded() {
+        return minIncluded;
     }
 
-    public void setMinJncluded(Integer minJncluded) {
-        this.minJncluded = minJncluded;
+    public void setMinIncluded(Integer minJncluded) {
+        this.minIncluded = minJncluded;
     }
 
-    public Integer getGigJncluded() {
-        return gigJncluded;
+    public Integer getGigIncluded() {
+        return gigIncluded;
     }
 
-    public void setGigJncluded(Integer gigJncluded) {
-        this.gigJncluded = gigJncluded;
+    public void setGigIncluded(Integer gigJncluded) {
+        this.gigIncluded = gigJncluded;
     }
 
     public BigDecimal getBasePrice3() {
