@@ -25,9 +25,19 @@ public class User {
     @Column(name = "username", nullable = false, length = 45)
     private String username;
 
+    /* I think we need this.
+     * TODO: check the fetch type.
+     * TODO: check that mappedby string is correct
+     * TODO: check if we need to add targetEntity
+     * @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+     * private List<Order> orders;
+     *
+     */
+
     public String getUsername() {
         return username;
     }
+
 
     public void setUsername(String username) {
         this.username = username;

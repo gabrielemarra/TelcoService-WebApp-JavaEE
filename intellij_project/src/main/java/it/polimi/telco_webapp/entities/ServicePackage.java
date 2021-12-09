@@ -37,6 +37,15 @@ public class ServicePackage {
             inverseJoinColumns = @JoinColumn(name = "service_id"))
     private List<Service> services;
 
+    /* I think we also need this
+     * TODO: check fetch type
+     * TODO: check that mappedby string is correct
+     * TODO: check if we need to add targetEntity
+     * @OneToMany(fetch = FetchType.LAZY, mappedBy = "service_package", cascade = CascadeType.ALL)
+     * private List<Order> orders;
+     */
+@OneToMany()
+
 
     public Integer getValidityPeriod() {
         return validityPeriod;
