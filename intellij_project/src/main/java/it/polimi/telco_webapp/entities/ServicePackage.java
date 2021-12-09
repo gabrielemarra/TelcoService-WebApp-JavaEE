@@ -1,6 +1,7 @@
 package it.polimi.telco_webapp.entities;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 import java.util.List;
 
@@ -19,9 +20,23 @@ public class ServicePackage {
     private Integer validityPeriod;
 
     @ManyToMany
+    @JoinTable(name = "optional_service_available", joinColumns = @JoinColumn(name = "package_id"),
+            inverseJoinColumns = @JoinColumn(name = "opt_id"))
+    private List<OptionalService> optionalServices;
+
+    public List<OptionalService> getOptionalServices() {
+        return optionalServices;
+    }
+
+    public void setOptionalServices(List<OptionalService> optionalServices) {
+        this.optionalServices = optionalServices;
+    }
+
+    @ManyToMany
     @JoinTable(name = "service_bundles", joinColumns = @JoinColumn(name = "package_id"),
             inverseJoinColumns = @JoinColumn(name = "service_id"))
     private List<Service> services;
+
 
     public Integer getValidityPeriod() {
         return validityPeriod;
