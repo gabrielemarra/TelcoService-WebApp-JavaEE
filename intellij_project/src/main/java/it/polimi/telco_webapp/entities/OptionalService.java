@@ -3,8 +3,9 @@ package it.polimi.telco_webapp.entities;
 import jakarta.persistence.*;
 import java.util.List;
 import java.math.BigDecimal;
+import java.util.List;
 
-@Table(name = "optional_service")
+@Table(name = "optional_service", schema = "telco_db")
 @Entity
 public class OptionalService {
     @Id
@@ -29,9 +30,16 @@ public class OptionalService {
     public List<ServicePackage> getServicePackages() {
         return servicePackages;
     }
+  
     public void setServicePackages(List<ServicePackage> servicePackages) {
         this.servicePackages = servicePackages;
     }
+
+    @ManyToMany
+    @JoinTable(name = "optional_service_ordered", joinColumns = @JoinColumn(name = "opt_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id"))
+    private List<Order> orders;
+
 
     public Integer getQuantitySold() {
         return quantitySold;
@@ -63,5 +71,13 @@ public class OptionalService {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }

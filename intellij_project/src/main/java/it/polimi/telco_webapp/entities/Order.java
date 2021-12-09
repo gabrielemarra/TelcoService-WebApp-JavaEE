@@ -5,8 +5,9 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
-@Table(name = "`order`", indexes = {
+@Table(name = "`order`", schema = "telco_db", indexes = {
         @Index(name = "user_id_idx", columnList = "user_id")
 })
 @Entity
@@ -34,14 +35,19 @@ public class Order {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "package_id", nullable = false)
-    private ServicePackage _package;
+    private ServicePackage packageId;
 
-    public ServicePackage get_package() {
-        return _package;
+    @ManyToMany
+    @JoinTable(name = "optional_service_ordered", joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "opt_id"))
+    private List<OptionalService> optionalServices;
+
+    public ServicePackage getPackageId() {
+        return packageId;
     }
 
-    public void set_package(ServicePackage _package) {
-        this._package = _package;
+    public void setPackageId(ServicePackage packageId) {
+        this.packageId = packageId;
     }
 
     public User getUser() {
@@ -90,5 +96,13 @@ public class Order {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public List<OptionalService> getOptionalServices() {
+        return optionalServices;
+    }
+
+    public void setOptionalServices(List<OptionalService> optionalServices) {
+        this.optionalServices = optionalServices;
     }
 }
