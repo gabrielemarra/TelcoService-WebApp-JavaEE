@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!--Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+
+    <!--    My CSS -->
+    <link href="stylesheets/index.css" rel="stylesheet">
+
+    <title>Telco - Landing Page</title>
+</head>
+<body>
+<div class="container login-container">
+    <div class="row form-row">
+        <div class="col-md-6 login-form-1">
+            <h3>Login</h3>
+            <form>
+                <div class="form-group mb-3">
+                    <input type="email" class="form-control" placeholder="Your Email" value="" id="loginEmailInput"
+                           required>
+                </div>
+                <div class="form-group mb-3">
+                    <input type="password" class="form-control" placeholder="Your Password" value=""
+                           id="loginPasswordInput" required>
+                </div>
+                <div class="form-group mb-3">
+                    <button type="submit" class="btnSubmit" value="Login">Login</button>
+<!--                    <input type="submit" class="btnSubmit" value="Login"/>-->
+                </div>
+                <!--                <div class="form-group mb-3">-->
+                <!--                    <a href="#" class="ForgetPwd">Forget Password?</a>-->
+                <!--                </div>-->
+            </form>
+        </div>
+        <div class="col-md-6 register-form">
+            <h3>Register</h3>
+            <form>
+                <div class="form-group mb-3">
+                    <input type="email" class="form-control" placeholder="Your Email" value="" id="registerEmailInput" required>
+                </div>
+                <div class="form-group mb-3">
+                    <input type="password" class="form-control" placeholder="Your Password" value=""
+                           id="registerPasswordInput" required>
+                </div>
+                <div class="form-group mb-3">
+                    <input type="password" class="form-control" placeholder="Confirm your password" value=""
+                           id="registerPasswordConfirmation" required>
+                </div>
+                <div class="form-group mb-3">
+                    <button type="submit" class="btnSubmit" value="Register">Register</button>
+<!--                    <input type="submit" class="btnSubmit" value="Register"/>-->
+                </div>
+                <!--                <div class="form-group mb-3">-->
+
+                <!--                    <a href="#" class="ForgetPwd" value="Login">Forget Password?</a>-->
+                <!--                </div>-->
+            </form>
+        </div>
+    </div>
+    <div class="row text-center my-5">
+        <div class="col">
+            <button type="submit" class="btn-guest" id="continueAsGuestBtn">Click here to visit as guest</button>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
