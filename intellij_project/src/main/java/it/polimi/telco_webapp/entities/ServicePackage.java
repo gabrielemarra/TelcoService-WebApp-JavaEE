@@ -19,6 +19,9 @@ public class ServicePackage {
     @Column(name = "validity_period", nullable = false)
     private Integer validityPeriod;
 
+    @OneToMany(mappedBy = "packageId")
+    private List <Order> orders;
+
     @ManyToMany
     @JoinTable(name = "optional_service_available", joinColumns = @JoinColumn(name = "package_id"),
             inverseJoinColumns = @JoinColumn(name = "opt_id"))
@@ -44,7 +47,6 @@ public class ServicePackage {
      * @OneToMany(fetch = FetchType.LAZY, mappedBy = "service_package", cascade = CascadeType.ALL)
      * private List<Order> orders;
      */
-@OneToMany()
 
 
     public Integer getValidityPeriod() {
@@ -77,5 +79,13 @@ public class ServicePackage {
 
     public void setServices(List<Service> services) {
         this.services = services;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }

@@ -2,6 +2,8 @@ package it.polimi.telco_webapp.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Table(name = "user", schema = "telco_db", indexes = {
         @Index(name = "email_UNIQUE", columnList = "email", unique = true),
         @Index(name = "usercol_UNIQUE", columnList = "username", unique = true)
@@ -25,6 +27,7 @@ public class User {
     @Column(name = "username", nullable = false, length = 45)
     private String username;
 
+
     /* I think we need this.
      * TODO: check the fetch type.
      * TODO: check that mappedby string is correct
@@ -33,6 +36,10 @@ public class User {
      * private List<Order> orders;
      *
      */
+
+    @OneToMany(mappedBy = "user")
+    private List <Order> orders;
+
 
     public String getUsername() {
         return username;
@@ -73,5 +80,13 @@ public class User {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }
