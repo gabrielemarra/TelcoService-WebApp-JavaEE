@@ -33,6 +33,10 @@ out/**
 intellij_project/out/**
 out/
 intellij_project/out/
+target/
+intellij_project/target/
+target/**
+intellij_project/target/**
 
 # Mac
 .DS_Store
