@@ -27,6 +27,8 @@ public class User {
     @Column(name = "username", nullable = false, length = 45)
     private String username;
 
+    @Column(name = "insolvent", nullable = false, length = 45)
+    private boolean insolvent;
 
     /* I think we need this.
      * TODO: check the fetch type.
