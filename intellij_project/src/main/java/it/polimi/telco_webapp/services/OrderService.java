@@ -7,6 +7,11 @@ import jakarta.persistence.PersistenceException;
 
 @Stateless(name = "OrderService")
 public class OrderService {
+    @PersistenceContext(unitName = "telco_webapp")
+    private EntityManager em;
+
     public OrderService() {
     }
+
+
 }
