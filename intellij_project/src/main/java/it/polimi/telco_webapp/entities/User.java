@@ -68,6 +68,11 @@ public class User {
         this.email = email;
     }
 
+    /* Default: false [user is not insolvent]. True = user is insolvent */
+    public void setInsolvency(boolean insolvent) {this.insolvent = insolvent; }
+
+    public boolean getInsolvency() {return insolvent;}
+
     public String getName() {
         return name;
     }
