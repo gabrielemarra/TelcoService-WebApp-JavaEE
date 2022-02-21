@@ -38,9 +38,9 @@ public class Order {
     private ServicePackage packageId;
 
     @ManyToMany
-    @JoinTable(name = "optional_service_ordered", joinColumns = @JoinColumn(name = "order_id"),
+    @JoinTable(name = "optional_product_ordered", joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "opt_id"))
-    private List<OptionalService> optionalServices;
+    private List<OptionalProduct> optionalProducts;
 
     public ServicePackage getPackageId() {
         return packageId;
@@ -98,11 +98,11 @@ public class Order {
         this.id = id;
     }
 
-    public List<OptionalService> getOptionalServices() {
-        return optionalServices;
+    public List<OptionalProduct> getOptionalServices() {
+        return optionalProducts;
     }
 
-    public void setOptionalServices(List<OptionalService> optionalServices) {
-        this.optionalServices = optionalServices;
+    public void setOptionalServices(List<OptionalProduct> optionalProducts) {
+        this.optionalProducts = optionalProducts;
     }
 }

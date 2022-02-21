@@ -3,8 +3,6 @@ package it.polimi.telco_webapp.entities;
 import jakarta.persistence.*;
 import java.util.List;
 
-import java.util.List;
-
 @Table(name = "service_package", schema = "telco_db")
 @Entity
 public class ServicePackage {
@@ -23,16 +21,16 @@ public class ServicePackage {
     private List <Order> orders;
 
     @ManyToMany
-    @JoinTable(name = "optional_service_available", joinColumns = @JoinColumn(name = "package_id"),
+    @JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "package_id"),
             inverseJoinColumns = @JoinColumn(name = "opt_id"))
-    private List<OptionalService> optionalServices;
+    private List<OptionalProduct> optionalProducts;
 
-    public List<OptionalService> getOptionalServices() {
-        return optionalServices;
+    public List<OptionalProduct> getOptionalServices() {
+        return optionalProducts;
     }
 
-    public void setOptionalServices(List<OptionalService> optionalServices) {
-        this.optionalServices = optionalServices;
+    public void setOptionalServices(List<OptionalProduct> optionalProducts) {
+        this.optionalProducts = optionalProducts;
     }
 
     @ManyToMany
