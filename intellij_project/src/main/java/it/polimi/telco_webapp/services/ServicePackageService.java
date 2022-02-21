@@ -5,8 +5,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceException;
 
-@Stateless(name = "UserService")
-public class UserService {
-    public UserService() {
+@Stateless(name = "ServicePackageService")
+public class ServicePackageService {
+    public ServicePackageService() {
     }
 }
