@@ -4,8 +4,8 @@ import it.polimi.telco_webapp.auxiliary.OrderStatus;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Table(name = "`order`", schema = "telco_db", indexes = {
@@ -26,7 +26,7 @@ public class Order {
     private LocalDate subscriptionStart;
 
     @Column(name = "timestamp", nullable = false)
-    private Instant timestamp;
+    private LocalDateTime timestamp;
 
     @Column(name = "total_price", nullable = false, precision = 2)
     private BigDecimal totalPrice;
@@ -42,7 +42,7 @@ public class Order {
     @ManyToMany
     @JoinTable(name = "optional_product_ordered", joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "opt_id"))
-    private List<OptionalProduct> optionalProducts;
+    private List<OptionalProduct> optionalProductOrderedList;
 
     public ServicePackage getPackageId() {
         return packageId;
@@ -68,11 +68,11 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    public Instant getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Instant timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -101,11 +101,11 @@ public class Order {
     }
 
     public List<OptionalProduct> getOptionalServices() {
-        return optionalProducts;
+        return optionalProductOrderedList;
     }
 
-    public void setOptionalServices(List<OptionalProduct> optionalProducts) {
-        this.optionalProducts = optionalProducts;
+    public void setOptionalProductOrderedList(List<OptionalProduct> optionalProducts) {
+        this.optionalProductOrderedList = optionalProducts;
     }
 
     public Order(){};
