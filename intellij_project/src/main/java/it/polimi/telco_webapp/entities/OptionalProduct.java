@@ -4,8 +4,9 @@ import jakarta.persistence.*;
 import java.util.List;
 import java.math.BigDecimal;
 
-@Table(name = "optional_product", schema = "telco_db")
 @Entity
+@Table(name = "optional_product", schema = "telco_db")
+@NamedQuery(name = "OptionalProduct.getOptionalProduct", query = "SELECT o FROM Order o WHERE o.id = ?1")
 public class OptionalProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
