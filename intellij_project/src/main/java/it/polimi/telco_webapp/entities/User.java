@@ -8,6 +8,8 @@ import java.util.List;
         @Index(name = "email_UNIQUE", columnList = "email", unique = true),
         @Index(name = "usercol_UNIQUE", columnList = "username", unique = true)
 })
+@NamedQuery(name = "User.checkCredentials", query = "SELECT c FROM User c WHERE c.username = ?1 AND c.password = ?2")
+@NamedQuery(name = "User.getUser", query = "SELECT c FROM User c WHERE c.username = ?1")
 @Entity
 public class User {
     @Id

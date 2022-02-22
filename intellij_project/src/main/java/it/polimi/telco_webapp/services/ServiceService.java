@@ -87,11 +87,15 @@ public class ServiceService {
 
         if (services == null || services.isEmpty()) {
             throw new InvalidParameterException("Invalid service id.");
-        } else if( services.size() == 1) {
-            return services.get(0);
-        } else {
+        } else if( services.size() != 1) {
             throw new InvalidParameterException("DB error.");
+        } else {
+            return services.get(0);
+
         }
+
+
+
     }
 
 

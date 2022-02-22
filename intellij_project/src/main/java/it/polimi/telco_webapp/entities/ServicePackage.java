@@ -5,8 +5,10 @@ import java.util.List;
 
 @Table(name = "service_package", schema = "telco_db")
 @Entity
-@NamedQuery(name = "ServicePackage.getServicePackages", query = "SELECT s FROM Service s WHERE s.package_id = ?1")
-@NamedQuery(name = "ServicePackage.getServicePackages", query = "SELECT s FROM Service s WHERE s.package_id = ?1")
+@NamedQuery(name = "ServicePackage.getServicePackages", query = "SELECT s FROM ServicePackage s WHERE s.id = ?1")
+@NamedQuery(name = "ServicePackage.getServicePackages", query = "SELECT s FROM ServicePackage s WHERE s.id = ?1")
+//         List<ServicePackage> bundles = em.createNamedQuery("ServicePackage.getServicePackages", ServicePackage.class).setParameter(1, package_id).getResultList();
+//        List<OptionalProduct> options = em.createNamedQuery("OptionalProduct.getOptionalProducts", OptionalProduct.class).setParameter(1, package_id).getResultList();
 
 public class ServicePackage {
     @Id

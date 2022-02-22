@@ -44,8 +44,8 @@ public class ServicePackageService {
         }
     }
 
-    public List<OptionalProduct> getAvailableOptions(int package_id) {
-        List<OptionalProduct> options = em.createNamedQuery("OptionalProduct.getOptionalProducts", OptionalProduct.class).setParameter(1, package_id).getResultList();
+    public List<OptionalProduct> getOptionalProductsAvailable(int package_id) {
+        List<OptionalProduct> options = em.createNamedQuery("OptionalProduct.getOptionalProductsAvailable", OptionalProduct.class).setParameter(1, package_id).getResultList();
 
         if (options == null || options.isEmpty()) {
             throw new InvalidParameterException("Invalid Service Package ID");
