@@ -1,5 +1,7 @@
 package it.polimi.telco_webapp.entities;
 
+// need to import an IDS folder
+
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -7,6 +9,7 @@ import java.util.List;
 
 @Table(name = "service", schema = "telco_db")
 @Entity
+@NamedQuery(name = "Service.getService", query = "SELECT r FROM service r WHERE r.service_id = ?1")
 public class Service {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,7 +17,7 @@ public class Service {
     private Integer id;
 
     @Column(name = "type", nullable = false, length = 45)
-    private String type;
+    private ServiceType type;
 
     @Column(name = "base_price1", nullable = false, precision = 2)
     private BigDecimal basePrice1;
@@ -92,8 +95,8 @@ public class Service {
         return gigIncluded;
     }
 
-    public void setGigIncluded(Integer gigJncluded) {
-        this.gigIncluded = gigJncluded;
+    public void setGigIncluded(Integer gigIncluded) {
+        this.gigIncluded = gigIncluded;
     }
 
     public BigDecimal getBasePrice3() {
@@ -120,11 +123,16 @@ public class Service {
         this.basePrice1 = basePrice1;
     }
 
-    public String getType() {
-        return type;
-    }
+    /*
+     * public String getType() {
+     *    return type;
+     * }
+     */
 
-    public void setType(String type) {
+
+    public ServiceType getServiceType() {return type; }
+
+    public void setType(ServiceType type) {
         this.type = type;
     }
 

@@ -5,6 +5,9 @@ import java.util.List;
 
 @Table(name = "service_package", schema = "telco_db")
 @Entity
+@NamedQuery(name = "ServicePackage.getServicePackages", query = "SELECT s FROM Service s WHERE s.package_id = ?1")
+@NamedQuery(name = "ServicePackage.getServicePackages", query = "SELECT s FROM Service s WHERE s.package_id = ?1")
+
 public class ServicePackage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +28,7 @@ public class ServicePackage {
             inverseJoinColumns = @JoinColumn(name = "opt_id"))
     private List<OptionalProduct> optionalProducts;
 
-    public List<OptionalProduct> getOptionalServices() {
+    public List<OptionalProduct> getOptionalProducts() {
         return optionalProducts;
     }
 
