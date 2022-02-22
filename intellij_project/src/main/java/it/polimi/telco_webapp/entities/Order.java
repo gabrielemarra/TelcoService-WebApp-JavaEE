@@ -8,10 +8,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Table(name = "`order`", schema = "telco_db", indexes = {
+@Entity
+@Table(name = "customer_order", schema = "telco_db", indexes = {
         @Index(name = "user_id_idx", columnList = "user_id")
 })
-@Entity
+@NamedQuery(name = "Order.getOrder", query = "SELECT o FROM Order o WHERE o.id = ?1")
+@NamedQuery(name = "Order.getOrderBySingleUser", query = "SELECT o FROM Order o WHERE o.user = ?1")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
