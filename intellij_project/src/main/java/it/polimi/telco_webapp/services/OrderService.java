@@ -22,12 +22,12 @@ public class OrderService {
      * Create a new Order and store in the Persistence Context
      *
      * @param subscriptionStartDate The starting date of the subscription
-     * @param user User entity (NOT ID) that place the order
-     * @param servicePackage The service package included in the order
-     * @param optionalProductList The optional products included in the order
+     * @param user                  User entity (NOT ID) that place the order
+     * @param servicePackage        The service package included in the order
+     * @param optionalProductList   The optional products included in the order
      * @return The new created order
      */
-    public Order createOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<OptionalProduct> optionalProductList) {
+    public Order insertOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<OptionalProduct> optionalProductList) {
         Order newOrder = new Order();
         newOrder.setPackageId(servicePackage);
         newOrder.setUser(user);
@@ -35,7 +35,7 @@ public class OrderService {
         newOrder.setStatus(OrderStatus.PENDING);
 
         //Check if the OptionalProducts are available for the selected ServicePackage OR null, then add the opt. prod. list to the order
-        if (optionalProductList==null || !servicePackage.getOptionalProducts().containsAll(optionalProductList)) {
+        if (optionalProductList == null || !servicePackage.getOptionalProducts().containsAll(optionalProductList)) {
             throw new IllegalArgumentException("Some selected Optional Products are not compatible with the selected Service Package");
         }
         newOrder.setOptionalProductOrderedList(optionalProductList);
@@ -72,28 +72,24 @@ public class OrderService {
         return newOrder;
     }
 
-    public Order getOrder (int orderId){
+    public Order getOrder(int orderId) {
         List<Order> orders = em.createNamedQuery("Order.getOrder", Order.class).setParameter(1, orderId).getResultList();
         if (orders == null || orders.isEmpty()) {
             throw new IllegalArgumentException("Invalid orderID");
-        }
-        else if(orders.size()==1) {
-            return orders.get(0);
-        }
-        else {
+        } else if (orders.size() != 1) {
             throw new IllegalArgumentException("Internal database error: too many result for a single ID");
+        } else {
+            return orders.get(0);
         }
     }
 
-    public List<Order> getAllOrderCreatedByUser (int userId){
+    public List<Order> getAllOrderCreatedByUser(int userId) {
         List<Order> orders = em.createNamedQuery("Order.getOrder", Order.class).setParameter(1, userId).getResultList();
         if (orders == null || orders.isEmpty()) {
             throw new IllegalArgumentException("User has no orders or the userID is invalid");
-        }
-        else {
+        } else {
             return orders;
         }
-
     }
 
 }
