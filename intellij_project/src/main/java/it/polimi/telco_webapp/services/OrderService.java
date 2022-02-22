@@ -72,6 +72,7 @@ public class OrderService {
         return newOrder;
     }
 
+    //TODO use FIND instead of NamedQuery
     public Order getOrder(int orderId) {
         List<Order> orders = em.createNamedQuery("Order.getOrder", Order.class).setParameter(1, orderId).getResultList();
         if (orders == null || orders.isEmpty()) {
