@@ -1,5 +1,6 @@
 package it.polimi.telco_webapp.entities;
 
+import it.polimi.telco_webapp.auxiliary.OrderStatus;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -17,8 +18,9 @@ public class Order {
     @Column(name = "order_id", nullable = false)
     private Integer id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 45)
-    private String status;
+    private OrderStatus status;
 
     @Column(name = "subscription_start", nullable = false)
     private LocalDate subscriptionStart;
@@ -82,11 +84,11 @@ public class Order {
         this.subscriptionStart = subscriptionStart;
     }
 
-    public String getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
@@ -105,4 +107,6 @@ public class Order {
     public void setOptionalServices(List<OptionalProduct> optionalProducts) {
         this.optionalProducts = optionalProducts;
     }
+
+    public Order(){};
 }
