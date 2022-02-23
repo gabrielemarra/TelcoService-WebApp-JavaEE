@@ -8,22 +8,26 @@ public class ServiceTypeConverter implements AttributeConverter<ServiceType, Str
 
     @Override
     public String convertToDatabaseColumn(ServiceType serviceType) {
-        StringBuilder sb = new StringBuilder();
+        String str = "";
         switch (serviceType) {
             case Mobile_Phone:
-                sb.append(serviceType.Mobile_Phone);
+                str = "Mobile_Phone";
                 break;
-            case Fixed_Phone:
-                sb.append(serviceType.Fixed_Phone);
-                break;
+            /** Covered by default case:
+             * case Fixed_Phone:
+             * str = "Fixed_Phone";
+             * break;
+             */
             case Mobile_Internet:
-                sb.append(serviceType.Mobile_Internet);
+                str = "Mobile_Internet";
                 break;
             case Fixed_Internet:
-                sb.append(serviceType.Fixed_Internet);
+                str = "Fixed_Internet";
                 break;
+            default:
+                str = "Fixed_Phone";
         }
-        return sb.toString();
+        return str;
     }
 
     @Override
