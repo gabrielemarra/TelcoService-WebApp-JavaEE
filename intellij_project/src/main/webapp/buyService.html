@@ -14,6 +14,8 @@
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
             crossorigin="anonymous"></script>
 
+    <!-- jQuery-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!--    My CSS -->
 
     <title>Telco - Buy Service Page</title>
@@ -31,9 +33,14 @@
                             Service Package
                         </button>
                     </h2>
-                    <div id="servicePackageSelectionCollapse" class="accordion-collapse collapse" aria-labelledby="servicePackageSelectionHeading"
+                    <div id="servicePackageSelectionCollapse" class="accordion-collapse collapse"
+                         aria-labelledby="servicePackageSelectionHeading"
                          data-bs-parent="#accordionFlushSelection">
-                        <div class="accordion-body">Here you can select your service package
+                        <div class="accordion-body">Service Package selected:
+                            <div class="placeholder-glow" id="selectedServicePackageText">
+<!--                                <span class="placeholder w-25"></span>-->
+                                <button type="button" class="btn btn-outline-primary placeholder"></button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -45,9 +52,13 @@
                             Validity Period
                         </button>
                     </h2>
-                    <div id="validityPeriodSelectionCollapse" class="accordion-collapse collapse" aria-labelledby="validityPeriodSelectionHeading"
+                    <div id="validityPeriodSelectionCollapse" class="accordion-collapse collapse"
+                         aria-labelledby="validityPeriodSelectionHeading"
                          data-bs-parent="#accordionFlushSelection">
-                        <div class="accordion-body">Here you can select your validity period
+                        <div class="accordion-body">Validity Period selected:
+                            <div class="placeholder-glow" id="selectedValidityPeriodText">
+                                <span class="placeholder w-25"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -61,7 +72,11 @@
                     </h2>
                     <div id="optionalProductSelectionCollapse" class="accordion-collapse collapse"
                          aria-labelledby="optionalProductSelectionHeading" data-bs-parent="#accordionFlushSelection">
-                        <div class="accordion-body">here you can select your optional products
+                        <div class="accordion-body">Optional Products selected:
+                            <div class="placeholder-glow" id="selectedOptionalProductsText">
+                                <span class="placeholder w-25"></span><br>
+                                <span class="placeholder w-25"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -75,24 +90,27 @@
                     </h2>
                     <div id="startingDateSelectionCollapse" class="accordion-collapse collapse"
                          aria-labelledby="startingDateSelectionHeading" data-bs-parent="#accordionFlushSelection">
-                        <div class="accordion-body">here you can select your starting date
+                        <div class="accordion-body">Starting Date selected:
+                            <div class="placeholder-glow" id="selectedStartingDateText">
+                                <span class="placeholder w-25"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-<!--                <div class="accordion-item">-->
-<!--                    <h2 class="accordion-header" id="flush-headingThree">-->
-<!--                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"-->
-<!--                                data-bs-target="#flush-collapseThree" aria-expanded="false"-->
-<!--                                aria-controls="flush-collapseThree">-->
-<!--                            Accordion Item #3-->
-<!--                        </button>-->
-<!--                    </h2>-->
-<!--                    <div id="flush-collapseThree" class="accordion-collapse collapse"-->
-<!--                         aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushSelection">-->
-<!--                        <div class="accordion-body">CONTENT-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <!--                <div class="accordion-item">-->
+                <!--                    <h2 class="accordion-header" id="flush-headingThree">-->
+                <!--                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"-->
+                <!--                                data-bs-target="#flush-collapseThree" aria-expanded="false"-->
+                <!--                                aria-controls="flush-collapseThree">-->
+                <!--                            Accordion Item #3-->
+                <!--                        </button>-->
+                <!--                    </h2>-->
+                <!--                    <div id="flush-collapseThree" class="accordion-collapse collapse"-->
+                <!--                         aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushSelection">-->
+                <!--                        <div class="accordion-body">CONTENT-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
             </div>
         </div>
         <div class="col-5 align-self-center ">
