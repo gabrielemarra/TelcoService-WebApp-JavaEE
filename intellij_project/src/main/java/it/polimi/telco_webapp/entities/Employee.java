@@ -2,11 +2,11 @@ package it.polimi.telco_webapp.entities;
 
 import jakarta.persistence.*;
 
-//@NamedQuery(name = "Employee.checkCredentials", query = "SELECT e FROM Employee e WHERE e.email = ?1 and e.password = ?2")
 @Entity
 @Table(name = "employee", schema = "telco_db", indexes = {
         @Index(name = "email_UNIQUE", columnList = "email", unique = true)
 })
+@NamedQuery(name = "Employee.checkCredentials", query = "SELECT e FROM Employee e WHERE e.email = ?1 and e.password = ?2")
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
