@@ -26,14 +26,15 @@ public class ServiceService {
      * @param service_id: Serivce id of the service
      * @param type: Enum Fixed_Phone, Mobile_Phone, Fixed_Internet, or Mobile_Internet
      * @param basePrices: Array with the three tiers of prices
-     * @param planParams: Array with the cost of the included amounts (of sms/min or gig) and the cost for exceeding
-     *                  the included amounts
+     * @param incl: Array with the cost of the included amounts (of sms/min or gig)
+     * @param extra: Array with the cost of extra services (of sms/min or gig) that exceed the amount included in the plan
+     *
      * @return Service that was entered into the database.
      * @throws PersistenceException
      * @throws IllegalArgumentException: When the service type is not specified correctly, three baseprices are not
      * correctly provided, or plan parameters are not correctly specified.
      */
-    public Service insertNewService(int service_id, ServiceType type, BigDecimal[] basePrices, int[] planParams) throws PersistenceException, IllegalArgumentException{
+    public Service insertNewService(int service_id, ServiceType type, Double[] basePrices, int[] incl, double[] extra) throws PersistenceException, IllegalArgumentException{
         if(basePrices.length != 3) {
             throw new IllegalArgumentException("Correctly specify the base places for the plan.");
         }
@@ -44,21 +45,21 @@ public class ServiceService {
                 service = new Service();
                 break;
             case Mobile_Internet: case Fixed_Internet:
-                if (planParams.length != 2) {
+                if (incl.length != 1 || extra.length != 1) {
                     throw new IllegalArgumentException("Correctly specify the parameters for the internet plan.");
                 }
-                int gig_incl = planParams[0];
-                int gig_extra = planParams[1];
+                int gig_incl = incl[0];
+                double gig_extra = extra[0];
                 service = insertInternet(gig_incl, gig_extra);
                 break;
             case Mobile_Phone:
-                if (planParams.length != 4) {
+                if (incl.length != 2 || extra.length != 2) {
                     throw new IllegalArgumentException("Correctly specify the parameters for the mobile phone plan.");
                 }
-                int sms_incl = planParams[0];
-                int sms_extra = planParams[1];
-                int min_incl = planParams[2];
-                int min_extra = planParams[3];
+                int sms_incl = incl[0];
+                double sms_extra = extra[0];
+                int min_incl = incl[1];
+                double min_extra = extra[1];
                 service = insertMobilePhone(sms_incl, sms_extra, min_incl, min_extra);
                 break;
             default:
@@ -83,7 +84,7 @@ public class ServiceService {
      * @return The service with the gig inclu/extra parameters specified.
      */
 
-    private Service insertInternet(int gig_incl, int gig_extra) {
+    private Service insertInternet(int gig_incl, double gig_extra) {
         Service service = new Service();
         service.setGigIncluded(gig_incl);
         service.setGigExtra(gig_extra);
@@ -101,7 +102,7 @@ public class ServiceService {
      * @return The service with the plan parameters specified.
      */
 
-    private Service insertMobilePhone(int sms_incl, int sms_extra, int min_incl, int min_extra) {
+    private Service insertMobilePhone(int sms_incl, double sms_extra, int min_incl, double min_extra) {
         Service service = new Service();
         service.setSmsIncluded(sms_incl);
         service.setSmsExtra(sms_extra);

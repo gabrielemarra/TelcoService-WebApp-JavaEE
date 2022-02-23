@@ -22,13 +22,13 @@ public class Service {
     private ServiceType type;
 
     @Column(name = "base_price1", nullable = false, precision = 2)
-    private BigDecimal basePrice1;
+    private Double basePrice1;
 
     @Column(name = "base_price2", nullable = false, precision = 2)
-    private BigDecimal basePrice2;
+    private Double basePrice2;
 
     @Column(name = "base_price3", nullable = false, precision = 2)
-    private BigDecimal basePrice3;
+    private Double basePrice3;
 
     @Column(name = "gig_included")
     private Integer gigIncluded;
@@ -40,13 +40,13 @@ public class Service {
     private Integer smsIncluded;
 
     @Column(name = "gig_extra")
-    private Integer gigExtra;
+    private Double gigExtra;
 
     @Column(name = "min_extra")
-    private Integer minExtra;
+    private Double minExtra;
 
     @Column(name = "sms_extra")
-    private Integer smsExtra;
+    private Double smsExtra;
 
     @ManyToMany
     @JoinTable(name = "service_bundles", joinColumns = @JoinColumn(name = "service_id"),
@@ -57,23 +57,23 @@ public class Service {
         return smsExtra;
     }
 
-    public void setSmsExtra(Integer smsExtra) {
+    public void setSmsExtra(Double smsExtra) {
         this.smsExtra = smsExtra;
     }
 
-    public Integer getMinExtra() {
+    public Double getMinExtra() {
         return minExtra;
     }
 
-    public void setMinExtra(Integer minExtra) {
+    public void setMinExtra(Double minExtra) {
         this.minExtra = minExtra;
     }
 
-    public Integer getGigExtra() {
+    public Double getGigExtra() {
         return gigExtra;
     }
 
-    public void setGigExtra(Integer gigExtra) {
+    public void setGigExtra(Double gigExtra) {
         this.gigExtra = gigExtra;
     }
 
@@ -101,36 +101,29 @@ public class Service {
         this.gigIncluded = gigIncluded;
     }
 
-    public BigDecimal getBasePrice3() {
+    public Double getBasePrice3() {
         return basePrice3;
     }
 
-    public void setBasePrice3(BigDecimal basePrice3) {
+    public void setBasePrice3(Double basePrice3) {
         this.basePrice3 = basePrice3;
     }
 
-    public BigDecimal getBasePrice2() {
+    public Double getBasePrice2() {
         return basePrice2;
     }
 
-    public void setBasePrice2(BigDecimal basePrice2) {
+    public void setBasePrice2(Double basePrice2) {
         this.basePrice2 = basePrice2;
     }
 
-    public BigDecimal getBasePrice1() {
+    public Double getBasePrice1() {
         return basePrice1;
     }
 
-    public void setBasePrice1(BigDecimal basePrice1) {
+    public void setBasePrice1(Double basePrice1) {
         this.basePrice1 = basePrice1;
     }
-
-    /*
-     * public String getType() {
-     *    return type;
-     * }
-     */
-
 
     public ServiceType getServiceType() {return type; }
 
