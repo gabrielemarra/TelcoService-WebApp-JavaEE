@@ -14,6 +14,7 @@ import java.util.List;
 })
 @NamedQuery(name = "Order.getOrder", query = "SELECT o FROM Order o WHERE o.id = ?1")
 @NamedQuery(name = "Order.getOrderBySingleUser", query = "SELECT o FROM Order o WHERE o.user = ?1")
+@NamedQuery(name = "Order.getRejectedOrdersBySingleUser", query = "SELECT o FROM Order o WHERE o.user = ?1 AND o.status = 'REJECTED'")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
