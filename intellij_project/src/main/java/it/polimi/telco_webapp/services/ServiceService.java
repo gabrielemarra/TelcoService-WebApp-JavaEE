@@ -21,6 +21,18 @@ public class ServiceService {
     public ServiceService() {
     }
 
+    /**
+     * Inserts a new service into the database.
+     * @param service_id: Serivce id of the service
+     * @param type: Enum Fixed_Phone, Mobile_Phone, Fixed_Internet, or Mobile_Internet
+     * @param basePrices: Array with the three tiers of prices
+     * @param planParams: Array with the cost of the included amounts (of sms/min or gig) and the cost for exceeding
+     *                  the included amounts
+     * @return Service that was entered into the database.
+     * @throws PersistenceException
+     * @throws IllegalArgumentException: When the service type is not specified correctly, three baseprices are not
+     * correctly provided, or plan parameters are not correctly specified.
+     */
     public Service insertNewService(int service_id, ServiceType type, BigDecimal[] basePrices, int[] planParams) throws PersistenceException, IllegalArgumentException{
         if(basePrices.length != 3) {
             throw new IllegalArgumentException("Correctly specify the base places for the plan.");
@@ -28,7 +40,6 @@ public class ServiceService {
 
         Service service;
         switch(type) {
-
             case Fixed_Phone:
                 service = new Service();
                 break;
@@ -49,9 +60,7 @@ public class ServiceService {
                 int min_incl = planParams[2];
                 int min_extra = planParams[3];
                 service = insertMobilePhone(sms_incl, sms_extra, min_incl, min_extra);
-
                 break;
-
             default:
                 throw new IllegalArgumentException("Invalid plan type.");
         }
@@ -65,6 +74,15 @@ public class ServiceService {
 
         return service;
     }
+
+    /**
+     * Helper method to interpret planParams[] as the amount of gig included from planParam[0] and the cost for extra
+     * gig from planParams[1]
+     * @param gig_incl: Amount of gig included in the internet plan
+     * @param gig_extra: Cost of extra gig in the internet plan
+     * @return The service with the gig inclu/extra parameters specified.
+     */
+
     private Service insertInternet(int gig_incl, int gig_extra) {
         Service service = new Service();
         service.setGigIncluded(gig_incl);
@@ -72,6 +90,16 @@ public class ServiceService {
 
         return service;
     }
+
+    /**
+     * Helper method to interpret planParams[] as the amount of sms included, cost of extra sms, amount of min included,
+     *  and cost of extra min
+     * @param sms_incl: Amount of sms included in the plan
+     * @param sms_extra: Cost of extra sms exceeding the amount allotted in the plan.
+     * @param min_incl: Number of min included in the plan
+     * @param min_extra: Cost of extra min exceeding the amount allotted in the plan.
+     * @return The service with the plan parameters specified.
+     */
 
     private Service insertMobilePhone(int sms_incl, int sms_extra, int min_incl, int min_extra) {
         Service service = new Service();
@@ -82,6 +110,11 @@ public class ServiceService {
         return service;
     }
 
+    /**
+     * Get a service from database.
+     * @param service_id: Service id from the service of interest to get from the database
+     * @return: the service with the matching service id
+     */
     public Service getService(int service_id) {
         List<Service> services = em.createNamedQuery("Service.getService", Service.class).setParameter(1, service_id).getResultList();
 
@@ -91,14 +124,6 @@ public class ServiceService {
             throw new InvalidParameterException("DB error.");
         } else {
             return services.get(0);
-
         }
-
-
-
     }
-
-
-
-
 }
