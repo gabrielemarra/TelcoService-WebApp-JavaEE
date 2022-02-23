@@ -54,11 +54,11 @@ public class OrderService {
         for (Service service : servicePackage.getServices()) {
             switch (servicePackage.getValidityPeriod()) {
                 case 1:
-                    servicesPriceList.add(service.getBasePrice1());
+                    servicesPriceList.add(BigDecimal.valueOf(service.getBasePrice1()));
                 case 2:
-                    servicesPriceList.add(service.getBasePrice2());
+                    servicesPriceList.add(BigDecimal.valueOf(service.getBasePrice2()));
                 case 3:
-                    servicesPriceList.add(service.getBasePrice3());
+                    servicesPriceList.add(BigDecimal.valueOf(service.getBasePrice3()));
             }
         }
         //Sum all the price of the services included in the service package
