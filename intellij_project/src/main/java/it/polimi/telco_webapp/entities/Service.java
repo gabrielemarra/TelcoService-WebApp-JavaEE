@@ -2,6 +2,7 @@ package it.polimi.telco_webapp.entities;
 
 // need to import an IDS folder
 
+import jakarta.el.TypeConverter;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -17,6 +18,7 @@ public class Service {
     private Integer id;
 
     @Column(name = "type", nullable = false, length = 45)
+    @Convert(converter = ServiceTypeConverter.class)
     private ServiceType type;
 
     @Column(name = "base_price1", nullable = false, precision = 2)
