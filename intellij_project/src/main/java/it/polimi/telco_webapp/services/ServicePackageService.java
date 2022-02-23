@@ -47,7 +47,7 @@ public class ServicePackageService {
      * @param package_id: The package id of the service package
      * @return The service package retreived from the database.
      */
-    public ServicePackage getServicePackage(int package_id){
+    public ServicePackage getServicePackage(int package_id) throws InvalidParameterException {
         List<ServicePackage> bundles = em.createNamedQuery("ServicePackage.getServicePackages", ServicePackage.class).setParameter(1, package_id).getResultList();
         if (bundles == null || bundles.isEmpty()) {
             throw new InvalidParameterException("Invalid Service Package ID");
@@ -65,11 +65,37 @@ public class ServicePackageService {
      * @param package_id: Service package id of the service package.
      * @return List of OptionalProduct associated with the service package.
      */
-    public List<OptionalProduct> getOptionalProductsAvailable(int package_id) {
+    public List<OptionalProduct> getOptionalProductsAvailable(int package_id) throws InvalidParameterException {
         List<OptionalProduct> options = em.createNamedQuery("OptionalProduct.getOptionalProductsAvailable", OptionalProduct.class).setParameter(1, package_id).getResultList();
         if (options == null || options.isEmpty()) {
             throw new InvalidParameterException("Invalid Service Package ID");
         }
         return options;
+    }
+
+    /**
+     * Sets the validity period for an existing service package.
+     * @param package_id: The service package id of an existing service package in the database.
+     * @param validityPeriod: The new validity period to set.
+     * @throws IllegalArgumentException: Thrown when the validity period provided is invalid or when the packageid
+     * provided is invalid.
+     */
+    public void setValidityPeriod(int package_id, int validityPeriod) throws IllegalArgumentException{
+        /* Check that the validity period provided is an acceptable one.*/
+        if (validityPeriod != 12 && validityPeriod != 24 && validityPeriod != 36) {
+            throw new InvalidParameterException("Invalid validity period provided. Must be  12, 24, or 36");
+        }
+        List<ServicePackage> packages = em.createNamedQuery("ServicePackage.getOneServicePackage", ServicePackage.class).setParameter(1, package_id).getResultList();
+        /* Check that the query returns at least one service package from the package id provided. */
+        if(packages == null || packages.isEmpty()) {
+            throw new InvalidParameterException("Invalid service package ID.");
+        }
+        /* Check that the query returns no more than one service package from the package id provided. */
+        if(packages.size() > 1) {
+            throw new InvalidParameterException("DB returned more than one service package from the provided package ID.");
+        }
+        ServicePackage servicePackage = packages.get(0);
+        servicePackage.setValidityPeriod(validityPeriod);
+        em.persist(servicePackage);
     }
 }
