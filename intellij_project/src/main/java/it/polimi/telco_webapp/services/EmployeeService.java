@@ -26,7 +26,7 @@ public class EmployeeService {
 			return employeeFromDB;
 	}
 
-	public Employee checkCredentials(String employeeEmail, String password) {
+	public Employee checkEmployeeCredentials(String employeeEmail, String password) {
 		List<Employee> employees = em.createNamedQuery("Employee.checkCredentials", Employee.class).setParameter(1, employeeEmail).setParameter(2, password).getResultList();
 
 		if (employees == null || employees.isEmpty()) {

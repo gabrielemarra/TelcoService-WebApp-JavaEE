@@ -54,7 +54,7 @@ public class Service {
             inverseJoinColumns = @JoinColumn(name = "package_id"))
     private List<ServicePackage> servicePackages;
 
-    public Integer getSmsExtra() {
+    public Double getSmsExtra() {
         return smsExtra;
     }
 
