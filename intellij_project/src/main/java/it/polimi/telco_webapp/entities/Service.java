@@ -17,8 +17,9 @@ public class Service {
     @Column(name = "service_id", nullable = false)
     private Integer id;
 
+//    @Convert(converter = ServiceTypeConverter.class)
     @Column(name = "type", nullable = false, length = 45)
-    @Convert(converter = ServiceTypeConverter.class)
+    @Enumerated(EnumType.STRING)
     private ServiceType type;
 
     @Column(name = "base_price1", nullable = false, precision = 2)
