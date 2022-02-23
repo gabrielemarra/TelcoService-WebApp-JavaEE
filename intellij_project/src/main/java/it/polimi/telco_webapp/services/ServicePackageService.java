@@ -48,7 +48,7 @@ public class ServicePackageService {
      * @return The service package retreived from the database.
      */
     public ServicePackage getServicePackage(int package_id) throws InvalidParameterException {
-        List<ServicePackage> bundles = em.createNamedQuery("ServicePackage.getServicePackages", ServicePackage.class).setParameter(1, package_id).getResultList();
+        List<ServicePackage> bundles = em.createNamedQuery("ServicePackage.getOneServicePackage", ServicePackage.class).setParameter(1, package_id).getResultList();
         if (bundles == null || bundles.isEmpty()) {
             throw new InvalidParameterException("Invalid Service Package ID");
         }
@@ -97,5 +97,16 @@ public class ServicePackageService {
         ServicePackage servicePackage = packages.get(0);
         servicePackage.setValidityPeriod(validityPeriod);
         em.persist(servicePackage);
+    }
+
+    public List<ServicePackage> getAllServicePackages() {
+        List<ServicePackage> packages = em.createNamedQuery("ServicePackage.getAllServicePackages", ServicePackage.class).getResultList();
+        if(packages == null || packages.isEmpty()) {
+            /**
+             *  Do not throw an error because in the beginning it COULD be that there are no service packages available
+             *  because employees have not created any yet. Print a warning? return null?
+            */
+        }
+        return packages;
     }
 }
