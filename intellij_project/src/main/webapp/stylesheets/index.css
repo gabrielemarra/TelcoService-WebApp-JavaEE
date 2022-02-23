@@ -13,13 +13,13 @@
     color: #333;
 }
 
-.register-form {
+.signup-form {
     padding: 5%;
     background: #0062cc;
     box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
 }
 
-.register-form h3 {
+.signup-form h3 {
     text-align: center;
     color: #fff;
 }
@@ -42,13 +42,13 @@
     background-color: #0062cc;
 }
 
-.register-form .btnSubmit {
+.signup-form .btnSubmit {
     font-weight: 600;
     color: #0062cc;
     background-color: #fff;
 }
 
-.register-form .ForgetPwd {
+.signup-form .ForgetPwd {
     color: #fff;
     font-weight: 600;
     text-decoration: none;
