@@ -1,14 +1,12 @@
 package it.polimi.telco_webapp.services;
 
 import it.polimi.telco_webapp.entities.Service;
-import it.polimi.telco_webapp.entities.ServiceType;
-import it.polimi.telco_webapp.entities.User;
+import it.polimi.telco_webapp.auxiliary.ServiceType;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceException;
 
-import java.math.BigDecimal;
 import java.security.InvalidParameterException;
 import java.util.List;
 

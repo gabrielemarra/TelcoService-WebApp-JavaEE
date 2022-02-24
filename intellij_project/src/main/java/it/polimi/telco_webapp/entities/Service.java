@@ -2,10 +2,9 @@ package it.polimi.telco_webapp.entities;
 
 // need to import an IDS folder
 
-import jakarta.el.TypeConverter;
+import it.polimi.telco_webapp.auxiliary.ServiceType;
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Table(name = "service", schema = "telco_db")

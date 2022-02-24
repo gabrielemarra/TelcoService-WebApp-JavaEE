@@ -1,4 +1,4 @@
-package it.polimi.telco_webapp.entities;
+package it.polimi.telco_webapp.auxiliary;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
