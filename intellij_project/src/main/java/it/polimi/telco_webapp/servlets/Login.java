@@ -2,6 +2,8 @@ package it.polimi.telco_webapp.servlets;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import it.polimi.telco_webapp.auxiliary.exceptions.CredentialsNotValidException;
 import it.polimi.telco_webapp.auxiliary.exceptions.InternalDBErrorException;
 import it.polimi.telco_webapp.entities.Employee;
@@ -41,9 +43,11 @@ public class Login extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        String jsonErrorString = "{'errorType':!'" + errorType + "','errorInfo':'" + errorInfo + "'}";
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("errorType", errorType);
+        jsonObject.addProperty("errorInfo", errorInfo);
 
-        response.getWriter().println(jsonErrorString);
+        response.getWriter().println(jsonObject);
     }
 
     /**
