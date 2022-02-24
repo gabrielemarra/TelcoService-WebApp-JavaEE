@@ -2,6 +2,8 @@ package it.polimi.telco_webapp.servlets;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import it.polimi.telco_webapp.auxiliary.exceptions.CredentialsNotValidException;
+import it.polimi.telco_webapp.auxiliary.exceptions.InternalDBErrorException;
 import it.polimi.telco_webapp.entities.Employee;
 import it.polimi.telco_webapp.entities.User;
 import it.polimi.telco_webapp.services.EmployeeService;
@@ -105,7 +107,7 @@ public class Login extends HttpServlet {
             jsonElement.getAsJsonObject().remove("id");
 
             response.getWriter().println(gson.toJson(jsonElement));
-        } catch (InvalidParameterException | EJBException e) {
+        } catch (CredentialsNotValidException e) {
             try {
                 Employee employee = employeeService.checkEmployeeCredentials(email, password);
                 request.getSession().setAttribute("employee", employee.getId());
@@ -123,9 +125,14 @@ public class Login extends HttpServlet {
                 jsonElement.getAsJsonObject().remove("id");
 
                 response.getWriter().println(gson.toJson(jsonElement));
-            } catch (InvalidParameterException | EJBException f) {
-                sendError(request, response, "Invalid Completion", f.getCause().getMessage());
+            } catch (CredentialsNotValidException f) {
+                sendError(request, response, f.getErrorCode(), f.getCause().getMessage());
+            } catch (InternalDBErrorException | EJBException f) {
+                sendError(request, response, "Internal Error", f.getCause().getMessage());
             }
+
+        } catch (InternalDBErrorException | EJBException e) {
+            sendError(request, response, "Internal Error", e.getCause().getMessage());
         }
     }
 }

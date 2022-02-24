@@ -2,6 +2,9 @@ package it.polimi.telco_webapp.services;
 
 import java.util.List;
 
+import it.polimi.telco_webapp.auxiliary.exceptions.CredentialsNotValidException;
+import it.polimi.telco_webapp.auxiliary.exceptions.InternalDBErrorException;
+import it.polimi.telco_webapp.auxiliary.exceptions.UserNotFoundException;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -9,6 +12,7 @@ import jakarta.persistence.PersistenceException;
 
 import it.polimi.telco_webapp.entities.User;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.security.InvalidParameterException;
 
 @Stateless(name = "UserService")
@@ -52,7 +56,7 @@ public class UserService {
         List<User> users = em.createNamedQuery("User.getUserByUsername", User.class).setParameter(1, username).getResultList();
 
         if (users == null || users.isEmpty()) {
-            throw new InvalidParameterException("Invalid username.");
+            throw new UserNotFoundException("InvalidUsername","Invalid username.");
         } else if( users.size() == 1) {
             return users.get(0);
         } else {
@@ -70,11 +74,11 @@ public class UserService {
         List<User> users = em.createNamedQuery("User.getUserByEmail", User.class).setParameter(1, email).getResultList();
 
         if (users == null || users.isEmpty()) {
-            throw new InvalidParameterException("Invalid email.");
+            throw new UserNotFoundException("InvalidEmail","Invalid email.");
         } else if( users.size() == 1) {
             return users.get(0);
         } else {
-            throw new InvalidParameterException("DB error.");
+            throw new InternalDBErrorException("InternalDBError","Too many entries for the credentials");
         }
     }
 
@@ -88,11 +92,11 @@ public class UserService {
         List<User> users = em.createNamedQuery("User.checkCredentials", User.class).setParameter(1, email).setParameter(2, password).getResultList();
 
         if (users == null || users.isEmpty()) {
-            throw new InvalidParameterException("Invalid credentials.");
+            throw new CredentialsNotValidException("InvalidCredentials","The credentials do not correspond to any user.", false);
         } else if( users.size() == 1) {
             return users.get(0);
         } else {
-            throw new InvalidParameterException("DB error.");
+            throw new InternalDBErrorException("InternalDBError","Too many entries for the credentials");
         }
     }
 
