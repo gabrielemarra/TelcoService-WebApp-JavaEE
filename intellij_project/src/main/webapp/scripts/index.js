@@ -14,7 +14,7 @@ $(document).ready(function () {
         function (event) {
             event.preventDefault();
             let email = $("#signupEmailInput").val();
-            let username = $("#signupUsernameInputInput").val();
+            let username = $("#signupUsernameInput").val();
             let name = $("#signupNameInput").val();
             let password = $("#signupPasswordInput").val();
             let password_confirmation = $("#signupPasswordConfirmation").val();
@@ -46,7 +46,9 @@ $(document).ready(function () {
 
         });
         postRequest.fail(function (jqXHR, textStatus, errorThrown) {
-            alert("Login Error");
+            //Spawn an error message after now login
+            let JSONText = jQuery.parseJSON(jqXHR.responseText)
+            alert("Login Error: " + jqXHR.responseText);
         });
         // postRequest.always(function () {
         //     alert("Request completed");
@@ -54,10 +56,24 @@ $(document).ready(function () {
 
     }
 
-    function signup(email, password, password_confirmation) {
+    function signup(email, name, username, password, password_confirmation) {
         if (password === password_confirmation) {
 
-            let postRequest = $.post("Signup", {email: email, password: password});
+            let postRequest = $.post("Signup", {email: email, password: password, username:username, name:name});
+
+            postRequest.done(function (data, textStatus, jqXHR) {
+                //Spawn a success message after now login
+
+            });
+            postRequest.fail(function (jqXHR, textStatus, errorThrown) {
+                //Spawn an error message after now login
+                let JSONText = jQuery.parseJSON(jqXHR.responseText)
+                alert("Login Error: " + jqXHR.responseText);
+            });
+            // postRequest.always(function () {
+            //     alert("Request completed");
+            // });
+
         } else {
             //PASSWORD DON'T MATCH!
         }
