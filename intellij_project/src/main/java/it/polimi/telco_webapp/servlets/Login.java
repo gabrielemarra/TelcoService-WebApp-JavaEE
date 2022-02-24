@@ -1,5 +1,7 @@
 package it.polimi.telco_webapp.servlets;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import it.polimi.telco_webapp.entities.Employee;
 import it.polimi.telco_webapp.entities.User;
 import it.polimi.telco_webapp.services.EmployeeService;
@@ -24,7 +26,7 @@ public class Login extends HttpServlet {
     private EmployeeService employeeService;
 
     /**
-     * Method to handle errors, redirects to an error page
+     * Method to handle errors, send json with error info
      *
      * @param request   request
      * @param response  response
@@ -32,14 +34,14 @@ public class Login extends HttpServlet {
      * @param errorInfo information about the error
      * @throws IOException if there are problems redirecting
      */
-    protected void sendError(HttpServletResponse response, HttpServletRequest request, String errorType, String errorInfo) throws IOException {
-        request.getSession().setAttribute("errorType", errorType);
-        request.getSession().setAttribute("errorInfo", errorInfo);
-        try {
-            getServletConfig().getServletContext().getRequestDispatcher("/error.html").forward(request, response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        }
+    protected void sendError(HttpServletRequest request, HttpServletResponse response, String errorType, String errorInfo) throws IOException {
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        String jsonErrorString = "{'errorType':!'" + errorType + "','errorInfo':'" + errorInfo + "'}";
+
+        response.getWriter().println(jsonErrorString);
     }
 
     /**
@@ -83,25 +85,46 @@ public class Login extends HttpServlet {
 //        String username = StringEscapeUtils.escapeJava(request.getParameter("username"));
 
         if (!(isEmailValid(email) && isPasswordValid(password))) {
-            sendError(response, request, "Invalid Completion", "invalid email or password format");
+            sendError(request, response, "Invalid Completion", "Invalid email or password format");
             return;
         }
         try {
             User credentialCheckResultUser = userService.checkCredentials(email, password);
             request.getSession().setAttribute("user", credentialCheckResultUser.getEmail());
+            String url = "homepage.html";
 
             response.setStatus(HttpServletResponse.SC_OK);
-            response.setContentType("text/plain");
+            response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-            response.getWriter().println(email);
+
+            Gson gson = new Gson();
+            JsonElement jsonElement = gson.toJsonTree(credentialCheckResultUser);
+            jsonElement.getAsJsonObject().addProperty("new_url", url);
+            jsonElement.getAsJsonObject().addProperty("employee", "false");
+            jsonElement.getAsJsonObject().remove("password");
+            jsonElement.getAsJsonObject().remove("id");
+
+            response.getWriter().println(gson.toJson(jsonElement));
         } catch (InvalidParameterException | EJBException e) {
             try {
                 Employee employee = employeeService.checkEmployeeCredentials(email, password);
                 request.getSession().setAttribute("employee", employee.getId());
-                String path = getServletContext().getContextPath() + "/Employee/index.html";
-                response.sendRedirect(path);
+                String url = "Employee/index.html";
+
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+
+                Gson gson = new Gson();
+                JsonElement jsonElement = gson.toJsonTree(employee);
+                jsonElement.getAsJsonObject().addProperty("new_url", url);
+                jsonElement.getAsJsonObject().addProperty("employee", "true");
+                jsonElement.getAsJsonObject().remove("password");
+                jsonElement.getAsJsonObject().remove("id");
+
+                response.getWriter().println(gson.toJson(jsonElement));
             } catch (InvalidParameterException | EJBException f) {
-                sendError(response, request, "Invalid Completion", f.getCause().getMessage());
+                sendError(request, response, "Invalid Completion", f.getCause().getMessage());
             }
         }
     }
