@@ -9,7 +9,8 @@ import java.util.List;
         @Index(name = "usercol_UNIQUE", columnList = "username", unique = true)
 })
 @NamedQuery(name = "User.checkCredentials", query = "SELECT c FROM User c WHERE c.email = ?1 AND c.password = ?2")
-@NamedQuery(name = "User.getUser", query = "SELECT c FROM User c WHERE c.email = ?1")
+@NamedQuery(name = "User.getUserByEmail", query = "SELECT c FROM User c WHERE c.email = ?1")
+@NamedQuery(name = "User.getUserByUsername", query = "SELECT c FROM User c WHERE c.username = ?1")
 //@NamedQuery(name = "User.insolventUsers", query = "SELECT u FROM User u WHERE u.insolvent = 1 ")
 //@NamedQuery(name = "User.checkInsolvency", query = "SELECT u FROM User u WHERE u.id = ?1 AND u.insolvent = 1 ")
 

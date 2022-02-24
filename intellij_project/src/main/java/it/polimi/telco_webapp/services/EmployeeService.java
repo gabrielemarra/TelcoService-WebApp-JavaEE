@@ -18,7 +18,7 @@ public class EmployeeService {
 	public EmployeeService() {
 	}
 
-	public Employee getEmployee(String employee_id) throws PersistenceException, InvalidParameterException {
+	public Employee getEmployeeById(String employee_id) throws PersistenceException, InvalidParameterException {
 		Employee employeeFromDB = em.find(Employee.class, employee_id);
 		if (employeeFromDB == null)
 			throw new InvalidParameterException("internal database error");
