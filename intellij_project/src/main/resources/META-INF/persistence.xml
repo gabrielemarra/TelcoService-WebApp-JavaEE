@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+<persistence version="2.2"
+             xmlns="http://xmlns.jcp.org/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
-             version="3.0">
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
 
     <persistence-unit name="telco_webapp" transaction-type="JTA">
         <jta-data-source>telco_db</jta-data-source>
@@ -12,5 +12,8 @@
         <class>it.polimi.telco_webapp.entities.Service</class>
         <class>it.polimi.telco_webapp.entities.Order</class>
         <class>it.polimi.telco_webapp.entities.User</class>
+        <properties>
+            <property name="eclipselink.logging.level" value="FINE" />
+        </properties>
     </persistence-unit>
 </persistence>
