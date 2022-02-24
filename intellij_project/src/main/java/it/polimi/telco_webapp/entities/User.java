@@ -8,10 +8,10 @@ import java.util.List;
         @Index(name = "email_UNIQUE", columnList = "email", unique = true),
         @Index(name = "usercol_UNIQUE", columnList = "username", unique = true)
 })
-@NamedQuery(name = "User.checkCredentials", query = "SELECT c FROM User c WHERE c.username = ?1 AND c.password = ?2")
-@NamedQuery(name = "User.getUser", query = "SELECT c FROM User c WHERE c.username = ?1")
-@NamedQuery(name = "User.insolventUsers", query = "SELECT u FROM User u WHERE u.insolvent = 1 ")
-@NamedQuery(name = "User.checkInsolvency", query = "SELECT u FROM User u WHERE u.id = ?1 AND u.insolvent = 1 ")
+@NamedQuery(name = "User.checkCredentials", query = "SELECT c FROM User c WHERE c.email = ?1 AND c.password = ?2")
+@NamedQuery(name = "User.getUser", query = "SELECT c FROM User c WHERE c.email = ?1")
+//@NamedQuery(name = "User.insolventUsers", query = "SELECT u FROM User u WHERE u.insolvent = 1 ")
+//@NamedQuery(name = "User.checkInsolvency", query = "SELECT u FROM User u WHERE u.id = ?1 AND u.insolvent = 1 ")
 
 //@NamedQuery(name = "User.rejectedOrders", query = "SELECT o FROM Order o WHERE ")
 @Entity
@@ -33,8 +33,8 @@ public class User {
     @Column(name = "username", nullable = false, length = 45)
     private String username;
 
-    @Column(name = "insolvent", nullable = false, length = 45)
-    private boolean insolvent;
+//    @Column(name = "insolvent", nullable = false, length = 45)
+//    private boolean insolvent;
 
     /* I think we need this.
      * TODO: check the fetch type.
@@ -75,9 +75,9 @@ public class User {
     }
 
     /* Default: false [user is not insolvent]. True = user is insolvent */
-    public void setInsolvency(boolean insolvent) {this.insolvent = insolvent; }
+//    public void setInsolvency(boolean insolvent) {this.insolvent = insolvent; }
 
-    public boolean getInsolvency() {return insolvent;}
+//    public boolean getInsolvency() {return insolvent;}
 
     public String getName() {
         return name;

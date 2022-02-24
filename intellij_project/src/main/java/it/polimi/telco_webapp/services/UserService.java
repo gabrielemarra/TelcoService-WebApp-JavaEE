@@ -38,7 +38,7 @@ public class UserService {
         user.setEmail(email);
         user.setPassword(password);
         user.setUsername(username);
-        user.setInsolvency(insolvent);
+//        user.setInsolvency(insolvent);
 
         em.persist(user);
         /* QUESTION: does this method *need* to return anything? */
@@ -65,12 +65,12 @@ public class UserService {
 
     /**
      * Checks that the credentials are correct and match the info in the database.
-     * @param username: Username entered by the user
+     * @param email: Username entered by the user
      * @param password: Password entered by the user
      * @return user from the database that matches the username and password provided.
      */
-    public User checkCredentials(String username, String password) {
-        List<User> users = em.createNamedQuery("User.checkCredentials", User.class).setParameter(1, username).setParameter(2, password).getResultList();
+    public User checkCredentials(String email, String password) {
+        List<User> users = em.createNamedQuery("User.checkCredentials", User.class).setParameter(1, email).setParameter(2, password).getResultList();
 
         if (users == null || users.isEmpty()) {
             throw new InvalidParameterException("Invalid credentials.");
@@ -81,15 +81,15 @@ public class UserService {
         }
     }
 
-    /**
-     * Checks that the user associated with the provided user_id
-     * @param user_id: User id of the user to check insolvency
-     * @return True if the user is insolvent and false if the user is not insolvent.
-     */
-    public boolean isInsolvent(int user_id) {
-        List<User> users = em.createNamedQuery("User.checkInsolvency", User.class).setParameter(1, user_id).getResultList();
-
-        return !(users == null || users.isEmpty());
-
-    }
+//    /**
+//     * Checks that the user associated with the provided user_id
+//     * @param user_id: User id of the user to check insolvency
+//     * @return True if the user is insolvent and false if the user is not insolvent.
+//     */
+//    public boolean isInsolvent(int user_id) {
+//        List<User> users = em.createNamedQuery("User.checkInsolvency", User.class).setParameter(1, user_id).getResultList();
+//
+//        return !(users == null || users.isEmpty());
+//
+//    }
 }

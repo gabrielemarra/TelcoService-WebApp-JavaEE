@@ -88,9 +88,12 @@ public class Login extends HttpServlet {
         }
         try {
             User credentialCheckResultUser = userService.checkCredentials(email, password);
-            request.getSession().setAttribute("user", credentialCheckResultUser.getUsername());
-            String path = getServletContext().getContextPath() + "/homepage.html";
-            response.sendRedirect(path);
+            request.getSession().setAttribute("user", credentialCheckResultUser.getEmail());
+
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().println(email);
         } catch (InvalidParameterException | EJBException e) {
             try {
                 Employee employee = employeeService.checkEmployeeCredentials(email, password);
