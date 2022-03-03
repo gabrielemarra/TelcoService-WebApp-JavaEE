@@ -4,6 +4,7 @@ import java.util.List;
 
 import it.polimi.telco_webapp.auxiliary.exceptions.NoServicePackageFound;
 import it.polimi.telco_webapp.entities.OptionalProduct;
+import it.polimi.telco_webapp.entities.Service;
 import it.polimi.telco_webapp.entities.ServicePackage;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
@@ -68,11 +69,15 @@ public class ServicePackageService {
      * @return List of OptionalProduct associated with the service package.
      */
     public List<OptionalProduct> getOptionalProductsAvailable(int package_id) throws InvalidParameterException {
-        List<OptionalProduct> options = em.createNamedQuery("OptionalProduct.getOptionalProductsAvailable", OptionalProduct.class).setParameter(1, package_id).getResultList();
-        if (options == null || options.isEmpty()) {
+        List<ServicePackage> packages = em.createNamedQuery("ServicePackage.getOneServicePackage", ServicePackage.class).setParameter(1, package_id).getResultList();
+        if (packages == null || packages.isEmpty()) {
             throw new InvalidParameterException("Invalid Service Package ID");
         }
-        return options;
+        
+        ServicePackage pack = packages.get(0);
+        return pack.getOptionalProducts();
+        // cleaner: return packages.get(0).getOptionalProducts();
+
     }
 
     /**
@@ -85,7 +90,7 @@ public class ServicePackageService {
      */
     public void setValidityPeriod(int package_id, int validityPeriod) throws IllegalArgumentException {
         /* Check that the validity period provided is an acceptable one.*/
-        if (validityPeriod != 12 && validityPeriod != 24 && validityPeriod != 36) {
+        if (validityPeriod >3 || validityPeriod < 1) {
             throw new InvalidParameterException("Invalid validity period provided. Must be  12, 24, or 36");
         }
         List<ServicePackage> packages = em.createNamedQuery("ServicePackage.getOneServicePackage", ServicePackage.class).setParameter(1, package_id).getResultList();
