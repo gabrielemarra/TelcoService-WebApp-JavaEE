@@ -34,6 +34,9 @@ public class Order {
     @Column(name = "total_price", nullable = false, precision = 2)
     private BigDecimal totalPrice;
 
+    @Column(name = "basic_cost", nullable = false, precision = 2)
+    private BigDecimal basicCost;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -69,6 +72,18 @@ public class Order {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public BigDecimal getBasicCost() {
+        return basicCost;
+    }
+
+    public void setBasicCost() {
+        BigDecimal basicCost = this.totalPrice;
+        List<OptionalProduct> optionalProducts = this.getOptionalServices();
+        for (OptionalProduct prod: optionalProducts) {
+            basicCost = basicCost.subtract(prod.getPrice());
+        }
     }
 
     public LocalDateTime getTimestamp() {
