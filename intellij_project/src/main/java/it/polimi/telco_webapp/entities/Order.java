@@ -37,6 +37,9 @@ public class Order {
     @Column(name = "basic_cost", nullable = false, precision = 2)
     private BigDecimal basicCost;
 
+    @Column(name = "chosen_validity_period", nullable = false)
+    private Integer chosenValidityPeriod;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -57,6 +60,10 @@ public class Order {
     public void setPackageId(ServicePackage packageId) {
         this.packageId = packageId;
     }
+
+    public void setChosenValidityPeriod(int period) { this.chosenValidityPeriod = period; }
+
+    public int getChosenValidityPeriod() { return chosenValidityPeriod; }
 
     public User getUser() {
         return user;
