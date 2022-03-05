@@ -5,6 +5,7 @@ import java.util.List;
 import it.polimi.telco_webapp.auxiliary.exceptions.CredentialsNotValidException;
 import it.polimi.telco_webapp.auxiliary.exceptions.InternalDBErrorException;
 import it.polimi.telco_webapp.auxiliary.exceptions.UserNotFoundException;
+import it.polimi.telco_webapp.entities.Order;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -100,15 +101,27 @@ public class UserService {
         }
     }
 
-//    /**
-//     * Checks that the user associated with the provided user_id
-//     * @param user_id: User id of the user to check insolvency
-//     * @return True if the user is insolvent and false if the user is not insolvent.
-//     */
-//    public boolean isInsolvent(int user_id) {
-//        List<User> users = em.createNamedQuery("User.checkInsolvency", User.class).setParameter(1, user_id).getResultList();
-//
-//        return !(users == null || users.isEmpty());
-//
-//    }
+    /**
+     * Checks if the user associated with the provided user_id is insolvent or not
+     * TODO: Should this be in OrderService.java instead of here?
+     * @param user_id: User id of the user to check insolvency
+     * @return True if the user is insolvent and false if the user is not insolvent.
+     */
+    public boolean isInsolvent(int user_id) {
+        List<Order> rejectedOrders = em.createNamedQuery("Order.getRejectedOrdersBySingleUser").setParameter(1, user_id).getResultList();
+        return !(rejectedOrders.isEmpty() || rejectedOrders == null);
+    }
+
+    /**
+     * Checks if the user associated with the provided user_id is insolvent or not
+     * TODO: Should this be in OrderService.java instead of here?
+     * @param user_id: User id of the user to check insolvency
+     * @return True if the user is insolvent and false if the user is not insolvent.
+     */
+    public List<Order> getRejectedOrders(int user_id) {
+        List<Order> rejectedOrders = em.createNamedQuery("Order.getRejectedOrdersBySingleUser").setParameter(1, user_id).getResultList();
+        return rejectedOrders;
+    }
+
+
 }
