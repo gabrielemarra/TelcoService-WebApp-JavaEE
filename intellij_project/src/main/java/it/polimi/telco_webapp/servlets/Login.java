@@ -98,6 +98,7 @@ public class Login extends HttpServlet {
             User credentialCheckResultUser = userService.checkCredentials(email, password);
             request.getSession().setAttribute("user", credentialCheckResultUser.getEmail());
             String url = "homepage.html";
+            String emailAtt = credentialCheckResultUser.getEmail();
 
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("application/json");
@@ -105,11 +106,12 @@ public class Login extends HttpServlet {
 
             Gson gson = new Gson();
             JsonElement jsonElement = gson.toJsonTree(credentialCheckResultUser);
-            jsonElement.getAsJsonObject().addProperty("new_url", url);
-            jsonElement.getAsJsonObject().addProperty("employee", "false");
-            jsonElement.getAsJsonObject().remove("password");
-            jsonElement.getAsJsonObject().remove("id");
+            //jsonElement.getAsJsonObject().addProperty("new_url", url);
+            jsonElement.getAsJsonObject().addProperty("email", emailAtt);
+            //jsonElement.getAsJsonObject().remove("password");
+            //jsonElement.getAsJsonObject().remove("id");
 
+            response.sendRedirect(url);
             response.getWriter().println(gson.toJson(jsonElement));
         } catch (CredentialsNotValidException e) {
             try {
