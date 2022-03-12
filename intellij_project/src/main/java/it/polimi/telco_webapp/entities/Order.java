@@ -136,5 +136,10 @@ public class Order {
         this.optionalProductOrderedList = optionalProducts;
     }
 
+    public String toString() {
+        return "[" + id + " " + status + " " + timestamp + " " + subscriptionStart + " " + baseCost + " " + totalPrice + " " + chosenValidityPeriod + " " + packageId + "]";
+
+    }
+
     public Order(){};
 }

@@ -12,6 +12,7 @@ import it.polimi.telco_webapp.services.EmployeeService;
 import it.polimi.telco_webapp.services.UserService;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
+import jakarta.json.Json;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -98,20 +99,28 @@ public class Login extends HttpServlet {
             User credentialCheckResultUser = userService.checkCredentials(email, password);
             request.getSession().setAttribute("user", credentialCheckResultUser.getEmail());
             String url = "homepage.html";
-            String emailAtt = credentialCheckResultUser.getEmail();
 
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-
             Gson gson = new Gson();
-            JsonElement jsonElement = gson.toJsonTree(credentialCheckResultUser);
-            //jsonElement.getAsJsonObject().addProperty("new_url", url);
-            jsonElement.getAsJsonObject().addProperty("email", emailAtt);
-            //jsonElement.getAsJsonObject().remove("password");
-            //jsonElement.getAsJsonObject().remove("id");
 
-            response.sendRedirect(url);
+            JsonElement jsonElement = new JsonObject();
+
+            jsonElement.getAsJsonObject().addProperty("new_url", url);
+            jsonElement.getAsJsonObject().addProperty("name", credentialCheckResultUser.getName());
+            jsonElement.getAsJsonObject().addProperty("email", credentialCheckResultUser.getEmail());
+            jsonElement.getAsJsonObject().remove("password");
+            jsonElement.getAsJsonObject().remove("id");
+            jsonElement.getAsJsonObject().remove("orders");
+
+            /*
+            JsonElement jsonElement = gson.toJsonTree(credentialCheckResultUser);
+            //jsonElement.getAsJsonObject().getAsJsonArray("orders");
+            jsonElement.getAsJsonObject().addProperty("orders", credentialCheckResultUser.getOrders().toString());
+            * */
+
+
             response.getWriter().println(gson.toJson(jsonElement));
         } catch (CredentialsNotValidException e) {
             try {
