@@ -1,6 +1,12 @@
 $(document).ready(function () {
     $.ajaxSetup({cache: false});
 
+    if (sessionStorage.getItem("employee")===true){
+        window.location.href = "Employee/index.html"
+    }
+
+    displayPersonalData();
+
     $("#selectButton").click(
         function (event) {
             event.preventDefault();
@@ -20,6 +26,13 @@ $(document).ready(function () {
 
     getServicePackages();
     //getRejectedOrders();
+
+    function displayPersonalData(){
+    //    Should we make a request? For now we use the stored values
+        let personalInfoString = sessionStorage.getItem("name") + " | " + sessionStorage.getItem("email")
+        $("#username_right_corner").html(personalInfoString)
+
+    }
 
     function getServicePackages() {
         let packages = $.get("GetAvailableServicePackages");
