@@ -25,7 +25,7 @@ $(document).ready(function () {
 
 
     getServicePackages();
-    //getRejectedOrders();
+    getRejectedOrders();
 
     function displayPersonalData(){
     //    Should we make a request? For now we use the stored values
@@ -33,6 +33,8 @@ $(document).ready(function () {
         $("#username_right_corner").html(personalInfoString)
 
     }
+
+
 
     function getServicePackages() {
         let packages = $.get("GetAvailableServicePackages");
@@ -42,5 +44,32 @@ $(document).ready(function () {
         packages.fail(function (jqXHR, textStatus, errorThrown) {
             alert("FAIL!")
         });
+    }
+
+    function getRejectedOrders() {
+        let getResponse = $.get("GetRejectedOrders");
+
+        getResponse.done(function (data, textStatus, jqXHR) {
+            let rejectedOrders = jqXHR.responseJSON;
+
+            let table = document.getElementById("id_rejected_orders_body");
+            for (let i = 0; i < rejectedOrders.length; i++) {
+                let row = table.insertRow();
+
+                let packageIdCell = row.insertCell(0);
+                packageIdCell.innerHTML = rejectedOrders[i].package_id;
+
+                let totalPriceCell = row.insertCell(1);
+                totalPriceCell.innerHTML = rejectedOrders[i].total_price;
+            }
+
+        });
+
+        rejectedOrders.fail(function (data, textStatus, errorThrown) {
+            alert("world");
+
+        });
+
+
     }
 });

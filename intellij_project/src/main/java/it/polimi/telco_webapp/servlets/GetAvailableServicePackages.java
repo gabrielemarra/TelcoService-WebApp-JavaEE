@@ -1,6 +1,7 @@
 package it.polimi.telco_webapp.servlets;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.auxiliary.exceptions.NoServicePackageFound;
@@ -59,8 +60,24 @@ public class GetAvailableServicePackages extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
+            JsonArray jsonArray = new JsonArray();
+            for (int i = 0; i < packages.size(); i++) {
 
-            response.getWriter().println(gson.toJson(packages));
+                JsonElement jsonElement = new JsonObject();
+                ServicePackage temp = packages.get(i);
+
+                jsonElement.getAsJsonObject().addProperty("name", temp.getName());
+                jsonElement.getAsJsonObject().addProperty("package_id", temp.getId());
+                jsonElement.getAsJsonObject().addProperty("validity_period", temp.getValidityPeriod());
+                /*
+                * TODO: I think we also need to add Services and Optional Products to the json element... for now those
+                *  objects have not been "serialized is in json-pretty way...
+                * */
+
+                jsonArray.add(jsonElement);
+            }
+
+            response.getWriter().println(gson.toJson(jsonArray));
         } catch (NoServicePackageFound | EJBException e) {
             sendError(request, response, "NoServicePackage", e.getCause().getMessage());
         }

@@ -110,16 +110,6 @@ public class Login extends HttpServlet {
             jsonElement.getAsJsonObject().addProperty("new_url", url);
             jsonElement.getAsJsonObject().addProperty("name", credentialCheckResultUser.getName());
             jsonElement.getAsJsonObject().addProperty("email", credentialCheckResultUser.getEmail());
-            jsonElement.getAsJsonObject().remove("password");
-            jsonElement.getAsJsonObject().remove("id");
-            jsonElement.getAsJsonObject().remove("orders");
-
-            /*
-            JsonElement jsonElement = gson.toJsonTree(credentialCheckResultUser);
-            //jsonElement.getAsJsonObject().getAsJsonArray("orders");
-            jsonElement.getAsJsonObject().addProperty("orders", credentialCheckResultUser.getOrders().toString());
-            * */
-
 
             response.getWriter().println(gson.toJson(jsonElement));
         } catch (CredentialsNotValidException e) {

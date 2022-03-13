@@ -43,7 +43,7 @@ public class Order {
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
+    /* TODO: should packageID be an integer? (1/3) */
     @ManyToOne(optional = false)
     @JoinColumn(name = "package_id", nullable = false)
     private ServicePackage packageId;
@@ -52,11 +52,11 @@ public class Order {
     @JoinTable(name = "optional_product_ordered", joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "opt_id"))
     private List<OptionalProduct> optionalProductOrderedList;
-
+    /* TODO: should packageID be an integer? (2/3) */
     public ServicePackage getPackageId() {
         return packageId;
     }
-
+    /* TODO: should packageID be an integer? (3/3) */
     public void setPackageId(ServicePackage packageId) {
         this.packageId = packageId;
     }
@@ -135,11 +135,12 @@ public class Order {
     public void setOptionalProductOrderedList(List<OptionalProduct> optionalProducts) {
         this.optionalProductOrderedList = optionalProducts;
     }
-
+/*
     public String toString() {
         return "[" + id + " " + status + " " + timestamp + " " + subscriptionStart + " " + baseCost + " " + totalPrice + " " + chosenValidityPeriod + " " + packageId + "]";
 
     }
+* */
 
     public Order(){};
 }

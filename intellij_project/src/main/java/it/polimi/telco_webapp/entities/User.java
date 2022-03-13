@@ -46,7 +46,7 @@ public class User {
      *
      */
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List <Order> orders;
 
 
@@ -104,7 +104,10 @@ public class User {
         this.orders = orders;
     }
 
+
+    /*
     public String toString() {
         return "[" + id + " " + name + " " + email + " " + password + " " + username + "]";
     }
+    * */
 }

@@ -1,6 +1,7 @@
 package it.polimi.telco_webapp.servlets;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.auxiliary.OrderStatus;
@@ -58,41 +59,35 @@ public class GetRejectedOrders extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpServletResponse.SC_OK);
+
+
         User user = null;
         try {
-            //boolean insolvent = false;
-            //user = userService.getUserByUsername("dummy");
+            /*
+            * TODO: how to pass the username to a request?
+            * */
+            user = userService.getUserByUsername("root");
 
         } catch (UserNotFoundException | EJBException e) {
             sendError(request, response, "UserNotFoundException", e.getCause().getMessage());
         }
-/*
         List<Order> ordersFromUser = user.getOrders();
-        List<Order> rejectedOrders = new ArrayList<Order>();
-
+        //List<Order> rejectedOrders = new ArrayList<Order>(); //empty
+        JsonArray rejectedOrders = new JsonArray();
         for(int i = 0; i < ordersFromUser.size(); i++) {
             Order temp = ordersFromUser.get(i);
             if(temp.getStatus() == OrderStatus.REJECTED) {
-                rejectedOrders.add(temp);
-                //insolvent = true;
+                JsonElement jsonElement = new JsonObject();
+                /* TODO: How to add LocalDateTime object as property */
+                //jsonElement.getAsJsonObject().addProperty("timestamp", temp.getTimestamp());
+                jsonElement.getAsJsonObject().addProperty("total_price", temp.getTotalPrice());
+                /* TODO: get the service package NAME to list in the table of rejected orders */
+                jsonElement.getAsJsonObject().addProperty("package_id", temp.getId());
+                rejectedOrders.add(jsonElement);
             }
         }
-
         Gson gson = new Gson();
-        if(!rejectedOrders.isEmpty()) {
-
-            RejectedOrdersContent rejectedOrdersContent = new GetRejectedOrdersContent(rejectedOrders);
-            String jsonHome - new Gson().toJson(rejectedOrdersContent);
-            out.write(jsonHome);
-
-
-            //String jsonElement = gson.toJson(rejectedOrders);
-
-
-
-        }
-* */
-
+        response.getWriter().println(gson.toJson(rejectedOrders));
 
     }
 }
