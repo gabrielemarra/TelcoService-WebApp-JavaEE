@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.auxiliary.OrderStatus;
 import it.polimi.telco_webapp.auxiliary.exceptions.UserNotFoundException;
+import it.polimi.telco_webapp.entities.ServicePackage;
 import it.polimi.telco_webapp.entities.User;
 import it.polimi.telco_webapp.services.UserService;
 import it.polimi.telco_webapp.entities.Order;
@@ -79,9 +80,9 @@ public class GetRejectedOrders extends HttpServlet {
             JsonElement jsonElement = new JsonObject();
             /* TODO: How to add LocalDateTime object as property */
             //jsonElement.getAsJsonObject().addProperty("timestamp", temp.getTimestamp());
+            jsonElement.getAsJsonObject().addProperty("order_id", rejectedOrders.get(i).getId());
+            jsonElement.getAsJsonObject().addProperty("service_package_name", rejectedOrders.get(i).getPackageId().getName());
             jsonElement.getAsJsonObject().addProperty("total_price", rejectedOrders.get(i).getTotalPrice());
-            /* TODO: get the service package NAME to list in the table of rejected orders */
-            jsonElement.getAsJsonObject().addProperty("package_id", rejectedOrders.get(i).getId());
             rejectedOrdersJson.add(jsonElement);
 
         }

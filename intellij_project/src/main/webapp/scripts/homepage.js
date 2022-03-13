@@ -50,18 +50,30 @@ $(document).ready(function () {
         let getResponse = $.get("GetRejectedOrders");
 
         getResponse.done(function (data, textStatus, jqXHR) {
-            let rejectedOrders = jqXHR.responseJSON;
-
             let table = document.getElementById("id_rejected_orders_body");
-            for (let i = 0; i < rejectedOrders.length; i++) {
-                let row = table.insertRow();
+            let rejectedOrders = jqXHR.responseJSON;
+            if(rejectedOrders.length > 0) {
 
-                let packageIdCell = row.insertCell(0);
-                packageIdCell.innerHTML = rejectedOrders[i].package_id;
+                for (let i = 0; i < rejectedOrders.length; i++) {
+                    let row = table.insertRow();
 
-                let totalPriceCell = row.insertCell(1);
-                totalPriceCell.innerHTML = rejectedOrders[i].total_price;
+                    let orderIdCell = row.insertCell(0);
+                    orderIdCell.innerHTML = rejectedOrders[i].order_id;
+
+                    let servicePackageNameCell = row.insertCell(1);
+                    servicePackageNameCell.innerHTML = rejectedOrders[i].service_package_name;
+
+                    let totalPriceCell = row.insertCell(2);
+                    totalPriceCell.innerHTML = rejectedOrders[i].total_price;
+
+                }
+            } else {
+                document.getElementById("id_rejected_orders").style.display = "none";
+                document.getElementById("id_rejected_orders_table_title").style.display = "none";
+
             }
+
+
 
         });
 
