@@ -22,6 +22,8 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.ArrayList;
 
+import static java.lang.Integer.parseInt;
+
 @WebServlet(name = "GetRejectedOrders", value = "/GetRejectedOrders")
 public class GetRejectedOrders extends HttpServlet {
     @EJB(name = "it.polimi.db2.entities.services/UserService")
@@ -60,34 +62,31 @@ public class GetRejectedOrders extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpServletResponse.SC_OK);
 
+        String email = (String)request.getSession().getAttribute("user");
+        User userObj = userService.getUserByEmail(email);
+        List<Order> rejectedOrders = null;
 
-        User user = null;
         try {
-            /*
-            * TODO: how to pass the username to a request?
-            * */
-            user = userService.getUserByUsername("root");
+            rejectedOrders = userService.getRejectedOrders(userObj);
 
         } catch (UserNotFoundException | EJBException e) {
             sendError(request, response, "UserNotFoundException", e.getCause().getMessage());
         }
-        List<Order> ordersFromUser = user.getOrders();
-        //List<Order> rejectedOrders = new ArrayList<Order>(); //empty
-        JsonArray rejectedOrders = new JsonArray();
-        for(int i = 0; i < ordersFromUser.size(); i++) {
-            Order temp = ordersFromUser.get(i);
-            if(temp.getStatus() == OrderStatus.REJECTED) {
-                JsonElement jsonElement = new JsonObject();
-                /* TODO: How to add LocalDateTime object as property */
-                //jsonElement.getAsJsonObject().addProperty("timestamp", temp.getTimestamp());
-                jsonElement.getAsJsonObject().addProperty("total_price", temp.getTotalPrice());
-                /* TODO: get the service package NAME to list in the table of rejected orders */
-                jsonElement.getAsJsonObject().addProperty("package_id", temp.getId());
-                rejectedOrders.add(jsonElement);
-            }
+
+        JsonArray rejectedOrdersJson = new JsonArray();
+        for(int i = 0; i < rejectedOrders.size(); i++) {
+
+            JsonElement jsonElement = new JsonObject();
+            /* TODO: How to add LocalDateTime object as property */
+            //jsonElement.getAsJsonObject().addProperty("timestamp", temp.getTimestamp());
+            jsonElement.getAsJsonObject().addProperty("total_price", rejectedOrders.get(i).getTotalPrice());
+            /* TODO: get the service package NAME to list in the table of rejected orders */
+            jsonElement.getAsJsonObject().addProperty("package_id", rejectedOrders.get(i).getId());
+            rejectedOrdersJson.add(jsonElement);
+
         }
         Gson gson = new Gson();
-        response.getWriter().println(gson.toJson(rejectedOrders));
+        response.getWriter().println(gson.toJson(rejectedOrdersJson));
 
     }
 }

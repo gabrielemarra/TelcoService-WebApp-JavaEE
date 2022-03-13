@@ -65,7 +65,7 @@ $(document).ready(function () {
 
         });
 
-        rejectedOrders.fail(function (data, textStatus, errorThrown) {
+        getResponse.fail(function (data, textStatus, errorThrown) {
             alert("world");
 
         });

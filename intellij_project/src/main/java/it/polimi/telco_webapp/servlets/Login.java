@@ -98,6 +98,7 @@ public class Login extends HttpServlet {
         try {
             User credentialCheckResultUser = userService.checkCredentials(email, password);
             request.getSession().setAttribute("user", credentialCheckResultUser.getEmail());
+
             String url = "homepage.html";
 
             response.setStatus(HttpServletResponse.SC_OK);
