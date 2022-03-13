@@ -1,54 +1,69 @@
 package it.polimi.telco_webapp.entities;
 
+import it.polimi.telco_webapp.auxiliary.OrderStatus;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
-@Table(name = "`order`", schema = "telco_db", indexes = {
+@Entity
+@Table(name = "customer_order", schema = "telco_db", indexes = {
         @Index(name = "user_id_idx", columnList = "user_id")
 })
-@Entity
+@NamedQuery(name = "Order.getOrder", query = "SELECT o FROM Order o WHERE o.id = ?1")
+@NamedQuery(name = "Order.getOrderBySingleUser", query = "SELECT o FROM Order o WHERE o.user = ?1")
+@NamedQuery(name = "Order.getRejectedOrdersBySingleUser", query = "SELECT o FROM Order o WHERE o.user = ?1 AND o.status = 'REJECTED'")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id", nullable = false)
     private Integer id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 45)
-    private String status;
+    private OrderStatus status;
 
     @Column(name = "subscription_start", nullable = false)
     private LocalDate subscriptionStart;
 
     @Column(name = "timestamp", nullable = false)
-    private Instant timestamp;
+    private LocalDateTime timestamp;
 
     @Column(name = "total_price", nullable = false, precision = 2)
     private BigDecimal totalPrice;
 
+    @Column(name = "base_cost", nullable = false, precision = 2)
+    private BigDecimal baseCost;
+
+    @Column(name = "chosen_validity_period", nullable = false)
+    private Integer chosenValidityPeriod;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
+    /* TODO: should packageID be an integer? (1/3) */
     @ManyToOne(optional = false)
     @JoinColumn(name = "package_id", nullable = false)
     private ServicePackage packageId;
 
     @ManyToMany
-    @JoinTable(name = "optional_service_ordered", joinColumns = @JoinColumn(name = "order_id"),
+    @JoinTable(name = "optional_product_ordered", joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "opt_id"))
-    private List<OptionalService> optionalServices;
-
+    private List<OptionalProduct> optionalProductOrderedList;
+    /* TODO: should packageID be an integer? (2/3) */
     public ServicePackage getPackageId() {
         return packageId;
     }
-
+    /* TODO: should packageID be an integer? (3/3) */
     public void setPackageId(ServicePackage packageId) {
         this.packageId = packageId;
     }
+
+    public void setChosenValidityPeriod(int period) { this.chosenValidityPeriod = period; }
+
+    public int getChosenValidityPeriod() { return chosenValidityPeriod; }
 
     public User getUser() {
         return user;
@@ -66,11 +81,26 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    public Instant getTimestamp() {
+    public BigDecimal getBaseCost() {
+        return baseCost;
+    }
+
+    public void setBaseCost() {
+        BigDecimal baseCost = this.totalPrice;
+
+        List<OptionalProduct> optionalProducts = this.getOptionalServices();
+        for (OptionalProduct prod: optionalProducts) {
+            baseCost = baseCost.subtract(prod.getPrice());
+        }
+
+
+    }
+
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Instant timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -82,11 +112,11 @@ public class Order {
         this.subscriptionStart = subscriptionStart;
     }
 
-    public String getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
@@ -98,11 +128,19 @@ public class Order {
         this.id = id;
     }
 
-    public List<OptionalService> getOptionalServices() {
-        return optionalServices;
+    public List<OptionalProduct> getOptionalServices() {
+        return optionalProductOrderedList;
     }
 
-    public void setOptionalServices(List<OptionalService> optionalServices) {
-        this.optionalServices = optionalServices;
+    public void setOptionalProductOrderedList(List<OptionalProduct> optionalProducts) {
+        this.optionalProductOrderedList = optionalProducts;
     }
+/*
+    public String toString() {
+        return "[" + id + " " + status + " " + timestamp + " " + subscriptionStart + " " + baseCost + " " + totalPrice + " " + chosenValidityPeriod + " " + packageId + "]";
+
+    }
+* */
+
+    public Order(){};
 }

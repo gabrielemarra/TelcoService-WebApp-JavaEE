@@ -3,10 +3,13 @@ package it.polimi.telco_webapp.entities;
 import jakarta.persistence.*;
 import java.util.List;
 
-import java.util.List;
-
 @Table(name = "service_package", schema = "telco_db")
 @Entity
+@NamedQuery(name = "ServicePackage.getOneServicePackage", query = "SELECT s FROM ServicePackage s WHERE s.id = ?1")
+@NamedQuery(name = "ServicePackage.getAllServicePackages", query = "SELECT s FROM ServicePackage s")
+//         List<ServicePackage> bundles = em.createNamedQuery("ServicePackage.getServicePackages", ServicePackage.class).setParameter(1, package_id).getResultList();
+//        List<OptionalProduct> options = em.createNamedQuery("OptionalProduct.getOptionalProducts", OptionalProduct.class).setParameter(1, package_id).getResultList();
+
 public class ServicePackage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,16 +26,16 @@ public class ServicePackage {
     private List <Order> orders;
 
     @ManyToMany
-    @JoinTable(name = "optional_service_available", joinColumns = @JoinColumn(name = "package_id"),
+    @JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "package_id"),
             inverseJoinColumns = @JoinColumn(name = "opt_id"))
-    private List<OptionalService> optionalServices;
+    private List<OptionalProduct> optionalProducts;
 
-    public List<OptionalService> getOptionalServices() {
-        return optionalServices;
+    public List<OptionalProduct> getOptionalProducts() {
+        return optionalProducts;
     }
 
-    public void setOptionalServices(List<OptionalService> optionalServices) {
-        this.optionalServices = optionalServices;
+    public void setOptionalServices(List<OptionalProduct> optionalProducts) {
+        this.optionalProducts = optionalProducts;
     }
 
     @ManyToMany

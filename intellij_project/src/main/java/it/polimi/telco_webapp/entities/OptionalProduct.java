@@ -3,11 +3,11 @@ package it.polimi.telco_webapp.entities;
 import jakarta.persistence.*;
 import java.util.List;
 import java.math.BigDecimal;
-import java.util.List;
 
-@Table(name = "optional_service", schema = "telco_db")
 @Entity
-public class OptionalService {
+@Table(name = "optional_product", schema = "telco_db")
+@NamedQuery(name = "OptionalProduct.getOptionalProduct", query = "SELECT o FROM Order o WHERE o.id = ?1")
+public class OptionalProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "opt_id", nullable = false)
@@ -23,7 +23,7 @@ public class OptionalService {
     private Integer quantitySold;
 
     @ManyToMany
-    @JoinTable(name = "optional_service_available", joinColumns = @JoinColumn(name = "opt_id"),
+    @JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "opt_id"),
             inverseJoinColumns = @JoinColumn(name = "package_id"))
     private List<ServicePackage> servicePackages;
 
@@ -36,7 +36,7 @@ public class OptionalService {
     }
 
     @ManyToMany
-    @JoinTable(name = "optional_service_ordered", joinColumns = @JoinColumn(name = "opt_id"),
+    @JoinTable(name = "optional_product_ordered", joinColumns = @JoinColumn(name = "opt_id"),
             inverseJoinColumns = @JoinColumn(name = "order_id"))
     private List<Order> orders;
 

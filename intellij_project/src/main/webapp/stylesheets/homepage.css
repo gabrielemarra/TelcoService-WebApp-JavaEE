@@ -1,0 +1,35 @@
+/* Main Elements:
+ * Card Tile
+ *      button
+ *      containers for text?
+ * Package Name for Tile
+ *      text font size
+ *      text color
+ *      backaground color?
+ * Package Base Cost for Tile
+ *      font size
+ * Package Details for Tile
+ *      bullet points
+ *      font size
+ * Select Button (in tile)
+ *      padding
+ *      text size
+ *      color
+ *      shape (rounded corners, etc)
+ * Table for Rejected orders
+ *      cols/ rows dimensions
+ *      typeface/ text size
+ * Line-item for rejected order
+ *      text size
+ */
+
+/*
+
+.btnSelect {
+    width: 100%;
+    border-radius: 1rem;
+    padding: 1.5%;
+    border: none;
+    cursor: pointer;
+}
+*/

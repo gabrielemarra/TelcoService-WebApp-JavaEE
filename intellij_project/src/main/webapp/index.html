@@ -17,6 +17,12 @@
     <!--    My CSS -->
     <link href="stylesheets/index.css" rel="stylesheet">
 
+    <!-- jQuery-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- My JS-->
+    <script src="scripts/index.js"></script>
+
     <title>Telco - Landing Page</title>
 </head>
 <body>
@@ -34,31 +40,40 @@
                            id="loginPasswordInput" required>
                 </div>
                 <div class="form-group mb-3">
-                    <button type="submit" class="btnSubmit" value="Login">Login</button>
-<!--                    <input type="submit" class="btnSubmit" value="Login"/>-->
+                    <button class="btnSubmit" value="Login" id="loginButton">Login</button>
+                    <!--                    <input type="submit" class="btnSubmit" value="Login"/>-->
                 </div>
                 <!--                <div class="form-group mb-3">-->
                 <!--                    <a href="#" class="ForgetPwd">Forget Password?</a>-->
                 <!--                </div>-->
             </form>
         </div>
-        <div class="col-md-6 register-form">
+        <div class="col-md-6 signup-form">
             <h3>Register</h3>
             <form>
                 <div class="form-group mb-3">
-                    <input type="email" class="form-control" placeholder="Your Email" value="" id="registerEmailInput" required>
+                    <input type="email" class="form-control" placeholder="Your Name" value="" id="signupNameInput"
+                           required>
+                </div>
+                <div class="form-group mb-3">
+                    <input type="email" class="form-control" placeholder="Your Username" value=""
+                           id="signupUsernameInput" required>
+                </div>
+                <div class="form-group mb-3">
+                    <input type="email" class="form-control" placeholder="Your Email" value="" id="signupEmailInput"
+                           required>
                 </div>
                 <div class="form-group mb-3">
                     <input type="password" class="form-control" placeholder="Your Password" value=""
-                           id="registerPasswordInput" required>
+                           id="signupPasswordInput" required>
                 </div>
                 <div class="form-group mb-3">
                     <input type="password" class="form-control" placeholder="Confirm your password" value=""
-                           id="registerPasswordConfirmation" required>
+                           id="signupPasswordConfirmation" required>
                 </div>
                 <div class="form-group mb-3">
-                    <button type="submit" class="btnSubmit" value="Register">Register</button>
-<!--                    <input type="submit" class="btnSubmit" value="Register"/>-->
+                    <button type="submit" class="btnSubmit" value="Register" id="signupButton">Register</button>
+                    <!--                    <input type="submit" class="btnSubmit" value="Register"/>-->
                 </div>
                 <!--                <div class="form-group mb-3">-->
 
