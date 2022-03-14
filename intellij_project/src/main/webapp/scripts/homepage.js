@@ -39,7 +39,7 @@ $(document).ready(function () {
     function getServicePackages() {
         let packages = $.get("GetAvailableServicePackages");
         packages.done(function (data, textStatus, jqXHR) {
-            alert("Success!")
+			let availableServicePackages = jqXHR.responseJSON;
         });
         packages.fail(function (jqXHR, textStatus, errorThrown) {
             alert("FAIL!")

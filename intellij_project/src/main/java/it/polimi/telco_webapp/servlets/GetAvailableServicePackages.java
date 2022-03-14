@@ -61,18 +61,17 @@ public class GetAvailableServicePackages extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             JsonArray jsonArray = new JsonArray();
-            for (int i = 0; i < packages.size(); i++) {
+            for (ServicePackage aPackage : packages) {
 
                 JsonElement jsonElement = new JsonObject();
-                ServicePackage temp = packages.get(i);
 
-                jsonElement.getAsJsonObject().addProperty("name", temp.getName());
-                jsonElement.getAsJsonObject().addProperty("package_id", temp.getId());
-                jsonElement.getAsJsonObject().addProperty("validity_period", temp.getValidityPeriod());
+                jsonElement.getAsJsonObject().addProperty("name", aPackage.getName());
+                jsonElement.getAsJsonObject().addProperty("package_id", aPackage.getId());
+                jsonElement.getAsJsonObject().addProperty("validity_period", aPackage.getValidityPeriod());
                 /*
-                * TODO: I think we also need to add Services and Optional Products to the json element... for now those
-                *  objects have not been "serialized is in json-pretty way...
-                * */
+                 * TODO: I think we also need to add Services and Optional Products to the json element... for now those
+                 *  objects have not been "serialized is in json-pretty way...
+                 * */
 
                 jsonArray.add(jsonElement);
             }
