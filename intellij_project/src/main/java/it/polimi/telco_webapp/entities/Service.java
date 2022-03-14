@@ -10,6 +10,8 @@ import java.util.List;
 @Table(name = "service", schema = "telco_db")
 @Entity
 @NamedQuery(name = "Service.getService", query = "SELECT r FROM Service r WHERE r.id = ?1")
+@NamedQuery(name = "Service.getAllAvailableServices", query = "SELECT r FROM Service r")
+
 public class Service {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

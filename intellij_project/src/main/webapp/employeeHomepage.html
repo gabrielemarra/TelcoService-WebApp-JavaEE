@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!--Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+
+    <!--    My CSS -->
+    <link href="stylesheets/index.css" rel="stylesheet">
+
+    <!-- jQuery-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- My JS-->
+    <script src="scripts/employeeHomepage.js"></script>
+
+    <title>Employee Homepage</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Telco Employee Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Reports
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <!-- Number of total purchases per package. -->
+                        <!-- Number of total purchases per package and validity period.-->
+                        <!-- Total value of sales per package with and without the optional products.-->
+                        <li><a class="dropdown-item" href="#">Service Packages</a></li>
+                        <!-- Average number of optional products sold together with each service package.-->
+                        <li><a class="dropdown-item" href="#">Optional Products</a></li>
+                        <!-- List of insolvent users, suspended orders and alerts. -->
+                        <li><a class="dropdown-item" href="#">Insolvent Users, Suspended Orders, Alerts</a></li>
+                        <!--  Best seller optional product, i.e. the optional product with the greatest value of sales across all the sold service packages.-->
+                        <li><a class="dropdown-item" href="#">Best Seller Optional Products</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container login-container">
+    <div class="row form-row">
+        <div class="col-md-6 add-service-package-1">
+            <h3>Create New Service Package</h3>
+            <form>
+                <div class="form-group mb-3">
+                    <input type="name" class="form-control" placeholder="Service Package Name" value="" id="servicePackageNameInput"
+                           required>
+                </div>
+                <div class="form-group mb-3">
+                    <input type="validityPeriod" class="form-control" placeholder="Default Validity Period" value=""
+                           id="validityPeriodInput" required>
+                </div>
+                <div class="form-group mb-3">
+                    <button class="btnSubmitPackage" value="AddServicePackage" id="addServicePackageButton">Add Package</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6 add-optional-product-1">
+            <h3>Create New Optional Product</h3>
+            <form>
+                <div class="form-group mb-3">
+                    <input type="name" class="form-control" placeholder="Name" value="" id="optionalProductNameId"
+                           required>
+                </div>
+                <div class="form-group mb-3">
+                    <input type="price" class="form-control" placeholder="Price" value=""
+                           id="priceInputId" required>
+                </div>
+                <div class="form-group mb-3">
+                    <button type="submit" class="butSubmitOptionalProduct" value="AddOptionalProduct" id="addOptionalProductButton">Add Optional Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

@@ -2,10 +2,12 @@ $(document).ready(function () {
     $.ajaxSetup({cache: false});
 
     if (sessionStorage.getItem("employee")===true){
-        window.location.href = "Employee/index.html"
+        window.location.href = "employee/homepage.html"
     }
 
     displayPersonalData();
+    getServicePackages();
+    getRejectedOrders();
 
     $("#selectButton").click(
         function (event) {
@@ -24,8 +26,6 @@ $(document).ready(function () {
     );
 
 
-    getServicePackages();
-    getRejectedOrders();
 
     function displayPersonalData(){
     //    Should we make a request? For now we use the stored values
@@ -33,8 +33,6 @@ $(document).ready(function () {
         $("#username_right_corner").html(personalInfoString)
 
     }
-
-
 
     function getServicePackages() {
         let packages = $.get("GetAvailableServicePackages");
@@ -65,23 +63,15 @@ $(document).ready(function () {
 
                     let totalPriceCell = row.insertCell(2);
                     totalPriceCell.innerHTML = rejectedOrders[i].total_price;
-
                 }
             } else {
                 document.getElementById("id_rejected_orders").style.display = "none";
                 document.getElementById("id_rejected_orders_table_title").style.display = "none";
-
             }
-
-
-
         });
 
         getResponse.fail(function (data, textStatus, errorThrown) {
             alert("world");
-
         });
-
-
     }
 });
