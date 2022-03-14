@@ -15,7 +15,7 @@
             crossorigin="anonymous"></script>
 
     <!--    My CSS -->
-    <link href="stylesheets/index.css" rel="stylesheet">
+    <link href="stylesheets/employeeHomepage.css" rel="stylesheet">
 
     <!-- jQuery-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -62,7 +62,7 @@
 
 <div class="container login-container">
     <div class="row form-row">
-        <div class="col-md-6 add-service-package-1">
+        <div class="col-md-6 add-service-package-form">
             <h3>Create New Service Package</h3>
             <form>
                 <div class="form-group mb-3">
@@ -73,12 +73,80 @@
                     <input type="validityPeriod" class="form-control" placeholder="Default Validity Period" value=""
                            id="validityPeriodInput" required>
                 </div>
+                <h6>Add Existing Services</h6>
+                <div class="list-group">
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="">
+                        First service
+                    </label>
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="">
+                        Second service
+                    </label>
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="">
+                        Third service
+                    </label>
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="">
+                        Fourth service
+                    </label>
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="">
+                        Fourth service
+                    </label>
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="">
+                        Fourth service
+                    </label>
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="">
+                        Fourth service
+                    </label>
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="">
+                        Fourth service
+                    </label>
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="">
+                        Fourth service
+                    </label>
+                </div>
+                &nbsp;
+                <form>
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Create New Service
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse hide" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <div class="form-group mb-3">
+                                        <input type="name" class="form-control" placeholder="Service Package Name" value="" id="servicePackageNameInput"
+                                               required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <input type="validityPeriod" class="form-control" placeholder="Default Validity Period" value=""
+                                               id="validityPeriodInput" required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <button type="submit" class="btn btn-primary" value="AddService" id="addServiceButton">Add Service</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                &nbsp;
                 <div class="form-group mb-3">
-                    <button class="btnSubmitPackage" value="AddServicePackage" id="addServicePackageButton">Add Package</button>
+                    <button type="submit" class="btn btn-primary" value="AddServicePackage" id="addServicePackageButton">Add Service Package</button>
                 </div>
             </form>
         </div>
-        <div class="col-md-6 add-optional-product-1">
+
+        <div class="col-md-6 add-optional-product-form">
             <h3>Create New Optional Product</h3>
             <form>
                 <div class="form-group mb-3">
@@ -90,13 +158,11 @@
                            id="priceInputId" required>
                 </div>
                 <div class="form-group mb-3">
-                    <button type="submit" class="butSubmitOptionalProduct" value="AddOptionalProduct" id="addOptionalProductButton">Add Optional Product</button>
+                    <button type="submit" class="btn btn-primary" value="AddOptionalProduct" id="addOptionalProductButton">Add Optional Product</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-
 </body>
 </html>
