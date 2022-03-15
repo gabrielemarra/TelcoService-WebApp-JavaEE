@@ -59,10 +59,9 @@
     </div>
 </nav>
 
-
-<div class="container login-container">
+<div class="container employee-container">
     <div class="row form-row">
-        <div class="col-md-6 add-service-package-form">
+        <!--div class="col-md-6">
             <h3>Create New Service Package</h3>
             <form>
                 <div class="form-group mb-3">
@@ -76,77 +75,154 @@
                 <h6>Add Existing Services</h6>
                 <div class="list-group">
                     <label class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="">
+                        <input class="form-check-input me-1" type="checkbox" value="serviceIDNUMBER" id="service1">
                         First service
                     </label>
                     <label class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="">
+                        <input class="form-check-input me-1" type="checkbox" value="service2" id="service2">
                         Second service
                     </label>
                     <label class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="">
+                        <input class="form-check-input me-1" type="checkbox" value="true" id="service3">
                         Third service
                     </label>
                     <label class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="">
+                        <input class="form-check-input me-1" type="checkbox" value="true" id="service4">
                         Fourth service
                     </label>
                     <label class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="">
+                        <input class="form-check-input me-1" type="checkbox" value="true" id="service5">
                         Fourth service
                     </label>
                     <label class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="">
+                        <input class="form-check-input me-1" type="checkbox" value="true" id="service6">
                         Fourth service
                     </label>
                     <label class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="">
+                        <input class="form-check-input me-1" type="checkbox" value="true" id="service7">
                         Fourth service
                     </label>
                     <label class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="">
+                        <input class="form-check-input me-1" type="checkbox" value="true" id="service8">
                         Fourth service
                     </label>
                     <label class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="">
+                        <input class="form-check-input me-1" type="checkbox" value="true" id="service9">
                         Fourth service
                     </label>
                 </div>
                 &nbsp;
-                <form>
-                    <div class="accordion" id="accordionExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Create New Service
-                                </button>
-                            </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse hide" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <div class="form-group mb-3">
-                                        <input type="name" class="form-control" placeholder="Service Package Name" value="" id="servicePackageNameInput"
-                                               required>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <input type="validityPeriod" class="form-control" placeholder="Default Validity Period" value=""
-                                               id="validityPeriodInput" required>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <button type="submit" class="btn btn-primary" value="AddService" id="addServiceButton">Add Service</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                <h6>Add Optional Products</h6>
+                <div class="list-group">
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="" id="optional1">
+                        First optional prod
+                    </label>
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="" id="optional2">
+                        Second optional prod
+                    </label>
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="" id="optional3">
+                        Third optional prod
+                    </label>
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="" id="optional4">
+                        Fourth optional prod
+                    </label>
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="" id="optional5">
+                        Fourth optional prod
+                    </label>
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="" id="optional6">
+                        Fourth optional prod
+                    </label>
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="" id="optional7">
+                        Fourth optional prod
+                    </label>
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="" id="optional8">
+                        Fourth optional prod
+                    </label>
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="" id="optional9">
+                        Fourth optional prod
+                    </label>
+                </div>
                 &nbsp;
                 <div class="form-group mb-3">
                     <button type="submit" class="btn btn-primary" value="AddServicePackage" id="addServicePackageButton">Add Service Package</button>
                 </div>
             </form>
-        </div>
-
-        <div class="col-md-6 add-optional-product-form">
+        &nbsp;
+        <form>
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Create New Service
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse hide" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="form-group mb-3">
+                                <input type="radio" id="fixed_phone" name="planType" value="Fixed_Phone">
+                                <label for="fixed_phone">Fixed Phone</label>
+                                <input type="radio" id="mobile_phone" name="planType" value="Mobile_Phone">
+                                <label for="mobile_phone">Mobile Phone</label>
+                                <input type="radio" id="fixed_internet" name="planType" value="Fixed_Internet">
+                                <label for="fixed_internet">Fixed Internet</label>
+                                <input type="radio" id="mobile_internet" name="planType" value="Mobile_Internet">
+                                <label for="mobile_internet">Mobile Internet</label>
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="baseprice1" class="form-control" placeholder="Base Price 1" value=""
+                                                           id="baseprice1Id" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="baseprice2" class="form-control" placeholder="Base Price 2" value=""
+                                                           id="baseprice2Id" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="baseprice3" class="form-control" placeholder="Base Price 3" value=""
+                                                           id="baseprice3Id" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="gig_incl" class="form-control" placeholder="Gig - Included" value=""
+                                                                   id="gigInclId" >
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="sms_incl" class="form-control" placeholder="SMS - Included" value=""
+                                                                   id="smsInclId" >
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="min_incl" class="form-control" placeholder="Min - Included" value=""
+                                                                   id="minInclId" >
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="gig_extra" class="form-control" placeholder="Gig - Extra" value=""
+                                                                   id="gigExtraId" >
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="sms_extra" class="form-control" placeholder="SMS - Extra" value=""
+                                                                   id="smsExtraId" >
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="min_extra" class="form-control" placeholder="Min - Extra" value=""
+                                                                   id="minExtraId" >
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <button type="submit" class="btn btn-primary" value="AddService" id="addServiceButton">Add Service</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        </div-->
+        <div class="col-md-6">
             <h3>Create New Optional Product</h3>
             <form>
                 <div class="form-group mb-3">
@@ -155,7 +231,7 @@
                 </div>
                 <div class="form-group mb-3">
                     <input type="price" class="form-control" placeholder="Price" value=""
-                           id="priceInputId" required>
+                           id="optionalProductPriceId" required>
                 </div>
                 <div class="form-group mb-3">
                     <button type="submit" class="btn btn-primary" value="AddOptionalProduct" id="addOptionalProductButton">Add Optional Product</button>
