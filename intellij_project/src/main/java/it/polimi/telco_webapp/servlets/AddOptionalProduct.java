@@ -59,29 +59,8 @@ public class AddOptionalProduct extends HttpServlet {
  */
 
         try {
-            /* TODO: use the employee's credentials here when establishing the connection */
-            Connection con = DriverManager.getConnection("jdbc:mysql://34.65.160.235:3306/telco_db", "root", "db2project2021");
-            PreparedStatement statement = con.prepareStatement("INSERT INTO optional_product VALUES (opt_id IS NULL, ?, ?, 0)");
-            /** Columns of the OptionalProduct table
-             *  Column 1: ID
-             *  Column 2: Name
-             *  Column 3: Price
-             *  Column 4: Quantity Sold
-             */
-            /**
-             *   statement.setString(1, newOptionalProduct.getName());
-             *   statement.setBigDecimal(2, newOptionalProduct.getPrice());
-             *
-             */
-
-            statement.setString(1, name);
-            statement.setBigDecimal(2, new BigDecimal(priceStr));
-
-            int i = statement.executeUpdate();
-            if(i > 0) {
-                //New Optional Service Successfully Added
-            }
-        } catch (EJBException | SQLException e) {
+            optionalProductService.addOptionalProduct(name, new BigDecimal(priceStr));
+        } catch (EJBException e) {
             sendError(request, response, "InternalDBErrorException", e.getCause().getMessage());
         }
     }

@@ -61,37 +61,15 @@ public class AddService extends HttpServlet {
         Integer gigIncl = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("gigIncl")));
         Integer minIncl = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("minIncl")));
         Integer smsIncl = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("smsIncl")));
-        // TODO: These should be changed to doubles. Must change the corresponding columns in the database to type double before we change the type HERE
-        Integer gigExtra = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("gigExtra")));
-        Integer minExtra = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("minExtra")));
-        Integer smsExtra = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("smsExtra")));
-
+        // TODO: These should be doubles. Must change the corresponding columns in the database to type double
+        Double gigExtra = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("gigExtra")));
+        Double minExtra = 4.3;//Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("minExtra")));
+        Double smsExtra = 4.5;//Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("smsExtra")));
         try{
-            /* TODO: use the employee's credentials here when establishing the connection */
-            Connection con = DriverManager.getConnection("jdbc:mysql://34.65.160.235:3306/telco_db", "root", "db2project2021");
-            //PreparedStatement statement = con.prepareStatement("INSERT INTO service VALUES (service_id IS NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            PreparedStatement statement = con.prepareStatement("INSERT INTO service VALUES (service_id IS NULL, 'Fixed_Internet', 11, 2.3, 6.7, 22, 33, 44, 55, 66, 77)");
-            /**
-             *
-            statement.setDouble(2, bp1);
-            statement.setDouble(3, bp2);
-            statement.setDouble(4, bp3);
-            statement.setInt(5, gigIncl);
-            statement.setInt(6, minIncl);
-            statement.setInt(7, smsIncl);
-            statement.setInt(8, gigExtra);
-            statement.setInt(9, minExtra);
-            statement.setInt(10, smsExtra);
-            statement.setString(1, type);
-             */
+            serviceService.insertNewService(type, bp1, bp2, bp3, gigIncl, minIncl, smsIncl, gigExtra, minExtra, smsExtra);
 
-            int i = statement.executeUpdate();
-            if(i > 0) {
-                //New Optional Service Successfully Added
-            }
-            //
-        } catch (EJBException | SQLException e) {
-
+        } catch (EJBException e) {
+            sendError(request, response, "InternalDBErrorException", e.getCause().getMessage());
         }
 
     }

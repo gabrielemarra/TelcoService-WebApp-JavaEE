@@ -21,43 +21,62 @@ public class ServiceService {
 
     /**
      * Inserts a new service into the database.
-     * @param service_id: Serivce id of the service
-     * @param type: Enum Fixed_Phone, Mobile_Phone, Fixed_Internet, or Mobile_Internet
-     * @param basePrices: Array with the three tiers of prices
-     * @param incl: Array with the cost of the included amounts (of sms/min or gig)
-     * @param extra: Array with the cost of extra services (of sms/min or gig) that exceed the amount included in the plan
+     * @param typeStr: String: Fixed_Phone, Mobile_Phone, Fixed_Internet, or Mobile_Internet
+     * @param bp1,bp2, bp3: Base prices 1,2,3
+     * @param *_incl: The amount of gig/sms/or min included in the plan
+     * @param *_extra: The COST for each gig/sms/ or min exceeding the included amount in the plan
      *
      * @return Service that was entered into the database.
      * @throws PersistenceException
      * @throws IllegalArgumentException: When the service type is not specified correctly, three baseprices are not
      * correctly provided, or plan parameters are not correctly specified.
      */
-    public Service insertNewService(int service_id, ServiceType type, Double[] basePrices, int[] incl, double[] extra) throws PersistenceException, IllegalArgumentException{
-        if(basePrices.length != 3) {
-            throw new IllegalArgumentException("Correctly specify the base places for the plan.");
-        }
+    public Service insertNewService(String typeStr, double bp1, double bp2, double bp3, int gigIncl, int minIncl, int smsIncl, double gigExtra, double minExtra, double smsExtra) throws PersistenceException, IllegalArgumentException{
 
+        ServiceType type;
         Service service;
-        switch(type) {
-            case Fixed_Phone:
+        int gig_incl, sms_incl, min_incl;
+        double gig_extra, sms_extra, min_extra;
+
+        switch(typeStr) {
+            case "Fixed_Phone":
+                type = ServiceType.Fixed_Phone;
+                sms_incl = min_incl = 0;
+                sms_extra = min_extra = 0.0;
                 service = new Service();
                 break;
-            case Mobile_Internet: case Fixed_Internet:
-                if (incl.length != 1 || extra.length != 1) {
+            case "Mobile_Internet":
+                if (gigIncl < 1 || gigExtra < 0) {
                     throw new IllegalArgumentException("Correctly specify the parameters for the internet plan.");
                 }
-                int gig_incl = incl[0];
-                double gig_extra = extra[0];
+                /** Do we want to add a check if EXTRA/ erroneous fields are also entered?
+                 *  if (smsIncl > 0 || smsExtra > 0 || minIncl > 0 || minExtra > 0) {
+                 *      // throw exception?
+                 *  }
+                 */
+                type = ServiceType.Mobile_Internet;
+                gig_incl = gigIncl;
+                gig_extra = gigExtra;
                 service = insertInternet(gig_incl, gig_extra);
                 break;
-            case Mobile_Phone:
-                if (incl.length != 2 || extra.length != 2) {
+            case "Fixed_Internet":
+                if (gigIncl < 1 || gigExtra < 0) {
+                    throw new IllegalArgumentException("Correctly specify the parameters for the internet plan.");
+                }
+                type = ServiceType.Fixed_Internet;
+                gig_incl = gigIncl;
+                gig_extra = gigExtra;
+                service = insertInternet(gig_incl, gig_extra);
+                break;
+            case "Mobile_Phone":
+                if (smsIncl < 0 || smsExtra < 0 || minIncl < 0 || minExtra < 0) {
                     throw new IllegalArgumentException("Correctly specify the parameters for the mobile phone plan.");
                 }
-                int sms_incl = incl[0];
-                double sms_extra = extra[0];
-                int min_incl = incl[1];
-                double min_extra = extra[1];
+                type = ServiceType.Mobile_Phone;
+                sms_incl = smsIncl;
+                sms_extra = smsExtra;
+                min_incl = minIncl;
+                min_extra = minExtra;
                 service = insertMobilePhone(sms_incl, sms_extra, min_incl, min_extra);
                 break;
             default:
@@ -65,10 +84,9 @@ public class ServiceService {
         }
 
         service.setType(type);
-        service.setBasePrice1(basePrices[0]);
-        service.setBasePrice2(basePrices[1]);
-        service.setBasePrice3(basePrices[2]);
-        service.setId(service_id);
+        service.setBasePrice1(bp1);
+        service.setBasePrice2(bp2);
+        service.setBasePrice3(bp3);
         em.persist(service);
 
         return service;
