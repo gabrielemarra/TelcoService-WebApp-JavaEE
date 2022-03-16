@@ -92,12 +92,14 @@ public class UserService {
     public User checkCredentials(String email, String password) {
         List<User> users = em.createNamedQuery("User.checkCredentials", User.class).setParameter(1, email).setParameter(2, password).getResultList();
 
-        if (users == null || users.isEmpty()) {
-            throw new CredentialsNotValidException("InvalidCredentials","The credentials do not correspond to any user.", false);
+        if (users == null | users.isEmpty()) {
+            return null;
+            //throw new CredentialsNotValidException("InvalidCredentials","The credentials do not correspond to any user.", false);
         } else if( users.size() == 1) {
             return users.get(0);
         } else {
-            throw new InternalDBErrorException("InternalDBError","Too many entries for the credentials");
+            return null;
+            //throw new InternalDBErrorException("InternalDBError","Too many entries for the credentials");
         }
     }
 

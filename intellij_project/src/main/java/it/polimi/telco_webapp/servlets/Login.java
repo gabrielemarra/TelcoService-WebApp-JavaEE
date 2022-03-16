@@ -95,8 +95,10 @@ public class Login extends HttpServlet {
             sendError(request, response, "Invalid Completion", "Invalid email or password format");
             return;
         }
-        try {
-            User credentialCheckResultUser = userService.checkCredentials(email, password);
+        User credentialCheckResultUser = userService.checkCredentials(email, password);
+        Employee credentialCheckResultEmployee = employeeService.checkEmployeeCredentials(email, password);
+
+        if(credentialCheckResultUser != null) {
             request.getSession().setAttribute("user", credentialCheckResultUser.getEmail());
 
             String url = "homepage.html";
@@ -113,32 +115,25 @@ public class Login extends HttpServlet {
             jsonElement.getAsJsonObject().addProperty("email", credentialCheckResultUser.getEmail());
 
             response.getWriter().println(gson.toJson(jsonElement));
-        } catch (CredentialsNotValidException e) {
-            try {
-                Employee employee = employeeService.checkEmployeeCredentials(email, password);
-                request.getSession().setAttribute("employee", employee.getId());
-                String url = "employee/homepage.html";
+        } else if(credentialCheckResultEmployee != null) {
+            request.getSession().setAttribute("employee", credentialCheckResultEmployee.getId());
+            String url = "employeeHomepage.html";
 
-                response.setStatus(HttpServletResponse.SC_OK);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
 
-                Gson gson = new Gson();
-                JsonElement jsonElement = gson.toJsonTree(employee);
-                jsonElement.getAsJsonObject().addProperty("new_url", url);
-                jsonElement.getAsJsonObject().addProperty("employee", "true");
-                jsonElement.getAsJsonObject().remove("password");
-                jsonElement.getAsJsonObject().remove("id");
+            Gson gson = new Gson();
+            JsonElement jsonElement = new JsonObject();
 
-                response.getWriter().println(gson.toJson(jsonElement));
-            } catch (CredentialsNotValidException f) {
-                sendError(request, response, f.getErrorCode(), f.getCause().getMessage());
-            } catch (InternalDBErrorException | EJBException f) {
-                sendError(request, response, "Internal Error", f.getCause().getMessage());
-            }
+            jsonElement.getAsJsonObject().addProperty("new_url", url);
+            jsonElement.getAsJsonObject().addProperty("employee", "true");
+            jsonElement.getAsJsonObject().addProperty("email", credentialCheckResultEmployee.getEmail());
 
-        } catch (InternalDBErrorException | EJBException e) {
-            sendError(request, response, "Internal Error", e.getCause().getMessage());
+
+            response.getWriter().println(gson.toJson(jsonElement));
+        } else {
+            // houston we have a problem
         }
     }
 }

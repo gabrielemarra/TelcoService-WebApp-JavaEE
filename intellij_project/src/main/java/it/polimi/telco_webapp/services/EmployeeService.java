@@ -33,11 +33,13 @@ public class EmployeeService {
 		List<Employee> employees = em.createNamedQuery("Employee.checkCredentials", Employee.class).setParameter(1, employeeEmail).setParameter(2, password).getResultList();
 
 		if (employees == null || employees.isEmpty()) {
-			throw new CredentialsNotValidException("InvalidCredentials","The credentials do not correspond to any user", true);
+			return null;
+			//throw new CredentialsNotValidException("InvalidCredentials","The credentials do not correspond to any user", true);
 		} else if( employees.size() == 1) {
 			return employees.get(0);
 		} else {
-			throw new InternalDBErrorException("InternalDBError","Too many entries for the credentials");
+			return null;
+			//throw new InternalDBErrorException("InternalDBError","Too many entries for the credentials");
 		}
 	}
 }
