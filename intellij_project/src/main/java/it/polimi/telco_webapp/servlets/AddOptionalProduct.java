@@ -45,6 +45,7 @@ public class AddOptionalProduct extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        /* QUESTION: difference between passing info via getParameter() versus getting from items put in sessionStorage() */
         String name = StringEscapeUtils.escapeJava(request.getParameter("name"));
         String priceStr = StringEscapeUtils.escapeJava(request.getParameter("price"));
 /** We do not need an instantiation of an OptionalProduct object to add to the datebase...
@@ -58,6 +59,7 @@ public class AddOptionalProduct extends HttpServlet {
  */
 
         try {
+            /* TODO: use the employee's credentials here when establishing the connection */
             Connection con = DriverManager.getConnection("jdbc:mysql://34.65.160.235:3306/telco_db", "root", "db2project2021");
             PreparedStatement statement = con.prepareStatement("INSERT INTO optional_product VALUES (opt_id IS NULL, ?, ?, 0)");
             /** Columns of the OptionalProduct table

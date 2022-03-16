@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -24,7 +25,7 @@ import java.util.List;
 
 @WebServlet(name = "AddService", value = "/AddService")
 public class AddService extends HttpServlet {
-    @EJB(name = "it.polimi.db2.entities.services/ServicePackageService")
+    @EJB(name = "it.polimi.db2.entities.services/ServiceService")
     private ServiceService serviceService;
 
     /**
@@ -51,31 +52,38 @@ public class AddService extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String type = (String) request.getSession().getAttribute("type");
-        double bp1 = (double)request.getSession().getAttribute("bp1");
-        double bp2 =(double) request.getSession().getAttribute("bp2");
-        double bp3 =(double) request.getSession().getAttribute("bp3");
-        int gig_incl =(int) request.getSession().getAttribute("gig_incl");
-        int min_incl =(int) request.getSession().getAttribute("min_incl");
-        int sms_incl =(int) request.getSession().getAttribute("sms_incl");
-        int gig_extra =(int) request.getSession().getAttribute("gig_extra");
-        int min_extra =(int) request.getSession().getAttribute("min_extra");
-        int sms_extra =(int) request.getSession().getAttribute("sms_extra");
-
+        String type = StringEscapeUtils.escapeJava(request.getParameter("planType"));
+        // Doubles
+        Double bp1 = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("bp1")));
+        Double bp2 = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("bp2")));
+        Double bp3 = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("bp3")));
+        // Integers
+        Integer gigIncl = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("gigIncl")));
+        Integer minIncl = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("minIncl")));
+        Integer smsIncl = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("smsIncl")));
+        // TODO: These should be changed to doubles. Must change the corresponding columns in the database to type double before we change the type HERE
+        Integer gigExtra = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("gigExtra")));
+        Integer minExtra = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("minExtra")));
+        Integer smsExtra = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("smsExtra")));
 
         try{
-            Connection con = DriverManager.getConnection("jdbc:mysql://34.65.160.235:3306/telco_db:3306");
-            PreparedStatement statement = con.prepareStatement("INSERT INTO Service VALUES (?, ?, ?, ?,?, ?, ?, ?,?, ?, ?)");
-            statement.setString(2, type);
-            statement.setDouble(3, bp1);
-            statement.setDouble(4, bp2);
-            statement.setDouble(5, bp3);
-            statement.setInt(6, gig_incl);
-            statement.setInt(7, min_incl);
-            statement.setInt(8, sms_incl);
-            statement.setInt(9, gig_extra);
-            statement.setInt(10, min_extra);
-            statement.setInt(11, sms_extra);
+            /* TODO: use the employee's credentials here when establishing the connection */
+            Connection con = DriverManager.getConnection("jdbc:mysql://34.65.160.235:3306/telco_db", "root", "db2project2021");
+            //PreparedStatement statement = con.prepareStatement("INSERT INTO service VALUES (service_id IS NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement statement = con.prepareStatement("INSERT INTO service VALUES (service_id IS NULL, 'Fixed_Internet', 11, 2.3, 6.7, 22, 33, 44, 55, 66, 77)");
+            /**
+             *
+            statement.setDouble(2, bp1);
+            statement.setDouble(3, bp2);
+            statement.setDouble(4, bp3);
+            statement.setInt(5, gigIncl);
+            statement.setInt(6, minIncl);
+            statement.setInt(7, smsIncl);
+            statement.setInt(8, gigExtra);
+            statement.setInt(9, minExtra);
+            statement.setInt(10, smsExtra);
+            statement.setString(1, type);
+             */
 
             int i = statement.executeUpdate();
             if(i > 0) {

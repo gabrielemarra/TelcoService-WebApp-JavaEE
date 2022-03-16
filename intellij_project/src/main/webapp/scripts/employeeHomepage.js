@@ -10,6 +10,30 @@ $(document).ready(function () {
        }
    );
 
+    $("#addServiceButton").click(
+        function (event) {
+            event.preventDefault();
+            let planType = $("#fixed_phone:checked").val() || $("#mobile_phone:checked").val() || $("#fixed_internet:checked").val() || $("#mobile_internet:checked").val();
+
+            let bp1 = $("#baseprice1Id").val();
+            let bp2 = $("#baseprice2Id").val();
+            let bp3 = $("#baseprice3Id").val();
+
+            let gigIncl = $("#gigInclId").val();
+            let smsIncl = $("#smsInclId").val();
+            let minIncl = $("#minInclId").val();
+
+            let gigExtra = $("#gigExtraId").val();
+            let smsExtra = $("#smsExtraId").val();
+            let minExtra = $("#minExtraId").val();
+
+            addService(planType, bp1, bp2, bp3, gigIncl, smsIncl, minIncl, gigExtra, smsExtra, minExtra);
+        }
+    );
+
+
+
+
    function addOptionalProduct(name, price) {
        let postRequest = $.post("AddOptionalProduct", {name: name, price: price});
 
@@ -22,6 +46,20 @@ $(document).ready(function () {
        });
 
    }
+
+   function addService(planType, mobileInternet, bp1, bp2, bp3, gigIncl, smsIncl, minIncl, gigExtra, smsExtra, minExtra) {
+
+       let postRequest = $.post("AddService", {planType: planType, bp1:bp1, bp2:bp2, bp3:bp3, gigIncl: gigIncl, smsIncl: smsIncl, minIncl:minIncl, gigExtra: gigExtra, smsExtra: smsExtra, minExtra:minExtra});
+
+       postRequest.done(function (data, textStatus, jqXHR) {
+           alert("adding service POST success");
+       });
+
+       postRequest.fail(function (data, textStatus, jqXHR) {
+           alert("adding service POST fail");
+       });
+   }
+
 
 
 });
