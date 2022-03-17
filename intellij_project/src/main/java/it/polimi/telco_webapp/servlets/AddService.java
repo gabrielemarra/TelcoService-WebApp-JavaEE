@@ -1,8 +1,5 @@
 package it.polimi.telco_webapp.servlets;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.services.ServiceService;
 import it.polimi.telco_webapp.entities.Service;
@@ -16,12 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.List;
+
 
 @WebServlet(name = "AddService", value = "/AddService")
 public class AddService extends HttpServlet {
@@ -56,27 +48,48 @@ public class AddService extends HttpServlet {
         Double bp1 = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("bp1")));
         Double bp2 = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("bp2")));
         Double bp3 = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("bp3")));
-        // Integers
-        Integer gigIncl = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("gigIncl")));
-        Integer minIncl = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("minIncl")));
-        Integer smsIncl = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("smsIncl")));
-        // TODO: These should be doubles. Must change the corresponding columns in the database to type double
-        Double gigExtra = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("gigExtra")));
-        Double minExtra = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("minExtra")));
-        Double smsExtra = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("smsExtra")));
+
+        Double gigExtra, minExtra, smsExtra;
+        Integer gigIncl, minIncl, smsIncl;
+
+        // I think it is OK if we enter null values into the DB. But if we want to instead make those null values ZERO,
+        // uncomment the following:
+        gigIncl = minIncl = smsIncl = 0;
+        gigExtra = minExtra = smsExtra = 0.0;
+
+
+        switch (type) {
+            case "Fixed_Phone":
+                //
+                break;
+            case "Mobile_Phone":
+                minIncl = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("minIncl")));
+                smsIncl = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("smsIncl")));
+                minExtra = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("minExtra")));
+                smsExtra = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("smsExtra")));
+                break;
+            case "Fixed_Internet":
+                gigIncl = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("gigIncl")));
+                gigExtra = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("gigExtra")));
+                break;
+            case "Mobile_Internet":
+                gigIncl = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("gigIncl")));
+                gigExtra = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("gigExtra")));
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + type);
+        }
+
         try{
             serviceService.insertNewService(type, bp1, bp2, bp3, gigIncl, minIncl, smsIncl, gigExtra, minExtra, smsExtra);
 
         } catch (EJBException e) {
             sendError(request, response, "InternalDBErrorException", e.getCause().getMessage());
         }
-
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
-
-
     }
 }
