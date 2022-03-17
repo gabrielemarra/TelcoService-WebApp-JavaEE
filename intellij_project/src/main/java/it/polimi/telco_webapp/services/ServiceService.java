@@ -32,18 +32,22 @@ public class ServiceService {
      * correctly provided, or plan parameters are not correctly specified.
      */
     public Service insertNewService(String typeStr, double bp1, double bp2, double bp3, int gigIncl, int minIncl, int smsIncl, double gigExtra, double minExtra, double smsExtra) throws PersistenceException, IllegalArgumentException{
+        Service service = new Service();
 
-        ServiceType type;
-        Service service;
-        int gig_incl, sms_incl, min_incl;
-        double gig_extra, sms_extra, min_extra;
+        service.setBasePrice1(bp1);
+        service.setBasePrice2(bp2);
+        service.setBasePrice3(bp3);
 
         switch(typeStr) {
             case "Fixed_Phone":
-                type = ServiceType.Fixed_Phone;
-                sms_incl = min_incl = 0;
-                sms_extra = min_extra = 0.0;
-                service = new Service();
+                service.setType(ServiceType.Fixed_Phone);
+                service.setGigIncluded(0);
+                service.setGigExtra(0.0);
+                service.setMinIncluded(0);
+                service.setMinExtra(0.0);
+                service.setSmsIncluded(0);
+                service.setSmsExtra(0.0);
+
                 break;
             case "Mobile_Internet":
                 if (gigIncl < 1 || gigExtra < 0) {
@@ -54,39 +58,44 @@ public class ServiceService {
                  *      // throw exception?
                  *  }
                  */
-                type = ServiceType.Mobile_Internet;
-                gig_incl = gigIncl;
-                gig_extra = gigExtra;
-                service = insertInternet(gig_incl, gig_extra);
+                service.setType(ServiceType.Mobile_Internet);
+                service.setGigIncluded(gigIncl);
+                service.setGigExtra(gigExtra);
+                service.setMinIncluded(0);
+                service.setMinExtra(0.0);
+                service.setSmsIncluded(0);
+                service.setSmsExtra(0.0);
                 break;
             case "Fixed_Internet":
                 if (gigIncl < 1 || gigExtra < 0) {
                     throw new IllegalArgumentException("Correctly specify the parameters for the internet plan.");
                 }
-                type = ServiceType.Fixed_Internet;
-                gig_incl = gigIncl;
-                gig_extra = gigExtra;
-                service = insertInternet(gig_incl, gig_extra);
+                service.setType(ServiceType.Fixed_Internet);
+                service.setGigIncluded(gigIncl);
+                service.setGigExtra(gigExtra);
+                service.setMinIncluded(0);
+                service.setMinExtra(0.0);
+                service.setSmsIncluded(0);
+                service.setSmsExtra(0.0);
+
                 break;
             case "Mobile_Phone":
                 if (smsIncl < 0 || smsExtra < 0 || minIncl < 0 || minExtra < 0) {
                     throw new IllegalArgumentException("Correctly specify the parameters for the mobile phone plan.");
                 }
-                type = ServiceType.Mobile_Phone;
-                sms_incl = smsIncl;
-                sms_extra = smsExtra;
-                min_incl = minIncl;
-                min_extra = minExtra;
-                service = insertMobilePhone(sms_incl, sms_extra, min_incl, min_extra);
+                service.setType(ServiceType.Mobile_Phone);
+                service.setGigIncluded(0);
+                service.setGigExtra(0.0);
+                service.setMinIncluded(minIncl);
+                service.setMinExtra(minExtra);
+                service.setSmsIncluded(smsIncl);
+                service.setSmsExtra(smsExtra);
+
                 break;
             default:
                 throw new IllegalArgumentException("Invalid plan type.");
         }
 
-        service.setType(type);
-        service.setBasePrice1(bp1);
-        service.setBasePrice2(bp2);
-        service.setBasePrice3(bp3);
         em.persist(service);
 
         return service;

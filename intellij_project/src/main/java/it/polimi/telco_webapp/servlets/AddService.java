@@ -51,7 +51,6 @@ public class AddService extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         String type = StringEscapeUtils.escapeJava(request.getParameter("planType"));
         // Doubles
         Double bp1 = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("bp1")));
@@ -63,8 +62,8 @@ public class AddService extends HttpServlet {
         Integer smsIncl = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("smsIncl")));
         // TODO: These should be doubles. Must change the corresponding columns in the database to type double
         Double gigExtra = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("gigExtra")));
-        Double minExtra = 4.3;//Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("minExtra")));
-        Double smsExtra = 4.5;//Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("smsExtra")));
+        Double minExtra = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("minExtra")));
+        Double smsExtra = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("smsExtra")));
         try{
             serviceService.insertNewService(type, bp1, bp2, bp3, gigIncl, minIncl, smsIncl, gigExtra, minExtra, smsExtra);
 
