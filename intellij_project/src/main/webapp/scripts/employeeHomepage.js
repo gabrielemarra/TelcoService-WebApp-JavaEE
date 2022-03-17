@@ -66,8 +66,6 @@ $(document).ready(function () {
             $("#show"+planSelected).show();
        });
 
-
-
 });
 
 

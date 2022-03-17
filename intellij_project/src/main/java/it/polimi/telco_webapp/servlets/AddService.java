@@ -69,9 +69,6 @@ public class AddService extends HttpServlet {
                 smsExtra = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("smsExtra")));
                 break;
             case "Fixed_Internet":
-                gigIncl = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("gigIncl")));
-                gigExtra = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("gigExtra")));
-                break;
             case "Mobile_Internet":
                 gigIncl = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("gigIncl")));
                 gigExtra = Double.parseDouble(StringEscapeUtils.escapeJava(request.getParameter("gigExtra")));
