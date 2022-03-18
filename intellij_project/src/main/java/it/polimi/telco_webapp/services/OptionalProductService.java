@@ -6,7 +6,6 @@ import it.polimi.telco_webapp.entities.ServicePackage;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.PersistenceException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -41,5 +40,10 @@ public class OptionalProductService {
         prod.setPrice(price);
         prod.setOrders(new ArrayList<Order>());
         em.persist(prod);
+    }
+
+    public List<OptionalProduct> getAllOptionalProduct() {
+        List<OptionalProduct> options = em.createNamedQuery("OptionalProduct.getAllAvailableOptionalProduct", OptionalProduct.class).getResultList();
+        return options;
     }
 }

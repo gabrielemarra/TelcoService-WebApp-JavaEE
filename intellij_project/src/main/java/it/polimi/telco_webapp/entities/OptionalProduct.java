@@ -9,8 +9,6 @@ import java.math.BigDecimal;
 @NamedQuery(name = "OptionalProduct.getOptionalProduct", query = "SELECT o FROM Order o WHERE o.id = ?1")
 @NamedQuery(name = "OptionalProduct.getAllAvailableOptionalProduct", query = "SELECT o FROM OptionalProduct o")
 
-
-
 public class OptionalProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -64,7 +64,42 @@ $(document).ready(function () {
            let planSelected = $(this).val();
             $("div.selectDiv").hide();
             $("#show"+planSelected).show();
+       }
+   );
+
+   showAllOptionalProducts();
+
+   function showAllOptionalProducts() {
+       let getRequest = $.get("GetAllOptionalProducts");
+       getRequest.done(function (data, textStatus, jqXHR) {
+           alert("getting all optional prods GET success");
        });
+
+       getRequest.fail(function (data, textStatus, jqXHR) {
+           alert("getting all optional prods GET fail");
+       });
+
+
+   };
+
+
+   function addOptionalProduct() {
+
+    let checkbox = document.createElement('input');
+    let container = document.getElementById("id_allOptionalProducts")
+    checkbox.type = "checkbox";
+    checkbox.name = "optionalProductCheckbox";
+    checkbox.value = "";
+    checkbox.id = "id_optionalProductCheckbox";
+
+    let label = document.createElement('label')
+    label.htmlFor = "id";
+    label.appendChild(document.createTextNode('text for label after checkbox'));
+
+    container.appendChild(checkbox);
+    container.appendChild(label);
+   };
+
 
 });
 
