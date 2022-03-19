@@ -17,9 +17,11 @@ import javax.persistence.criteria.CriteriaBuilder;
 import java.security.InvalidParameterException;
 
 @Stateless(name = "UserService")
+
 public class UserService {
     @PersistenceContext(unitName = "telco_webapp")
     private EntityManager em;
+
     public UserService() {
     }
 

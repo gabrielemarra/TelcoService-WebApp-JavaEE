@@ -11,7 +11,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Stateless(name = "OrderService")
+@Stateless(name = "OptionalProductService")
+
 public class OptionalProductService {
     @PersistenceContext(unitName = "telco_webapp")
     private EntityManager em;
