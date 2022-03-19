@@ -65,7 +65,7 @@ public class GetAvailableServicePackages extends HttpServlet {
 
                 JsonElement jsonElement = new JsonObject();
 
-                jsonElement.getAsJsonObject().addProperty("name", aPackage.getName());
+                jsonElement.getAsJsonObject().addProperty("package_name", aPackage.getName());
                 jsonElement.getAsJsonObject().addProperty("package_id", aPackage.getId());
                 jsonElement.getAsJsonObject().addProperty("validity_period", aPackage.getValidityPeriod());
                 /*
