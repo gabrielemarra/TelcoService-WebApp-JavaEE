@@ -1,8 +1,10 @@
 
-.list-group{
-    max-height:200px;
-    overflow:hidden;
+
+.btn-group-vertical{
+    max-height:100px;
+    overflow:auto;
     overflow-y:scroll;
+    width:100%;
 }
 
 .navbar{

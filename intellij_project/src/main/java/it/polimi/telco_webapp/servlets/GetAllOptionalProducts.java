@@ -23,7 +23,7 @@ import java.util.List;
 @WebServlet(name = "GetAllOptionalProducts", value = "/GetAllOptionalProducts")
 public class GetAllOptionalProducts extends HttpServlet {
     @EJB(name = "it.polimi.db2.entities.services/OptionalProductService")
-    private OptionalProductService optionalProductServiceUtil = new OptionalProductService();
+    private OptionalProductService optionalProductServiceUtil;
 
     /**
      * Method to handle errors, send json with error info

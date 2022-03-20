@@ -143,4 +143,13 @@ public class ServiceService {
             return services.get(0);
         }
     }
+
+    public List<Service> getAllServices() {
+        List<Service> services = em.createNamedQuery("Service.getAllAvailableServices", Service.class).getResultList();
+        if (services == null || services.isEmpty()) {
+            throw new InvalidParameterException("Invalid service id.");
+        } else {
+            return services;
+        }
+    }
 }

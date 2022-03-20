@@ -26,21 +26,21 @@ public class ServicePackageService {
     /**
      * Insert new service package into database.
      *
-     * @param id:       Service id for the service package
+     * //@param id:       Service id for the service package
      * @param name:     Name of the service package
      * @param validity: Validity period for the service package.
-     * @param options:  The optional products associated with the service packaage.
+     * //@param options:  The optional products associated with the service packaage.
      * @return The service packaged added to the database.
      * @throws PersistenceException
      * @throws IllegalArgumentException
      */
-    public ServicePackage insertServicePackage(int id, String name, int validity, List<OptionalProduct> options) throws PersistenceException, IllegalArgumentException {
+    public ServicePackage insertServicePackage(String name, int validity) /*, List<OptionalProduct> options, List<Service> services)*/ throws PersistenceException, IllegalArgumentException {
         ServicePackage bundle = new ServicePackage();
 
-        bundle.setId(id);
         bundle.setName(name);
         bundle.setValidityPeriod(validity);
-        bundle.setOptionalServices(options);
+        //bundle.setOptionalServices(options);
+        //bundle.setServices(services);
 
         em.persist(bundle);
         return bundle;

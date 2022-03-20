@@ -14,6 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -46,10 +47,16 @@ public class AddServicePackage extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name = StringEscapeUtils.escapeJava(request.getParameter("name"));
+        Integer period = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("period")));
+
+        String services = StringEscapeUtils.escapeJava(request.getParameter("services"));
+        String options = StringEscapeUtils.escapeJava(request.getParameter("options"));
+
         try{
-
+            servicePackageService.insertServicePackage(name, period);//, options, services);
         } catch (EJBException e) {
-
+            sendError(request, response, "InternalDBErrorException", e.getCause().getMessage());
         }
     }
 

@@ -4,11 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.polimi.telco_webapp.auxiliary.exceptions.NoServicePackageFound;
-import it.polimi.telco_webapp.entities.OptionalProduct;
-import it.polimi.telco_webapp.entities.ServicePackage;
-import it.polimi.telco_webapp.services.OptionalProductService;
-import it.polimi.telco_webapp.services.ServicePackageService;
+import it.polimi.telco_webapp.entities.Service;
+import it.polimi.telco_webapp.services.ServiceService;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.servlet.ServletException;
@@ -20,10 +17,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GetAllOptionalProducts", value = "/GetAllOptionalProducts")
-public class GetAllOptionalProducts extends HttpServlet {
-    @EJB(name = "it.polimi.db2.entities.services/OptionalProductService")
-    private OptionalProductService optionalProductServiceUtil = new OptionalProductService();
+@WebServlet(name = "GetAllServices", value = "/GetAllServices")
+public class GetAllServices extends HttpServlet {
+    @EJB(name = "it.polimi.db2.entities.services/ServiceService")
+    private ServiceService serviceService;
 
     /**
      * Method to handle errors, send json with error info
@@ -54,7 +51,7 @@ public class GetAllOptionalProducts extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            List<OptionalProduct> options = optionalProductServiceUtil.getAllOptionalProduct();
+            List<Service> services = serviceService.getAllServices();
 
             Gson gson = new Gson();
 
@@ -62,19 +59,22 @@ public class GetAllOptionalProducts extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             JsonArray jsonArray = new JsonArray();
-            for (int i = 0; i < options.size(); i++) {
-
+            for (int i = 0; i < services.size(); i++) {
                 JsonElement jsonElement = new JsonObject();
-                OptionalProduct temp = options.get(i);
+                Service temp = services.get(i);
+                jsonElement.getAsJsonObject().addProperty("bp1", temp.getBasePrice1());
+                jsonElement.getAsJsonObject().addProperty("bp2", temp.getBasePrice2());
+                jsonElement.getAsJsonObject().addProperty("bp3", temp.getBasePrice3());
+                jsonElement.getAsJsonObject().addProperty("type", temp.getServiceType().toString());
+                jsonElement.getAsJsonObject().addProperty("service_id", temp.getId());
 
-                jsonElement.getAsJsonObject().addProperty("name", temp.getName());
-                jsonElement.getAsJsonObject().addProperty("price", temp.getPrice());
+
                 jsonArray.add(jsonElement);
             }
 
             response.getWriter().println(gson.toJson(jsonArray));
         } catch (EJBException e) {
-            sendError(request, response, "NoOptionalProduct", e.getCause().getMessage());
+            sendError(request, response, "NoService", e.getCause().getMessage());
         }
 
     }

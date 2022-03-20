@@ -59,46 +59,72 @@
     </div>
 </nav>
 
-<div class="container employee-container">
-    <div class="row form-row">
-        &nbsp;
-        <form>
-            <div class="accordion" id="accordionExample">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Create New Service</button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse hide" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <input type="radio" id="fixed_phone" name="planType" value="Fixed_Phone">
-                            <label for="fixed_phone">Fixed Phone</label>
-                            <input type="radio" id="mobile_phone" name="planType" value="Mobile_Phone">
-                            <label for="mobile_phone">Mobile Phone</label>
-                            <input type="radio" id="fixed_internet" name="planType" value="Fixed_Internet">
-                            <label for="fixed_internet">Fixed Internet</label>
-                            <input type="radio" id="mobile_internet" name="planType" value="Mobile_Internet">
-                            <label for="mobile_internet">Mobile Internet</label>
-                            <div class="form-group mb-3">
-                                <input type="baseprice1" class="form-control" placeholder="Base Price 1" value="" id="baseprice1Id" required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <input type="baseprice2" class="form-control" placeholder="Base Price 2" value="" id="baseprice2Id" required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <input type="baseprice3" class="form-control" placeholder="Base Price 3" value="" id="baseprice3Id" required>
-                            </div>
+<div class="container">
+    <div class="row row-cols-4" id="introRowId">
+        <div class="col-6" id="addPackageColId">
+            <h3>Create Service Package</h3>
+            <div class="form-group mb-3">
+                <input type="name" class="form-control" placeholder="Name" value="" id="packageNameId" required>
+            </div>
+            <div class="form-group mb-3">
+                <input type="period" class="form-control" placeholder="Validity Period" value="" id="packagePeriodId" required>
+            </div>
+        </div>
+    </div>
+    <div class="row row-cols-4" id="servicesRowId">
+        <div class="col-2" id="addingServicesLabelId">
+            <h3>Add Services</h3>
+            <h3>Total</h3>
+            <p id="id_totalCostServices">0</p>
+        </div>
+        <div class="col-4" id="addingServicesColId">
+            <div class="container allServices" id="id_allServicesContainer">
+                <div class="btn-group-vertical" role="group" aria-label="Basic checkbox toggle button group" id="id_allServicesList">
 
-                            <div id="showFixed_Phone" class="selectDiv">
-                                <div class="form-group mb-3">
-                                    <strong>No extra parameters needed for a Fixed Phone plan!</strong>
-                                </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6" id="creatingServicesId">
+            <form>
+                <div class="row" id="inputServiceTypeRowId">
+                    <h3>Create New Service</h3>
+                    <div class="col-3">
+                        <input type="radio" id="fixed_phone" name="planType" value="Fixed_Phone">
+                        <label for="fixed_phone" style="font-size: small">Fixed Phone</label>
+                    </div>
+                    <div class="col-3">
+                        <input type="radio" id="mobile_phone" name="planType" value="Mobile_Phone">
+                        <label for="mobile_phone" style="font-size: small">Mobile Phone</label>
+                    </div>
+                    <div class="col-3">
+                        <input type="radio" id="fixed_internet" name="planType" value="Fixed_Internet">
+                        <label for="fixed_internet" style="font-size: small">Fixed Internet</label>
+                    </div>
+                    <div class="col-3">
+                        <input type="radio" id="mobile_internet" name="planType" value="Mobile_Internet">
+                        <label for="mobile_internet" style="font-size: small">Mobile Internet</label>
+                    </div>
+                </div>
+                <div class="row" id="inputServiceParamsRowId">
+                    <div class="col" id="inputServiceBasePricesRowId">
+                        <div class="form-group mb-3">
+                            <input type="baseprice1" class="form-control" placeholder="Base Price 1" value="" id="baseprice1Id" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <input type="baseprice2" class="form-control" placeholder="Base Price 2" value="" id="baseprice2Id" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <input type="baseprice3" class="form-control" placeholder="Base Price 3" value="" id="baseprice3Id" required>
+                        </div>
+                    </div>
+                    <div class="col" id="inputServicePlanParamsRowId">
+                        <div id="showFixed_Phone" class="selectDiv">
+                            <div class="form-group mb-3">
+                                <strong>No extra parameters needed for a Fixed Phone plan!</strong>
                             </div>
-
-                            <div id="showMobile_Phone" class="selectDiv">
-                                <div class="form-group mb-3">
-                                    <strong>Parameters for a Mobile Phone Plan</strong>
-                                </div>
+                        </div>
+                        <div id="showMobile_Phone" class="selectDiv">
+                            <div class="form-group mb-3">
                                 <form id="MyForm" action="" method="post">
                                     <div class="form-group mb-3">
                                         <input type="min_incl" class="form-control" placeholder="Included Minutes" value="" id="minInclId" display="none">
@@ -114,45 +140,53 @@
                                     </div>
                                 </form>
                             </div>
-
-                            <div id="showFixed_Internet" class="selectDiv">
-                                <div class="form-group mb-3">
-                                    <strong>Parameters for a Fixed Internet Plan</strong>
-                                </div>
-                                <form id="MyForm" action="" method="post">
-                                    <div class="form-group mb-3">
-                                        <input type="gig_incl" class="form-control" placeholder="Included Gigabytes" value="" id="gigInclId" display="none">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <input type="gig_extra" class="form-control" placeholder="Fee Per Extra Gigabytes" value="" id="gigExtraId" display="none">
-                                    </div>
-                                </form>
-                            </div>
-
-                            <div id="showMobile_Internet" class="selectDiv">
-                                <div class="form-group mb-3">
-                                    <strong>Parameters for a Mobile Internet Plan</strong>
-                                </div>
-                                <form id="MyForm" action="" method="post">
-                                    <div class="form-group mb-3">
-                                        <input type="gig_incl" class="form-control" placeholder="Included Gigabytes" value="" id="gigInclId" display="none">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <input type="gig_extra" class="form-control" placeholder="Fee Per Extra Gigabytes" value="" id="gigExtraId" display="none">
-                                    </div>
-                                </form>
-                            </div>
-
+                        </div>
+                        <div id="showFixed_Internet" class="selectDiv">
                             <div class="form-group mb-3">
-                                <button type="submit" class="btn btn-primary" id="addServiceButton" value="AddService">Add Service</button>
+                                <form id="MyForm" action="" method="post">
+                                    <div class="form-group mb-3">
+                                        <input type="gig_incl" class="form-control" placeholder="Included Gigabytes" value="" id="gigInclId" display="none">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <input type="gig_extra" class="form-control" placeholder="Fee Per Extra Gigabytes" value="" id="gigExtraId" display="none">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div id="showMobile_Internet" class="selectDiv">
+                            <div class="form-group mb-3">
+                                <form id="MyForm" action="" method="post">
+                                    <div class="form-group mb-3">
+                                        <input type="gig_incl" class="form-control" placeholder="Included Gigabytes" value="" id="gigInclId" display="none">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <input type="gig_extra" class="form-control" placeholder="Fee Per Extra Gigabytes" value="" id="gigExtraId" display="none">
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
+            </form>
+            <div class="form-group mb-3" id="submitServiceRowId">
+                <button type="submit" class="btn btn-primary" id="addServiceButton" value="AddService">Add Service</button>
             </div>
-        </form>
+        </div>
     </div>
-    <div class="col-md-6">
+    <div class="row row-cols-4" id="optionsRowId">
+        <div class="col-2" id="addingOptionsLabelId">
+            <h3>Add Optional Products</h3>
+            <h3>Total</h3>
+            <p>$</p><p id="id_totalCostOptions">0</p>
+        </div>
+        <div class="col-4" id-addingOptionsColId>
+            <div class="container allOptionalProducts" id="id_allOptionalProductsContainer">
+                <div class="btn-group-vertical" role="group" aria-label="Basic checkbox toggle button group" id="id_allOptionalProductsList">
+
+                </div>
+            </div>
+        </div>
+        <div class="col-6" id="creatingOptionsId">
             <h3>Create New Optional Product</h3>
             <form>
                 <div class="form-group mb-3">
@@ -167,14 +201,17 @@
                     <button type="submit" class="btn btn-primary" value="AddOptionalProduct" id="addOptionalProductButton">Add Optional Product</button>
                 </div>
             </form>
-        </div>
 
-    <div class="container allOptionalProducts" id="id_allOptionalProducts">
-        <h2> trying to list all optional products: </h2>
+        </div>
+    </div>
+
+
+    <div class="row row-cols-4" id="outroRowId">
+        <div class="form-group mb-3">
+            <button type="submit" class="btn btn-primary" value="AddServicePackage" id="addServicePackageButton">Add Service Package</button>
+        </div>
     </div>
 </div>
-
-
 
 </body>
 </html>
