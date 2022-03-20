@@ -115,7 +115,7 @@
     </main>
 </div>
 
- <template id="package_card_template">
+<template id="package_card_template">
     <div class="col-md-3">
         <div class="card mb-4 rounded-3 shadow-sm">
             <div class="card-header py-3">
@@ -126,10 +126,13 @@
                     <span>Cost</span>€
                     <small class="text-muted fw-light">/mo</small>
                 </h1>
-                <ul class="list-unstyled mt-3 mb-4">
-<!--                    <li>Services incl</li>-->
-                    <li>Default Validity Period?</li>
+                <ul class="list-unstyled mt-3 mb-2 servicesList">
+                    <!--                    <li>Services incl</li>-->
+                    <li>
+                        <!--                        <span class="validityPeriod">Default Validity Period?</span> months-->
+                    </li>
                 </ul>
+                <div class="mb-2"><span class="validityPeriod">Default Validity Period?</span> months</div>
                 <button type="button" class="w-100 btn btn-lg btn-outline-primary">Select</button>
             </div>
         </div>

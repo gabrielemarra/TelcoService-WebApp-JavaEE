@@ -68,21 +68,34 @@ public class GetAvailableServicePackages extends HttpServlet {
                 Double packagePrice1 = (double) 0;
                 Double packagePrice2 = (double) 0;
                 Double packagePrice3 = (double) 0;
+                JsonArray jsonArrayServices = new JsonArray();
                 for (Service service : aPackage.getServices()){
+                    //Sum the prices
                     packagePrice1+=service.getBasePrice1();
                     packagePrice2+=service.getBasePrice2();
                     packagePrice3+=service.getBasePrice3();
+
+                    //Store some properties about the services
+                    JsonElement jsonService = new JsonObject();
+                    jsonService.getAsJsonObject().addProperty("id", service.getId());
+                    jsonService.getAsJsonObject().addProperty("serviceType", service.getServiceType().toString());
+
+                    jsonArrayServices.add(jsonService);
                 }
 
                 JsonElement jsonElement = new JsonObject();
 
                 jsonElement.getAsJsonObject().addProperty("package_name", aPackage.getName());
                 jsonElement.getAsJsonObject().addProperty("package_id", aPackage.getId());
-                jsonElement.getAsJsonObject().addProperty("validity_period", 12 * aPackage.getValidityPeriod());
-                jsonElement.getAsJsonObject().addProperty("price1", packagePrice1);
-                jsonElement.getAsJsonObject().addProperty("price2", packagePrice2);
-                jsonElement.getAsJsonObject().addProperty("price3", packagePrice3);
+                jsonElement.getAsJsonObject().addProperty("default_validity_period", aPackage.getValidityPeriod());
 
+                JsonArray jsonPrices = new JsonArray();
+                jsonPrices.add(packagePrice1);
+                jsonPrices.add(packagePrice2);
+                jsonPrices.add(packagePrice3);
+                jsonElement.getAsJsonObject().add("prices", jsonPrices);
+
+                jsonElement.getAsJsonObject().add("services", jsonArrayServices);
 
                 /*
                  * TODO: I think we also need to add Services and Optional Products to the json element... for now those

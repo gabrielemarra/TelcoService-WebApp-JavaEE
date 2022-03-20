@@ -29,7 +29,7 @@ public class ServicePackage implements Serializable {
     @OneToMany(mappedBy = "packageId")
     private List<Order> orders;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "package_id"),
             inverseJoinColumns = @JoinColumn(name = "opt_id"))
     private List<OptionalProduct> optionalProducts;

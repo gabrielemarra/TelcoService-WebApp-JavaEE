@@ -55,13 +55,30 @@ $(document).ready(function () {
         let template = document.getElementById("package_card_template");
 
         let clone = template.content.cloneNode(true);
-        let title = clone.querySelector("h4");
-        let baseCost = clone.querySelector("span");
+        let titleNode = clone.querySelector("h4");
+        let costNode = clone.querySelector("span");
+        let validityPeriodNode = clone.querySelector(".validityPeriod");
+        let servicesListNode = clone.querySelector(".servicesList")
 
-        title.textContent = servicePackageInfo.package_name;
-        title.id = servicePackageInfo.package_id;
+        titleNode.textContent = servicePackageInfo.package_name;
+        titleNode.id = servicePackageInfo.package_id;
 
-        baseCost.textContent = servicePackageInfo.price3;
+        let defaulValidityPeriod = servicePackageInfo.default_validity_period;
+        costNode.textContent = servicePackageInfo.prices[defaulValidityPeriod - 1];
+
+        let displayedValidityPeriod = defaulValidityPeriod * 12;
+        validityPeriodNode.textContent = String(displayedValidityPeriod);
+
+        let includedServices = servicePackageInfo.services;
+
+        for (let includedServicesKey in includedServices) {
+            let li = document.createElement('li');
+
+            let currentService = includedServices[includedServicesKey];
+            li.textContent= currentService.serviceType;
+
+            servicesListNode.appendChild(li);
+        }
 
         servicePackageRow.appendChild(clone)
     }
