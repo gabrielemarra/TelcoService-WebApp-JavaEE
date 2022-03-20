@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.auxiliary.exceptions.NoServicePackageFound;
+import it.polimi.telco_webapp.entities.Service;
 import it.polimi.telco_webapp.entities.ServicePackage;
 import it.polimi.telco_webapp.services.ServicePackageService;
 import it.polimi.telco_webapp.services.UserService;
@@ -17,6 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @WebServlet(name = "GetAvailableServicePackages", value = "/GetAvailableServicePackages")
@@ -63,11 +65,25 @@ public class GetAvailableServicePackages extends HttpServlet {
             JsonArray jsonArray = new JsonArray();
             for (ServicePackage aPackage : packages) {
 
+                Double packagePrice1 = (double) 0;
+                Double packagePrice2 = (double) 0;
+                Double packagePrice3 = (double) 0;
+                for (Service service : aPackage.getServices()){
+                    packagePrice1+=service.getBasePrice1();
+                    packagePrice2+=service.getBasePrice2();
+                    packagePrice3+=service.getBasePrice3();
+                }
+
                 JsonElement jsonElement = new JsonObject();
 
                 jsonElement.getAsJsonObject().addProperty("package_name", aPackage.getName());
                 jsonElement.getAsJsonObject().addProperty("package_id", aPackage.getId());
-                jsonElement.getAsJsonObject().addProperty("validity_period", aPackage.getValidityPeriod());
+                jsonElement.getAsJsonObject().addProperty("validity_period", 12 * aPackage.getValidityPeriod());
+                jsonElement.getAsJsonObject().addProperty("price1", packagePrice1);
+                jsonElement.getAsJsonObject().addProperty("price2", packagePrice2);
+                jsonElement.getAsJsonObject().addProperty("price3", packagePrice3);
+
+
                 /*
                  * TODO: I think we also need to add Services and Optional Products to the json element... for now those
                  *  objects have not been "serialized is in json-pretty way...

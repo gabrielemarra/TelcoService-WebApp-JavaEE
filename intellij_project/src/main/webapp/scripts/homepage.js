@@ -56,10 +56,12 @@ $(document).ready(function () {
 
         let clone = template.content.cloneNode(true);
         let title = clone.querySelector("h4");
-        let baseCost = clone.querySelector("h1");
+        let baseCost = clone.querySelector("span");
 
         title.textContent = servicePackageInfo.package_name;
-        title.id=servicePackageInfo.package_id;
+        title.id = servicePackageInfo.package_id;
+
+        baseCost.textContent = servicePackageInfo.price3;
 
         servicePackageRow.appendChild(clone)
     }

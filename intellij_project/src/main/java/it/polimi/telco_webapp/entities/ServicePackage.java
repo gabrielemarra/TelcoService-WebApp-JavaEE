@@ -27,7 +27,7 @@ public class ServicePackage implements Serializable {
     private Integer validityPeriod;
 
     @OneToMany(mappedBy = "packageId")
-    private List <Order> orders;
+    private List<Order> orders;
 
     @ManyToMany
     @JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "package_id"),
@@ -42,7 +42,7 @@ public class ServicePackage implements Serializable {
         this.optionalProducts = optionalProducts;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "service_bundles", joinColumns = @JoinColumn(name = "package_id"),
             inverseJoinColumns = @JoinColumn(name = "service_id"))
     private List<Service> services;
