@@ -95,10 +95,8 @@ public class Login extends HttpServlet {
             sendError(request, response, "Invalid Completion", "Invalid email or password format");
             return;
         }
-        User credentialCheckResultUser = userService.checkCredentials(email, password);
-        Employee credentialCheckResultEmployee = employeeService.checkEmployeeCredentials(email, password);
-
-        if(credentialCheckResultUser != null) {
+        try {
+            User credentialCheckResultUser = userService.checkCredentials(email, password);
             request.getSession().setAttribute("user", credentialCheckResultUser.getEmail());
 
             String url = "homepage.html";
@@ -115,25 +113,32 @@ public class Login extends HttpServlet {
             jsonElement.getAsJsonObject().addProperty("email", credentialCheckResultUser.getEmail());
 
             response.getWriter().println(gson.toJson(jsonElement));
-        } else if(credentialCheckResultEmployee != null) {
-            request.getSession().setAttribute("employee", credentialCheckResultEmployee.getId());
-            String url = "employeeHomepage.html";
+        } catch (EJBException e) {
+            if (e.getCausedByException() instanceof CredentialsNotValidException) {
+                try {
+                    Employee employee = employeeService.checkEmployeeCredentials(email, password);
+                    request.getSession().setAttribute("employee", employee.getId());
+                    String url = "employeeHomepage.html";
+//                    String url = "Employee/index.html";
 
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
 
-            Gson gson = new Gson();
-            JsonElement jsonElement = new JsonObject();
+                    Gson gson = new Gson();
+                    JsonElement jsonElement = gson.toJsonTree(employee);
+                    jsonElement.getAsJsonObject().addProperty("new_url", url);
+                    jsonElement.getAsJsonObject().addProperty("employee", "true");
+                    jsonElement.getAsJsonObject().remove("password");
+                    jsonElement.getAsJsonObject().remove("id");
 
-            jsonElement.getAsJsonObject().addProperty("new_url", url);
-            jsonElement.getAsJsonObject().addProperty("employee", "true");
-            jsonElement.getAsJsonObject().addProperty("email", credentialCheckResultEmployee.getEmail());
-
-
-            response.getWriter().println(gson.toJson(jsonElement));
-        } else {
-            // houston we have a problem
+                    response.getWriter().println(gson.toJson(jsonElement));
+                } catch (EJBException f) {
+                    sendError(request, response, "Internal Error", f.getCause().getMessage());
+                }
+            } else {
+                sendError(request, response, "Internal Error", e.getCause().getMessage());
+            }
         }
     }
 }
