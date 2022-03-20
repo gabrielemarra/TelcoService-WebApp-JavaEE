@@ -16,31 +16,29 @@ import java.util.List;
 @Stateless(name = "EmployeeService")
 
 public class EmployeeService {
-	@PersistenceContext(unitName = "telco_webapp")
-	private EntityManager em;
+    @PersistenceContext(unitName = "telco_webapp")
+    private EntityManager em;
 
-	public EmployeeService() {
-	}
+    public EmployeeService() {
+    }
 
-	public Employee getEmployeeById(String employee_id) throws PersistenceException, InvalidParameterException {
-		Employee employeeFromDB = em.find(Employee.class, employee_id);
-		if (employeeFromDB == null)
-			throw new UserNotFoundException("InvalidID","internal database error");
-		else
-			return employeeFromDB;
-	}
+    public Employee getEmployeeById(String employee_id) throws PersistenceException, InvalidParameterException {
+        Employee employeeFromDB = em.find(Employee.class, employee_id);
+        if (employeeFromDB == null)
+            throw new UserNotFoundException("InvalidID", "internal database error");
+        else
+            return employeeFromDB;
+    }
 
-	public Employee checkEmployeeCredentials(String employeeEmail, String password) {
-		List<Employee> employees = em.createNamedQuery("Employee.checkCredentials", Employee.class).setParameter(1, employeeEmail).setParameter(2, password).getResultList();
+    public Employee checkEmployeeCredentials(String employeeEmail, String password) {
+        List<Employee> employees = em.createNamedQuery("Employee.checkCredentials", Employee.class).setParameter(1, employeeEmail).setParameter(2, password).getResultList();
 
-		if (employees == null || employees.isEmpty()) {
-			return null;
-			//throw new CredentialsNotValidException("InvalidCredentials","The credentials do not correspond to any user", true);
-		} else if( employees.size() == 1) {
-			return employees.get(0);
-		} else {
-			return null;
-			//throw new InternalDBErrorException("InternalDBError","Too many entries for the credentials");
-		}
-	}
+        if (employees == null || employees.isEmpty()) {
+            throw new CredentialsNotValidException("InvalidCredentials", "The credentials do not correspond to any user", true);
+        } else if (employees.size() == 1) {
+            return employees.get(0);
+        } else {
+            throw new InternalDBErrorException("InternalDBError", "Too many entries for the credentials");
+        }
+    }
 }
