@@ -34,7 +34,7 @@ public class ServicePackageService {
      * @throws PersistenceException
      * @throws IllegalArgumentException
      */
-    public ServicePackage insertServicePackage(String name, int validity) /*, List<OptionalProduct> options, List<Service> services)*/ throws PersistenceException, IllegalArgumentException {
+    public ServicePackage insertServicePackage(String name, int validity, List<OptionalProduct> options, List<Service> services) throws PersistenceException, IllegalArgumentException {
         ServicePackage bundle = new ServicePackage();
 
         bundle.setName(name);

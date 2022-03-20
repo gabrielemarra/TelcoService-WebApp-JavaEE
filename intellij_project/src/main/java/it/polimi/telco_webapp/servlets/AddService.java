@@ -1,5 +1,7 @@
 package it.polimi.telco_webapp.servlets;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.services.ServiceService;
 import it.polimi.telco_webapp.entities.Service;
@@ -78,9 +80,20 @@ public class AddService extends HttpServlet {
         }
 
         try{
-            serviceService.insertNewService(type, bp1, bp2, bp3, gigIncl, minIncl, smsIncl, gigExtra, minExtra, smsExtra);
+            int service_id = serviceService.insertNewService(type, bp1, bp2, bp3, gigIncl, minIncl, smsIncl, gigExtra, minExtra, smsExtra).getId();
 
-        } catch (EJBException e) {
+            JsonElement jsonElement = new JsonObject();
+            jsonElement.getAsJsonObject().addProperty("service_id", service_id);
+            Gson gson = new Gson();
+            response.getWriter().println(gson.toJson(jsonElement));
+
+
+
+
+
+
+
+    } catch (EJBException e) {
             sendError(request, response, "InternalDBErrorException", e.getCause().getMessage());
         }
     }

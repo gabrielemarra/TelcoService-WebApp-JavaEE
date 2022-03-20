@@ -53,8 +53,9 @@ public class AddServicePackage extends HttpServlet {
         String services = StringEscapeUtils.escapeJava(request.getParameter("services"));
         String options = StringEscapeUtils.escapeJava(request.getParameter("options"));
 
+
         try{
-            servicePackageService.insertServicePackage(name, period);//, options, services);
+            servicePackageService.insertServicePackage(name, period, null, null);
         } catch (EJBException e) {
             sendError(request, response, "InternalDBErrorException", e.getCause().getMessage());
         }

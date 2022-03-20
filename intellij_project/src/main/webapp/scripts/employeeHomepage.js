@@ -39,12 +39,12 @@ $(document).ready(function () {
         function (event) {
             event.preventDefault();
             // Can we write one function and reuse it for both services and options?
-            let listServices = getSelected(services_html_type)
-            let listOptions = getSelected(options_html_type)
+            let listServices = document.querySelectorAll('input[name=service]:checked');
+            let listOptions = document.querySelectorAll('input[name=option]:checked');
             let name = $("#servicePackageNameId").val();
-            let period = $("#servicePackagePeriodId").val();
+            let period = document.querySelectorAll('input[name=defaultValidity]:checked'); //
 
-            addPackage(name, period, listServices, listOptions);
+            addPackage(name, period[0].value, listServices, listOptions);
         }
     );
 
@@ -141,7 +141,8 @@ $(document).ready(function () {
    function addService(planType, bp1, bp2, bp3, gigIncl, smsIncl, minIncl, gigExtra, smsExtra, minExtra) {
        let postRequest = $.post("AddService", {planType: planType, bp1:bp1, bp2:bp2, bp3:bp3, gigIncl: gigIncl, smsIncl: smsIncl, minIncl:minIncl, gigExtra: gigExtra, smsExtra: smsExtra, minExtra:minExtra});
        postRequest.done(function (data, textStatus, jqXHR) {
-           showService(planType, bp1, bp2, bp3, gigIncl, smsIncl, minIncl, gigExtra, smsExtra, minExtra);
+           let service_id = jqXHR.responseText.replace(/\D/g, '');
+           showService(planType, bp1, bp2, bp3,service_id);
        });
        postRequest.fail(function (data, textStatus, jqXHR) {
            alert("adding service POST fail");
@@ -155,16 +156,14 @@ $(document).ready(function () {
     function showAllServices() {
         let getRequest = $.get("GetAllServices");
         getRequest.done(function (data, textStatus, jqXHR) {
-            alert("woohoo!");
             let services = jqXHR.responseJSON;
             if(services.length > 0) {
                 for(let i = 0; i < services.length; i++) {
-                    showService(services[i]);
+                    showService(services[i].planType, services[i].bp1, services[i].bp2, services[i].bp3, services[i].service_id);
                 }
             }
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
-            alert("ru-roh");
         });
     };
 
@@ -173,21 +172,24 @@ $(document).ready(function () {
      * builds the HTML element to the document.
      * @param service
      */
-    function showService(planType, bp1, bp2, bp3, gigIncl, smsIncl, minIncl, gigExtra, smsExtra, minExtra, service_id) {
+    function showService(planType, bp1, bp2, bp3, service_id) {
         let div = document.getElementById("id_allServicesList");
         let input = document.createElement('input');
         let label = document.createElement('label')
 
-        input.className = "btn-check";
+        input.className = "btn-check services";
         input.type = "checkbox";
         input.id = "id_checkbox" + service_id;
         input.autocomplete = "off";
-        input.value = service_id;
+        // TODO: the value should be the base price associated with the validity period the user has currently selected.
+        input.value = bp1;
         input.name = "service";
 
         label.className = "btn btn-outline-primary";
         label.htmlFor = "id_checkbox" + service_id;
-        label.appendChild(document.createTextNode("$" + bp1 + " " + planType));
+        // TODO: the value shown should be the base price associated with the validity period the user has currently
+        //  selected.
+        label.appendChild(document.createTextNode("$" + bp1 + " / " + "$" + bp2 + " / " + "$" + bp3 + "   " + planType.toString()));
 
         div.appendChild(input);
         div.appendChild(label);
@@ -212,36 +214,29 @@ $(document).ready(function () {
         });
     };
 
-
     /**
-     * Helper function that gets all the CHECKED items from the collection of the given elementName
-     * @param elementName
-     * @returns {*}
+     * The form for adding a service package changes depending on which plan type is selected.
      */
-    function getSelected(elementName) {
-        let col = document.getElementsByName(elementName);
-        let list
-        for(let i = 0; i < col.length; i++) {
-            if(col[i].checked) {
-                list.push(col[i]);
-            }
-        }
-        return list;
-    };
-
-
-
-
-
-
-    /**
-     * The form for adding a service package changed depending on which plan type is selected.
-     */
-    $('input[type="radio"]').click(
+    $('input[name="planType"]').click(
         function(){
             let planSelected = $(this).val();
             $("div.selectDiv").hide();
             $("#show"+planSelected).show();
+        }
+    );
+
+    $('input[name="defaultValidity"]').click(
+        function(){
+            let period = $(this).val();
+            let services = document.getElementsByName("service")
+            for(let i = 0; i < services.length; i++) {
+                let id = services[i].getAttribute("id").replace(/\D/g, '');;
+
+                // need to get the service by its ID?
+                // then change the value to the corresponding baseprice
+                // then change the innerHTML? of the label? with the new baseprice
+                //services[i].setAttribute("value", )
+            }
         }
     );
 
