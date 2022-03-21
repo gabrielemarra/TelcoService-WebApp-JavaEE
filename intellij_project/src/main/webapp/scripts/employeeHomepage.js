@@ -198,7 +198,7 @@ $(document).ready(function () {
         //input.value = bp1;
         input.name = "service";
 
-        label.className = "btn btn-outline-primary text-left";
+        label.className = "btn btn-outline-primary";
         label.htmlFor = "id_checkboxService" + service_id;
         label.id = "id_serviceLabel" + service_id;
         // TODO: the value shown should be the base price associated with the validity period the user has currently
