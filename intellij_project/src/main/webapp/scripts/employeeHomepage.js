@@ -182,7 +182,8 @@ $(document).ready(function () {
     /**
      * This functions appends a button checkbox in the list of services displayed to the user. This function
      * builds the HTML element to the document.
-     * @param service
+     *
+     *
      */
     function showService(planType, bp1, bp2, bp3, service_id) {
         let div = document.getElementById("id_allServicesList");
@@ -197,7 +198,7 @@ $(document).ready(function () {
         //input.value = bp1;
         input.name = "service";
 
-        label.className = "btn btn-outline-primary";
+        label.className = "btn btn-outline-primary text-left";
         label.htmlFor = "id_checkboxService" + service_id;
         label.id = "id_serviceLabel" + service_id;
         // TODO: the value shown should be the base price associated with the validity period the user has currently
@@ -212,10 +213,10 @@ $(document).ready(function () {
 
     /**
      * This function performs the POST request to add the new service package to the DB
-     * @param name
-     * @param period
-     * @param listServices
-     * @param listOptions
+     * @param name: Name of the service package
+     * @param period: The default validity period selected
+     * @param listServices: Array of the service IDs to be offered with the new service package
+     * @param listOptions: Array of the optional product IDs to be offered with the new service package.
      */
     function addPackage(name, period, listServices, listOptions) {
         let postRequest = $.post("AddServicePackage", {name: name, period:period, listServices:listServices, listOptions:listOptions});
@@ -227,6 +228,12 @@ $(document).ready(function () {
         });
     };
 
+    /**
+     * As user clicks on a different validity period, the price listed for each service changes to reflect the default
+     * validity period selected.
+     * @param id: ID of the service
+     * @param period: the New validity period selected (1, 2, or 3)
+     */
     function changeServiceLabel(id, period) {
         let getRequest = $.get("GetService", {service_id: id});
         getRequest.done(function (data, textStatus, jqXHR) {
@@ -247,12 +254,6 @@ $(document).ready(function () {
             let child = labelElement.lastChild;
             labelElement.removeChild(child)
             labelElement.appendChild(document.createTextNode("$" + defaultBasePrice + " | " + service.type));
-            console.log("For service #" + service.service_id);// + ": bp1 = " + service.bp1 +" | bp2 = " + service.bp2 +" | bp3 = " + service.bp1 +"new def: " + defaultBasePrice);
-            console.log("   bp1: " + service.bp1);// + ": bp1 = " + service.bp1 +" | bp2 = " + service.bp2 +" | bp3 = " + service.bp1 +"new def: " + defaultBasePrice);
-            console.log("   bp2: " + service.bp2);// + ": bp1 = " + service.bp1 +" | bp2 = " + service.bp2 +" | bp3 = " + service.bp1 +"new def: " + defaultBasePrice);
-            console.log("   bp3: " + service.bp3);// + ": bp1 = " + service.bp1 +" | bp2 = " + service.bp2 +" | bp3 = " + service.bp1 +"new def: " + defaultBasePrice);
-            console.log("   DEF  " + defaultBasePrice);// + ": bp1 = " + service.bp1 +" | bp2 = " + service.bp2 +" | bp3 = " + service.bp1 +"new def: " + defaultBasePrice);
-
         });
 
         getRequest.fail(function (data, textStatus, jqXHR) {
@@ -261,6 +262,11 @@ $(document).ready(function () {
         });
 
     };
+
+
+    /**
+     * FUNCTIONS TO DYNAMICALLY CHANGE CONTENT ACCORDING TO USER CLICKS
+     */
 
     /**
      * The form for adding a service package changes depending on which plan type is selected.
@@ -280,10 +286,6 @@ $(document).ready(function () {
             for(let i = 0; i < services.length; i++) {
                 let id = services[i].getAttribute("id").replace(/\D/g, '');
                 changeServiceLabel(id, period);
-                // need to get the service by its ID?
-                // then change the value to the corresponding baseprice
-                // then change the innerHTML? of the label? with the new baseprice
-                //services[i].setAttribute("value", )
             }
         }
     );

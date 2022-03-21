@@ -66,26 +66,31 @@
             <div class="form-group mb-3">
                 <input type="name" class="form-control" placeholder="Name" value="" id="servicePackageNameId" required>
             </div>
-            <div>
-            <h6>Default Validity Period:</h6>
-            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                <input type="radio" class="btn-check" name="defaultValidity" id="period1" autocomplete="off" value="1" checked>
-                <label class="btn btn-outline-primary" for="period1">1</label>
 
-                <input type="radio" class="btn-check" name="defaultValidity" id="period2" autocomplete="off" value="2">
-                <label class="btn btn-outline-primary" for="period2">2</label>
+            <div class="row">
+                <div class="col-4">
+                    <h6>Default Validity Period:</h6>
+                </div>
+                <div class="col-8">
+                    <div class="container d-flex justify-content-center">
 
-                <input type="radio" class="btn-check" name="defaultValidity" id="period3" autocomplete="off" value="3">
-                <label class="btn btn-outline-primary" for="period3">3</label>
+                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" class="btn-check" name="defaultValidity" id="period1" autocomplete="off" value="1" checked>
+                        <label class="btn btn-outline-primary" for="period1">12 months</label>
+
+                        <input type="radio" class="btn-check" name="defaultValidity" id="period2" autocomplete="off" value="2">
+                        <label class="btn btn-outline-primary" for="period2">24 months</label>
+
+                        <input type="radio" class="btn-check" name="defaultValidity" id="period3" autocomplete="off" value="3">
+                        <label class="btn btn-outline-primary" for="period3">36 months</label>
+                    </div>
+                    </div>
+                </div>
             </div>
-
-            </div>
-
-
         </div>
     </div>
     <div class="row row-cols-4" id="servicesRowId" style="height: 350px">
-        <div class="col-2" id="addingServicesLabelId">
+        <div class="col-2 text-center" id="addingServicesLabelId">
             <h3>Add Services</h3>
             <h3>Total</h3>
             <p id="id_totalCostServices">0</p>
@@ -104,17 +109,13 @@
                     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                         <input type="radio" class="btn-check" name="planType" id="fixed_phone" value="Fixed_Phone" autocomplete="off" checked>
                         <label class="btn btn-outline-primary" for="fixed_phone">Fixed Phone</label>
-
                         <input type="radio" class="btn-check" name="planType" id="mobile_phone" value="Mobile_Phone" autocomplete="off">
                         <label class="btn btn-outline-primary" for="mobile_phone">Mobile Phone</label>
-
                         <input type="radio" class="btn-check" name="planType" id="fixed_internet" value="Fixed_Internet" autocomplete="off">
                         <label class="btn btn-outline-primary" for="fixed_internet">Fixed Internet</label>
-
                         <input type="radio" class="btn-check" name="planType" id="mobile_internet" value="Mobile_Internet" autocomplete="off">
                         <label class="btn btn-outline-primary" for="mobile_internet">Mobile Internet</label>
                     </div>
-
                 </div>
                 <div class="row" id="inputServiceParamsRowId">
                     <div class="col" id="inputServiceBasePricesRowId">
@@ -185,7 +186,7 @@
         </div>
     </div>
     <div class="row row-cols-4" id="optionsRowId">
-        <div class="col-2" id="addingOptionsLabelId" style="height: 350px">
+        <div class="col-2 text-center" id="addingOptionsLabelId" style="height: 350px">
             <h3>Add Optional Products</h3>
             <h3>Total</h3>
             <p>$</p><p id="id_totalCostOptions">0</p>
