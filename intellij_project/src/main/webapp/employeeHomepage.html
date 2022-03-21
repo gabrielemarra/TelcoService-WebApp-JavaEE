@@ -95,6 +95,7 @@
             <h3>Total</h3>
             <p id="id_totalCostServices" value="0">0</p>
         </div>
+
         <div class="col-4" id="addingServicesColId">
             <div class="container allServices" id="id_allServicesContainer">
                 <div class="btn-group-vertical" role="group" aria-label="Basic checkbox toggle button group" id="id_allServicesList">
@@ -102,6 +103,7 @@
                 </div>
             </div>
         </div>
+
         <div class="col-6" id="creatingServicesId">
             <form>
                 <div class="row" id="inputServiceTypeRowId">
@@ -117,7 +119,7 @@
                         <label class="btn btn-outline-primary" for="mobile_internet">Mobile Internet</label>
                     </div>
                 </div>
-                <div class="row" id="inputServiceParamsRowId">
+                <div class="row service-inputs" id="inputServiceParamsRowId">
                     <div class="col" id="inputServiceBasePricesRowId">
                         <div class="form-group mb-3">
                             <input type="baseprice1" class="form-control" placeholder="Base Price 1" value="" id="baseprice1Id" required>
@@ -127,6 +129,9 @@
                         </div>
                         <div class="form-group mb-3">
                             <input type="baseprice3" class="form-control" placeholder="Base Price 3" value="" id="baseprice3Id" required>
+                        </div>
+                        <div class="form-group mb-3" id="submitServiceRowId">
+                            <button type="submit" class="btn btn-primary" id="addServiceButton" value="AddService">Add Service</button>
                         </div>
                     </div>
                     <div class="col" id="inputServicePlanParamsRowId">
@@ -180,13 +185,11 @@
                     </div>
                 </div>
             </form>
-            <div class="form-group mb-3" id="submitServiceRowId">
-                <button type="submit" class="btn btn-primary" id="addServiceButton" value="AddService">Add Service</button>
-            </div>
+
         </div>
     </div>
     <div class="row row-cols-4" id="optionsRowId">
-        <div class="col-2 text-center" id="addingOptionsLabelId" style="height: 350px">
+        <div class="col-2 text-center" id="addingOptionsLabelId">
             <h3>Add Optional Products</h3>
             <h3>Total</h3>
             <p>$</p><p id="id_totalCostOptions">0</p>

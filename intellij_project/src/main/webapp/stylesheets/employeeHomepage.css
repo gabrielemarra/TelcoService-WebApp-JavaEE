@@ -1,11 +1,21 @@
 
 
 .btn-group-vertical{
-    max-height:200px;
-    overflow:auto;
-    overflow-y:scroll;
-    width:100%;
+    width:80%;
+
 }
+
+.allServices{
+    max-height: 250px;
+    overflow-y: scroll;
+}
+
+.allOptionalProducts{
+    max-height: 250px;
+    overflow-y: scroll;
+}
+
+
 
 .navbar{
     margin-bottom: 40px;
@@ -14,4 +24,12 @@
 
 .selectDiv{
     display:none;
+}
+
+.row-cols-4 {
+    padding: 2%;
+    max-height: 350px;
+}
+.service-inputs {
+    padding: 20px;
 }
