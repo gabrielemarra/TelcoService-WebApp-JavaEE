@@ -1,11 +1,13 @@
 
 
 .btn-group-vertical{
-    width:80%;
+    width:90%;
+    padding-left: 5%;
 
 }
 
 .allServices{
+
     max-height: 250px;
     overflow-y: scroll;
 }
@@ -30,6 +32,9 @@
     padding: 2%;
     max-height: 350px;
 }
-.service-inputs {
-    padding: 20px;
+
+
+.form-control {
+    padding:8px;
+    margin-block: 10px;
 }
