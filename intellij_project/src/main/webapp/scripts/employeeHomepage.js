@@ -232,11 +232,11 @@ $(document).ready(function () {
         getRequest.done(function (data, textStatus, jqXHR) {
             let service = jqXHR.responseJSON;
             let defaultBasePrice = 0;
-            if(period = 1) {
+            if(period == 1) {
                 defaultBasePrice = service.bp1;
-            } else if(period = 2) {
+            } else if(period == 2) {
                 defaultBasePrice = service.bp2;
-            } else if(period = 3) {
+            } else if(period == 3) {
                 defaultBasePrice = service.bp3;
             } else {
                 alert("Houston, another problemo!");
