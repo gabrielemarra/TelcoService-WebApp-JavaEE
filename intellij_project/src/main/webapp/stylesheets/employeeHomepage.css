@@ -36,5 +36,26 @@
 
 .form-control {
     padding:8px;
-    margin-block: 10px;
+    margin-block: 15px;
+    margin-left: 10%;
+    width: 80%
+
 }
+
+.btn-outline-secondary {
+    width: 75%;
+    margin-top: 10px;
+    margin-left: 10%;
+}
+
+.btn-group {
+    width: 90%;
+    margin-left: 5%
+
+}
+
+.modal-content {
+    height: 475px;
+}
+
+

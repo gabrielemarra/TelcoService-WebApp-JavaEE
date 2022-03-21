@@ -46,6 +46,7 @@ $(document).ready(function () {
             for(let i=0; i< listServices.length; i++) {
                 // remove "id_checkboxService" from the id string (example: id_checkboxService937)
                 let id = listServices[i].getAttribute("id").replace(/\D/g, '');
+
                 services.push(id);
             }
 
@@ -197,6 +198,11 @@ $(document).ready(function () {
         // TODO: the value should be the base price associated with the validity period the user has currently selected.
         //input.value = bp1;
         input.name = "service";
+        input.onclick="testClick()";
+        //input.dataset.quantity = 0;
+        //input.setAttribute("dataset.quantity", 0);
+
+
 
         label.className = "btn btn-outline-primary";
         label.htmlFor = "id_checkboxService" + service_id;
@@ -296,6 +302,10 @@ $(document).ready(function () {
 
 
 
+    function testClick() {
+        console.log("clicked with onclick!");
+    };
+
     $('input[name="serviceLabel"]').change(
         function() {
             console.log("changed!");
@@ -309,6 +319,24 @@ $(document).ready(function () {
     );
 
     $('input[name="serviceLabel"]').click(
+        function() {
+            console.log("clicked!");
+        }
+    );
+
+    $('input[name="service"]').change(
+        function() {
+            console.log("changed!");
+        }
+    );
+
+    $('input[name="service"]').select(
+        function() {
+            console.log("selected!");
+        }
+    );
+
+    $('input[name="service"]').click(
         function() {
             console.log("clicked!");
         }
