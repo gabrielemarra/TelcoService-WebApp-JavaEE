@@ -20,7 +20,7 @@ public class OptionalProductService {
     public OptionalProductService() {
     }
 
-    public OptionalProduct getOptionalProduct(String optionalProductID){
+    public OptionalProduct getOptionalProduct(int optionalProductID){
         List<OptionalProduct> products = em.createNamedQuery("OptionalProduct.getOptionalProduct", OptionalProduct.class).setParameter(1, optionalProductID).getResultList();
         if (products == null || products.isEmpty()) {
             throw new IllegalArgumentException("Invalid optionalProductID");

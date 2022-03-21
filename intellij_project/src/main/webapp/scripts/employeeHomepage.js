@@ -38,13 +38,25 @@ $(document).ready(function () {
     $("#addServicePackageButton").click (
         function (event) {
             event.preventDefault();
-            // Can we write one function and reuse it for both services and options?
-            let listServices = document.querySelectorAll('input[name=service]:checked');
-            let listOptions = document.querySelectorAll('input[name=option]:checked');
             let name = $("#servicePackageNameId").val();
             let period = document.querySelectorAll('input[name=defaultValidity]:checked'); //
+            let listServices = Array.from(document.querySelectorAll('input[name=service]:checked'));
+            let listOptions = Array.from(document.querySelectorAll('input[name=option]:checked'));
+            let services = new Array();
+            for(let i=0; i< listServices.length; i++) {
+                // remove "id_checkboxService" from the id string (example: id_checkboxService937)
+                let id = listServices[i].getAttribute("id").replace(/\D/g, '');
+                services.push(id);
+            }
 
-            addPackage(name, period[0].value, listServices, listOptions);
+            let options = new Array();
+            for(let i=0; i< listOptions.length; i++) {
+                // remove "id_checkboxOption" from the id string (example: id_checkboxOption28)
+                let id = listOptions[i].getAttribute("id").replace(/\D/g, '');
+                options.push(id);
+            }
+
+            addPackage(name, period[0].value, services, options);
         }
     );
 
@@ -86,7 +98,7 @@ $(document).ready(function () {
            let options = jqXHR.responseJSON;
            if(options.length > 0) {
                for(let i = 0; i < options.length; i++) {
-                   showOptionalProduct(options[i].name, options[i].price);
+                   showOptionalProduct(options[i].name, options[i].price, options[i].option_id);
                }
            }
        });
@@ -101,21 +113,21 @@ $(document).ready(function () {
      * @param name: Name of the new optional product
      * @param price: Decimal price of the optional product
      */
-    function showOptionalProduct(name, price) {
+    function showOptionalProduct(name, price, id) {
         let div = document.getElementById("id_allOptionalProductsList");
         let input = document.createElement('input');
         let label = document.createElement('label')
         input.className = "btn-check";
         input.type = "checkbox";
         /*TODO: Use the optional product ID number instead */
-        input.id = "id_checkbox" + name.replace(/\s+/g, '');
+        input.id = "id_checkboxOption" + id;
         input.autocomplete = "off";
         input.value = price;
         input.name = "option";
 
 
         label.className = "btn btn-outline-primary";
-        label.htmlFor = "id_checkbox" + name.replace(/\s+/g, '');
+        label.htmlFor = "id_checkboxOption" + id;
         label.appendChild(document.createTextNode(" $" + price + " - "+ name));
         div.appendChild(input);
         div.appendChild(label);
@@ -179,14 +191,15 @@ $(document).ready(function () {
 
         input.className = "btn-check services";
         input.type = "checkbox";
-        input.id = "id_checkbox" + service_id;
+        input.id = "id_checkboxService" + service_id;
         input.autocomplete = "off";
         // TODO: the value should be the base price associated with the validity period the user has currently selected.
-        input.value = bp1;
+        //input.value = bp1;
         input.name = "service";
 
         label.className = "btn btn-outline-primary";
-        label.htmlFor = "id_checkbox" + service_id;
+        label.htmlFor = "id_checkboxService" + service_id;
+        label.id = "id_serviceLabel" + service_id;
         // TODO: the value shown should be the base price associated with the validity period the user has currently
         //  selected.
         label.appendChild(document.createTextNode("$" + bp1 + " / " + "$" + bp2 + " / " + "$" + bp3 + "   " + planType.toString()));
@@ -214,6 +227,41 @@ $(document).ready(function () {
         });
     };
 
+    function changeServiceLabel(id, period) {
+        let getRequest = $.get("GetService", {service_id: id});
+        getRequest.done(function (data, textStatus, jqXHR) {
+            let service = jqXHR.responseJSON;
+            let defaultBasePrice = 0;
+            if(period = 1) {
+                defaultBasePrice = service.bp1;
+            } else if(period = 2) {
+                defaultBasePrice = service.bp2;
+            } else if(period = 3) {
+                defaultBasePrice = service.bp3;
+            } else {
+                alert("Houston, another problemo!");
+            }
+
+            let labelElement = document.getElementById("id_serviceLabel" + service.service_id)
+
+            let child = labelElement.lastChild;
+            labelElement.removeChild(child)
+            labelElement.appendChild(document.createTextNode("$" + defaultBasePrice + " | " + service.type));
+            console.log("For service #" + service.service_id);// + ": bp1 = " + service.bp1 +" | bp2 = " + service.bp2 +" | bp3 = " + service.bp1 +"new def: " + defaultBasePrice);
+            console.log("   bp1: " + service.bp1);// + ": bp1 = " + service.bp1 +" | bp2 = " + service.bp2 +" | bp3 = " + service.bp1 +"new def: " + defaultBasePrice);
+            console.log("   bp2: " + service.bp2);// + ": bp1 = " + service.bp1 +" | bp2 = " + service.bp2 +" | bp3 = " + service.bp1 +"new def: " + defaultBasePrice);
+            console.log("   bp3: " + service.bp3);// + ": bp1 = " + service.bp1 +" | bp2 = " + service.bp2 +" | bp3 = " + service.bp1 +"new def: " + defaultBasePrice);
+            console.log("   DEF  " + defaultBasePrice);// + ": bp1 = " + service.bp1 +" | bp2 = " + service.bp2 +" | bp3 = " + service.bp1 +"new def: " + defaultBasePrice);
+
+        });
+
+        getRequest.fail(function (data, textStatus, jqXHR) {
+            alert("Houston we have a problemo");
+
+        });
+
+    };
+
     /**
      * The form for adding a service package changes depending on which plan type is selected.
      */
@@ -230,8 +278,8 @@ $(document).ready(function () {
             let period = $(this).val();
             let services = document.getElementsByName("service")
             for(let i = 0; i < services.length; i++) {
-                let id = services[i].getAttribute("id").replace(/\D/g, '');;
-
+                let id = services[i].getAttribute("id").replace(/\D/g, '');
+                changeServiceLabel(id, period);
                 // need to get the service by its ID?
                 // then change the value to the corresponding baseprice
                 // then change the innerHTML? of the label? with the new baseprice

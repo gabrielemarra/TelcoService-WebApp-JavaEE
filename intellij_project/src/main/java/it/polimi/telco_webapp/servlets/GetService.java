@@ -4,12 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.polimi.telco_webapp.auxiliary.exceptions.NoServicePackageFound;
-import it.polimi.telco_webapp.entities.OptionalProduct;
 import it.polimi.telco_webapp.entities.Service;
-import it.polimi.telco_webapp.services.OptionalProductService;
 import it.polimi.telco_webapp.services.ServiceService;
-import it.polimi.telco_webapp.services.ServicePackageService;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.servlet.ServletException;
@@ -20,17 +16,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "AddServicePackage", value = "/AddServicePackage")
-public class AddServicePackage extends HttpServlet {
-    @EJB(name = "it.polimi.db2.entities.services/ServicePackageService")
-    private ServicePackageService servicePackageService;
+@WebServlet(name = "GetService", value = "/GetService")
+public class GetService extends HttpServlet {
     @EJB(name = "it.polimi.db2.entities.services/ServiceService")
     private ServiceService serviceService;
-    @EJB(name = "it.polimi.db2.entities.services/OptionalProductService")
-    private OptionalProductService optionalProductService;
 
     /**
      * Method to handle errors, send json with error info
@@ -55,34 +46,31 @@ public class AddServicePackage extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = StringEscapeUtils.escapeJava(request.getParameter("name"));
-        Integer period = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("period")));
-
-        String services[] = request.getParameterValues("listServices[]");
-        String options[] = request.getParameterValues("listOptions[]");
-
-        List<Service> servicesList = new ArrayList<Service>();
-        for(int i = 0; i < services.length; i++) {
-            Service temp = serviceService.getService(Integer.parseInt(services[i]));
-            servicesList.add(temp);
-        }
-
-        List<OptionalProduct> optionsList = new ArrayList<OptionalProduct>();
-        for(int i = 0; i < options.length; i++) {
-            optionsList.add(optionalProductService.getOptionalProduct(Integer.parseInt(options[i])));
-        }
-
-        try{
-            servicePackageService.insertServicePackage(name, period, optionsList, servicesList);
-        } catch (EJBException e) {
-            sendError(request, response, "InternalDBErrorException", e.getCause().getMessage());
-        }
+        //doGet(request, response);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
+        try {
+            Service oneService = serviceService.getService(Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("service_id"))));
 
+            Gson gson = new Gson();
+
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            JsonElement jsonElement = new JsonObject();
+            jsonElement.getAsJsonObject().addProperty("bp1", oneService.getBasePrice1());
+            jsonElement.getAsJsonObject().addProperty("bp2", oneService.getBasePrice2());
+            jsonElement.getAsJsonObject().addProperty("bp3", oneService.getBasePrice3());
+            jsonElement.getAsJsonObject().addProperty("service_id", oneService.getId());
+            jsonElement.getAsJsonObject().addProperty("type", oneService.getServiceType().toString());
+
+
+            response.getWriter().println(gson.toJson(jsonElement));
+        } catch (EJBException e) {
+            sendError(request, response, "NoService", e.getCause().getMessage());
+        }
 
     }
 }

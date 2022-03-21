@@ -39,8 +39,8 @@ public class ServicePackageService {
 
         bundle.setName(name);
         bundle.setValidityPeriod(validity);
-        //bundle.setOptionalServices(options);
-        //bundle.setServices(services);
+        bundle.setOptionalServices(options);
+        bundle.setServices(services);
 
         em.persist(bundle);
         return bundle;
