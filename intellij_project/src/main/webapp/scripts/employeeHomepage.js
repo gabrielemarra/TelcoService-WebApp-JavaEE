@@ -201,9 +201,10 @@ $(document).ready(function () {
         label.className = "btn btn-outline-primary";
         label.htmlFor = "id_checkboxService" + service_id;
         label.id = "id_serviceLabel" + service_id;
+        label.name= "serviceLabel";
         // TODO: the value shown should be the base price associated with the validity period the user has currently
         //  selected.
-        label.appendChild(document.createTextNode("$" + bp1 + " / " + "$" + bp2 + " / " + "$" + bp3 + "   " + planType.toString()));
+        label.appendChild(document.createTextNode("$" + bp1 + " / " + "$" + bp2 + " / " + "$" + bp3 + "   " + planType.toString().replace('_', ' ')));
 
         div.appendChild(input);
         div.appendChild(label);
@@ -249,11 +250,13 @@ $(document).ready(function () {
                 alert("Houston, another problemo!");
             }
 
+            let inputElement = document.getElementById("id_checkboxService" + service.service_id)
+            inputElement.setAttribute("value", defaultBasePrice.toString());
             let labelElement = document.getElementById("id_serviceLabel" + service.service_id)
 
             let child = labelElement.lastChild;
             labelElement.removeChild(child)
-            labelElement.appendChild(document.createTextNode("$" + defaultBasePrice + " | " + service.type));
+            labelElement.appendChild(document.createTextNode("$" + defaultBasePrice + " | " + service.type.replace('_', ' ')));
         });
 
         getRequest.fail(function (data, textStatus, jqXHR) {
@@ -286,9 +289,48 @@ $(document).ready(function () {
             for(let i = 0; i < services.length; i++) {
                 let id = services[i].getAttribute("id").replace(/\D/g, '');
                 changeServiceLabel(id, period);
+                // update total
             }
         }
     );
+
+
+
+    $('input[name="serviceLabel"]').change(
+        function() {
+            console.log("changed!");
+        }
+    );
+
+    $('input[name="serviceLabel"]').select(
+        function() {
+            console.log("selected!");
+        }
+    );
+
+    $('input[name="serviceLabel"]').click(
+        function() {
+            console.log("clicked!");
+        }
+    );
+
+    /*
+
+    let sumElement = document.getElementById("id_totalCostServices");
+    let val = parseInt(sumElement.getAttribute("value"));
+    if($(this).is(':checked')) {
+        val = val + parseInt($(this).val());
+    } else {
+        val = val - parseInt($(this).val());
+    }
+    // update the value attribute
+    sumElement.setAttribute("value", val.toString());
+    // update the html text
+    sumElement.innerHTML = val.toString();
+    * */
+
+
+
 
 
 
