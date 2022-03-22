@@ -196,7 +196,9 @@ $(document).ready(function () {
        let postRequest = $.post("AddService", {planType: planType, bp1:bp1, bp2:bp2, bp3:bp3, gigIncl: gigIncl, smsIncl: smsIncl, minIncl:minIncl, gigExtra: gigExtra, smsExtra: smsExtra, minExtra:minExtra});
        postRequest.done(function (data, textStatus, jqXHR) {
            let service_id = jqXHR.responseText.replace(/\D/g, '');
-           showService(planType, bp1, bp2, bp3,service_id);
+
+           //showService(planType, bp1, bp2, bp3, service_id, gigIncl, smsIncl, minIncl, gigExtr, smsExtr, minExtr) {
+           showService(planType, bp1, bp2, bp3,service_id, gigIncl, smsIncl, minIncl, gigExtra, smsExtra, minExtra);
        });
        postRequest.fail(function (data, textStatus, jqXHR) {
            alert("adding service POST fail");
@@ -213,7 +215,7 @@ $(document).ready(function () {
             let services = jqXHR.responseJSON;
             if(services.length > 0) {
                 for(let i = 0; i < services.length; i++) {
-                    showService(services[i].planType, services[i].bp1, services[i].bp2, services[i].bp3, services[i].service_id);
+                    showService(services[i].planType, services[i].bp1, services[i].bp2, services[i].bp3, services[i].service_id, services[i].gigIncl, services[i].smsIncl, services[i].minIncl, services[i].gigExtra, services[i].smsExtra, services[i].minExtra);
                 }
             }
         });
@@ -227,14 +229,7 @@ $(document).ready(function () {
      *
      *
      */
-    function showService(planType, bp1, bp2, bp3, service_id) {
-        let gigIncl = 0;
-        let minIncl = 0;
-        let smsIncl = 0;
-
-        let gigExtr = 0;
-        let minExtr = 0;
-        let smsExtr = 0;
+    function showService(planType, bp1, bp2, bp3, service_id, gigIncl, smsIncl, minIncl, gigExtr, smsExtr, minExtr) {
 
         let ul = document.getElementById("id_allServicesTiles");
 
@@ -242,7 +237,7 @@ $(document).ready(function () {
         li.className = "list-group-item list-group-item-action";
         li.setAttribute("aria-current", "true");
 
-        /////// Outline of the guts/////////
+        /////////////////////////// Outline of the guts ////////////////////////////
         let rowMajor = document.createElement("div");
         rowMajor.className = "d-flex w-100 align-content-center row";
 

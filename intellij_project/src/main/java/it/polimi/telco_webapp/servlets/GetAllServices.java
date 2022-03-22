@@ -67,6 +67,13 @@ public class GetAllServices extends HttpServlet {
                 jsonElement.getAsJsonObject().addProperty("bp3", temp.getBasePrice3());
                 jsonElement.getAsJsonObject().addProperty("planType", temp.getServiceType().toString());
                 jsonElement.getAsJsonObject().addProperty("service_id", temp.getId());
+                jsonElement.getAsJsonObject().addProperty("gigIncl", temp.getGigIncluded());
+                jsonElement.getAsJsonObject().addProperty("smsIncl", temp.getSmsIncluded());
+                jsonElement.getAsJsonObject().addProperty("minIncl", temp.getMinIncluded());
+                jsonElement.getAsJsonObject().addProperty("gigExtra", temp.getGigExtra());
+                jsonElement.getAsJsonObject().addProperty("smsExtra", temp.getSmsExtra());
+                jsonElement.getAsJsonObject().addProperty("minExtra", temp.getMinExtra());
+
 
 
                 jsonArray.add(jsonElement);
