@@ -67,7 +67,6 @@ $(document).ready(function () {
     showAllOptionalProducts();
     showAllServices();
 
-
     /**
      * FUNCTIONS RELATED TO OPTIONAL PRODUCTS
      */
@@ -115,9 +114,7 @@ $(document).ready(function () {
      * @param price: Decimal price of the optional product
      */
     function showOptionalProduct(name, price, option_id) {
-
         let ul = document.getElementById("id_allOptionsTiles");
-
 
         let li = document.createElement("li");
         li.className = "list-group-item list-group-item-action";
@@ -154,8 +151,6 @@ $(document).ready(function () {
         divInner.appendChild(plusBtn);
         divInner.appendChild(quantity);
         divInner.appendChild(minusBtn);
-
-        //plusBtn.parentNode.querySelector('input[id=' + id + ']').stepUp();
 
         divOuter1.appendChild(p);
         divOuter1.appendChild(divInner);
@@ -280,7 +275,6 @@ $(document).ready(function () {
         param2.className = "lead text-muted";
 
         // Filling out minorExtra <div class="col-5">
-
         let minorExtraRow = document.createElement("div");
         minorExtraRow.className = "row";
 
@@ -297,7 +291,6 @@ $(document).ready(function () {
         extra2.className = "fw-lighter text-muted";
 
         // Filling out params by plan type
-
         if(planType == "Mobile_Internet" | planType == "Fixed_Internet") {
             param1.appendChild(document.createTextNode(gigIncl.toString() + " GB"));
             extra1.appendChild(document.createTextNode("$"+ gigExtr.toString() + "/extra GB"));
@@ -326,25 +319,29 @@ $(document).ready(function () {
         minorExtra.appendChild(minorExtraRow);
 
         // Filling out majorBtns <div class="col-2">
-        let btnP = document.createElement("button");
-        btnP.className = "btn btn-sm btn-default btn-circle cart-actions";
+        let btnP = document.createElement("input");
+        btnP.className = "btn btn-sm btn-default btn-plus";
+        btnP.setAttribute("name", "plusBtn");
         btnP.type = "button";
-        btnP.appendChild(document.createTextNode("+"));
+        btnP.id = "id_btnPlus" + service_id;
+        btnP.value = "+"
 
         let count = document.createElement("small");
         count.className = "text-muted";
         count.id = "id_serviceQuantity" + service_id.toString();
+        count.value = "0";
+        count.appendChild(document.createTextNode(count.value));
 
-        let btnM = document.createElement("button");
-        btnM.className = "btn btn-sm btn-default btn-circle cart-actions";
+        let btnM = document.createElement("input");
+        btnM.setAttribute("name", "minusBtn");
+        btnM.className = "btn btn-sm btn-default btn-minus";
         btnM.type = "button";
-        btnM.appendChild(document.createTextNode("-"));
+        btnM.id = "id_btnMinus" + service_id.toString();
+        btnM.value = "-";
 
         majorBtns.appendChild(btnP);
         majorBtns.appendChild(count);
         majorBtns.appendChild(btnM);
-
-
 
         // Filling out minorMonth <div class="col-5">
         let defaultPeriodTag = document.createElement("p");
@@ -372,9 +369,6 @@ $(document).ready(function () {
         li.appendChild(rowMajor);
         li.appendChild(rowMinor);
         ul.appendChild(li);
-
-
-
 
     };
 
@@ -432,41 +426,19 @@ $(document).ready(function () {
             } else {
                 alert("Houston, another problemo!");
             }
-
-            /*
-            *  // Filling out minorMonth <div class="col-5">
-        let defaultPeriodTag = document.createElement("p");
-        defaultPeriodTag.id = "id_defaultPeriod" + service_id.toString();
-        defaultPeriodTag.className = "text-muted mb-1";
-        let defaultStr = "$" + bp1.toString() + " /mo for 12 months";
-        defaultPeriodTag.appendChild(document.createTextNode(defaultStr));
-
-        let otherPeriodsTag = document.createElement("small");
-        otherPeriodsTag.className = "fw-lighter text-muted";
-        otherPeriodsTag.id = "id_otherPeriods" + service_id.toString();
-        let otherStr = "$" + bp2.toString() + " - 24mo | $" + bp3.toString() + " - 36mo";
-        otherPeriodsTag.appendChild(document.createTextNode(otherStr));
-            * */
-
-
             let defaultElement = document.getElementById("id_defaultPeriod" + service.service_id);
             let otherElement = document.getElementById("id_otherPeriods" + service.service_id);
 
-            let childDefault = defaultElement.lastChild;
-            let childOther = otherElement.lastChild;
-            defaultElement.removeChild(childDefault);
-            otherElement.removeChild(childOther);
+            defaultElement.removeChild(defaultElement.lastChild);
+            otherElement.removeChild(otherElement.lastChild);
 
             defaultElement.appendChild(document.createTextNode("$" + defaultBasePrice + "/mo for" + period * 12 + "months"));
             otherElement.appendChild(document.createTextNode("$" + other1 + " - " + period1 * 12 + "mo | $" + other2 + " - " + period2 * 12 + "mo"));
-            o
-        });
 
+        });
         getRequest.fail(function (data, textStatus, jqXHR) {
             alert("Houston we have a problemo");
-
         });
-
     };
 
 
@@ -496,54 +468,6 @@ $(document).ready(function () {
             }
         }
     );
-
-
-
-    function testClick() {
-        console.log("clicked with onclick!");
-    };
-
-    $('input[class="cart-actions"]').change(
-        function() {
-            console.log("changed class!");
-        }
-    );
-
-    $('input[class="cart-actions"]').select(
-        function() {
-            console.log("selected class!");
-        }
-    );
-
-    $('input[class="cart-actions"]').click(
-        function() {
-            console.log("clicked class!");
-        }
-    );
-//////////////////////
-
-    /*
-
-    let sumElement = document.getElementById("id_totalCostServices");
-    let val = parseInt(sumElement.getAttribute("value"));
-    if($(this).is(':checked')) {
-        val = val + parseInt($(this).val());
-    } else {
-        val = val - parseInt($(this).val());
-    }
-    // update the value attribute
-    sumElement.setAttribute("value", val.toString());
-    // update the html text
-    sumElement.innerHTML = val.toString();
-    * */
-
-
-
-
-
-
-
-
 });
 
 
