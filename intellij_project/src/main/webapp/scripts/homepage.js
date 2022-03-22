@@ -59,9 +59,12 @@ $(document).ready(function () {
         let costNode = clone.querySelector("span");
         let validityPeriodNode = clone.querySelector(".validityPeriod");
         let servicesListNode = clone.querySelector(".servicesList")
+        let buttonSelectNode = clone.querySelector("button")
 
         titleNode.textContent = servicePackageInfo.package_name;
-        titleNode.id = servicePackageInfo.package_id;
+
+        //the package id is stored inside this custom attribute
+        buttonSelectNode.dataset.package_id = servicePackageInfo.package_id
 
         let defaulValidityPeriod = servicePackageInfo.default_validity_period;
         costNode.textContent = servicePackageInfo.prices[defaulValidityPeriod - 1];
@@ -75,7 +78,8 @@ $(document).ready(function () {
             let li = document.createElement('li');
 
             let currentService = includedServices[includedServicesKey];
-            li.textContent= currentService.serviceType;
+            let serviceType = currentService.serviceType;
+            li.textContent = serviceType.replace("_", " ");
 
             servicesListNode.appendChild(li);
         }
