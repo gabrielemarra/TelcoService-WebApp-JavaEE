@@ -60,8 +60,11 @@
 </nav>
 
 <div class="container">
-    <div class="row row-cols-4" id="introRowId">
-        <div class="col-6" id="addPackageColId">
+    <div class="row" id="introRowId">
+        <div class="row-cols-3">
+
+        </div>
+        <div class="col-3" id="addPackageColId">
             <h3>Create Service Package</h3>
             <div class="form-group mb-3 packageName">
                 <input type="name" class="form-control" placeholder="Name" value="" id="servicePackageNameId" required>
@@ -87,26 +90,28 @@
                 </div>
             </div>
         </div>
+        <div class="col-3">
+
+        </div>
     </div>
-    <div class="row row-cols-4" id="servicesRowId" style="height: 350px">
+    <div class="row" id="servicesRowId" style="height: 350px">
         <div class="col-2 text-center" id="addingServicesLabelId">
             <h3>Add Services</h3>
             <h3>Total</h3>
             <p id="id_totalCostServices" value="0">0</p>
         </div>
 
+
         <div class="col-4" id="addingServicesColId">
             <div class="container allServices" id="id_allServicesContainer">
-                <div class="btn-group-vertical" role="group" aria-label="Basic checkbox toggle button group" id="id_allServicesList">
+                <ul class="list-group list-group-flush" id="id_allServicesTiles">
 
-                </div>
+                </ul>
             </div>
             <div>
                 <button type="button" class="btn btn-outline-secondary" id="id_newServiceModal" data-bs-toggle="modal" data-bs-target="#createServiceModal">+</button>
             </div>
         </div>
-
-
     </div>
     <div class="row row-cols-4" id="optionsRowId">
         <div class="col-2 text-center" id="addingOptionsLabelId">
@@ -116,9 +121,9 @@
         </div>
         <div class="col-4" id-addingOptionsColId>
             <div class="container allOptionalProducts" id="id_allOptionalProductsContainer">
-                <div class="btn-group-vertical" role="group" aria-label="Basic checkbox toggle button group" id="id_allOptionalProductsList">
+                <ul class="list-group list-group-flush" id="id_allOptionsTiles">
 
-                </div>
+                </ul>
             </div>
             <div>
                 <button type="button" class="btn btn-outline-secondary" id="id_newOptionModal" data-bs-toggle="modal" data-bs-target="#createOptionModal">+</button>
@@ -127,8 +132,6 @@
         </div>
 
     </div>
-
-
     <div class="row row-cols-4" id="outroRowId">
         <div class="form-group mb-3">
             <button type="submit" class="btn btn-primary" value="AddServicePackage" id="addServicePackageButton">Add Service Package</button>

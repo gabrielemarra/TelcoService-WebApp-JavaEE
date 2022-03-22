@@ -114,13 +114,76 @@ $(document).ready(function () {
      * @param name: Name of the new optional product
      * @param price: Decimal price of the optional product
      */
-    function showOptionalProduct(name, price, id) {
+    function showOptionalProduct(name, price, option_id) {
+
+        let ul = document.getElementById("id_allOptionsTiles");
+
+
+        let li = document.createElement("li");
+        li.className = "list-group-item list-group-item-action";
+        li.setAttribute("aria-current", "true");
+
+        let divOuter1 = document.createElement("div");
+        divOuter1.className = "d-flex w-100 justify-content-between";
+
+        let p = document.createElement("p");
+        p.className = "lead mb-1";
+        p.appendChild(document.createTextNode(name));
+
+        let divInner = document.createElement("div");
+
+        let plusBtn = document.createElement("button");
+        plusBtn.className = "btn btn-sm btn-default btn-circle cart-actions";
+        plusBtn.type = "button";
+
+        plusBtn.appendChild(document.createTextNode("+"));
+
+        let id = "id_serviceQuantity" + option_id;
+
+        let quantity = document.createElement("small");
+        quantity.className = "text-muted";
+        quantity.id = id;
+        quantity.type = "number";
+        quantity.value = "0";
+
+        let minusBtn = document.createElement("button");
+        minusBtn.className = "btn btn-sm btn-default btn-circle cart-actions";
+        minusBtn.type = "button";
+        minusBtn.appendChild(document.createTextNode("-"));
+
+        divInner.appendChild(plusBtn);
+        divInner.appendChild(quantity);
+        divInner.appendChild(minusBtn);
+
+        //plusBtn.parentNode.querySelector('input[id=' + id + ']').stepUp();
+
+        divOuter1.appendChild(p);
+        divOuter1.appendChild(divInner);
+
+        let divOuter2 = document.createElement("div");
+
+        let p2 = document.createElement("p");
+        p2.className = "text-muted mb-1";
+        p2.appendChild(document.createTextNode("$" + price + "/mo"));
+
+        divOuter2.appendChild(p2);
+
+        li.appendChild(divOuter1);
+        li.appendChild(divOuter2);
+
+        ul.appendChild(li);
+
+
+
+
+        /*
         let div = document.getElementById("id_allOptionalProductsList");
         let input = document.createElement('input');
         let label = document.createElement('label')
         input.className = "btn-check";
-        input.type = "checkbox";
+        input.type = "checkbox"; */
         /*TODO: Use the optional product ID number instead */
+        /*
         input.id = "id_checkboxOption" + id;
         input.autocomplete = "off";
         input.value = price;
@@ -132,6 +195,7 @@ $(document).ready(function () {
         label.appendChild(document.createTextNode(" $" + price + " - "+ name));
         div.appendChild(input);
         div.appendChild(label);
+        */
    };
 
     /**
@@ -187,33 +251,69 @@ $(document).ready(function () {
      *
      */
     function showService(planType, bp1, bp2, bp3, service_id) {
-        let div = document.getElementById("id_allServicesList");
-        let input = document.createElement('input');
-        let label = document.createElement('label')
-
-        input.className = "btn-check services";
-        input.type = "checkbox";
-        input.id = "id_checkboxService" + service_id;
-        input.autocomplete = "off";
-        // TODO: the value should be the base price associated with the validity period the user has currently selected.
-        //input.value = bp1;
-        input.name = "service";
-        input.onclick="testClick()";
-        //input.dataset.quantity = 0;
-        //input.setAttribute("dataset.quantity", 0);
+        let ul = document.getElementById("id_allServicesTiles");
 
 
+        let li = document.createElement("li");
+        li.className = "list-group-item list-group-item-action";
+        li.setAttribute("aria-current", "true");
 
-        label.className = "btn btn-outline-primary";
-        label.htmlFor = "id_checkboxService" + service_id;
-        label.id = "id_serviceLabel" + service_id;
-        label.name= "serviceLabel";
-        // TODO: the value shown should be the base price associated with the validity period the user has currently
-        //  selected.
-        label.appendChild(document.createTextNode("$" + bp1 + " / " + "$" + bp2 + " / " + "$" + bp3 + "   " + planType.toString().replace('_', ' ')));
+        let divOuter1 = document.createElement("div");
+        divOuter1.className = "d-flex w-100 justify-content-between";
 
-        div.appendChild(input);
-        div.appendChild(label);
+        let p = document.createElement("p");
+        p.className = "lead mb-1";
+        p.appendChild(document.createTextNode(planType.replace('_', ' ') + " Service"));
+
+        let divInner = document.createElement("div");
+
+        let plusBtn = document.createElement("button");
+        plusBtn.className = "btn btn-sm btn-default btn-circle cart-actions";
+        plusBtn.type = "button";
+
+        plusBtn.appendChild(document.createTextNode("+"));
+
+        let id = "id_serviceQuantity" + service_id;
+
+        let quantity = document.createElement("small");
+        quantity.className = "text-muted";
+        quantity.id = id;
+        quantity.type = "number";
+        quantity.value = "0";
+
+        let minusBtn = document.createElement("button");
+        minusBtn.className = "btn btn-sm btn-default btn-circle cart-actions";
+        minusBtn.type = "button";
+        minusBtn.appendChild(document.createTextNode("-"));
+
+        divInner.appendChild(plusBtn);
+        divInner.appendChild(quantity);
+        divInner.appendChild(minusBtn);
+
+        //plusBtn.parentNode.querySelector('input[id=' + id + ']').stepUp();
+
+        divOuter1.appendChild(p);
+        divOuter1.appendChild(divInner);
+
+        let divOuter2 = document.createElement("div");
+
+        let p2 = document.createElement("p");
+        p2.className = "text-muted mb-1";
+        p2.appendChild(document.createTextNode("$" + bp1 + "/mo for 12 months"));
+
+        let otherPrices = document.createElement("small");
+        otherPrices.className = "fw-lighter text-muted";
+        otherPrices.appendChild(document.createTextNode("$" + bp2 + " - 12mo | $" + bp3 + " - 36mo"));
+
+        divOuter2.appendChild(p2);
+        divOuter2.appendChild(otherPrices);
+
+        li.appendChild(divOuter1);
+        li.appendChild(divOuter2);
+
+        ul.appendChild(li);
+
+
 
     };
 
