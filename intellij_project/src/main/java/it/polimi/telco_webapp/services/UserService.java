@@ -115,11 +115,11 @@ public class UserService {
     /**
      * Checks if the user associated with the provided user_id is insolvent or not
      * TODO: Should this be in OrderService.java instead of here?
-     * @param user_id: User id of the user to check insolvency
+     * @param user: User object of the user to check insolvency
      * @return True if the user is insolvent and false if the user is not insolvent.
      */
-    public List<Order> getRejectedOrders(int user_id) {
-        List<Order> rejectedOrders = em.createNamedQuery("Order.getRejectedOrdersBySingleUser").setParameter(1, user_id).getResultList();
+    public List<Order> getRejectedOrders(User user) {
+        List<Order> rejectedOrders = em.createNamedQuery("Order.getRejectedOrdersBySingleUser").setParameter(1, user).getResultList();
         return rejectedOrders;
     }
 

@@ -14,7 +14,7 @@ import java.util.List;
 })
 @NamedQuery(name = "Order.getOrder", query = "SELECT o FROM Order o WHERE o.id = ?1")
 @NamedQuery(name = "Order.getOrderBySingleUser", query = "SELECT o FROM Order o WHERE o.user = ?1")
-@NamedQuery(name = "Order.getRejectedOrdersBySingleUser", query = "SELECT o FROM Order o WHERE o.user = ?1 AND o.status = 'REJECTED'")
+@NamedQuery(name = "Order.getRejectedOrdersBySingleUser", query = "SELECT o FROM Order o WHERE o.user = ?1 AND o.status = it.polimi.telco_webapp.auxiliary.OrderStatus.REJECTED")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,9 +40,11 @@ public class Order {
     @Column(name = "chosen_validity_period", nullable = false)
     private Integer chosenValidityPeriod;
 
+    /* TODO-NE: This used to be type User... it should be an integer.. */
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
     /* TODO: should packageID be an integer? (1/3) */
     @ManyToOne(optional = false)
     @JoinColumn(name = "package_id", nullable = false)
@@ -65,13 +67,9 @@ public class Order {
 
     public int getChosenValidityPeriod() { return chosenValidityPeriod; }
 
-    public User getUser() {
-        return user;
-    }
+    public User getUser() {return user;}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+    public void setUser(User user) {this.user = user;}
 
     public BigDecimal getTotalPrice() {
         return totalPrice;

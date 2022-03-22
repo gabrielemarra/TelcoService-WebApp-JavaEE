@@ -56,8 +56,8 @@
     </header>
 
     <main>
-        <div class="row row-cols-4 row-cols-md-4 mb-3 text-center">
-            <div class="col">
+        <div class="row mb-3 text-center" id="servicePackageRow">
+            <!--<div class="col">
                 <div class="card mb-4 rounded-3 shadow-sm">
                     <div class="card-header py-3">
                         <h4 class="my-0 fw-normal">Package Name 1</h4>
@@ -72,65 +72,16 @@
                         <button type="button" class="w-100 btn btn-lg btn-outline-primary">Select</button>
                     </div>
                 </div>
-            </div>
-            <div class="col">
-                <div class="card mb-4 rounded-3 shadow-sm">
-                    <div class="card-header py-3">
-                        <h4 class="my-0 fw-normal">Package Name 2</h4>
-                    </div>
-                    <div class="card-body">
-                        <h1 class="card-title package-card-title">Base Price<small
-                                class="text-muted fw-light">/mo</small></h1>
-                        <ul class="list-unstyled mt-3 mb-4">
-                            <li>Services incl</li>
-                            <li>Default Validity Period?</li>
-                        </ul>
-                        <button type="button" class="w-100 btn btn-lg btn-primary">Select</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card mb-4 rounded-3 shadow-sm">
-                    <div class="card-header py-3">
-                        <h4 class="my-0 fw-normal">Package Name 3</h4>
-                    </div>
-                    <div class="card-body">
-                        <h1 class="card-title package-card-title">Base Price<small
-                                class="text-muted fw-light">/mo</small></h1>
-                        <ul class="list-unstyled mt-3 mb-4">
-                            <li>Services incl</li>
-                            <li>Default Validity Period?</li>
-                        </ul>
-                        <button type="button" class="w-100 btn btn-lg btn-primary">Select</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card mb-4 rounded-3 shadow-sm">
-                    <div class="card-header py-3">
-                        <h4 class="my-0 fw-normal">Package Name 4</h4>
-                    </div>
-                    <div class="card-body">
-                        <h1 class="card-title package-card-title">Base Price<small
-                                class="text-muted fw-light">/mo</small></h1>
-                        <ul class="list-unstyled mt-3 mb-4">
-                            <li>Services incl</li>
-                            <li>Default Validity Period?</li>
-                        </ul>
-                        <button type="button" class="w-100 btn btn-lg btn-primary">Select</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row row-cols-4 row-cols-md-4 mb-3 text-center">
-            <div class="col">
+            </div>-->
+            <div class="col-md-3" hidden>
                 <div class="card mb-4 rounded-3 shadow-sm">
                     <div class="card-header py-3">
                         <h4 class="my-0 fw-normal">Package Name 1</h4>
                     </div>
                     <div class="card-body">
-                        <h1 class="card-title package-card-title">Base Cost<small
-                                class="text-muted fw-light">/mo</small></h1>
+                        <h1 class="card-title package-card-title">Base Cost
+                            <small class="text-muted fw-light">/mo</small>
+                        </h1>
                         <ul class="list-unstyled mt-3 mb-4">
                             <li>Services incl</li>
                             <li>Default Validity Period?</li>
@@ -139,58 +90,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="card mb-4 rounded-3 shadow-sm">
-                    <div class="card-header py-3">
-                        <h4 class="my-0 fw-normal">Package Name 2</h4>
-                    </div>
-                    <div class="card-body">
-                        <h1 class="card-title package-card-title">Base Price<small
-                                class="text-muted fw-light">/mo</small></h1>
-                        <ul class="list-unstyled mt-3 mb-4">
-                            <li>Services incl</li>
-                            <li>Default Validity Period?</li>
-                        </ul>
-                        <button type="button" class="w-100 btn btn-lg btn-primary">Select</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card mb-4 rounded-3 shadow-sm">
-                    <div class="card-header py-3">
-                        <h4 class="my-0 fw-normal">Package Name 3</h4>
-                    </div>
-                    <div class="card-body">
-                        <h1 class="card-title package-card-title">Base Price<small
-                                class="text-muted fw-light">/mo</small></h1>
-                        <ul class="list-unstyled mt-3 mb-4">
-                            <li>Services incl</li>
-                            <li>Default Validity Period?</li>
-                        </ul>
-                        <button type="button" class="w-100 btn btn-lg btn-primary">Select</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card mb-4 rounded-3 shadow-sm">
-                    <div class="card-header py-3">
-                        <h4 class="my-0 fw-normal">Package Name 4</h4>
-                    </div>
-                    <div class="card-body">
-                        <h1 class="card-title package-card-title">Base Price<small
-                                class="text-muted fw-light">/mo</small></h1>
-                        <ul class="list-unstyled mt-3 mb-4">
-                            <li>Services incl</li>
-                            <li>Default Validity Period?</li>
-                        </ul>
-                        <button class="btnSelect" value="Select" id="selectButton">Select</button>
-                        <!--button type="btnSelect" class="w-100 btn btn-lg btn-primary" id="selectButton">Select</button-->
-                    </div>
-                </div>
-            </div>
+
         </div>
 
-        <h2 class="display-6 text-center mb-4">Rejected Orders</h2>
+        <h2 class="display-6 text-center mb-4" id="id_rejected_orders_table_title">Rejected Orders</h2>
 
         <div class="container">
             <div class="row">
@@ -199,8 +102,9 @@
                         <!--h> Table Title? </h-->
                         <thead>
                         <tr>
+                            <th> Order ID</th>
+                            <th> Service Package Name</th>
                             <th> Total Price</th>
-                            <th> Package ID</th>
                         </tr>
                         </thead>
                         <tbody id="id_rejected_orders_body"></tbody>
@@ -210,5 +114,30 @@
         </div>
     </main>
 </div>
+
+<template id="package_card_template">
+    <div class="col-md-3">
+        <div class="card mb-4 rounded-3 shadow-sm">
+            <div class="card-header py-3">
+                <h4 class="my-0 fw-normal">Package Name 1</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title package-card-title">
+                    <span>Cost</span>€
+                    <small class="text-muted fw-light">/mo</small>
+                </h1>
+                <ul class="list-unstyled mt-3 mb-2 servicesList">
+                    <!--                    <li>Services incl</li>-->
+                    <li>
+                        <!--                        <span class="validityPeriod">Default Validity Period?</span> months-->
+                    </li>
+                </ul>
+                <div class="mb-2"><span class="validityPeriod">Default Validity Period?</span> months</div>
+                <button type="button" class="w-100 btn btn-lg btn-outline-primary">Select</button>
+            </div>
+        </div>
+    </div>
+</template>
+
 </body>
 </html>

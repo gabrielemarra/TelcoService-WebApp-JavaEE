@@ -1,6 +1,8 @@
 package it.polimi.telco_webapp.entities;
 
 import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.util.List;
 
 @Table(name = "service_package", schema = "telco_db")
@@ -10,7 +12,9 @@ import java.util.List;
 //         List<ServicePackage> bundles = em.createNamedQuery("ServicePackage.getServicePackages", ServicePackage.class).setParameter(1, package_id).getResultList();
 //        List<OptionalProduct> options = em.createNamedQuery("OptionalProduct.getOptionalProducts", OptionalProduct.class).setParameter(1, package_id).getResultList();
 
-public class ServicePackage {
+public class ServicePackage implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "package_id", nullable = false)
@@ -23,9 +27,9 @@ public class ServicePackage {
     private Integer validityPeriod;
 
     @OneToMany(mappedBy = "packageId")
-    private List <Order> orders;
+    private List<Order> orders;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "package_id"),
             inverseJoinColumns = @JoinColumn(name = "opt_id"))
     private List<OptionalProduct> optionalProducts;
@@ -38,7 +42,7 @@ public class ServicePackage {
         this.optionalProducts = optionalProducts;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "service_bundles", joinColumns = @JoinColumn(name = "package_id"),
             inverseJoinColumns = @JoinColumn(name = "service_id"))
     private List<Service> services;
