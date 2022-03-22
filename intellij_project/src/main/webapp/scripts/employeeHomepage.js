@@ -235,6 +235,8 @@ $(document).ready(function () {
 
         let li = document.createElement("li");
         li.className = "list-group-item list-group-item-action";
+        li.setAttribute("name", "service");
+        li.id = "id_service" + service_id.toString();
         li.setAttribute("aria-current", "true");
 
         /////////////////////////// Outline of the guts ////////////////////////////
@@ -342,14 +344,18 @@ $(document).ready(function () {
         majorBtns.appendChild(count);
         majorBtns.appendChild(btnM);
 
+
+
         // Filling out minorMonth <div class="col-5">
         let defaultPeriodTag = document.createElement("p");
+        defaultPeriodTag.id = "id_defaultPeriod" + service_id.toString();
         defaultPeriodTag.className = "text-muted mb-1";
         let defaultStr = "$" + bp1.toString() + " /mo for 12 months";
         defaultPeriodTag.appendChild(document.createTextNode(defaultStr));
 
         let otherPeriodsTag = document.createElement("small");
         otherPeriodsTag.className = "fw-lighter text-muted";
+        otherPeriodsTag.id = "id_otherPeriods" + service_id.toString();
         let otherStr = "$" + bp2.toString() + " - 24mo | $" + bp3.toString() + " - 36mo";
         otherPeriodsTag.appendChild(document.createTextNode(otherStr));
 
@@ -401,23 +407,59 @@ $(document).ready(function () {
         getRequest.done(function (data, textStatus, jqXHR) {
             let service = jqXHR.responseJSON;
             let defaultBasePrice = 0;
+            let other1 = 0;
+            let other2 = 0;
+            let period1 = 0;
+            let period2 = 0;
             if(period == 1) {
                 defaultBasePrice = service.bp1;
+                other1 = service.bp2;
+                period1 = 2;
+                other2 = service.bp3;
+                period2 = 3;
             } else if(period == 2) {
                 defaultBasePrice = service.bp2;
+                other1 = service.bp1;
+                period1 = 1;
+                other2 = service.bp3;
+                period2 = 3;
             } else if(period == 3) {
                 defaultBasePrice = service.bp3;
+                other1 = service.bp1;
+                period1 = 1;
+                other2 = service.bp2;
+                period2 = 2;
             } else {
                 alert("Houston, another problemo!");
             }
 
-            let inputElement = document.getElementById("id_checkboxService" + service.service_id)
-            inputElement.setAttribute("value", defaultBasePrice.toString());
-            let labelElement = document.getElementById("id_serviceLabel" + service.service_id)
+            /*
+            *  // Filling out minorMonth <div class="col-5">
+        let defaultPeriodTag = document.createElement("p");
+        defaultPeriodTag.id = "id_defaultPeriod" + service_id.toString();
+        defaultPeriodTag.className = "text-muted mb-1";
+        let defaultStr = "$" + bp1.toString() + " /mo for 12 months";
+        defaultPeriodTag.appendChild(document.createTextNode(defaultStr));
 
-            let child = labelElement.lastChild;
-            labelElement.removeChild(child)
-            labelElement.appendChild(document.createTextNode("$" + defaultBasePrice + " | " + service.type.replace('_', ' ')));
+        let otherPeriodsTag = document.createElement("small");
+        otherPeriodsTag.className = "fw-lighter text-muted";
+        otherPeriodsTag.id = "id_otherPeriods" + service_id.toString();
+        let otherStr = "$" + bp2.toString() + " - 24mo | $" + bp3.toString() + " - 36mo";
+        otherPeriodsTag.appendChild(document.createTextNode(otherStr));
+            * */
+
+
+            let defaultElement = document.getElementById("id_defaultPeriod" + service.service_id);
+            let otherElement = document.getElementById("id_otherPeriods" + service.service_id);
+
+            let childDefault = defaultElement.lastChild;
+            let childOther = otherElement.lastChild;
+            defaultElement.removeChild(childDefault);
+            otherElement.removeChild(childOther);
+
+            defaultElement.appendChild(document.createTextNode("$" + defaultBasePrice + "/mo for" + period * 12 + "months"));
+            otherElement.appendChild(document.createTextNode("$" + other1 + " - " + period1 * 12 + "mo | $" + other2 + " - " + period2 * 12 + "mo"));
+            o
         });
 
         getRequest.fail(function (data, textStatus, jqXHR) {
