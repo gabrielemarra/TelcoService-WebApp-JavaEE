@@ -326,11 +326,12 @@ $(document).ready(function () {
         btnP.id = "id_btnPlus" + service_id;
         btnP.value = "+"
 
+
         let count = document.createElement("small");
         count.className = "text-muted";
         count.id = "id_serviceQuantity" + service_id.toString();
-        count.value = "0";
-        count.appendChild(document.createTextNode(count.value));
+        count.setAttribute("value", "0");
+        count.appendChild(document.createTextNode("0"));
 
         let btnM = document.createElement("input");
         btnM.setAttribute("name", "minusBtn");
@@ -369,6 +370,37 @@ $(document).ready(function () {
         li.appendChild(rowMajor);
         li.appendChild(rowMinor);
         ul.appendChild(li);
+
+
+        btnP.onclick = function() { // increment
+            let quantityElement = this.parentElement.childNodes[1];
+            let oldValue = quantityElement.getAttribute("value");
+            let oldSum = parseInt(oldValue.valueOf());
+            quantityElement.removeChild(quantityElement.lastChild);
+            let newSum = oldSum + 1;
+            quantityElement.value = newSum.toString();
+            quantityElement.setAttribute("value", newSum.toString());
+            quantityElement.appendChild(document.createTextNode(newSum.toString()));
+            console.log("INCR " + oldSum + " to " + newSum.toString());
+        }
+
+        btnM.onclick = function() { // decrement
+            let quantityElement = this.parentElement.childNodes[1];
+            let oldValue = quantityElement.getAttribute("value");
+            let oldSum = parseInt(oldValue.valueOf());
+            quantityElement.removeChild(quantityElement.lastChild);
+            let newSum = oldSum - 1;
+            if(newSum < 0) {
+                newSum = 0;
+            }
+            quantityElement.value = newSum.toString();
+            quantityElement.setAttribute("value", newSum.toString());
+            quantityElement.appendChild(document.createTextNode(newSum.toString()));
+            console.log("INCR " + oldSum + " to " + newSum.toString());
+        }
+
+
+
 
     };
 
