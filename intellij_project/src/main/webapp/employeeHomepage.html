@@ -60,83 +60,101 @@
 </nav>
 
 <div class="container">
-    <div class="row" id="introRowId">
-        <div class="row-cols-3">
 
-        </div>
-        <div class="col-3" id="addPackageColId">
-            <h3>Create Service Package</h3>
-            <div class="form-group mb-3 packageName">
-                <input type="name" class="form-control" placeholder="Name" value="" id="servicePackageNameId" required>
-            </div>
+    <div class="row">
+        <div class="col-8">
+            <h1 class="display-4 mb-5">Create Service Package</h1>
+            <div class="row little-row" id="id_row_name">
+                <div class="col-3 mb-3 inputLabelDiv">
+                    <!--label for="servicePackageNameId" class="col-form-label ">Name of Package</label-->
+                    <h5>Name of Package</h5>
 
-            <div class="row">
-                <div class="col-4">
-                    <h6>Default Validity Period:</h6>
                 </div>
-                <div class="col-8">
-                    <div class="container d-flex justify-content-center">
-                        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="defaultValidity" id="period1" autocomplete="off" value="1" checked>
-                            <label class="btn btn-outline-primary" for="period1">12 months</label>
+                <div class="form-group mb-3 col-8">
+                    <input type="name" class="form-control" placeholder="Name" value="" id="servicePackageNameId" required>
+                </div>
 
-                            <input type="radio" class="btn-check" name="defaultValidity" id="period2" autocomplete="off" value="2">
-                            <label class="btn btn-outline-primary" for="period2">24 months</label>
+            </div>
+            <div class="row little-row" id="id_row_validity">
+                <div class="col-3 mb-3 inputLabelDiv">
+                    <h5>Default Validity</h5>
+                </div>
 
-                            <input type="radio" class="btn-check" name="defaultValidity" id="period3" autocomplete="off" value="3">
-                            <label class="btn btn-outline-primary" for="period3">36 months</label>
-                        </div>
+                <div class="d-flex col-8 mb-3">
+                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group" id="validityGroupId">
+                        <input type="radio" class="btn-check" name="defaultValidity" id="period1" autocomplete="off" value="1" checked>
+                        <label class="btn btn-outline-primary" for="period1">12 months</label>
+
+                        <input type="radio" class="btn-check" name="defaultValidity" id="period2" autocomplete="off" value="2">
+                        <label class="btn btn-outline-primary" for="period2">24 months</label>
+
+                        <input type="radio" class="btn-check" name="defaultValidity" id="period3" autocomplete="off" value="3">
+                        <label class="btn btn-outline-primary" for="period3">36 months</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row big-row mb-3" id="id_row_services">
+                <div class="col-3 mb-3 scrollLabelDiv">
+                    <h5>Add Services</h5>
+                    <!--label class="text-muted col-form-label">Total</label-->
+                    <!--p id="id_totalCostServices" value="0">0</p-->
+                </div>
+                <div class="col-8 mb-3" id="addingServicesColId">
+                    <div class="scrollWindow" id="id_allServicesContainer">
+                        <ul class="list-group list-group-flush" id="id_allServicesTiles">
+                        </ul>
+                    </div>
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-outline-secondary btnmodal" id="id_newServiceModal" data-bs-toggle="modal" data-bs-target="#createServiceModal">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row big-row mb-3" id="id_row_options">
+                <div class="col-3 mb-3 scrollLabelDiv">
+                    <h5>Add Options</h5>
+                    <!--label class=" text-muted col-form-label">Total</label-->
+                    <!--p id="id_totalCostOptions" value="0">0</p-->
+                </div>
+                <div class="col-8 mb-3" id="addingOptionsColId">
+                    <div class="scrollWindow" id="id_allOptionalProductsContainer">
+                        <ul class="list-group list-group-flush" id="id_allOptionsTiles">
+                        </ul>
+                    </div>
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-outline-secondary btnmodal" id="id_newOptionModal" data-bs-toggle="modal" data-bs-target="#createOptionModal">+</button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-3">
-
+        <div class="col-4">
+            <div class="card w-100 mb-3">
+                <div class="card-header">
+                    Package Summary
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex w-100 justify-content-between">
+                        <div>1 Fixed Phone</div>
+                        <div>$20</div>
+                    </li>
+                    <li class="list-group-item d-flex w-100 justify-content-between">
+                        <div>1 Fixed Internet</div>
+                        <div>$15</div>
+                    </li>
+                    <li class="list-group-item d-flex w-100 justify-content-between">
+                        <div>4 Fixed Phone</div>
+                        <div>$60</div>
+                    </li>                </ul>
+                <div class="card-footer">
+                    Total
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <button type="submit" class="btn btn-primary" value="AddServicePackage" id="addServicePackageButton">Add Service Package</button>
+            </div>
         </div>
     </div>
-    <div class="row" id="servicesRowId" style="height: 350px">
-        <div class="col-2 text-center" id="addingServicesLabelId">
-            <h3>Add Services</h3>
-            <h3>Total</h3>
-            <p id="id_totalCostServices" value="0">0</p>
-        </div>
 
 
-        <div class="col-4" id="addingServicesColId">
-            <div class="container allServices" id="id_allServicesContainer">
-                <ul class="list-group list-group-flush" id="id_allServicesTiles">
-
-                </ul>
-            </div>
-            <div>
-                <button type="button" class="btn btn-outline-secondary" id="id_newServiceModal" data-bs-toggle="modal" data-bs-target="#createServiceModal">+</button>
-            </div>
-        </div>
-    </div>
-    <div class="row row-cols-4" id="optionsRowId">
-        <div class="col-2 text-center" id="addingOptionsLabelId">
-            <h3>Add Optional Products</h3>
-            <h3>Total</h3>
-            <p>$</p><p id="id_totalCostOptions">0</p>
-        </div>
-        <div class="col-4" id-addingOptionsColId>
-            <div class="container allOptionalProducts" id="id_allOptionalProductsContainer">
-                <ul class="list-group list-group-flush" id="id_allOptionsTiles">
-
-                </ul>
-            </div>
-            <div>
-                <button type="button" class="btn btn-outline-secondary" id="id_newOptionModal" data-bs-toggle="modal" data-bs-target="#createOptionModal">+</button>
-            </div>
-
-        </div>
-
-    </div>
-    <div class="row row-cols-4" id="outroRowId">
-        <div class="form-group mb-3">
-            <button type="submit" class="btn btn-primary" value="AddServicePackage" id="addServicePackageButton">Add Service Package</button>
-        </div>
-    </div>
 </div>
 
 <!-- Modal -->

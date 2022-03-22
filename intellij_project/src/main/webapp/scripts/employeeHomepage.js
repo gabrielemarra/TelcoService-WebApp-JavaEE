@@ -173,29 +173,6 @@ $(document).ready(function () {
 
         ul.appendChild(li);
 
-
-
-
-        /*
-        let div = document.getElementById("id_allOptionalProductsList");
-        let input = document.createElement('input');
-        let label = document.createElement('label')
-        input.className = "btn-check";
-        input.type = "checkbox"; */
-        /*TODO: Use the optional product ID number instead */
-        /*
-        input.id = "id_checkboxOption" + id;
-        input.autocomplete = "off";
-        input.value = price;
-        input.name = "option";
-
-
-        label.className = "btn btn-outline-primary";
-        label.htmlFor = "id_checkboxOption" + id;
-        label.appendChild(document.createTextNode(" $" + price + " - "+ name));
-        div.appendChild(input);
-        div.appendChild(label);
-        */
    };
 
     /**
@@ -303,7 +280,7 @@ $(document).ready(function () {
 
         let otherPrices = document.createElement("small");
         otherPrices.className = "fw-lighter text-muted";
-        otherPrices.appendChild(document.createTextNode("$" + bp2 + " - 12mo | $" + bp3 + " - 36mo"));
+        otherPrices.appendChild(document.createTextNode("$" + bp2 + " - 24mo | $" + bp3 + " - 36mo"));
 
         divOuter2.appendChild(p2);
         divOuter2.appendChild(otherPrices);
