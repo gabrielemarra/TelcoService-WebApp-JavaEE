@@ -461,41 +461,24 @@ $(document).ready(function () {
         console.log("clicked with onclick!");
     };
 
-    $('input[name="serviceLabel"]').change(
+    $('input[class="cart-actions"]').change(
         function() {
-            console.log("changed!");
+            console.log("changed class!");
         }
     );
 
-    $('input[name="serviceLabel"]').select(
+    $('input[class="cart-actions"]').select(
         function() {
-            console.log("selected!");
+            console.log("selected class!");
         }
     );
 
-    $('input[name="serviceLabel"]').click(
+    $('input[class="cart-actions"]').click(
         function() {
-            console.log("clicked!");
+            console.log("clicked class!");
         }
     );
-
-    $('input[name="service"]').change(
-        function() {
-            console.log("changed!");
-        }
-    );
-
-    $('input[name="service"]').select(
-        function() {
-            console.log("selected!");
-        }
-    );
-
-    $('input[name="service"]').click(
-        function() {
-            console.log("clicked!");
-        }
-    );
+//////////////////////
 
     /*
 
