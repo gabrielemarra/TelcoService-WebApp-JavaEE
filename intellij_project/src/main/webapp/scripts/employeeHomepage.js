@@ -228,67 +228,150 @@ $(document).ready(function () {
      *
      */
     function showService(planType, bp1, bp2, bp3, service_id) {
-        let ul = document.getElementById("id_allServicesTiles");
+        let gigIncl = 0;
+        let minIncl = 0;
+        let smsIncl = 0;
 
+        let gigExtr = 0;
+        let minExtr = 0;
+        let smsExtr = 0;
+
+        let ul = document.getElementById("id_allServicesTiles");
 
         let li = document.createElement("li");
         li.className = "list-group-item list-group-item-action";
         li.setAttribute("aria-current", "true");
 
-        let divOuter1 = document.createElement("div");
-        divOuter1.className = "d-flex w-100 justify-content-between";
+        /////// Outline of the guts/////////
+        let rowMajor = document.createElement("div");
+        rowMajor.className = "d-flex w-100 align-content-center row";
 
-        let p = document.createElement("p");
-        p.className = "lead mb-1";
-        p.appendChild(document.createTextNode(planType.replace('_', ' ') + " Service"));
+        let majorBtns = document.createElement("div");
+        let majorTitle = document.createElement("div");
+        let majorParams = document.createElement("div");
+        majorBtns.className = "col-2";
+        majorParams.className = "col-5";
+        majorTitle.className = "col-5";
 
-        let divInner = document.createElement("div");
+        let rowMinor = document.createElement("div");
+        rowMinor.className = "d-flex w-100 align-content-center row";
 
-        let plusBtn = document.createElement("button");
-        plusBtn.className = "btn btn-sm btn-default btn-circle cart-actions";
-        plusBtn.type = "button";
+        let minorMonth = document.createElement("div");
+        let minorExtra = document.createElement("div");
+        minorMonth.className = "col-5";
+        minorExtra.className = "col-5";
 
-        plusBtn.appendChild(document.createTextNode("+"));
+        ////////////////////// Getting into each of the cols ///////////////////////
 
-        let id = "id_serviceQuantity" + service_id;
+        // Filling out majorTitle <div class="col-5">
+        let title = document.createElement("p");
+        title.className = "lead mb-1";
+        title.appendChild(document.createTextNode(planType.replace('_', ' ')));
+        majorTitle.appendChild(title);
 
-        let quantity = document.createElement("small");
-        quantity.className = "text-muted";
-        quantity.id = id;
-        quantity.type = "number";
-        quantity.value = "0";
+        // Filling out majorParams <div class="col-5">
+        let majorParamsRow = document.createElement("div");
+        majorParamsRow.className = "row";
 
-        let minusBtn = document.createElement("button");
-        minusBtn.className = "btn btn-sm btn-default btn-circle cart-actions";
-        minusBtn.type = "button";
-        minusBtn.appendChild(document.createTextNode("-"));
+        let majorParamsCol1 = document.createElement("div");
+        majorParamsCol1.className = "col scrollLabelDiv";
+        let param1 = document.createElement("p");
+        param1.className = "lead text-muted";
+        let majorParamsCol2 = document.createElement("div");
+        majorParamsCol2.className = "col d-flex";
+        let param2 = document.createElement("p");
+        param2.className = "lead text-muted";
 
-        divInner.appendChild(plusBtn);
-        divInner.appendChild(quantity);
-        divInner.appendChild(minusBtn);
+        // Filling out minorExtra <div class="col-5">
 
-        //plusBtn.parentNode.querySelector('input[id=' + id + ']').stepUp();
+        let minorExtraRow = document.createElement("div");
+        minorExtraRow.className = "row";
 
-        divOuter1.appendChild(p);
-        divOuter1.appendChild(divInner);
+        let minorExtraCol1 = document.createElement("div");
+        let minorExtraCol2 = document.createElement("div");
 
-        let divOuter2 = document.createElement("div");
+        minorExtraCol1.className = "col scrollLabelDiv";
+        let extra1 = document.createElement("small");
+        extra1.className = "fw-lighter text-muted";
 
-        let p2 = document.createElement("p");
-        p2.className = "text-muted mb-1";
-        p2.appendChild(document.createTextNode("$" + bp1 + "/mo for 12 months"));
 
-        let otherPrices = document.createElement("small");
-        otherPrices.className = "fw-lighter text-muted";
-        otherPrices.appendChild(document.createTextNode("$" + bp2 + " - 24mo | $" + bp3 + " - 36mo"));
+        minorExtraCol2.className = "col d-flex";
+        let extra2 = document.createElement("small");
+        extra2.className = "fw-lighter text-muted";
 
-        divOuter2.appendChild(p2);
-        divOuter2.appendChild(otherPrices);
+        // Filling out params by plan type
 
-        li.appendChild(divOuter1);
-        li.appendChild(divOuter2);
+        if(planType == "Mobile_Internet" | planType == "Fixed_Internet") {
+            param1.appendChild(document.createTextNode(gigIncl.toString() + " GB"));
+            extra1.appendChild(document.createTextNode("$"+ gigExtr.toString() + "/extra GB"));
+        } else if (planType == "Mobile_Phone") {
 
+
+            param1.appendChild(document.createTextNode(minIncl.toString() + " min"));
+            param2.appendChild(document.createTextNode(smsIncl.toString() + " sms"));
+
+            extra1.appendChild(document.createTextNode("$" + minExtr.toString() + "/extra min"));
+            extra2.appendChild(document.createTextNode("$" + smsExtr.toString() + "/extra sms"));
+
+        } else{
+            // do nothing?
+        }
+        majorParamsCol1.appendChild(param1);
+        majorParamsCol2.appendChild(param2);
+        majorParamsRow.appendChild(majorParamsCol1);
+        majorParamsRow.appendChild(majorParamsCol2);
+        majorParams.appendChild(majorParamsRow);
+
+        minorExtraCol1.appendChild(extra1);
+        minorExtraCol2.appendChild(extra2);
+        minorExtraRow.appendChild(minorExtraCol1);
+        minorExtraRow.appendChild(minorExtraCol2);
+        minorExtra.appendChild(minorExtraRow);
+
+        // Filling out majorBtns <div class="col-2">
+        let btnP = document.createElement("button");
+        btnP.className = "btn btn-sm btn-default btn-circle cart-actions";
+        btnP.type = "button";
+        btnP.appendChild(document.createTextNode("+"));
+
+        let count = document.createElement("small");
+        count.className = "text-muted";
+        count.id = "id_serviceQuantity" + service_id.toString();
+
+        let btnM = document.createElement("button");
+        btnM.className = "btn btn-sm btn-default btn-circle cart-actions";
+        btnM.type = "button";
+        btnM.appendChild(document.createTextNode("-"));
+
+        majorBtns.appendChild(btnP);
+        majorBtns.appendChild(count);
+        majorBtns.appendChild(btnM);
+
+        // Filling out minorMonth <div class="col-5">
+        let defaultPeriodTag = document.createElement("p");
+        defaultPeriodTag.className = "text-muted mb-1";
+        let defaultStr = "$" + bp1.toString() + " /mo for 12 months";
+        defaultPeriodTag.appendChild(document.createTextNode(defaultStr));
+
+        let otherPeriodsTag = document.createElement("small");
+        otherPeriodsTag.className = "fw-lighter text-muted";
+        let otherStr = "$" + bp2.toString() + " - 24mo | $" + bp3.toString() + " - 36mo";
+        otherPeriodsTag.appendChild(document.createTextNode(otherStr));
+
+        minorMonth.appendChild(defaultPeriodTag);
+        minorMonth.appendChild(otherPeriodsTag);
+
+        rowMajor.appendChild(majorTitle);
+        rowMajor.appendChild(majorParams);
+        rowMajor.appendChild(majorBtns);
+
+        rowMinor.appendChild(minorMonth);
+        rowMinor.appendChild(minorExtra);
+
+        li.appendChild(rowMajor);
+        li.appendChild(rowMinor);
         ul.appendChild(li);
+
 
 
 
