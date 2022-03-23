@@ -34,7 +34,6 @@ $(document).ready(function () {
         }
     );
 
-
     $("#addServicePackageButton").click(
         function (event) {
             event.preventDefault();
@@ -56,7 +55,6 @@ $(document).ready(function () {
                 let id = listOptions[i].getAttribute("id").replace(/\D/g, '');
                 options.push(id);
             }
-
             addPackage(name, period[0].value, services, options);
         }
     );
@@ -85,7 +83,6 @@ $(document).ready(function () {
         postRequest.fail(function (data, textStatus, jqXHR) {
             alert("optional product POST fail");
         });
-
     };
 
     /**
@@ -134,13 +131,10 @@ $(document).ready(function () {
         *
         * */
 
-
         let rowMajor = document.createElement("div");
         rowMajor.className = "d-flex w-100 align-content-center row";
-
         let rowMinor = document.createElement("div");
         rowMinor.className = "d-flex w-100 align-content-center row";
-
 
         let majorTitle = document.createElement("div");
         majorTitle.className = "col-5";
@@ -149,23 +143,16 @@ $(document).ready(function () {
         let majorBtns = document.createElement("div");
         majorBtns.className = "col-2";
 
-
         let minorMonth = document.createElement("div");
         minorMonth.className = "col-5";
-
 
         let title = document.createElement("p");
         title.className = "lead mb-1";
         title.appendChild(document.createTextNode(name));
         majorTitle.appendChild(title);
 
-
         let plusBtn = document.createElement("input");
-        plusBtn.setAttribute("name", "plusBtnOpt");
-        plusBtn.className = "btn btn-sm btn-default btn-plus";
-        plusBtn.type = "button";
-        plusBtn.id = "id_btnPlusOpt" + option_id;
-        plusBtn.value = "+";
+        plusBtn = makeBtn("plus", "Opt", plusBtn, option_id);
 
         let quantity = document.createElement("small");
         quantity.className = "text-muted";
@@ -176,16 +163,11 @@ $(document).ready(function () {
         quantity.value = "0";
 
         let minusBtn = document.createElement("input");
-        minusBtn.setAttribute("name", "minusBtnOpt");
-        minusBtn.className = "btn btn-sm btn-default btn-minus";
-        minusBtn.type = "button";
-        minusBtn.id = "id_btnMinusOpt" + option_id.toString();
-        minusBtn.value = "-";
+        minusBtn = makeBtn("minus", "Opt", minusBtn, option_id);
 
         majorBtns.appendChild(plusBtn);
         majorBtns.appendChild(quantity);
         majorBtns.appendChild(minusBtn);
-
 
         let p2 = document.createElement("p");
         p2.className = "text-muted mb-1";
@@ -199,7 +181,6 @@ $(document).ready(function () {
 
         rowMinor.appendChild(minorMonth);
 
-
         li.appendChild(rowMajor);
         li.appendChild(rowMinor);
 
@@ -212,9 +193,9 @@ $(document).ready(function () {
             quantityElement.removeChild(quantityElement.lastChild);
             let newSum = oldSum + 1;
             quantityElement.value = newSum;
-            //quantityElement.setAttribute("value", newSum.toString());
             quantityElement.appendChild(document.createTextNode(newSum.toString()));
-            //console.log("INCR " + oldSum + " to " + newSum.toString());
+            addItemToList(this.parentElement.parentElement.parentElement, newSum, true, "Option");
+
         }
 
         minusBtn.onclick = function () { // decrement
@@ -227,9 +208,9 @@ $(document).ready(function () {
                 newSum = 0;
             }
             quantityElement.value = newSum;
-            //quantityElement.setAttribute("value", newSum.toString());
             quantityElement.appendChild(document.createTextNode(newSum.toString()));
-            //console.log("DECR " + oldSum + " to " + newSum.toString());
+            addItemToList(this.parentElement.parentElement.parentElement, newSum, false, "Option");
+
         }
     };
 
@@ -239,39 +220,17 @@ $(document).ready(function () {
 
     /**
      * This function performs the POST request to add the new service to the DB
-     * @param planType
-     * @param bp1
-     * @param bp2
-     * @param bp3
-     * @param gigIncl
-     * @param smsIncl
-     * @param minIncl
-     * @param gigExtra
-     * @param smsExtra
-     * @param minExtra
      */
     function addService(planType, bp1, bp2, bp3, gigIncl, smsIncl, minIncl, gigExtra, smsExtra, minExtra) {
         let postRequest = $.post("AddService", {
-            planType: planType,
-            bp1: bp1,
-            bp2: bp2,
-            bp3: bp3,
-            gigIncl: gigIncl,
-            smsIncl: smsIncl,
-            minIncl: minIncl,
-            gigExtra: gigExtra,
-            smsExtra: smsExtra,
-            minExtra: minExtra
-        });
+            planType: planType, bp1: bp1, bp2: bp2, bp3: bp3, gigIncl: gigIncl, smsIncl: smsIncl, minIncl: minIncl,
+            gigExtra: gigExtra, smsExtra: smsExtra, minExtra: minExtra});
+
         postRequest.done(function (data, textStatus, jqXHR) {
             let service_id = jqXHR.responseText.replace(/\D/g, '');
-
-            //showService(planType, bp1, bp2, bp3, service_id, gigIncl, smsIncl, minIncl, gigExtr, smsExtr, minExtr) {
             showService(planType, bp1, bp2, bp3, service_id, gigIncl, smsIncl, minIncl, gigExtra, smsExtra, minExtra);
-
             let period = document.querySelector('input[name=defaultValidity]:checked').value;
             changeServiceLabel(service_id, period);
-
         });
         postRequest.fail(function (data, textStatus, jqXHR) {
             alert("adding service POST fail");
@@ -373,7 +332,6 @@ $(document).ready(function () {
             extra1.appendChild(document.createTextNode("$" + gigExtr.toString() + "/extra GB"));
         } else if (planType == "Mobile_Phone") {
 
-
             param1.appendChild(document.createTextNode(minIncl.toString() + " min"));
             param2.appendChild(document.createTextNode(smsIncl.toString() + " sms"));
 
@@ -397,12 +355,7 @@ $(document).ready(function () {
 
         // Filling out majorBtns <div class="col-2">
         let btnP = document.createElement("input");
-        btnP.className = "btn btn-sm btn-default btn-plus";
-        btnP.setAttribute("name", "plusBtn");
-        btnP.type = "button";
-        btnP.id = "id_btnPlus" + service_id;
-        btnP.value = "+"
-
+        btnP = makeBtn("plus", "", btnP, service_id);
 
         let count = document.createElement("small");
         count.className = "text-muted";
@@ -413,18 +366,13 @@ $(document).ready(function () {
         count.value = "0";
 
         let btnM = document.createElement("input");
-        btnM.setAttribute("name", "minusBtn");
-        btnM.className = "btn btn-sm btn-default btn-minus";
-        btnM.type = "button";
-        btnM.id = "id_btnMinus" + service_id.toString();
-        btnM.value = "-";
+        btnM = makeBtn("minus", "", btnM, service_id);
 
         majorBtns.appendChild(btnP);
         majorBtns.appendChild(count);
         majorBtns.appendChild(btnM);
 
         // Filling out minorMonth <div class="col-5">
-
 
         let defaultPeriodTag = document.createElement("p");
         defaultPeriodTag.id = "id_defaultPeriod" + service_id.toString();
@@ -452,7 +400,6 @@ $(document).ready(function () {
         li.appendChild(rowMinor);
         ul.appendChild(li);
 
-
         btnP.onclick = function () { // increment
             let quantityElement = this.parentElement.childNodes[1];
             let oldValue = quantityElement.value; //quantityElement.getAttribute("value");
@@ -461,7 +408,7 @@ $(document).ready(function () {
             let newSum = oldSum + 1;
             quantityElement.value = newSum;
             quantityElement.appendChild(document.createTextNode(newSum.toString()));
-            addItem(this.parentElement.parentElement.parentElement, newSum, true);
+            addItemToList(this.parentElement.parentElement.parentElement, newSum, true, "Service");
         }
 
         btnM.onclick = function () { // decrement
@@ -476,9 +423,8 @@ $(document).ready(function () {
 
             }
             quantityElement.value = newSum;
-            //quantityElement.setAttribute("value", newSum.toString());
             quantityElement.appendChild(document.createTextNode(newSum.toString()));
-            addItem(this.parentElement.parentElement.parentElement, newSum, false);
+            addItemToList(this.parentElement.parentElement.parentElement, newSum, false, "Service");
         }
     };
 
@@ -513,44 +459,22 @@ $(document).ready(function () {
      */
 
     function changeServiceLabel(id, period) {
-        let getRequest = $.get("GetService", {service_id: id});
+        let getRequest = $.get("GetService", {id: id});
         getRequest.done(function (data, textStatus, jqXHR) {
             let service = jqXHR.responseJSON;
-            let defaultBasePrice = 0;
-            let other1 = 0;
-            let other2 = 0;
-            let period1 = 0;
-            let period2 = 0;
-            if (period == 1) {
-                defaultBasePrice = service.bp1;
-                other1 = service.bp2;
-                period1 = 2;
-                other2 = service.bp3;
-                period2 = 3;
-            } else if (period == 2) {
-                defaultBasePrice = service.bp2;
-                other1 = service.bp1;
-                period1 = 1;
-                other2 = service.bp3;
-                period2 = 3;
-            } else if (period == 3) {
-                defaultBasePrice = service.bp3;
-                other1 = service.bp1;
-                period1 = 1;
-                other2 = service.bp2;
-                period2 = 2;
-            } else {
-                alert("Houston, another problemo!");
-            }
+            let costs = [service.bp1, service.bp2, service.bp3];
+            let defaultBasePrice = costs[period - 1];
+            let periods = [1, 2, 3];
+            periods.splice(period-1, 1);
+            costs.splice(period-1, 1);
             let defaultElement = document.getElementById("id_defaultPeriod" + service.service_id);
             let otherElement = document.getElementById("id_otherPeriods" + service.service_id);
 
             defaultElement.removeChild(defaultElement.lastChild);
             otherElement.removeChild(otherElement.lastChild);
 
-
             defaultElement.appendChild(document.createTextNode("$" + defaultBasePrice + "/mo for" + period * 12 + "months"));
-            otherElement.appendChild(document.createTextNode("$" + other1 + " - " + period1 * 12 + "mo | $" + other2 + " - " + period2 * 12 + "mo"));
+            otherElement.appendChild(document.createTextNode("$" + costs[0] + " - " + periods[0] * 12 + "mo | $" + costs[1] + " - " + periods[1] * 12 + "mo"));
 
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
@@ -586,56 +510,52 @@ $(document).ready(function () {
         }
     );
 
-
-    function addItem(element, quantity, increment) {
+    function addItemToList(element, quantity, increment, type) {
         let id = element.id.replace(/\D/g, '');
-        let getRequest = $.get("GetService", {service_id: id});
+        let item_id = "id_item" + type + id;
+        let getRequestText = (type == "Option")? "GetOptionalProduct" : "GetService";
+        let getRequest = $.get(getRequestText, {id: id});
+
         getRequest.done(function (data, textStatus, jqXHR) {
-            let service = jqXHR.responseJSON;
+            let resp = jqXHR.responseJSON;
             // To get the current validity period
             let period = document.querySelector('input[name=defaultValidity]:checked').value;
             let summaryList = document.getElementById("id_packageSummary");
+            let name;
+            if(type == "Option") {name = resp.name}
+            else {name = resp.type.replace("_", " ")}
 
             if (quantity == 0) { // remove an existing line item
-                let child = document.getElementById("id_itemService" + id);
+                let child = document.getElementById("id_item" + type + id);
                 summaryList.removeChild(child);
             } else if (quantity == 1 & increment) { // create new lineItem
                 let child = document.createElement("li");
-                child.id = "id_itemService" + id;
+                child.id = item_id;
                 child.value = quantity;
                 child.className = "list-group-item d-flex w-100 justify-content-between";
                 let divName = document.createElement("div");
-                //let divTotalCost = document.createElement("div");
-                divName.appendChild(document.createTextNode(quantity.toString() + " " + service.type));
-                //let costs = [service.bp1, service.bp2, service.bp3];
-                //let cost = costs[period - 1];
-                //divTotalCost.appendChild(document.createTextNode("$" + quantity * cost));
+                divName.appendChild(document.createTextNode(quantity.toString() + " " + name));
 
                 child.appendChild(divName);
-                //child.appendChild(divTotalCost);
-                appendNewPrice(child, id, period, quantity);
+                appendNewPrice(child, id, period, quantity, getRequestText);
                 summaryList.appendChild(child);
 
             } else { // find existing lineItem
-                let child = document.getElementById("id_itemService" + id);
+                let child = document.getElementById(item_id);
                 child.value = quantity;
                 child.removeChild(child.lastChild);// remove totalCost
                 child.removeChild(child.lastChild); // remove name
                 let divName = document.createElement("div");
-                //let divTotalCost = document.createElement("div");
-                divName.appendChild(document.createTextNode(quantity.toString() + " " + service.type));
-                //let costs = [service.bp1, service.bp2, service.bp3];
-                //let cost = costs[period - 1];
-                //divTotalCost.appendChild(document.createTextNode("$" + quantity * cost));
+                divName.appendChild(document.createTextNode(quantity.toString() + " " + name));
                 child.appendChild(divName);
-                appendNewPrice(child, id, period, quantity);
-                //child.appendChild(divTotalCost);
+                appendNewPrice(child, id, period, quantity, getRequestText);
             }
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
             alert("adding item to summary GET fail");
         });
     };
+
 
     // this only applies to services
     function updatePrices(newValidity) {
@@ -649,8 +569,10 @@ $(document).ready(function () {
         }
         for (let i = 0; i < itemIds.length; i++) {
             let element = document.getElementById("id_itemService" + itemIds[i]);
-            element.removeChild(element.lastChild);
-            appendNewPrice(element, itemIds[i], newValidity, element.value);
+            if(element != null) { // if element is in fact a service, the search by ID will find a match.
+                element.removeChild(element.lastChild);
+                appendNewPrice(element, itemIds[i], newValidity, element.value, "GetService");
+            }
         }
     };
 
@@ -661,19 +583,43 @@ $(document).ready(function () {
      * @param id: ID of the service package associated with the line item
      * @param validity: the validity period drives which price tier we select
      */
-    function appendNewPrice(element, id, validity, quantity) {
-        let getRequest = $.get("GetService", {service_id: id});
+    function appendNewPrice(element, id, validity, quantity, request) {
+
+        let getRequest = $.get(request, {id: id});
         getRequest.done(function (data, textStatus, jqXHR) {
-            let service = jqXHR.responseJSON;
-            let costs = [service.bp1, service.bp2, service.bp3];
-            //let child = document.getElementById("id_itemService" + id);
-            //child.removeChild(child.lastChild);
-            element.appendChild(document.createTextNode("$" + quantity * costs[validity.valueOf() - 1]));
+            let response = jqXHR.responseJSON;
+            let costPer;
+            if(request == "GetService") {
+                let costs = [response.bp1, response.bp2, response.bp3];
+                costPer = costs[validity - 1];
+            } else {
+                costPer = response.price;
+            }
+            element.appendChild(document.createTextNode("$" + quantity * costPer));
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
-            alert("couldnt find service:" + id);
+            alert(request + " ID:" + id + "failed");
         });
     };
 
+    /**
+     *         * plus_minus: "plus" or "minus"
+     * type: "" or "Opt"
+     * the caller function needs to create the element first
+     * @param plus_minus
+     * @param type
+     * @param element
+     * @param id
+     * @returns {*}
+     */
 
+    function makeBtn(plus_minus, type, element, id) {
+        element.setAttribute("name", plus_minus + "Btn" + type);
+        element.className = "btn btn-sm btn-default btn-" + plus_minus;
+        element.type = "button";
+        element.id = "id_btn" + plus_minus + type + id;
+        if(plus_minus == "plus") { element.value = "+";}
+        else {element.value = "-";}
+        return element;
+    };
 });

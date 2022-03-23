@@ -1,10 +1,11 @@
 package it.polimi.telco_webapp.servlets;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import it.polimi.telco_webapp.entities.OptionalProduct;
 import it.polimi.telco_webapp.entities.Service;
+import it.polimi.telco_webapp.services.OptionalProductService;
 import it.polimi.telco_webapp.services.ServiceService;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
@@ -16,12 +17,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet(name = "GetService", value = "/GetService")
-public class GetService extends HttpServlet {
-    @EJB(name = "it.polimi.db2.entities.services/ServiceService")
-    private ServiceService serviceService;
+@WebServlet(name = "GetOptionalProduct", value = "/GetOptionalProduct")
+public class GetOptionalProduct extends HttpServlet {
+    @EJB(name = "it.polimi.db2.entities.services/OptionalProductService")
+    private OptionalProductService optionalProductService;
 
     /**
      * Method to handle errors, send json with error info
@@ -52,7 +52,7 @@ public class GetService extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            Service oneService = serviceService.getService(Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("id"))));
+            OptionalProduct option = optionalProductService.getOptionalProduct(Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("id"))));
 
             Gson gson = new Gson();
 
@@ -60,12 +60,8 @@ public class GetService extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             JsonElement jsonElement = new JsonObject();
-            jsonElement.getAsJsonObject().addProperty("bp1", oneService.getBasePrice1());
-            jsonElement.getAsJsonObject().addProperty("bp2", oneService.getBasePrice2());
-            jsonElement.getAsJsonObject().addProperty("bp3", oneService.getBasePrice3());
-            jsonElement.getAsJsonObject().addProperty("service_id", oneService.getId());
-            jsonElement.getAsJsonObject().addProperty("type", oneService.getServiceType().toString());
-
+            jsonElement.getAsJsonObject().addProperty("name", option.getName());
+            jsonElement.getAsJsonObject().addProperty("price", option.getPrice());
 
             response.getWriter().println(gson.toJson(jsonElement));
         } catch (EJBException e) {
