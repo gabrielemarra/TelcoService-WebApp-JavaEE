@@ -259,7 +259,11 @@ $(document).ready(function () {
 
            //showService(planType, bp1, bp2, bp3, service_id, gigIncl, smsIncl, minIncl, gigExtr, smsExtr, minExtr) {
            showService(planType, bp1, bp2, bp3,service_id, gigIncl, smsIncl, minIncl, gigExtra, smsExtra, minExtra);
-       });
+
+           let period = document.querySelector('input[name=defaultValidity]:checked').value;
+           changeServiceLabel(service_id, period);
+
+           });
        postRequest.fail(function (data, textStatus, jqXHR) {
            alert("adding service POST fail");
        });
@@ -412,6 +416,8 @@ $(document).ready(function () {
         majorBtns.appendChild(btnM);
 
         // Filling out minorMonth <div class="col-5">
+
+
         let defaultPeriodTag = document.createElement("p");
         defaultPeriodTag.id = "id_defaultPeriod" + service_id.toString();
         defaultPeriodTag.className = "text-muted mb-1";
@@ -492,6 +498,7 @@ $(document).ready(function () {
      * @param id: ID of the service
      * @param period: the New validity period selected (1, 2, or 3)
      */
+
     function changeServiceLabel(id, period) {
         let getRequest = $.get("GetService", {service_id: id});
         getRequest.done(function (data, textStatus, jqXHR) {
@@ -527,6 +534,8 @@ $(document).ready(function () {
 
             defaultElement.removeChild(defaultElement.lastChild);
             otherElement.removeChild(otherElement.lastChild);
+
+
 
             defaultElement.appendChild(document.createTextNode("$" + defaultBasePrice + "/mo for" + period * 12 + "months"));
             otherElement.appendChild(document.createTextNode("$" + other1 + " - " + period1 * 12 + "mo | $" + other2 + " - " + period2 * 12 + "mo"));
