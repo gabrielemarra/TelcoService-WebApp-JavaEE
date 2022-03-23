@@ -33,7 +33,7 @@ public class OptionalProductService {
         }
     }
 
-    public void addOptionalProduct(String name, BigDecimal price) {
+    public OptionalProduct addOptionalProduct(String name, BigDecimal price) {
         OptionalProduct prod = new OptionalProduct();
         prod.setServicePackages(new ArrayList<ServicePackage>());
         prod.setQuantitySold(0);
@@ -41,6 +41,7 @@ public class OptionalProductService {
         prod.setPrice(price);
         prod.setOrders(new ArrayList<Order>());
         em.persist(prod);
+        return prod;
     }
 
     public List<OptionalProduct> getAllOptionalProduct() {

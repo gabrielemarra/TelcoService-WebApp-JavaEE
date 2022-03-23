@@ -39,21 +39,22 @@ $(document).ready(function () {
             event.preventDefault();
             let name = $("#servicePackageNameId").val();
             let period = document.querySelectorAll('input[name=defaultValidity]:checked'); //
-            let listServices = Array.from(document.querySelectorAll('input[name=service]:checked'));
-            let listOptions = Array.from(document.querySelectorAll('input[name=option]:checked'));
-            let services = new Array();
-            for (let i = 0; i < listServices.length; i++) {
-                // remove "id_checkboxService" from the id string (example: id_checkboxService937)
-                let id = listServices[i].getAttribute("id").replace(/\D/g, '');
-
-                services.push(id);
-            }
-
-            let options = new Array();
-            for (let i = 0; i < listOptions.length; i++) {
-                // remove "id_checkboxOption" from the id string (example: id_checkboxOption28)
-                let id = listOptions[i].getAttribute("id").replace(/\D/g, '');
-                options.push(id);
+            let children = document.getElementById("id_packageSummary").childNodes;
+            let services = [];
+            let options = [];
+            for(let i = 0; i < children.length; i++) {
+                if(children[i].id != null) {
+                    let obj = {};
+                    obj.id = children[i].id.replace(/\D/g, '')
+                    obj.quantity = children[i].value.toString();
+                    if(children[i].id.includes("Service")) {
+                        //services.push(obj);
+                        services.push(children[i].id.replace(/\D/g, ''));
+                    } else { // children[i].id.includes("Option")
+                        //options.push(obj);
+                        options.push(children[i].id.replace(/\D/g, ''));
+                    }
+                }
             }
             addPackage(name, period[0].value, services, options);
         }
@@ -77,8 +78,8 @@ $(document).ready(function () {
     function addOptionalProduct(name, price) {
         let postRequest = $.post("AddOptionalProduct", {name: name, price: price});
         postRequest.done(function (data, textStatus, jqXHR) {
-            //alert("optional product POST success");
-            showOptionalProduct(name, price);
+            let response = jqXHR.responseJSON;
+            showOptionalProduct(name, price, response.id);
         });
         postRequest.fail(function (data, textStatus, jqXHR) {
             alert("optional product POST fail");
@@ -473,7 +474,7 @@ $(document).ready(function () {
             defaultElement.removeChild(defaultElement.lastChild);
             otherElement.removeChild(otherElement.lastChild);
 
-            defaultElement.appendChild(document.createTextNode("$" + defaultBasePrice + "/mo for" + period * 12 + "months"));
+            defaultElement.appendChild(document.createTextNode("$" + defaultBasePrice + "/mo for " + period * 12 + " months"));
             otherElement.appendChild(document.createTextNode("$" + costs[0] + " - " + periods[0] * 12 + "mo | $" + costs[1] + " - " + periods[1] * 12 + "mo"));
 
         });
@@ -515,17 +516,14 @@ $(document).ready(function () {
         let item_id = "id_item" + type + id;
         let getRequestText = (type == "Option")? "GetOptionalProduct" : "GetService";
         let getRequest = $.get(getRequestText, {id: id});
-
         getRequest.done(function (data, textStatus, jqXHR) {
             let resp = jqXHR.responseJSON;
             // To get the current validity period
             let period = document.querySelector('input[name=defaultValidity]:checked').value;
             let summaryList = document.getElementById("id_packageSummary");
-            let name;
-            if(type == "Option") {name = resp.name}
-            else {name = resp.type.replace("_", " ")}
+            let name = (type == "Option")? resp.name : resp.type.replace("_", " ");
 
-            if (quantity == 0) { // remove an existing line item
+            if (quantity == 0) { // remove an existing line item, quantity will never equal 0 when increment == false
                 let child = document.getElementById("id_item" + type + id);
                 summaryList.removeChild(child);
             } else if (quantity == 1 & increment) { // create new lineItem

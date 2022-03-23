@@ -1,7 +1,10 @@
 package it.polimi.telco_webapp.servlets;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import it.polimi.telco_webapp.entities.Service;
 import it.polimi.telco_webapp.services.OptionalProductService;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
@@ -59,7 +62,18 @@ public class AddOptionalProduct extends HttpServlet {
  */
 
         try {
-            optionalProductService.addOptionalProduct(name, new BigDecimal(priceStr));
+            int id = optionalProductService.addOptionalProduct(name, new BigDecimal(priceStr)).getId();
+            Gson gson = new Gson();
+
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
+            JsonElement jsonElement = new JsonObject();
+            jsonElement.getAsJsonObject().addProperty("id", id);
+            response.getWriter().println(gson.toJson(jsonElement));
+
+
         } catch (EJBException e) {
             sendError(request, response, "InternalDBErrorException", e.getCause().getMessage());
         }
