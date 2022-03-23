@@ -119,55 +119,120 @@ $(document).ready(function () {
         let li = document.createElement("li");
         li.className = "list-group-item list-group-item-action";
         li.setAttribute("aria-current", "true");
+        li.id = "id_option" + option_id;
+        li.setAttribute("name", "option");
 
-        let divOuter1 = document.createElement("div");
-        divOuter1.className = "d-flex w-100 justify-content-between";
+        /*
+        * <div row dflex w100>
+        *   <div col-5> // title
+            <div col-5> // params (empty)
+            <div col-2> // buttons
+        *
+        *
+        * <div row dflex w100>
+            <div col-5> // cost
+        *
+        * */
 
-        let p = document.createElement("p");
-        p.className = "lead mb-1";
-        p.appendChild(document.createTextNode(name));
 
-        let divInner = document.createElement("div");
+        let rowMajor = document.createElement("div");
+        rowMajor.className = "d-flex w-100 align-content-center row";
 
-        let plusBtn = document.createElement("button");
-        plusBtn.className = "btn btn-sm btn-default btn-circle cart-actions";
+        let rowMinor = document.createElement("div");
+        rowMinor.className = "d-flex w-100 align-content-center row";
+
+
+
+        let majorTitle = document.createElement("div");
+        majorTitle.className = "col-5";
+        let majorParams = document.createElement("div"); //empty
+        majorParams.className = "col-5"; // empty
+        let majorBtns = document.createElement("div");
+        majorBtns.className = "col-2";
+
+
+        let minorMonth = document.createElement("div");
+        minorMonth.className = "col-5";
+
+
+        let title = document.createElement("p");
+        title.className = "lead mb-1";
+        title.appendChild(document.createTextNode(name));
+        majorTitle.appendChild(title);
+
+
+        let plusBtn = document.createElement("input");
+        plusBtn.setAttribute("name", "plusBtnOpt");
+        plusBtn.className = "btn btn-sm btn-default btn-plus";
         plusBtn.type = "button";
-
-        plusBtn.appendChild(document.createTextNode("+"));
-
-        let id = "id_serviceQuantity" + option_id;
+        plusBtn.id = "id_btnPlusOpt" + option_id;
+        plusBtn.value = "+";
 
         let quantity = document.createElement("small");
         quantity.className = "text-muted";
-        quantity.id = id;
+        quantity.id = "id_optionQuantity" + option_id.toString();
+        //quantity.setAttribute("value", "0");
+        quantity.appendChild(document.createTextNode("0"));
         quantity.type = "number";
         quantity.value = "0";
 
-        let minusBtn = document.createElement("button");
-        minusBtn.className = "btn btn-sm btn-default btn-circle cart-actions";
+        let minusBtn = document.createElement("input");
+        minusBtn.setAttribute("name", "minusBtnOpt");
+        minusBtn.className = "btn btn-sm btn-default btn-minus";
         minusBtn.type = "button";
-        minusBtn.appendChild(document.createTextNode("-"));
+        minusBtn.id = "id_btnMinusOpt" + option_id.toString();
+        minusBtn.value = "-";
 
-        divInner.appendChild(plusBtn);
-        divInner.appendChild(quantity);
-        divInner.appendChild(minusBtn);
+        majorBtns.appendChild(plusBtn);
+        majorBtns.appendChild(quantity);
+        majorBtns.appendChild(minusBtn);
 
-        divOuter1.appendChild(p);
-        divOuter1.appendChild(divInner);
-
-        let divOuter2 = document.createElement("div");
 
         let p2 = document.createElement("p");
         p2.className = "text-muted mb-1";
         p2.appendChild(document.createTextNode("$" + price + "/mo"));
 
-        divOuter2.appendChild(p2);
+        minorMonth.appendChild(p2);
 
-        li.appendChild(divOuter1);
-        li.appendChild(divOuter2);
+        rowMajor.appendChild(majorTitle);
+        rowMajor.appendChild(majorParams); // empty
+        rowMajor.appendChild(majorBtns);
+
+        rowMinor.appendChild(minorMonth);
+
+
+
+        li.appendChild(rowMajor);
+        li.appendChild(rowMinor);
 
         ul.appendChild(li);
 
+        plusBtn.onclick = function() { // increment
+            let quantityElement = this.parentElement.childNodes[1];
+            let oldValue = quantityElement.value;
+            let oldSum = parseInt(oldValue);
+            quantityElement.removeChild(quantityElement.lastChild);
+            let newSum = oldSum + 1;
+            quantityElement.value = newSum;
+            //quantityElement.setAttribute("value", newSum.toString());
+            quantityElement.appendChild(document.createTextNode(newSum.toString()));
+            //console.log("INCR " + oldSum + " to " + newSum.toString());
+        }
+
+        minusBtn.onclick = function() { // decrement
+            let quantityElement = this.parentElement.childNodes[1];
+            let oldValue = quantityElement.value;
+            let oldSum = parseInt(oldValue);
+            quantityElement.removeChild(quantityElement.lastChild);
+            let newSum = oldSum - 1;
+            if(newSum < 0) {
+                newSum = 0;
+            }
+            quantityElement.value = newSum;
+            //quantityElement.setAttribute("value", newSum.toString());
+            quantityElement.appendChild(document.createTextNode(newSum.toString()));
+            //console.log("DECR " + oldSum + " to " + newSum.toString());
+        }
    };
 
     /**
@@ -330,8 +395,10 @@ $(document).ready(function () {
         let count = document.createElement("small");
         count.className = "text-muted";
         count.id = "id_serviceQuantity" + service_id.toString();
-        count.setAttribute("value", "0");
+        //count.setAttribute("value", "0");
         count.appendChild(document.createTextNode("0"));
+        count.type="number";
+        count.value = "0";
 
         let btnM = document.createElement("input");
         btnM.setAttribute("name", "minusBtn");
@@ -374,34 +441,31 @@ $(document).ready(function () {
 
         btnP.onclick = function() { // increment
             let quantityElement = this.parentElement.childNodes[1];
-            let oldValue = quantityElement.getAttribute("value");
-            let oldSum = parseInt(oldValue.valueOf());
+            let oldValue = quantityElement.value; //quantityElement.getAttribute("value");
+            let oldSum = parseInt(oldValue);
             quantityElement.removeChild(quantityElement.lastChild);
             let newSum = oldSum + 1;
-            quantityElement.value = newSum.toString();
-            quantityElement.setAttribute("value", newSum.toString());
+            quantityElement.value = newSum;
             quantityElement.appendChild(document.createTextNode(newSum.toString()));
-            console.log("INCR " + oldSum + " to " + newSum.toString());
+            addItem(this.parentElement.parentElement.parentElement, newSum);
         }
 
         btnM.onclick = function() { // decrement
             let quantityElement = this.parentElement.childNodes[1];
-            let oldValue = quantityElement.getAttribute("value");
-            let oldSum = parseInt(oldValue.valueOf());
+            let oldValue = quantityElement.value; //quantityElement.getAttribute("value");
+            let oldSum = parseInt(oldValue);
             quantityElement.removeChild(quantityElement.lastChild);
             let newSum = oldSum - 1;
             if(newSum < 0) {
                 newSum = 0;
+            } else {
+
             }
-            quantityElement.value = newSum.toString();
-            quantityElement.setAttribute("value", newSum.toString());
+            quantityElement.value = newSum;
+            //quantityElement.setAttribute("value", newSum.toString());
             quantityElement.appendChild(document.createTextNode(newSum.toString()));
-            console.log("INCR " + oldSum + " to " + newSum.toString());
+            addItem(this.parentElement.parentElement.parentElement, newSum);
         }
-
-
-
-
     };
 
 
@@ -500,6 +564,87 @@ $(document).ready(function () {
             }
         }
     );
+
+
+    function addItem(element, quantity) {
+        let id = element.id.replace(/\D/g,'');
+        let info = {};
+        let name;
+        let cost; // cost PER service/ option
+        let item_id = "";
+
+        if(quantity == 0) { // remove an existing line item
+            let child = element.find(item_id);
+            element.removeChild(child);
+        } else {
+            if(element.getAttribute("name") == "service") {
+                info = getServiceInfo(id);
+                item_id = "id_itemService";
+            } else if(element.name == "option") {
+                info = getOptionInfo(id);
+                item_id = "id_itemOption";
+            } else {
+                alert("ru-roh");
+            }
+
+            name = info[0].replace('_', ' ');
+            cost = parseInt(info[1]);// TODO: again, check types...
+            item_id = item_id + id.toString();
+
+            if(quantity == 1) { // create new lineItem
+                let child = document.createElement("li");
+                let divName = document.createElement("div");
+                let divTotalCost = document.createElement("div");
+                divName.appendChild(document.createTextNode(quantity.toString() + " " + name));
+                divTotalCost.appendChild(document.createTextNode(quantity * cost));
+
+                child.appendChild(divName);
+                child.appendChild(divTotalCost);
+                element.appendChild(child);
+
+            } else { // find existing lineItem
+                let child = element.find(item_id);
+                child.removeChild(child.lastChild);// remove totalCost
+                child.removeChild(child.lastChild); // remove name
+                child.appendChild(document.createTextNode(cost * quantity));
+                child.appendChild(document.createTextNode(quantity.toString() + " " + name));
+            }
+        }
+    };
+
+    function getServiceInfo(id) {
+        let getRequest = $.get("GetService", {service_id: id});
+        getRequest.done(function (data, textStatus, jqXHR) {
+            let period = document.querySelectorAll('input[name=defaultValidity]:checked').val();
+            let cost = 0;
+            let service = jqXHR.responseJSON;
+            if(period == 1) { //TODO: check types here.... doubles? floats? ints?
+                cost = service.bp1;
+            } else if (period == 2) {
+                cost = service.bp2;
+            } else if (period == 3) {
+                cost = service.bp3;
+            } else {
+                alert("yikes!");
+            }
+            let serviceType = service.type;
+            let lineItem = {serviceType};
+            lineItem.push(cost.toString());
+            return lineItem;
+        });
+        getRequest.fail(function (data, textStatus, jqXHR) {
+            alert("adding service POST fail");
+            return {};
+        });
+    };
+
+    function getOptionInfo(id) {
+        // getOption
+        return {};
+    }
+
+
+
 });
 
 
