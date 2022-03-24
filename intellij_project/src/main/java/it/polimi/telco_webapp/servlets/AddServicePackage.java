@@ -58,18 +58,23 @@ public class AddServicePackage extends HttpServlet {
         String name = StringEscapeUtils.escapeJava(request.getParameter("name"));
         Integer period = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("period")));
 
-        String services[] = request.getParameterValues("listServices[]");
-        String options[] = request.getParameterValues("listOptions[]");
+        String serviceIds[] = request.getParameterValues("serviceIds[]");
+        String serviceQuantities[] = request.getParameterValues("serviceQuantities[]");
+
+        String optionIds[] = request.getParameterValues("optionIds[]");
+        String optionQuantities[] = request.getParameterValues("optionQuantities[]");
+
+
 
         List<Service> servicesList = new ArrayList<Service>();
-        for(int i = 0; i < services.length; i++) {
-            Service temp = serviceService.getService(Integer.parseInt(services[i]));
+        for(int i = 0; i < serviceIds.length; i++) {
+            Service temp = serviceService.getService(Integer.parseInt(serviceIds[i]));
             servicesList.add(temp);
         }
 
         List<OptionalProduct> optionsList = new ArrayList<OptionalProduct>();
-        for(int i = 0; i < options.length; i++) {
-            optionsList.add(optionalProductService.getOptionalProduct(Integer.parseInt(options[i])));
+        for(int i = 0; i < optionIds.length; i++) {
+            optionsList.add(optionalProductService.getOptionalProduct(Integer.parseInt(optionIds[i])));
         }
 
         try{
@@ -77,6 +82,7 @@ public class AddServicePackage extends HttpServlet {
         } catch (EJBException e) {
             sendError(request, response, "InternalDBErrorException", e.getCause().getMessage());
         }
+
     }
 
     @Override

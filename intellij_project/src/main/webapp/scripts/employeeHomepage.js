@@ -41,22 +41,27 @@ $(document).ready(function () {
             let period = document.querySelectorAll('input[name=defaultValidity]:checked'); //
             let children = document.getElementById("id_packageSummary").childNodes;
             let services = [];
+            let serviceQuantities = [];
+            let optionQuantities = [];
             let options = [];
             for(let i = 0; i < children.length; i++) {
                 if(children[i].id != null) {
-                    let obj = {};
-                    obj.id = children[i].id.replace(/\D/g, '')
-                    obj.quantity = children[i].value.toString();
+                    //let obj = {};
+                    //obj.id = children[i].id.replace(/\D/g, '');
+                    //obj.quantity = children[i].value.toString();
+                    let id = children[i].id.replace(/\D/g, '');
+                    let quantity = children[i].value.toString();
                     if(children[i].id.includes("Service")) {
-                        //services.push(obj);
-                        services.push(children[i].id.replace(/\D/g, ''));
+                        services.push(id);
+                        serviceQuantities.push(quantity);
                     } else { // children[i].id.includes("Option")
-                        //options.push(obj);
-                        options.push(children[i].id.replace(/\D/g, ''));
+                        options.push(id);
+                        optionQuantities.push(quantity);
                     }
                 }
             }
-            addPackage(name, period[0].value, services, options);
+            // var jsonObj = $.parseJSON('[' + str + ']');
+            addPackage(name, period[0].value, services, serviceQuantities, options, optionQuantities);
         }
     );
 
@@ -437,12 +442,14 @@ $(document).ready(function () {
      * @param listServices: Array of the service IDs to be offered with the new service package
      * @param listOptions: Array of the optional product IDs to be offered with the new service package.
      */
-    function addPackage(name, period, listServices, listOptions) {
+    function addPackage(name, period, serviceIds, serviceQuantities, optionIds, optionQuantities) {
         let postRequest = $.post("AddServicePackage", {
             name: name,
             period: period,
-            listServices: listServices,
-            listOptions: listOptions
+            serviceIds: serviceIds,
+            serviceQuantities: serviceQuantities,
+            optionIds: optionIds,
+            optionQuantities: optionQuantities
         });
         postRequest.done(function (data, textStatus, jqXHR) {
             alert("Adding service package SUCCESS");
