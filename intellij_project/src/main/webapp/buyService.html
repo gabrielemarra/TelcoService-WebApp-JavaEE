@@ -18,6 +18,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!--    My CSS -->
 
+    <!-- My JS-->
+    <script src="scripts/buyService.js"></script>
+
     <title>Telco - Buy Service Page</title>
 </head>
 <body>
@@ -38,8 +41,13 @@
                          data-bs-parent="#accordionFlushSelection">
                         <div class="accordion-body">Service Package selected:
                             <div class="placeholder-glow" id="selectedServicePackageText">
-<!--                                <span class="placeholder w-25"></span>-->
-                                <button type="button" class="btn btn-outline-primary placeholder"></button>
+                                <select id="servicePackage_select" class="form-select my-2 placeholder"
+                                        aria-label="Default select example" disabled>
+                                    <option selected>SeniorCitizen1</option>
+                                    <option>SeniorCitizen2</option>
+                                    <option>SeniorCitizen3</option>
+                                </select>
+                                <!--                                <button type="button" class="btn btn-outline-primary placeholder"></button>-->
                             </div>
                         </div>
                     </div>
@@ -57,7 +65,32 @@
                          data-bs-parent="#accordionFlushSelection">
                         <div class="accordion-body">Validity Period selected:
                             <div class="placeholder-glow" id="selectedValidityPeriodText">
-                                <span class="placeholder w-25"></span>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="validityPeriodCheckbox"
+                                                   id="validityPeriodCheckbox12" value="option1">
+                                            <label class="form-check-label" for="validityPeriodCheckbox12">12
+                                                months</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="validityPeriodCheckbox"
+                                                   id="validityPeriodCheckbox24" value="option2">
+                                            <label class="form-check-label" for="validityPeriodCheckbox24">24
+                                                months</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="validityPeriodCheckbox"
+                                                   id="validityPeriodCheckbox36" value="option3">
+                                            <label class="form-check-label" for="validityPeriodCheckbox36">36
+                                                months</label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -74,8 +107,18 @@
                          aria-labelledby="optionalProductSelectionHeading" data-bs-parent="#accordionFlushSelection">
                         <div class="accordion-body">Optional Products selected:
                             <div class="placeholder-glow" id="selectedOptionalProductsText">
-                                <span class="placeholder w-25"></span><br>
-                                <span class="placeholder w-25"></span>
+                                <div class="form-check placeholder">
+                                    <input class="form-check-input" type="checkbox" value="" id="netflix">
+                                    <label class="form-check-label" for="netflix">
+                                        Netflix
+                                    </label>
+                                </div>
+                                <div class="form-check placeholder">
+                                    <input class="form-check-input" type="checkbox" value="" id="spotify">
+                                    <label class="form-check-label" for="spotify">
+                                        Spotify
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -92,7 +135,7 @@
                          aria-labelledby="startingDateSelectionHeading" data-bs-parent="#accordionFlushSelection">
                         <div class="accordion-body">Starting Date selected:
                             <div class="placeholder-glow" id="selectedStartingDateText">
-                                <span class="placeholder w-25"></span>
+                                <input type="date" id="startDate" name="startDate" min="2018-01-01">
                             </div>
                         </div>
                     </div>
@@ -118,5 +161,9 @@
         </div>
     </div>
 </div>
+
+<template id="package_select_row_template">
+    <option></option>
+</template>
 </body>
 </html>
