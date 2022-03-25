@@ -1,7 +1,12 @@
 package it.polimi.telco_webapp.entities;
 
 import jakarta.persistence.*;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 @Table(name = "service_package", schema = "telco_db")
 @Entity
@@ -11,6 +16,7 @@ import java.util.List;
 //        List<OptionalProduct> options = em.createNamedQuery("OptionalProduct.getOptionalProducts", OptionalProduct.class).setParameter(1, package_id).getResultList();
 
 public class ServicePackage {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "package_id", nullable = false)
@@ -27,8 +33,9 @@ public class ServicePackage {
 
     @ManyToMany
     @JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "package_id"),
-            inverseJoinColumns = @JoinColumn(name = "opt_id"))
+            inverseJoinColumns = {@JoinColumn(name = "opt_id"), @JoinColumn(name = "option_quantities")})
     private List<OptionalProduct> optionalProducts;
+    private Integer quant;
 
     public List<OptionalProduct> getOptionalProducts() {
         return optionalProducts;
@@ -38,10 +45,17 @@ public class ServicePackage {
         this.optionalProducts = optionalProducts;
     }
 
+
     @ManyToMany
-    @JoinTable(name = "service_bundles", joinColumns = @JoinColumn(name = "package_id"),
-            inverseJoinColumns = @JoinColumn(name = "service_id"))
+    @JoinTable(name = "service_bundles",joinColumns = @JoinColumn(name = "package_id"),
+            inverseJoinColumns = {@JoinColumn(name = "service_id"), @JoinColumn(name="service_quantities")})
     private List<Service> services;
+    //private List<Integer> serviceQuantities;
+/*
+    @Column(name="service_quantities")
+    private Integer serviceQuantities;
+* */
+
 
     /* I think we also need this
      * TODO: check fetch type
@@ -81,8 +95,20 @@ public class ServicePackage {
     }
 
     public void setServices(List<Service> services) {
-        this.services = services;
+            this.services = services;
     }
+
+
+    /*
+    *
+    public void setQuantity(Integer quantities) {
+        this.serviceQuantities = quantities;
+    }
+
+    public Integer getQuantities() {
+        return serviceQuantities;
+    }
+    * */
 
     public List<Order> getOrders() {
         return orders;
@@ -91,4 +117,5 @@ public class ServicePackage {
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
+
 }
