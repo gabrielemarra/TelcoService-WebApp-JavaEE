@@ -36,9 +36,9 @@ public class OrderService {
         newOrder.setStatus(OrderStatus.PENDING);
 
         //Check if the OptionalProducts are available for the selected ServicePackage OR null, then add the opt. prod. list to the order
-        if (optionalProductList == null || !servicePackage.getOptionalProducts().containsAll(optionalProductList)) {
-            throw new IllegalArgumentException("Some selected Optional Products are not compatible with the selected Service Package");
-        }
+        //if (optionalProductList == null || !servicePackage.getOptionalProducts().containsAll(optionalProductList)) {
+        //    throw new IllegalArgumentException("Some selected Optional Products are not compatible with the selected Service Package");
+        //}
         newOrder.setOptionalProductOrderedList(optionalProductList);
 
         //Extract the prices from the selected optional products

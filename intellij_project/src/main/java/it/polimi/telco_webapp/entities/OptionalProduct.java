@@ -24,18 +24,10 @@ public class OptionalProduct {
     @Column(name = "quantity_sold")
     private Integer quantitySold;
 
-    @ManyToMany
-    @JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "opt_id"),
-            inverseJoinColumns = @JoinColumn(name = "package_id"))
-    private List<ServicePackage> servicePackages;
-
-    public List<ServicePackage> getServicePackages() {
-        return servicePackages;
-    }
-  
-    public void setServicePackages(List<ServicePackage> servicePackages) {
-        this.servicePackages = servicePackages;
-    }
+    @OneToMany(mappedBy = "optionalProduct")
+    //@JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "opt_id"),
+    //        inverseJoinColumns = @JoinColumn(name = "package_id"))
+    private List<OptionsAvailable> optionalProductAvailablePool;
 
     @ManyToMany
     @JoinTable(name = "optional_product_ordered", joinColumns = @JoinColumn(name = "opt_id"),

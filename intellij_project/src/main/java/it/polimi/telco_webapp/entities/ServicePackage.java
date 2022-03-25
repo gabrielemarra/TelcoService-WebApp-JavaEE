@@ -2,9 +2,7 @@ package it.polimi.telco_webapp.entities;
 
 import jakarta.persistence.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -31,19 +29,10 @@ public class ServicePackage {
     @OneToMany(mappedBy = "packageId")
     private List <Order> orders;
 
-    @ManyToMany
-    @JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "package_id"),
-            inverseJoinColumns = {@JoinColumn(name = "opt_id"), @JoinColumn(name = "option_quantities")})
-    private List<OptionalProduct> optionalProducts;
-
-    public List<OptionalProduct> getOptionalProducts() {
-        return optionalProducts;
-    }
-
-    public void setOptionalServices(List<OptionalProduct> optionalProducts) {
-        this.optionalProducts = optionalProducts;
-    }
-
+    @OneToMany(mappedBy = "servicePackage")
+    //@JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "package_id"),
+    //        inverseJoinColumns = {@JoinColumn(name = "opt_id"), @JoinColumn(name = "option_quantities")})
+    private List<OptionsAvailable> optionalProductsAvailable;
 
     @ManyToMany
     @JoinTable(name = "service_bundles",joinColumns = @JoinColumn(name = "package_id"),
@@ -97,6 +86,9 @@ public class ServicePackage {
             this.services = services;
     }
 
+    public void setOptionalProductsAvailable(List<OptionsAvailable> optionalProductsAvailable) {this.optionalProductsAvailable = optionalProductsAvailable;}
+
+    public List<OptionsAvailable> getOptionalProductsAvailable() {return optionalProductsAvailable;}
 
     /*
     *

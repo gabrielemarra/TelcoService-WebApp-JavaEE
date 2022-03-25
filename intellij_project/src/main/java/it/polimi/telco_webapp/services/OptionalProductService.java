@@ -35,7 +35,7 @@ public class OptionalProductService {
 
     public OptionalProduct addOptionalProduct(String name, BigDecimal price) {
         OptionalProduct prod = new OptionalProduct();
-        prod.setServicePackages(new ArrayList<ServicePackage>());
+        //prod.setServicePackages(new ArrayList<ServicePackage>());
         prod.setQuantitySold(0);
         prod.setName(name);
         prod.setPrice(price);

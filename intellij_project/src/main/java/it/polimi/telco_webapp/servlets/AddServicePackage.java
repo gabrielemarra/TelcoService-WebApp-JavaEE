@@ -6,8 +6,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.auxiliary.exceptions.NoServicePackageFound;
 import it.polimi.telco_webapp.entities.OptionalProduct;
+import it.polimi.telco_webapp.entities.OptionsAvailable;
 import it.polimi.telco_webapp.entities.Service;
+import it.polimi.telco_webapp.entities.ServicePackage;
 import it.polimi.telco_webapp.services.OptionalProductService;
+import it.polimi.telco_webapp.services.OptionsAvailableService;
 import it.polimi.telco_webapp.services.ServiceService;
 import it.polimi.telco_webapp.services.ServicePackageService;
 import jakarta.ejb.EJB;
@@ -21,6 +24,7 @@ import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @WebServlet(name = "AddServicePackage", value = "/AddServicePackage")
@@ -31,6 +35,10 @@ public class AddServicePackage extends HttpServlet {
     private ServiceService serviceService;
     @EJB(name = "it.polimi.db2.entities.services/OptionalProductService")
     private OptionalProductService optionalProductService;
+    @EJB(name = "it.polimi.db2.entities.services/OptionsAvailableService")
+    private OptionsAvailableService optionsAvailableService;
+
+
 
     /**
      * Method to handle errors, send json with error info
@@ -73,12 +81,26 @@ public class AddServicePackage extends HttpServlet {
         }
 
         List<OptionalProduct> optionsList = new ArrayList<OptionalProduct>();
+        HashMap<OptionalProduct, Integer> optionalProductQuantities = new HashMap<>();
         for(int i = 0; i < optionIds.length; i++) {
-            optionsList.add(optionalProductService.getOptionalProduct(Integer.parseInt(optionIds[i])));
+            //optionsList.add(optionalProductService.getOptionalProduct(Integer.parseInt(optionIds[i])));
+            optionalProductQuantities.put(optionalProductService.getOptionalProduct(Integer.parseInt(optionIds[i])), Integer.parseInt(optionQuantities[i]));
         }
 
         try{
-            servicePackageService.insertServicePackage(name, period, optionsList, servicesList);
+            // Create the new Service Package
+            ServicePackage servicePackage = servicePackageService.insertServicePackage(name, period);
+            // Create the list that defines the quantities per optional product
+            List<OptionsAvailable> optionsAvailableForPackage = optionsAvailableService.addServicePackageWithOptions(servicePackage, optionalProductQuantities);
+            // LINK the list of -pkgID-optionID-quantity- associations with the newly created service package
+            servicePackage.setOptionalProductsAvailable(optionsAvailableForPackage);
+
+
+            //public List<OptionsAvailable> addServicePackageWithOptions(ServicePackage servicePackage, HashMap<OptionalProduct, Integer> optionsAndQuantities) {
+
+
+
+                // use the packageID to set the pkg-availableservices and pkg-availableoptoions associations
         } catch (EJBException e) {
             sendError(request, response, "InternalDBErrorException", e.getCause().getMessage());
         }
