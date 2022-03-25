@@ -35,7 +35,6 @@ public class ServicePackage {
     @JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "package_id"),
             inverseJoinColumns = {@JoinColumn(name = "opt_id"), @JoinColumn(name = "option_quantities")})
     private List<OptionalProduct> optionalProducts;
-    private Integer quant;
 
     public List<OptionalProduct> getOptionalProducts() {
         return optionalProducts;
