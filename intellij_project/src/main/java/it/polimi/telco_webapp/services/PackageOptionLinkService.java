@@ -18,7 +18,7 @@ public class PackageOptionLinkService {
 
     public PackageOptionLinkService() {}
 
-    // shouldwe do this with the servicepackageID instead of being given the service package object?
+    // should we do this with the ServicePackageID instead of being given the service package object?
     public List<PackageOptionLink> insertNewPackageAndOptionLinks(ServicePackage servicePackage, HashMap<Option, Integer> optionsAndQuantities) {
         List<PackageOptionLink> links = new ArrayList<>();
         for(Option option: optionsAndQuantities.keySet()) {
@@ -37,14 +37,18 @@ public class PackageOptionLinkService {
     }
 
     public List<Option> getOptions(int servicePackageId) {
-        // do a query?
-        List<Option> dummy = new ArrayList<>();
-        return dummy;
+        List<Option> options =  em.createNamedQuery("PackageOptionLink.getOptionsLinkedWithPackage", Option.class).setParameter(1, servicePackageId).getResultList();
+        return options;
     }
 
     public Integer getQuantity(ServicePackage servicePackage, Option option) {
-        // do a query
-        return 33;
+        Integer quantity = em.createNamedQuery("PackageOptionLink.getQuantity", Integer.class).setParameter(1, servicePackage).setParameter(2, option).getSingleResult();
+        return quantity;
+    }
+
+    public Integer getQuantity2(int servicePackageId, int optionId) {
+        Integer quantity = em.createNamedQuery("PackageOptionLink.getQuantity", Integer.class).setParameter(1, servicePackageId).setParameter(2, optionId).getSingleResult();
+        return quantity;
     }
 
 

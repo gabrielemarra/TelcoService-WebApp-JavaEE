@@ -1,5 +1,6 @@
 package it.polimi.telco_webapp.services;
 
+import it.polimi.telco_webapp.entities.Option;
 import it.polimi.telco_webapp.entities.Service;
 import it.polimi.telco_webapp.entities.PackageServiceLink;
 import it.polimi.telco_webapp.entities.ServicePackage;
@@ -42,15 +43,15 @@ public class PackageServiceLinkService {
         List<Service> dummy = new ArrayList<>();
         return dummy;
     }
-
-    public Integer getQuantityByObject(ServicePackage servicePackage, Service service) {
-        // do a query
-        return 33;
+    
+    public Integer getQuantity(ServicePackage servicePackage, Service service) {
+        Integer quantity = em.createNamedQuery("PackageServiceLink.getQuantity", Integer.class).setParameter(1, servicePackage).setParameter(2, service).getSingleResult();
+        return quantity;
     }
 
-    public Integer getQuantityById(int servicePackageId, int serviceId) {
-        // do a query
-        return 34;
+    public Integer getQuantity2(int servicePackageId, int serviceId) {
+        Integer quantity = em.createNamedQuery("PackageServiceLink.getQuantity", Integer.class).setParameter(1, servicePackageId).setParameter(2, serviceId).getSingleResult();
+        return quantity;
     }
 
 

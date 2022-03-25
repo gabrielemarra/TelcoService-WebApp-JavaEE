@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 
 @Table(name = "optional_product_available", schema="telco_db")
 @Entity
+@NamedQuery(name = "PackageOptionLink.getOptionsLinkedWithPackage", query = "SELECT o FROM PackageOptionLink o WHERE o.servicePackage = ?1")
+@NamedQuery(name = "PackageOptionLink.getPackagesLinkedWithOption", query = "SELECT o FROM PackageOptionLink o WHERE o.option = ?1")
+@NamedQuery(name = "PackageOptionLink.getQuantity", query = "SELECT o.quantity FROM PackageOptionLink o WHERE o.servicePackage = ?1 AND o.option = ?2")
+
 public class PackageOptionLink {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
