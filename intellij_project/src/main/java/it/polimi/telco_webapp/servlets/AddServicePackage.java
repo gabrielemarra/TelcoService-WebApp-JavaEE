@@ -1,16 +1,11 @@
 package it.polimi.telco_webapp.servlets;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.polimi.telco_webapp.auxiliary.exceptions.NoServicePackageFound;
-import it.polimi.telco_webapp.entities.OptionalProduct;
-import it.polimi.telco_webapp.entities.OptionsAvailable;
-import it.polimi.telco_webapp.entities.Service;
-import it.polimi.telco_webapp.entities.ServicePackage;
-import it.polimi.telco_webapp.services.OptionalProductService;
-import it.polimi.telco_webapp.services.OptionsAvailableService;
+import it.polimi.telco_webapp.entities.*;
+import it.polimi.telco_webapp.services.OptionService;
+import it.polimi.telco_webapp.services.PackageOptionLinkService;
+import it.polimi.telco_webapp.services.PackageServiceLinkService;
+
 import it.polimi.telco_webapp.services.ServiceService;
 import it.polimi.telco_webapp.services.ServicePackageService;
 import jakarta.ejb.EJB;
@@ -33,10 +28,12 @@ public class AddServicePackage extends HttpServlet {
     private ServicePackageService servicePackageService;
     @EJB(name = "it.polimi.db2.entities.services/ServiceService")
     private ServiceService serviceService;
-    @EJB(name = "it.polimi.db2.entities.services/OptionalProductService")
-    private OptionalProductService optionalProductService;
-    @EJB(name = "it.polimi.db2.entities.services/OptionsAvailableService")
-    private OptionsAvailableService optionsAvailableService;
+    @EJB(name = "it.polimi.db2.entities.services/OptionService")
+    private OptionService optionService;
+    @EJB(name = "it.polimi.db2.entities.services/PackageOptionLinkService")
+    private PackageOptionLinkService packageAndOptionLinkService;
+    @EJB(name = "it.polimi.db2.entities.services/PackageServiceLinkService")
+    private PackageServiceLinkService packageAndServiceLinkService;
 
 
 
@@ -72,35 +69,26 @@ public class AddServicePackage extends HttpServlet {
         String optionIds[] = request.getParameterValues("optionIds[]");
         String optionQuantities[] = request.getParameterValues("optionQuantities[]");
 
-
-
-        List<Service> servicesList = new ArrayList<Service>();
+        HashMap<Service, Integer> servicesAndQuantities = new HashMap<>();
         for(int i = 0; i < serviceIds.length; i++) {
-            Service temp = serviceService.getService(Integer.parseInt(serviceIds[i]));
-            servicesList.add(temp);
+            servicesAndQuantities.put(serviceService.getService(Integer.parseInt(serviceIds[i])), Integer.parseInt(serviceQuantities[i]));
         }
 
-        List<OptionalProduct> optionsList = new ArrayList<OptionalProduct>();
-        HashMap<OptionalProduct, Integer> optionalProductQuantities = new HashMap<>();
+        HashMap<Option, Integer> optionsAndQuantities = new HashMap<>();
         for(int i = 0; i < optionIds.length; i++) {
-            //optionsList.add(optionalProductService.getOptionalProduct(Integer.parseInt(optionIds[i])));
-            optionalProductQuantities.put(optionalProductService.getOptionalProduct(Integer.parseInt(optionIds[i])), Integer.parseInt(optionQuantities[i]));
+            optionsAndQuantities.put(optionService.getOption(Integer.parseInt(optionIds[i])), Integer.parseInt(optionQuantities[i]));
         }
 
         try{
             // Create the new Service Package
-            ServicePackage servicePackage = servicePackageService.insertServicePackage(name, period);
-            // Create the list that defines the quantities per optional product
-            List<OptionsAvailable> optionsAvailableForPackage = optionsAvailableService.addServicePackageWithOptions(servicePackage, optionalProductQuantities);
-            // LINK the list of -pkgID-optionID-quantity- associations with the newly created service package
-            servicePackage.setOptionalProductsAvailable(optionsAvailableForPackage);
+            ServicePackage servicePackage = servicePackageService.insertNewServicePackage(name, period);
+            // Create the lists that defines the quantities per optional product/ per service
+            List<PackageOptionLink> optionsLinkedToPackage = packageAndOptionLinkService.insertNewPackageAndOptionLinks(servicePackage, optionsAndQuantities);
+            List<PackageServiceLink> servicesLinkedToPackage = packageAndServiceLinkService.insertNewPackageAndServiceLinks(servicePackage, servicesAndQuantities);
+            // LINK the lists of -pkgID-[optionID/serviceID]-quantity- associations with the newly created service package
+            servicePackageService.addOptions(optionsLinkedToPackage);
+            servicePackageService.addServices(servicesLinkedToPackage);
 
-
-            //public List<OptionsAvailable> addServicePackageWithOptions(ServicePackage servicePackage, HashMap<OptionalProduct, Integer> optionsAndQuantities) {
-
-
-
-                // use the packageID to set the pkg-availableservices and pkg-availableoptoions associations
         } catch (EJBException e) {
             sendError(request, response, "InternalDBErrorException", e.getCause().getMessage());
         }

@@ -50,10 +50,8 @@ public class Service {
     @Column(name = "sms_extra")
     private Double smsExtra;
 
-    @ManyToMany
-    @JoinTable(name = "service_bundles", joinColumns = @JoinColumn(name = "service_id"),
-            inverseJoinColumns = @JoinColumn(name = "package_id"))
-    private List<ServicePackage> servicePackages;
+    @OneToMany(mappedBy = "service")
+    private List<PackageServiceLink> packageServiceLinks; // better name: packagesLinkedToService?
 
     public Double getSmsExtra() {
         return smsExtra;
@@ -141,11 +139,9 @@ public class Service {
         this.id = id;
     }
 
-    public List<ServicePackage> getServicePackages() {
-        return servicePackages;
+    public List<PackageServiceLink> getPackageServiceLinks() {
+        return packageServiceLinks;
     }
 
-    public void setServicePackages(List<ServicePackage> servicePackages) {
-        this.servicePackages = servicePackages;
-    }
+    public void setPackageServiceLinks(List<PackageServiceLink> packageServiceLinks) {this.packageServiceLinks = packageServiceLinks; }
 }

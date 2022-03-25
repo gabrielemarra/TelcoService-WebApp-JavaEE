@@ -34,7 +34,7 @@ public class UserService {
      * @param username: Username of the user to log in
      * @return User: The user that was entered in the DB
      */
-    public User insertUser(String name, String email, String password, String username) throws PersistenceException, IllegalArgumentException {
+    public User insertNewUser(String name, String email, String password, String username) throws PersistenceException, IllegalArgumentException {
         User user = new User();
 
         user.setName(name);

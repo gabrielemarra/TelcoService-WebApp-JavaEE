@@ -53,7 +53,7 @@ public class Order {
     @ManyToMany
     @JoinTable(name = "optional_product_ordered", joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "opt_id"))
-    private List<OptionalProduct> optionalProductOrderedList;
+    private List<Option> optionalProductOrderedList;
     /* TODO: should packageID be an integer? (2/3) */
     public ServicePackage getPackageId() {
         return packageId;
@@ -86,8 +86,8 @@ public class Order {
     public void setBaseCost() {
         BigDecimal baseCost = this.totalPrice;
 
-        List<OptionalProduct> optionalProducts = this.getOptionalServices();
-        for (OptionalProduct prod: optionalProducts) {
+        List<Option> optionalProducts = this.getOptionalServices();
+        for (Option prod: optionalProducts) {
             baseCost = baseCost.subtract(prod.getPrice());
         }
 
@@ -126,11 +126,11 @@ public class Order {
         this.id = id;
     }
 
-    public List<OptionalProduct> getOptionalServices() {
+    public List<Option> getOptionalServices() {
         return optionalProductOrderedList;
     }
 
-    public void setOptionalProductOrderedList(List<OptionalProduct> optionalProducts) {
+    public void setOptionalProductOrderedList(List<Option> optionalProducts) {
         this.optionalProductOrderedList = optionalProducts;
     }
 /*

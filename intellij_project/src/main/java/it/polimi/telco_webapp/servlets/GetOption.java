@@ -3,10 +3,8 @@ package it.polimi.telco_webapp.servlets;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.polimi.telco_webapp.entities.OptionalProduct;
-import it.polimi.telco_webapp.entities.Service;
-import it.polimi.telco_webapp.services.OptionalProductService;
-import it.polimi.telco_webapp.services.ServiceService;
+import it.polimi.telco_webapp.entities.Option;
+import it.polimi.telco_webapp.services.OptionService;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.servlet.ServletException;
@@ -18,10 +16,10 @@ import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.IOException;
 
-@WebServlet(name = "GetOptionalProduct", value = "/GetOptionalProduct")
-public class GetOptionalProduct extends HttpServlet {
-    @EJB(name = "it.polimi.db2.entities.services/OptionalProductService")
-    private OptionalProductService optionalProductService;
+@WebServlet(name = "GetOption", value = "/GetOption")
+public class GetOption extends HttpServlet {
+    @EJB(name = "it.polimi.db2.entities.services/OptionService")
+    private OptionService optionService;
 
     /**
      * Method to handle errors, send json with error info
@@ -52,10 +50,8 @@ public class GetOptionalProduct extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            OptionalProduct option = optionalProductService.getOptionalProduct(Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("id"))));
-
+            Option option = optionService.getOption(Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("id"))));
             Gson gson = new Gson();
-
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
@@ -65,7 +61,7 @@ public class GetOptionalProduct extends HttpServlet {
 
             response.getWriter().println(gson.toJson(jsonElement));
         } catch (EJBException e) {
-            sendError(request, response, "NoService", e.getCause().getMessage());
+            sendError(request, response, "No Option Found", e.getCause().getMessage());
         }
 
     }

@@ -28,7 +28,7 @@ public class OrderService {
      * @param optionalProductList   The optional products included in the order
      * @return The new created order
      */
-    public Order insertOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<OptionalProduct> optionalProductList) {
+    public Order insertOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<Option> optionalProductList) {
         Order newOrder = new Order();
         newOrder.setPackageId(servicePackage);
         newOrder.setUser(user);
@@ -43,7 +43,7 @@ public class OrderService {
 
         //Extract the prices from the selected optional products
         List<BigDecimal> optionalProductPriceList = new ArrayList<>();
-        for (OptionalProduct optionalProduct : optionalProductList) {
+        for (Option optionalProduct : optionalProductList) {
             optionalProductPriceList.add(optionalProduct.getPrice());
         }
 
@@ -52,7 +52,8 @@ public class OrderService {
 
         //Extract the correct prices from the services included in the service package
         List<BigDecimal> servicesPriceList = new ArrayList<>();
-        for (Service service : servicePackage.getServices()) {
+        List <Service> dummy = new ArrayList<>();
+        for (Service service : dummy){//servicePackage.getServices()) {
             switch (servicePackage.getValidityPeriod()) {
                 case 1:
                     servicesPriceList.add(BigDecimal.valueOf(service.getBasePrice1()));

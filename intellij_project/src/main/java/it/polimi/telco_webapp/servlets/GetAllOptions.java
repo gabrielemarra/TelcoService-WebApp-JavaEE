@@ -4,11 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.polimi.telco_webapp.auxiliary.exceptions.NoServicePackageFound;
-import it.polimi.telco_webapp.entities.OptionalProduct;
-import it.polimi.telco_webapp.entities.ServicePackage;
-import it.polimi.telco_webapp.services.OptionalProductService;
-import it.polimi.telco_webapp.services.ServicePackageService;
+import it.polimi.telco_webapp.entities.Option;
+import it.polimi.telco_webapp.services.OptionService;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.servlet.ServletException;
@@ -20,10 +17,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GetAllOptionalProducts", value = "/GetAllOptionalProducts")
-public class GetAllOptionalProducts extends HttpServlet {
-    @EJB(name = "it.polimi.db2.entities.services/OptionalProductService")
-    private OptionalProductService optionalProductServiceUtil;
+@WebServlet(name = "GetAllOptions", value = "/GetAllOptions")
+public class GetAllOptions extends HttpServlet {
+    @EJB(name = "it.polimi.db2.entities.services/Options")
+    private OptionService optionService;
 
     /**
      * Method to handle errors, send json with error info
@@ -54,7 +51,7 @@ public class GetAllOptionalProducts extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            List<OptionalProduct> options = optionalProductServiceUtil.getAllOptionalProduct();
+            List<Option> options = optionService.getAllOptions();
 
             Gson gson = new Gson();
 
@@ -65,7 +62,7 @@ public class GetAllOptionalProducts extends HttpServlet {
             for (int i = 0; i < options.size(); i++) {
 
                 JsonElement jsonElement = new JsonObject();
-                OptionalProduct temp = options.get(i);
+                Option temp = options.get(i);
 
                 jsonElement.getAsJsonObject().addProperty("name", temp.getName());
                 jsonElement.getAsJsonObject().addProperty("price", temp.getPrice());
@@ -75,7 +72,7 @@ public class GetAllOptionalProducts extends HttpServlet {
 
             response.getWriter().println(gson.toJson(jsonArray));
         } catch (EJBException e) {
-            sendError(request, response, "NoOptionalProduct", e.getCause().getMessage());
+            sendError(request, response, "No Options", e.getCause().getMessage());
         }
 
     }

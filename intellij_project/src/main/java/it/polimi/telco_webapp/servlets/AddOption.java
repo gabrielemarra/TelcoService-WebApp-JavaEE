@@ -4,8 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import it.polimi.telco_webapp.entities.Service;
-import it.polimi.telco_webapp.services.OptionalProductService;
+import it.polimi.telco_webapp.services.OptionService;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.servlet.ServletException;
@@ -17,13 +16,12 @@ import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.*;
 
 
-@WebServlet(name = "AddOptionalProduct", value = "/AddOptionalProduct")
-public class AddOptionalProduct extends HttpServlet {
-    @EJB(name = "it.polimi.db2.entities.services/OptionalProductService")
-    private OptionalProductService optionalProductService;
+@WebServlet(name = "AddOption", value = "/AddOption")
+public class AddOption extends HttpServlet {
+    @EJB(name = "it.polimi.db2.entities.services/OptionService")
+    private OptionService optionService;
 
     /**
      * Method to handle errors, send json with error info
@@ -62,7 +60,7 @@ public class AddOptionalProduct extends HttpServlet {
  */
 
         try {
-            int id = optionalProductService.addOptionalProduct(name, new BigDecimal(priceStr)).getId();
+            int id = optionService.insertNewOption(name, new BigDecimal(priceStr)).getId();
             Gson gson = new Gson();
 
             response.setStatus(HttpServletResponse.SC_OK);

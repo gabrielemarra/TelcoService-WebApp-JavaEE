@@ -6,10 +6,10 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "optional_product", schema = "telco_db")
-@NamedQuery(name = "OptionalProduct.getOptionalProduct", query = "SELECT o FROM OptionalProduct o WHERE o.id = ?1")
-@NamedQuery(name = "OptionalProduct.getAllAvailableOptionalProduct", query = "SELECT o FROM OptionalProduct o")
+@NamedQuery(name = "Option.getOption", query = "SELECT o FROM Option o WHERE o.id = ?1")
+@NamedQuery(name = "Option.getAllAvailableOptions", query = "SELECT o FROM Option o")
 
-public class OptionalProduct {
+public class Option {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "opt_id", nullable = false)
@@ -24,10 +24,8 @@ public class OptionalProduct {
     @Column(name = "quantity_sold")
     private Integer quantitySold;
 
-    @OneToMany(mappedBy = "optionalProduct")
-    //@JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "opt_id"),
-    //        inverseJoinColumns = @JoinColumn(name = "package_id"))
-    private List<OptionsAvailable> optionalProductAvailablePool;
+    @OneToMany(mappedBy = "option")
+    private List<PackageOptionLink> packageOptionLinks; // better name: packagesLinkedToOption?
 
     @ManyToMany
     @JoinTable(name = "optional_product_ordered", joinColumns = @JoinColumn(name = "opt_id"),
@@ -74,4 +72,8 @@ public class OptionalProduct {
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
+
+    public void setPackageOptionLinks(List<PackageOptionLink> packageOptionLinks) {this.packageOptionLinks = packageOptionLinks; }
+
+    public List<PackageOptionLink> getPackageOptionLinks() {return packageOptionLinks; }
 }

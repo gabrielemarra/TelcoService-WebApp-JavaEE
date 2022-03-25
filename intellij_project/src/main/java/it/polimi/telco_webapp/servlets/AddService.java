@@ -54,8 +54,6 @@ public class AddService extends HttpServlet {
         Double gigExtra, minExtra, smsExtra;
         Integer gigIncl, minIncl, smsIncl;
 
-        // I think it is OK if we enter null values into the DB. But if we want to instead make those null values ZERO,
-        // uncomment the following:
         gigIncl = minIncl = smsIncl = 0;
         gigExtra = minExtra = smsExtra = 0.0;
 
@@ -86,12 +84,6 @@ public class AddService extends HttpServlet {
             jsonElement.getAsJsonObject().addProperty("service_id", service_id);
             Gson gson = new Gson();
             response.getWriter().println(gson.toJson(jsonElement));
-
-
-
-
-
-
 
     } catch (EJBException e) {
             sendError(request, response, "InternalDBErrorException", e.getCause().getMessage());

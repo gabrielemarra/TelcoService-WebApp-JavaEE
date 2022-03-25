@@ -74,8 +74,6 @@ public class GetAllServices extends HttpServlet {
                 jsonElement.getAsJsonObject().addProperty("smsExtra", temp.getSmsExtra());
                 jsonElement.getAsJsonObject().addProperty("minExtra", temp.getMinExtra());
 
-
-
                 jsonArray.add(jsonElement);
             }
 

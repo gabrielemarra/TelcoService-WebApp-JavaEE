@@ -2,16 +2,12 @@ package it.polimi.telco_webapp.entities;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Table(name = "service_package", schema = "telco_db")
 @Entity
 @NamedQuery(name = "ServicePackage.getOneServicePackage", query = "SELECT s FROM ServicePackage s WHERE s.id = ?1")
 @NamedQuery(name = "ServicePackage.getAllServicePackages", query = "SELECT s FROM ServicePackage s")
-//         List<ServicePackage> bundles = em.createNamedQuery("ServicePackage.getServicePackages", ServicePackage.class).setParameter(1, package_id).getResultList();
-//        List<OptionalProduct> options = em.createNamedQuery("OptionalProduct.getOptionalProducts", OptionalProduct.class).setParameter(1, package_id).getResultList();
 
 public class ServicePackage {
 
@@ -30,20 +26,10 @@ public class ServicePackage {
     private List <Order> orders;
 
     @OneToMany(mappedBy = "servicePackage")
-    //@JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "package_id"),
-    //        inverseJoinColumns = {@JoinColumn(name = "opt_id"), @JoinColumn(name = "option_quantities")})
-    private List<OptionsAvailable> optionalProductsAvailable;
+    private List<PackageOptionLink> optionsLinkedToPackage;
 
-    @ManyToMany
-    @JoinTable(name = "service_bundles",joinColumns = @JoinColumn(name = "package_id"),
-            inverseJoinColumns = {@JoinColumn(name = "service_id"), @JoinColumn(name="service_quantities")})
-    private List<Service> services;
-    //private List<Integer> serviceQuantities;
-/*
-    @Column(name="service_quantities")
-    private Integer serviceQuantities;
-* */
-
+    @OneToMany(mappedBy = "servicePackage")
+    private List<PackageServiceLink> servicesLinkedToPackage;
 
     /* I think we also need this
      * TODO: check fetch type
@@ -52,7 +38,6 @@ public class ServicePackage {
      * @OneToMany(fetch = FetchType.LAZY, mappedBy = "service_package", cascade = CascadeType.ALL)
      * private List<Order> orders;
      */
-
 
     public Integer getValidityPeriod() {
         return validityPeriod;
@@ -78,28 +63,18 @@ public class ServicePackage {
         this.id = id;
     }
 
-    public List<Service> getServices() {
-        return services;
-    }
+    // this getter is should be implemented in  packageservicelink/ packageservicelinkservice
+    //public List<Service> getServices() {return services;}
+    // this setter is should be implemented in  packageservicelink/ packageservicelinkservice
+    //public void setServices(List<Service> services) {this.services = services;}
 
-    public void setServices(List<Service> services) {
-            this.services = services;
-    }
+    public void setOptionsLinkedToPackage(List<PackageOptionLink> optionsLinkedToPackage) {this.optionsLinkedToPackage = optionsLinkedToPackage;}
 
-    public void setOptionalProductsAvailable(List<OptionsAvailable> optionalProductsAvailable) {this.optionalProductsAvailable = optionalProductsAvailable;}
+    public List<PackageOptionLink> getOptionsLinkedToPackage() {return optionsLinkedToPackage;}
 
-    public List<OptionsAvailable> getOptionalProductsAvailable() {return optionalProductsAvailable;}
+    public void setServicesLinkedToPackage(List<PackageServiceLink> servicesLinkedToPackage) {this.servicesLinkedToPackage = servicesLinkedToPackage;}
 
-    /*
-    *
-    public void setQuantity(Integer quantities) {
-        this.serviceQuantities = quantities;
-    }
-
-    public Integer getQuantities() {
-        return serviceQuantities;
-    }
-    * */
+    public List<PackageServiceLink> getServicesLinkedToPackage() {return servicesLinkedToPackage;}
 
     public List<Order> getOrders() {
         return orders;

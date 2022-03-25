@@ -3,16 +3,14 @@ package it.polimi.telco_webapp.services;
 import java.util.List;
 
 import it.polimi.telco_webapp.auxiliary.exceptions.NoServicePackageFound;
-import it.polimi.telco_webapp.entities.OptionalProduct;
-import it.polimi.telco_webapp.entities.OptionsAvailable;
-import it.polimi.telco_webapp.entities.Service;
+import it.polimi.telco_webapp.entities.PackageOptionLink;
+import it.polimi.telco_webapp.entities.PackageServiceLink;
 import it.polimi.telco_webapp.entities.ServicePackage;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceException;
 
-import javax.swing.text.html.Option;
 import java.security.InvalidParameterException;
 
 @Stateless(name = "ServicePackageService")
@@ -35,23 +33,25 @@ public class ServicePackageService {
      * @throws PersistenceException
      * @throws IllegalArgumentException
      */
-    public ServicePackage insertServicePackage(String name, int validity) throws PersistenceException, IllegalArgumentException {
-        ServicePackage bundle = new ServicePackage();
+    public ServicePackage insertNewServicePackage(String name, int validity) throws PersistenceException, IllegalArgumentException {
+        ServicePackage servicePackage = new ServicePackage();
 
-        bundle.setName(name);
-        bundle.setValidityPeriod(validity);
-        //bundle.setOptionalServices(options);
-        //bundle.setServices(services);
-        //bundle.setQuantity(null);
+        servicePackage.setName(name);
+        servicePackage.setValidityPeriod(validity);
 
-        em.persist(bundle);
-        return bundle;
+        em.persist(servicePackage);
+        return servicePackage;
     }
 
-    public void addOptionalProducts(List<OptionsAvailable> optionsAvailableList) {
+    public void addOptions(List<PackageOptionLink> optionsLinkedToPackage) {
         //TODO: maybe do a check here to ensure that all the OptionsAvailable-s in the list refer to the same service package
-        ServicePackage servicePackage = optionsAvailableList.get(0).getServicePackage();
-        servicePackage.setOptionalProductsAvailable(optionsAvailableList);
+        ServicePackage servicePackage = optionsLinkedToPackage.get(0).getServicePackage();
+        servicePackage.setOptionsLinkedToPackage(optionsLinkedToPackage);
+    }
+
+    public void addServices(List <PackageServiceLink> servicesLinkedToPackage) {
+        ServicePackage servicePackage = servicesLinkedToPackage.get(0).getServicePackage();
+        servicePackage.setServicesLinkedToPackage(servicesLinkedToPackage);
     }
 
     /**
@@ -61,33 +61,15 @@ public class ServicePackageService {
      * @return The service package retreived from the database.
      */
     public ServicePackage getServicePackage(int package_id) throws InvalidParameterException {
-        List<ServicePackage> bundles = em.createNamedQuery("ServicePackage.getOneServicePackage", ServicePackage.class).setParameter(1, package_id).getResultList();
-        if (bundles == null || bundles.isEmpty()) {
+        List<ServicePackage> servicePackages = em.createNamedQuery("ServicePackage.getOneServicePackage", ServicePackage.class).setParameter(1, package_id).getResultList();
+        if (servicePackages == null || servicePackages.isEmpty()) {
             throw new InvalidParameterException("Invalid Service Package ID");
-        } else if (bundles.size() == 1) {
-            return bundles.get(0);
+        } else if (servicePackages.size() == 1) {
+            return servicePackages.get(0);
         } else {
             throw new InvalidParameterException("DB Error");
         }
     }
-
-    /** TODO: this function should be delegated to the OptionsAvailableService.java
-     * Get all the optional products available for the service package associated with the provided package id.
-     *
-     * @param package_id: Service package id of the service package.
-     * @return List of OptionalProduct associated with the service package.
-    public List<OptionalProduct> getOptionalProductsAvailable(int package_id) throws InvalidParameterException {
-        List<ServicePackage> packages = em.createNamedQuery("ServicePackage.getOneServicePackage", ServicePackage.class).setParameter(1, package_id).getResultList();
-        if (packages == null || packages.isEmpty()) {
-            throw new InvalidParameterException("Invalid Service Package ID");
-        }
-
-        ServicePackage pack = packages.get(0);
-        return pack.getOptionalProducts();
-        // cleaner: return packages.get(0).getOptionalProducts();
-
-    }
-     */
 
     /**
      * Sets the validity period for an existing service package.

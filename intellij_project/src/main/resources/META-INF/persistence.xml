@@ -7,12 +7,13 @@
     <persistence-unit name="telco_webapp" transaction-type="JTA">
         <jta-data-source>telco_db</jta-data-source>
         <class>it.polimi.telco_webapp.entities.Employee</class>
-        <class>it.polimi.telco_webapp.entities.OptionalProduct</class>
+        <class>it.polimi.telco_webapp.entities.Option</class>
         <class>it.polimi.telco_webapp.entities.ServicePackage</class>
         <class>it.polimi.telco_webapp.entities.Service</class>
         <class>it.polimi.telco_webapp.entities.Order</class>
         <class>it.polimi.telco_webapp.entities.User</class>
-        <class>it.polimi.telco_webapp.entities.OptionsAvailable</class>
+        <class>it.polimi.telco_webapp.entities.PackageOptionLink</class>
+        <class>it.polimi.telco_webapp.entities.PackageServiceLink</class>
         <properties>
             <property name="eclipselink.logging.level" value="FINE" />
         </properties>
