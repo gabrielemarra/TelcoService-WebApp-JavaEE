@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+  <!--Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+          crossorigin="anonymous"></script>
+
+  <!--    My CSS -->
+  <link href="stylesheets/employeeHomepage.css" rel="stylesheet">
+
+  <!-- jQuery-->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- My JS-->
+  <script src="scripts/employeeHomepage.js"></script>
+
+  <title>Employee Homepage</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Telco Employee Home</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Reports
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <!-- Number of total purchases per package. -->
+            <!-- Number of total purchases per package and validity period.-->
+            <!-- Total value of sales per package with and without the optional products.-->
+            <li><a class="dropdown-item" href="#">Service Packages</a></li>
+            <!-- Average number of optional products sold together with each service package.-->
+            <li><a class="dropdown-item" href="#">Optional Products</a></li>
+            <!-- List of insolvent users, suspended orders and alerts. -->
+            <li><a class="dropdown-item" href="#">Insolvent Users, Suspended Orders, Alerts</a></li>
+            <!--  Best seller optional product, i.e. the optional product with the greatest value of sales across all the sold service packages.-->
+            <li><a class="dropdown-item" href="#">Best Seller Optional Products</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+
+  <ul class="nav nav-tabs" id="myTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="servicepackages-tab" data-bs-toggle="tab" data-bs-target="#servicepackages" type="button" role="tab" aria-controls="servicepackages" aria-selected="true">Service Packages</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="optionalproducts-tab" data-bs-toggle="tab" data-bs-target="#optionalproducts" type="button" role="tab" aria-controls="optionalproducts" aria-selected="false">Optional Products</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="badthings-tab" data-bs-toggle="tab" data-bs-target="#badthings" type="button" role="tab" aria-controls="badthings" aria-selected="false">Insolvent Users, Rejected Orders, Alerts</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="bestsellers-tab" data-bs-toggle="tab" data-bs-target="#bestsellers" type="button" role="tab" aria-controls="bestsellers" aria-selected="false">Best Sellers</button>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="servicepackages-tab-tab">...</div>
+    <!-- Number of total purchases per package. -->
+    <!-- Number of total purchases per package and validity period.-->
+    <!-- Total value of sales per package with and without the optional products.-->
+
+    <div class="row">
+
+      <div class="col-5 mb-3" id="servicePackagesDisplay">
+        <div class="scrollWindow" id="id_allServicePackagesContainer">
+          <ul class="list-group list-group-flush" id="id_allServicesPackageTiles">
+            <li class="list-group-item list-group-item-action" name="service" id="id_package1" aria-current="true">
+              <div class="d-flex w-100 align-content-center justify-content-between row">
+                <div class="col-5">
+                  <p class="lead mb-1">Family Plan Deluxe</p>
+                </div>
+                <div class="col-2">
+                  <button type="button" id="id_totalPurchasesPackage1" class="btn btn-primary">34</button>
+                </div>
+              </div>
+              <div class="d-flex w-100 align-content-center row">
+                <div class="col-5">
+                  <p class="text-muted mb-1">Package ID 837</p>
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item list-group-item-action" name="service" id="id_package1" aria-current="true">
+              <div class="d-flex w-100 align-content-center justify-content-between row">
+                <div class="col-5">
+                  <p class="lead mb-1">Family Plan Deluxe</p>
+                </div>
+                <div class="col-2">
+                  <button type="button" id="id_totalPurchasesPackage1" class="btn btn-primary">34</button>
+                </div>
+              </div>
+              <div class="d-flex w-100 align-content-center row">
+                <div class="col-5">
+                  <p class="text-muted mb-1">Package ID 837</p>
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item list-group-item-action" name="service" id="id_package1" aria-current="true">
+              <div class="d-flex w-100 align-content-center justify-content-between row">
+                <div class="col-5">
+                  <p class="lead mb-1">Family Plan Deluxe</p>
+                </div>
+                <div class="col-2">
+                  <button type="button" id="id_totalPurchasesPackage1" class="btn btn-primary">34</button>
+                </div>
+              </div>
+              <div class="d-flex w-100 align-content-center row">
+                <div class="col-5">
+                  <p class="text-muted mb-1">Package ID 837</p>
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item list-group-item-action" name="service" id="id_package1" aria-current="true">
+              <div class="d-flex w-100 align-content-center justify-content-between row">
+                <div class="col-5">
+                  <p class="lead mb-1">Family Plan Deluxe</p>
+                </div>
+                <div class="col-2">
+                  <button type="button" id="id_totalPurchasesPackage1" class="btn btn-primary">34</button>
+                </div>
+              </div>
+              <div class="d-flex w-100 align-content-center row">
+                <div class="col-5">
+                  <p class="text-muted mb-1">Package ID 837</p>
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item list-group-item-action" name="service" id="id_package1" aria-current="true">
+              <div class="d-flex w-100 align-content-center justify-content-between row">
+                <div class="col-5">
+                  <p class="lead mb-1">Family Plan Deluxe</p>
+                </div>
+                <div class="col-2">
+                  <button type="button" id="id_totalPurchasesPackage1" class="btn btn-primary">34</button>
+                </div>
+              </div>
+              <div class="d-flex w-100 align-content-center row">
+                <div class="col-5">
+                  <p class="text-muted mb-1">Package ID 837</p>
+                </div>
+              </div>
+            </li>
+
+
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="col-6 mb-3" id="id_packageSalesTableCol">
+        <h5>Sales Summary: Family Plan Deluxe</h5>
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">12-Month Plans</th>
+            <th scope="col">24-Month Plans</th>
+            <th scope="col">36-Month Plans</th>
+            <th scope="col">Total</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <th scope="row">Total Purchases</th>
+            <td>88</td>
+            <td>23</td>
+            <td>14</td>
+            <td>125</td>
+          </tr>
+          <tr>
+            <th scope="row">Gross Sales</th>
+            <td>$569</td>
+            <td>$379</td>
+            <td>$198</td>
+            <td>$1294</td>
+          </tr>
+          <tr>
+            <th scope="row">Gross Sales With Options</th>
+            <td>$759</td>
+            <td>$592</td>
+            <td>$450</td>
+            <td>$1987</td>
+          </tr>
+          </tbody>
+        </table>
+
+
+
+
+      </div>
+    </div>
+
+
+
+    <div class="tab-pane fade" id="optionalproducts" role="tabpanel" aria-labelledby="optionalproducts-tab-tab">...</div>
+    <div class="tab-pane fade" id="badthings" role="tabpanel" aria-labelledby="badthings-tab-tab">...</div>
+    <div class="tab-pane fade" id="bestsellers" role="tabpanel" aria-labelledby="bestsellers-tab-tab">...</div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+</body>
+</html>
+
+
+
+

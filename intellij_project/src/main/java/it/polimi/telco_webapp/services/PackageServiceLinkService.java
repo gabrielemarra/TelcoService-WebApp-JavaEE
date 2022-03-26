@@ -43,7 +43,7 @@ public class PackageServiceLinkService {
         List<Service> dummy = new ArrayList<>();
         return dummy;
     }
-    
+
     public Integer getQuantity(ServicePackage servicePackage, Service service) {
         Integer quantity = em.createNamedQuery("PackageServiceLink.getQuantity", Integer.class).setParameter(1, servicePackage).setParameter(2, service).getSingleResult();
         return quantity;
