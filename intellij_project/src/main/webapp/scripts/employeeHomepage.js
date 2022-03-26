@@ -197,7 +197,6 @@ $(document).ready(function () {
             quantityElement.value = newSum;
             quantityElement.appendChild(document.createTextNode(newSum.toString()));
             addItemToSummary(this.parentElement.parentElement.parentElement, newSum, true, "Option");
-
         }
 
         minusBtn.onclick = function () { // decrement
@@ -212,7 +211,6 @@ $(document).ready(function () {
             quantityElement.value = newSum;
             quantityElement.appendChild(document.createTextNode(newSum.toString()));
             addItemToSummary(this.parentElement.parentElement.parentElement, newSum, false, "Option");
-
         }
     };
 
@@ -411,6 +409,7 @@ $(document).ready(function () {
             quantityElement.value = newSum;
             quantityElement.appendChild(document.createTextNode(newSum.toString()));
             addItemToSummary(this.parentElement.parentElement.parentElement, newSum, true, "Service");
+            updateTotalInSummary();
         }
 
         btnM.onclick = function () { // decrement
@@ -427,6 +426,7 @@ $(document).ready(function () {
             quantityElement.value = newSum;
             quantityElement.appendChild(document.createTextNode(newSum.toString()));
             addItemToSummary(this.parentElement.parentElement.parentElement, newSum, false, "Service");
+            updateTotalInSummary();
         }
     };
 
@@ -511,6 +511,7 @@ $(document).ready(function () {
                 changeServiceLabel(id, period);
             }
             updatePricesInSummary(period);
+            updateTotalInSummary();
         }
     );
 
@@ -568,6 +569,7 @@ $(document).ready(function () {
                 itemIds.push((items[i].id).replace(/\D/g, ''));
             }
         }
+        let total = 0;
         for (let i = 0; i < itemIds.length; i++) {
             let element = document.getElementById("id_itemService" + itemIds[i]);
             if(element != null) { // if element is in fact a service, the search by ID will find a match.
@@ -585,7 +587,7 @@ $(document).ready(function () {
      * @param validity: the validity period drives which price tier we select
      */
     function appendNewPriceInSummary(element, id, validity, quantity, request) {
-
+        let newPrice = 0;
         let getRequest = $.get(request, {id: id});
         getRequest.done(function (data, textStatus, jqXHR) {
             let response = jqXHR.responseJSON;
@@ -602,6 +604,25 @@ $(document).ready(function () {
             alert(request + " ID:" + id + "failed");
         });
     };
+
+    function updateTotalInSummary() {
+        let serviceItems = document.getElementById("id_packageSummary").childNodes;
+        let total = 0;
+        for(let i = 0; i < serviceItems.length; i++) {
+            if(serviceItems[i] != null){
+                console.log(serviceItems[i].textContent);
+                //if((serviceItems[i].id).contains("Service")) { // document.getElementById("id_itemService2").lastChild.data
+                //    let contributionToTotal = serviceItems[i].lastChild.textContent.replace(/\D/g, '');
+                //    total = total + contributionToTotal;
+                //}
+            }
+        }
+        let totalElement = document.getElementById("id_summaryTotal");
+        //totalElement.textContent = total;
+        //totalElement.appendChild(document.createTextNode("Default Base Cost: $" + total.toString()));
+
+    }
+
 
     /**
      *         * plus_minus: "plus" or "minus"
