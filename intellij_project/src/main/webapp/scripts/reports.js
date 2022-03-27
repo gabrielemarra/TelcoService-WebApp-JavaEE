@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     showAllPackages();
     showAllOptions();
-    showChart();
+    identifyBestSeller();
 
     function showAllPackages() {
         let getRequest = $.get("GetAvailableServicePackages");
@@ -18,7 +18,7 @@ $(document).ready(function () {
         getRequest.fail(function (data, textStatus, jqXHR) {
             alert("Could not get all service packages...fail");
         });
-        };
+    };
 
     function showOnePackage(name, id) {
         let tilesList = document.getElementById("id_allServicesPackageTiles");
@@ -62,7 +62,7 @@ $(document).ready(function () {
             serviceTile.dataset.totalWithOptions = totalWithOptions;
             serviceTile.dataset.avgNumOptions = avgNumOptions;
             updateServiceButtons(package_id);
-            });
+        });
         getRequest.fail(function (data, textStatus, jqXHR) {
             alert("Get all orders for single package GET fail!");
             serviceTile.dataset.period1 = purchasesByPeriod[0].toString();
@@ -71,10 +71,8 @@ $(document).ready(function () {
             serviceTile.dataset.totalNoOptions = totalNoOptions;
             serviceTile.dataset.totalWithOptions = totalWithOptions;
             serviceTile.dataset.avgNumOptions = avgNumOptions;
-
         });
     }
-
 
     function updateServiceButtons(package_id) {
         let tile = document.getElementById("id_package"+ package_id);
@@ -83,7 +81,6 @@ $(document).ready(function () {
         buttonPurchases.textContent = parseInt(tile.dataset.period1) + parseInt(tile.dataset.period2) + parseInt(tile.dataset.period3);
         buttonOptions.textContent = parseInt(tile.dataset.avgNumOptions);
     }
-
 
     function showAllOptions() {
         let getRequest = $.get("GetAllOptions");
@@ -109,8 +106,7 @@ $(document).ready(function () {
         text[1].textContent = "Option ID " + id;
         lineItem.querySelector("button").textContent = 0;
         tilesList.appendChild(clone);
-        getOptionInformation(id); // this is where this should be, uncomment after debugging
-
+        getOptionInformation(id);
     }
 
     function getOptionInformation(option_id) {
@@ -121,9 +117,6 @@ $(document).ready(function () {
             let response = jqXHR.responseJSON;
             optionTile.dataset.salesValue = response.value;
             updateOptionButtons(option_id);
-
-
-
             });
         getRequest.fail(function (data, textStatus, jqXHR) {
         });
@@ -133,14 +126,8 @@ $(document).ready(function () {
         let tile = document.getElementById("id_option" + option_id);
         let button = tile.querySelector("button.optionsSales");
         button.textContent = tile.dataset.salesValue;
-
-
     }
-
-
-
     function showTable(elementId) {
-        //alert("clicked:" + elementId);
         let info = document.getElementById(elementId);
         let tablePlacement = document.getElementById("id_packageSalesTableCol");
         while(tablePlacement.hasChildNodes()) {
@@ -172,22 +159,34 @@ $(document).ready(function () {
         let template = document.getElementById("id_validity_plot_template");
         let clone = template.content.cloneNode(true);
         currentPlot.appendChild(clone);
-
         var data = [{
-
             title: 'Purchases By Period',
             values: [period1, period2, period3],
             labels: ['Period 1', 'Period 2', 'Period 3'],
             type: 'pie',
             textinfo: 'percent+value'
         }];
-
-
         var layout = {height: 400, width: 400};
 
         Plotly.newPlot('validityPeriodPlot', data, layout);
     }
 
+    function identifyBestSeller() {
+        let tileList = document.getElementById("id_allOptionsTiles");
+        let max = 0;
+        let optionTileId="";
+        for(let i = 0; i < tileList.childElementCount; i++) {
+            let temp = tileList[i].querySelector("button.optionsSales");
+            if(temp > max) {
+                max = temp;
+                optionTileId = temp.id;
+            }
+        }
+        document.getElementById(optionTileId).textContent += "\uF19E";
+
+
+
+    }
 
 
 });

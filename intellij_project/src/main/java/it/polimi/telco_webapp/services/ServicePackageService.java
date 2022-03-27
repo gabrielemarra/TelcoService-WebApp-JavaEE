@@ -3,7 +3,6 @@ package it.polimi.telco_webapp.services;
 import java.util.List;
 
 import it.polimi.telco_webapp.auxiliary.exceptions.NoServicePackageFound;
-import it.polimi.telco_webapp.entities.PackageOptionLink;
 import it.polimi.telco_webapp.entities.PackageServiceLink;
 import it.polimi.telco_webapp.entities.ServicePackage;
 import jakarta.ejb.Stateless;
