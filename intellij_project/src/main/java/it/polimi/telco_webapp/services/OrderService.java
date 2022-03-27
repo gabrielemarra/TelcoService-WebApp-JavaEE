@@ -1,5 +1,4 @@
 package it.polimi.telco_webapp.services;
-
 import it.polimi.telco_webapp.auxiliary.OrderStatus;
 import it.polimi.telco_webapp.entities.*;
 import jakarta.ejb.Stateless;
@@ -84,6 +83,16 @@ public class OrderService {
         } else {
             return orders.get(0);
         }
+    }
+
+    public List<Order> getAllOrdersByPackage(ServicePackage servicePackage) {
+        List<Order> orders = em.createNamedQuery("Order.getOrderByPackage", Order.class).setParameter(1, servicePackage).getResultList();
+        if (orders == null || orders.isEmpty()) {
+            // orders CAN be empty....
+            //throw new IllegalArgumentException("No orders have been placed for that service package [id:" + servicePackage.getId() + "].");
+        } else {
+        }
+            return orders;
     }
 
     public List<Order> getAllOrderCreatedByUser(int userId) {

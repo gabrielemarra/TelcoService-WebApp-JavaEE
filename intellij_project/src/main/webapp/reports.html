@@ -21,7 +21,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <!-- My JS-->
-  <script src="scripts/employeeHomepage.js"></script>
+  <script src="scripts/reports.js"></script>
 
   <title>Employee Homepage</title>
 </head>
@@ -87,130 +87,92 @@
       <div class="col-5 mb-3" id="servicePackagesDisplay">
         <div class="scrollWindow" id="id_allServicePackagesContainer">
           <ul class="list-group list-group-flush" id="id_allServicesPackageTiles">
-            <li class="list-group-item list-group-item-action" name="service" id="id_package1" aria-current="true">
-              <div class="d-flex w-100 align-content-center justify-content-between row">
-                <div class="col-5">
-                  <p class="lead mb-1">Family Plan Deluxe</p>
+              <a type="button" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 align-content-center justify-content-between row">
+                  <div class="col-5">
+                    <p class="lead mb-1">Family Plan Deluxe</p>
+                  </div>
+                  <div class="col-2">
+                    <button type="button" id="id_totalPurchasesPackage" class="btn btn-primary">34</button>
+                  </div>
                 </div>
-                <div class="col-2">
-                  <button type="button" id="id_totalPurchasesPackage1" class="btn btn-primary">34</button>
+                <div class="d-flex w-100 align-content-center row">
+                  <div class="col-5">
+                    <p class="text-muted mb-1">Package ID 837</p>
+                  </div>
                 </div>
-              </div>
-              <div class="d-flex w-100 align-content-center row">
-                <div class="col-5">
-                  <p class="text-muted mb-1">Package ID 837</p>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item list-group-item-action" name="service" id="id_package1" aria-current="true">
-              <div class="d-flex w-100 align-content-center justify-content-between row">
-                <div class="col-5">
-                  <p class="lead mb-1">Family Plan Deluxe</p>
-                </div>
-                <div class="col-2">
-                  <button type="button" id="id_totalPurchasesPackage1" class="btn btn-primary">34</button>
-                </div>
-              </div>
-              <div class="d-flex w-100 align-content-center row">
-                <div class="col-5">
-                  <p class="text-muted mb-1">Package ID 837</p>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item list-group-item-action" name="service" id="id_package1" aria-current="true">
-              <div class="d-flex w-100 align-content-center justify-content-between row">
-                <div class="col-5">
-                  <p class="lead mb-1">Family Plan Deluxe</p>
-                </div>
-                <div class="col-2">
-                  <button type="button" id="id_totalPurchasesPackage1" class="btn btn-primary">34</button>
-                </div>
-              </div>
-              <div class="d-flex w-100 align-content-center row">
-                <div class="col-5">
-                  <p class="text-muted mb-1">Package ID 837</p>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item list-group-item-action" name="service" id="id_package1" aria-current="true">
-              <div class="d-flex w-100 align-content-center justify-content-between row">
-                <div class="col-5">
-                  <p class="lead mb-1">Family Plan Deluxe</p>
-                </div>
-                <div class="col-2">
-                  <button type="button" id="id_totalPurchasesPackage1" class="btn btn-primary">34</button>
-                </div>
-              </div>
-              <div class="d-flex w-100 align-content-center row">
-                <div class="col-5">
-                  <p class="text-muted mb-1">Package ID 837</p>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item list-group-item-action" name="service" id="id_package1" aria-current="true">
-              <div class="d-flex w-100 align-content-center justify-content-between row">
-                <div class="col-5">
-                  <p class="lead mb-1">Family Plan Deluxe</p>
-                </div>
-                <div class="col-2">
-                  <button type="button" id="id_totalPurchasesPackage1" class="btn btn-primary">34</button>
-                </div>
-              </div>
-              <div class="d-flex w-100 align-content-center row">
-                <div class="col-5">
-                  <p class="text-muted mb-1">Package ID 837</p>
-                </div>
-              </div>
-            </li>
-
-
+              </a>
           </ul>
         </div>
       </div>
 
 
-      <div class="col-6 mb-3" id="id_packageSalesTableCol">
-        <h5>Sales Summary: Family Plan Deluxe</h5>
-        <table class="table">
-          <thead>
-          <tr>
-            <th scope="col"></th>
-            <th scope="col">12-Month Plans</th>
-            <th scope="col">24-Month Plans</th>
-            <th scope="col">36-Month Plans</th>
-            <th scope="col">Total</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <th scope="row">Total Purchases</th>
-            <td>88</td>
-            <td>23</td>
-            <td>14</td>
-            <td>125</td>
-          </tr>
-          <tr>
-            <th scope="row">Gross Sales</th>
-            <td>$569</td>
-            <td>$379</td>
-            <td>$198</td>
-            <td>$1294</td>
-          </tr>
-          <tr>
-            <th scope="row">Gross Sales With Options</th>
-            <td>$759</td>
-            <td>$592</td>
-            <td>$450</td>
-            <td>$1987</td>
-          </tr>
-          </tbody>
-        </table>
+      <template id="id_sales_summary_package_template">
+        <div class="col-6 mb-3" id="id_packageSalesTableCol">
+          <h5>Sales Summary: Family Plan Deluxe</h5>
+          <table class="table">
+            <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">12-Month Plans</th>
+              <th scope="col">24-Month Plans</th>
+              <th scope="col">36-Month Plans</th>
+              <th scope="col">Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <th scope="row">Total Purchases</th>
+              <td>{purchases_period1}</td>
+              <td>{purchases_period2}</td>
+              <td>{purchases_period3{</td>
+              <td>{purchases_total}</td>
+            </tr>
+            </tbody>
+            <tfoot>
+
+            <tr>
+              <th scope="row">Gross Sales</th>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{sales_total_NoOptions}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Gross Sales With Options</th>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{sales_total_WithOptions}</td>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+      </template>
+
+      <template id="id_package_tile_template">
+        <a type="button" class="list-group-item list-group-item-action" id="">
+          <div class="d-flex w-100 align-content-center justify-content-between row">
+            <div class="col-5">
+              <p class="lead mb-1">${package.name}</p>
+            </div>
+            <div class="col-2">
+              <button type="button" id="id_totalPurchasesPackage" class="btn btn-primary purchases">33</button>
+            </div>
+          </div>
+          <div class="d-flex w-100 align-content-center row">
+            <div class="col-5">
+              <p class="text-muted mb-1" class="package_id">Package ID 1843</p>
+            </div>
+          </div>
+        </a>
 
 
+      </template>
 
 
-      </div>
     </div>
+
 
 
 

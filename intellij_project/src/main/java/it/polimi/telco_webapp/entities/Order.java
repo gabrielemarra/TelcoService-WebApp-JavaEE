@@ -15,6 +15,8 @@ import java.util.List;
 @NamedQuery(name = "Order.getOrder", query = "SELECT o FROM Order o WHERE o.id = ?1")
 @NamedQuery(name = "Order.getOrderBySingleUser", query = "SELECT o FROM Order o WHERE o.user = ?1")
 @NamedQuery(name = "Order.getRejectedOrdersBySingleUser", query = "SELECT o FROM Order o WHERE o.user = ?1 AND o.status = it.polimi.telco_webapp.auxiliary.OrderStatus.REJECTED")
+@NamedQuery(name = "Order.getOrderByPackage", query = "SELECT o FROM Order o WHERE o.packageId = ?1")
+
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
