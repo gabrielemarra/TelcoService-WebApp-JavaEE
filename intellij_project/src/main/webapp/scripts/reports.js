@@ -39,6 +39,7 @@ $(document).ready(function () {
         let purchasesByPeriod = [0, 0, 0];
         let totalNoOptions = 0;
         let totalWithOptions = 0;
+        let avgNumOptions = 0;
 
         let getRequest = $.get("GetPackageOrders", {package_id: package_id});
         getRequest.done(function (data, textStatus, jqXHR) {
@@ -48,13 +49,16 @@ $(document).ready(function () {
                     totalNoOptions += orders[i].order_baseCost;
                     totalWithOptions += orders[i].order_totalCost;
                     purchasesByPeriod[parseInt(orders[i].order_validity) - 1] += 1;
+                    avgNumOptions += orders[i].order_num_options;
                 }
+                avgNumOptions = avgNumOptions/orders.length;
             }
             serviceTile.dataset.period1 = purchasesByPeriod[0].toString();
             serviceTile.dataset.period2 = purchasesByPeriod[1].toString();
             serviceTile.dataset.period3 = purchasesByPeriod[2].toString();
             serviceTile.dataset.totalNoOptions = totalNoOptions;
             serviceTile.dataset.totalWithOptions = totalWithOptions;
+            serviceTile.dataset.avgNumOptions = avgNumOptions;
             updatePurchaseCount();
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
@@ -64,16 +68,24 @@ $(document).ready(function () {
             serviceTile.dataset.period3 = purchasesByPeriod[2].toString();
             serviceTile.dataset.totalNoOptions = totalNoOptions;
             serviceTile.dataset.totalWithOptions = totalWithOptions;
+            serviceTile.dataset.avgNumOptions = avgNumOptions;
+
         });
     }
 
     function updatePurchaseCount() {
         let titleList = document.getElementById("id_allServicesPackageTiles");
         let info = titleList.querySelectorAll("a");
-        let buttons = titleList.querySelectorAll("button");
-        for(let i = 0; i < buttons.length; i++) {
-            buttons[i].textContent = parseInt(info[i].dataset.period1) + parseInt(info[i].dataset.period2) + parseInt(info[i].dataset.period3);
+        let buttonsPurchases = titleList.querySelectorAll("button.purchases");
+        for(let i = 0; i < buttonsPurchases.length; i++) {
+            buttonsPurchases[i].textContent = parseInt(info[i].dataset.period1) + parseInt(info[i].dataset.period2) + parseInt(info[i].dataset.period3);
         }
+        let buttonsOptions = titleList.querySelectorAll("button.options");
+        for(let i = 0; i < buttonsOptions.length; i++) {
+            buttonsOptions[i].textContent = parseInt(info[i].dataset.avgNumOptions);
+        }
+
+
     }
 
     function showTable(elementId) {
@@ -85,7 +97,6 @@ $(document).ready(function () {
         }
         let template = document.getElementById("id_sales_summary_package_template");
         let clone = template.content.cloneNode(true);
-
         let name = clone.querySelector("h5");
         name.textContent = "Sales Summary: " + info.querySelector("p").textContent;
         let td = clone.querySelectorAll("td");
@@ -93,10 +104,37 @@ $(document).ready(function () {
         td[1].textContent = info.dataset.period2;
         td[2].textContent = info.dataset.period3;
         td[3].textContent = parseInt(info.dataset.period1) + parseInt(info.dataset.period2) + parseInt(info.dataset.period3);
+        //TODO: use the euro money sign?
         td[7].textContent = "$" + info.dataset.totalNoOptions;
         td[11].textContent = "$" + info.dataset.totalWithOptions;
-
         tablePlacement.appendChild(clone);
+        showChart();
     }
+
+    function showChart() {
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                title: {
+                    text: "Desktop Search Engine Market Share - 2016"
+                },
+                data: [{
+                    type: "pie",
+                    startAngle: 240,
+                    yValueFormatString: "##0.00\"%\"",
+                    indexLabel: "{label} {y}",
+                    dataPoints: [
+                        {y: 79.45, label: "Google"},
+                        {y: 7.31, label: "Bing"},
+                        {y: 7.06, label: "Baidu"},
+                        {y: 4.91, label: "Yahoo"},
+                        {y: 1.26, label: "Others"}
+                    ]
+                }]
+            });
+            chart.render();
+
+        }
+
 
 });

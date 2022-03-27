@@ -72,18 +72,20 @@ public class GetPackageOrders extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             JsonArray jsonArray = new JsonArray();
+            int avgNumOptions = 0;
             for (int i = 0; i < orders.size(); i++) {
                 JsonElement jsonElement = new JsonObject();
                 Order temp = orders.get(i);
+
                 if(temp.getStatus() != OrderStatus.REJECTED) {
                     jsonElement.getAsJsonObject().addProperty("order_id", temp.getId());
                     jsonElement.getAsJsonObject().addProperty("order_baseCost", temp.getBaseCost());
                     jsonElement.getAsJsonObject().addProperty("order_totalCost", temp.getTotalPrice());
                     jsonElement.getAsJsonObject().addProperty("order_validity", temp.getChosenValidityPeriod());
+                    jsonElement.getAsJsonObject().addProperty("order_num_options", temp.getOptionalServices().size());
                 }
                 jsonArray.add(jsonElement);
             }
-            //}
 
             response.getWriter().println(gson.toJson(jsonArray));
         } catch (EJBException e) {
