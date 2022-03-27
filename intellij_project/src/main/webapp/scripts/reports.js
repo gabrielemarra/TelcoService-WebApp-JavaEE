@@ -24,6 +24,8 @@ $(document).ready(function () {
         let clone = template.content.cloneNode(true);
         let lineItem = clone.querySelector("a");
         lineItem.id = "id_package" + id;
+        lineItem.addEventListener("click", function(){ showTable("id_package"+ id); });
+
         let text = clone.querySelectorAll("p");
         text[0].textContent = name;
         text[1].textContent = "Package ID " + id;
