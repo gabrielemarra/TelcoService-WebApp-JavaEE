@@ -71,6 +71,8 @@ $(document).ready(function () {
             serviceTile.dataset.totalNoOptions = totalNoOptions;
             serviceTile.dataset.totalWithOptions = totalWithOptions;
             serviceTile.dataset.avgNumOptions = avgNumOptions;
+            updateServiceButtons(package_id);
+
         });
     }
 

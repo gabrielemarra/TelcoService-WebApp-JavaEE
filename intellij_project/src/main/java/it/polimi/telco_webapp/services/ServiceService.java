@@ -16,8 +16,7 @@ public class ServiceService {
     @PersistenceContext(unitName = "telco_webapp")
     private EntityManager em;
 
-    public ServiceService() {
-    }
+    public ServiceService() {}
 
     /**
      * Inserts a new service into the database.
@@ -54,7 +53,6 @@ public class ServiceService {
                  * service.setSmsExtra(0.0);
                  *
                  */
-
                 break;
             case "Mobile_Internet":
                 if (gigIncl < 1 || gigExtra < 0) { // Internet plans need to offer Gig greater than 1!
@@ -98,7 +96,6 @@ public class ServiceService {
                  * service.setSmsExtra(0.0);
                  *
                  */
-
                 break;
             case "Mobile_Phone":
                 if (smsIncl < 0 || smsExtra < 0 || minIncl < 0 || minExtra < 0) { // Phone plans CAN have included minutes or included sms set to zero:  imagine a sms-only plan
@@ -133,21 +130,17 @@ public class ServiceService {
      * @return: the service with the matching service id
      */
     public Service getService(int service_id) {
-        List<Service> services = em.createNamedQuery("Service.getService", Service.class).setParameter(1, service_id).getResultList();
-
-        if (services == null || services.isEmpty()) {
-            throw new InvalidParameterException("Invalid service id.");
-        } else if( services.size() != 1) {
-            throw new InvalidParameterException("DB error.");
-        } else {
-            return services.get(0);
+        Service service = em.find(Service.class, service_id);
+        if (service == null) {
+            throw new InvalidParameterException("Invalid service ID: " + service_id);
         }
+        return service;
     }
 
     public List<Service> getAllServices() {
         List<Service> services = em.createNamedQuery("Service.getAllAvailableServices", Service.class).getResultList();
         if (services == null || services.isEmpty()) {
-            throw new InvalidParameterException("Invalid service id.");
+            throw new InvalidParameterException("No services found.");
         } else {
             return services;
         }

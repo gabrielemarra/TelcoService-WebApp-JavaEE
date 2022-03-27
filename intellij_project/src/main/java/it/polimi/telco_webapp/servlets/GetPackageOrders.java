@@ -54,7 +54,7 @@ public class GetPackageOrders extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //doGet(request, response);
+        doGet(request, response);
     }
 
     @Override
@@ -63,8 +63,6 @@ public class GetPackageOrders extends HttpServlet {
             ServicePackage packageOfInterest = packageService.getServicePackage(Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("package_id"))));
 
             List<Order> orders = orderService.getAllOrdersByPackage(packageOfInterest);
-            //if(orders != null) {
-
 
             Gson gson = new Gson();
 

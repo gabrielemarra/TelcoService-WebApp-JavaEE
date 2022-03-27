@@ -19,8 +19,7 @@ public class EmployeeService {
     @PersistenceContext(unitName = "telco_webapp")
     private EntityManager em;
 
-    public EmployeeService() {
-    }
+    public EmployeeService() {}
 
     public Employee getEmployeeById(String employee_id) throws PersistenceException, InvalidParameterException {
         Employee employeeFromDB = em.find(Employee.class, employee_id);

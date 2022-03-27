@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "optional_product", schema = "telco_db")
-@NamedQuery(name = "Option.getOption", query = "SELECT o FROM Option o WHERE o.id = ?1")
 @NamedQuery(name = "Option.getAllAvailableOptions", query = "SELECT o FROM Option o")
 
 public class Option {
@@ -24,14 +23,10 @@ public class Option {
     @Column(name = "quantity_sold")
     private Integer quantitySold;
 
-    @OneToMany(mappedBy = "option")
-    private List<PackageOptionLink> packageOptionLinks; // better name: packagesLinkedToOption?
-
     @ManyToMany
     @JoinTable(name = "optional_product_ordered", joinColumns = @JoinColumn(name = "opt_id"),
             inverseJoinColumns = @JoinColumn(name = "order_id"))
     private List<Order> orders;
-
 
     public Integer getQuantitySold() {
         return quantitySold;
@@ -72,8 +67,4 @@ public class Option {
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
-
-    public void setPackageOptionLinks(List<PackageOptionLink> packageOptionLinks) {this.packageOptionLinks = packageOptionLinks; }
-
-    public List<PackageOptionLink> getPackageOptionLinks() {return packageOptionLinks; }
 }

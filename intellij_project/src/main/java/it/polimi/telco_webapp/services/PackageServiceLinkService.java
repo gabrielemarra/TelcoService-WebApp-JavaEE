@@ -6,7 +6,9 @@ import it.polimi.telco_webapp.entities.PackageServiceLink;
 import it.polimi.telco_webapp.entities.ServicePackage;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
+import org.eclipse.persistence.exceptions.DatabaseException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,24 +40,33 @@ public class PackageServiceLinkService {
 
     }
 
-    public List<Service> getServices(int servicePackageId) {
-        // do a query?
-        List<Service> dummy = new ArrayList<>();
-        return dummy;
+    public List<Service> getServicesById(int servicePackageId) {
+        List<Service> services = em.createNamedQuery("PackageServiceLink.getServicesLinkedWithPackage", Service.class).setParameter(1, servicePackageId).getResultList();
+        if(services == null || services.isEmpty()) {
+            throw new EntityNotFoundException("No services found associated with service package ID: " + servicePackageId);
+        } else {
+            return services;
+        }
     }
 
-    public Integer getQuantity(ServicePackage servicePackage, Service service) {
+    public List<Service> getServicesByPackage(ServicePackage servicePackage) {
+        List<Service> services = em.createNamedQuery("PackageServiceLink.getServicesLinkedWithPackage", Service.class).setParameter(1, servicePackage).getResultList();
+        if(services == null || services.isEmpty()) {
+            throw new EntityNotFoundException("No services found associated with service package ID: " + servicePackage.getId());
+        } else {
+            return services;
+        }
+    }
+
+    public Integer getQuantityByObjects(ServicePackage servicePackage, Service service) {
         Integer quantity = em.createNamedQuery("PackageServiceLink.getQuantity", Integer.class).setParameter(1, servicePackage).setParameter(2, service).getSingleResult();
         return quantity;
     }
 
-    public Integer getQuantity2(int servicePackageId, int serviceId) {
+    public Integer getQuantityByIds(int servicePackageId, int serviceId) {
         Integer quantity = em.createNamedQuery("PackageServiceLink.getQuantity", Integer.class).setParameter(1, servicePackageId).setParameter(2, serviceId).getSingleResult();
         return quantity;
     }
-
-
-
 }
 
 

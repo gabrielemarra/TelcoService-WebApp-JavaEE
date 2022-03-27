@@ -57,7 +57,6 @@ public class AddService extends HttpServlet {
         gigIncl = minIncl = smsIncl = 0;
         gigExtra = minExtra = smsExtra = 0.0;
 
-
         switch (type) {
             case "Fixed_Phone":
                 //

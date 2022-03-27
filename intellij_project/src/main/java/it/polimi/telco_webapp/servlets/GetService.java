@@ -65,8 +65,7 @@ public class GetService extends HttpServlet {
             jsonElement.getAsJsonObject().addProperty("bp3", oneService.getBasePrice3());
             jsonElement.getAsJsonObject().addProperty("service_id", oneService.getId());
             jsonElement.getAsJsonObject().addProperty("type", oneService.getServiceType().toString());
-
-
+            
             response.getWriter().println(gson.toJson(jsonElement));
         } catch (EJBException e) {
             sendError(request, response, "NoService", e.getCause().getMessage());

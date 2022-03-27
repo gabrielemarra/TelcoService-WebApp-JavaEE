@@ -3,6 +3,7 @@ import it.polimi.telco_webapp.auxiliary.OrderStatus;
 import it.polimi.telco_webapp.entities.*;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 
 import java.math.BigDecimal;
@@ -15,8 +16,7 @@ public class OrderService {
     @PersistenceContext(unitName = "telco_webapp")
     private EntityManager em;
 
-    public OrderService() {
-    }
+    public OrderService() {}
 
     /**
      * Create a new Order and store in the Persistence Context
@@ -27,7 +27,7 @@ public class OrderService {
      * @param optionalProductList   The optional products included in the order
      * @return The new created order
      */
-    public Order insertOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<Option> optionalProductList) {
+    public Order insertNewOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<Option> optionalProductList) {
         Order newOrder = new Order();
         newOrder.setPackageId(servicePackage);
         newOrder.setUser(user);
@@ -73,46 +73,38 @@ public class OrderService {
         return newOrder;
     }
 
-    //TODO use FIND instead of NamedQuery
     public Order getOrder(int orderId) {
-        List<Order> orders = em.createNamedQuery("Order.getOrder", Order.class).setParameter(1, orderId).getResultList();
-        if (orders == null || orders.isEmpty()) {
-            throw new IllegalArgumentException("Invalid orderID");
-        } else if (orders.size() != 1) {
-            throw new IllegalArgumentException("Internal database error: too many result for a single ID");
-        } else {
-            return orders.get(0);
+        Order order = em.find(Order.class, orderId);
+        if (order == null) {
+            throw new EntityNotFoundException("Cannot find order with ID: " + orderId);
         }
+        return order;
     }
 
     public List<Order> getAllOrdersByPackage(ServicePackage servicePackage) {
-        List<Order> orders = em.createNamedQuery("Order.getOrderByPackage", Order.class).setParameter(1, servicePackage).getResultList();
+        List<Order> orders = em.createNamedQuery("Order.getAllOrdersByPackage", Order.class).setParameter(1, servicePackage).getResultList();
         if (orders == null || orders.isEmpty()) {
             // orders CAN be empty....
-            //throw new IllegalArgumentException("No orders have been placed for that service package [id:" + servicePackage.getId() + "].");
-        } else {
+            throw new EntityNotFoundException("No orders have been placed for service package with ID:" + servicePackage.getId());
         }
-            return orders;
+        return orders;
     }
 
     public List<Order> getAllOrdersByOption(Option option) {
         List<Order> orders = em.createNamedQuery("Order.getAllOrdersByOption", Order.class).setParameter(1, option).getResultList();
         if (orders == null || orders.isEmpty()) {
             // orders CAN be empty....
-            //throw new IllegalArgumentException("No orders have been placed for that service package [id:" + servicePackage.getId() + "].");
-        } else {
+            throw new EntityNotFoundException("No orders have included option with ID:" + option.getId());
         }
         return orders;
-
     }
 
-    public List<Order> getAllOrderCreatedByUser(int userId) {
-        List<Order> orders = em.createNamedQuery("Order.getOrder", Order.class).setParameter(1, userId).getResultList();
+    public List<Order> getAllOrdersByUser(User user) {
+        List<Order> orders = em.createNamedQuery("Order.getAllOrdersByUser", Order.class).setParameter(1, user).getResultList();
         if (orders == null || orders.isEmpty()) {
-            throw new IllegalArgumentException("User has no orders or the userID is invalid");
-        } else {
-            return orders;
+            throw new IllegalArgumentException("No orders have been placed by user or the userID is invalid ID: " + user.getId());
         }
+        return orders;
     }
 
 }

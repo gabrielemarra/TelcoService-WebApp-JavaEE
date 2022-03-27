@@ -49,15 +49,6 @@ public class AddOption extends HttpServlet {
         /* QUESTION: difference between passing info via getParameter() versus getting from items put in sessionStorage() */
         String name = StringEscapeUtils.escapeJava(request.getParameter("name"));
         String priceStr = StringEscapeUtils.escapeJava(request.getParameter("price"));
-/** We do not need an instantiation of an OptionalProduct object to add to the datebase...
- * we can use use the user entries directly to populate the columns in the database
-        OptionalProduct newOptionalProduct = new OptionalProduct();
-        newOptionalProduct.setName(name);
-        newOptionalProduct.setPrice(new BigDecimal(priceStr));
-        newOptionalProduct.setQuantitySold(0);
-        newOptionalProduct.setOrders(new ArrayList<Order>());
-        newOptionalProduct.setServicePackages(new ArrayList<ServicePackage>());
- */
 
         try {
             int id = optionService.insertNewOption(name, new BigDecimal(priceStr)).getId();
@@ -71,7 +62,6 @@ public class AddOption extends HttpServlet {
             jsonElement.getAsJsonObject().addProperty("id", id);
             response.getWriter().println(gson.toJson(jsonElement));
 
-
         } catch (EJBException e) {
             sendError(request, response, "InternalDBErrorException", e.getCause().getMessage());
         }
@@ -80,7 +70,5 @@ public class AddOption extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
-
-
     }
 }

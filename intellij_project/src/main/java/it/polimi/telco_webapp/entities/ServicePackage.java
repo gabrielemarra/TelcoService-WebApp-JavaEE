@@ -6,11 +6,11 @@ import java.util.List;
 
 @Table(name = "service_package", schema = "telco_db")
 @Entity
-@NamedQuery(name = "ServicePackage.getOneServicePackage", query = "SELECT s FROM ServicePackage s WHERE s.id = ?1")
 @NamedQuery(name = "ServicePackage.getAllServicePackages", query = "SELECT s FROM ServicePackage s")
 
 public class ServicePackage {
 
+    /* JPA definitions */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "package_id", nullable = false)
@@ -26,62 +26,51 @@ public class ServicePackage {
     private List <Order> orders;
 
     @OneToMany(mappedBy = "servicePackage")
-    private List<PackageOptionLink> optionsLinkedToPackage;
-
-    @OneToMany(mappedBy = "servicePackage")
     private List<PackageServiceLink> servicesLinkedToPackage;
 
-    /* I think we also need this
-     * TODO: check fetch type
-     * TODO: check that mappedby string is correct
-     * TODO: check if we need to add targetEntity
-     * @OneToMany(fetch = FetchType.LAZY, mappedBy = "service_package", cascade = CascadeType.ALL)
-     * private List<Order> orders;
-     */
+    @ManyToMany
+    @JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "package_id"),
+            inverseJoinColumns = @JoinColumn(name = "opt_id"))
+    private List<Option> options;
 
-    public Integer getValidityPeriod() {
-        return validityPeriod;
+
+    /* Public Getters and Setters */
+    public Integer getId() {
+        return id;
     }
-
-    public void setValidityPeriod(Integer validityPeriod) {
-        this.validityPeriod = validityPeriod;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getValidityPeriod() {
+        return validityPeriod;
     }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public void setValidityPeriod(Integer validityPeriod) {
+        this.validityPeriod = validityPeriod;
     }
-
-    // this getter is should be implemented in  packageservicelink/ packageservicelinkservice
-    //public List<Service> getServices() {return services;}
-    // this setter is should be implemented in  packageservicelink/ packageservicelinkservice
-    //public void setServices(List<Service> services) {this.services = services;}
-
-    public void setOptionsLinkedToPackage(List<PackageOptionLink> optionsLinkedToPackage) {this.optionsLinkedToPackage = optionsLinkedToPackage;}
-
-    public List<PackageOptionLink> getOptionsLinkedToPackage() {return optionsLinkedToPackage;}
-
-    public void setServicesLinkedToPackage(List<PackageServiceLink> servicesLinkedToPackage) {this.servicesLinkedToPackage = servicesLinkedToPackage;}
-
-    public List<PackageServiceLink> getServicesLinkedToPackage() {return servicesLinkedToPackage;}
 
     public List<Order> getOrders() {
         return orders;
     }
-
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public void setServicesLinkedToPackage(List<PackageServiceLink> servicesLinkedToPackage) {this.servicesLinkedToPackage = servicesLinkedToPackage;}
+    public List<PackageServiceLink> getServicesLinkedToPackage() {return servicesLinkedToPackage;}
+
+    public List<Option> getOptions() {
+        return options;
+    }
+    public void setOptions(List<Option> options) {
+        this.options = options;
     }
 
 }

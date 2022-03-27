@@ -22,8 +22,7 @@ public class UserService {
     @PersistenceContext(unitName = "telco_webapp")
     private EntityManager em;
 
-    public UserService() {
-    }
+    public UserService() {}
 
     /**
      * Inserts a new user into the user table in database.
