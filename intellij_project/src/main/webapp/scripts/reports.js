@@ -3,12 +3,14 @@ $(document).ready(function () {
     $.ajaxSetup({cache: false});
 
     showAllPackages();
+    showAllOptions();
+    showChart();
 
     function showAllPackages() {
         let getRequest = $.get("GetAvailableServicePackages");
         getRequest.done(function (data, textStatus, jqXHR) {
             let response = jqXHR.responseJSON;
-            alert("get all packages: success");
+            //alert("get all packages: success");
             for(let i = 0; i < response.length; i++) {
                 showOnePackage(response[i].name, response[i].package_id);
             }
@@ -16,7 +18,7 @@ $(document).ready(function () {
         getRequest.fail(function (data, textStatus, jqXHR) {
             alert("Could not get all service packages...fail");
         });
-    };
+        };
 
     function showOnePackage(name, id) {
         let tilesList = document.getElementById("id_allServicesPackageTiles");
@@ -59,8 +61,8 @@ $(document).ready(function () {
             serviceTile.dataset.totalNoOptions = totalNoOptions;
             serviceTile.dataset.totalWithOptions = totalWithOptions;
             serviceTile.dataset.avgNumOptions = avgNumOptions;
-            updatePurchaseCount();
-        });
+            updateServiceButtons(package_id);
+            });
         getRequest.fail(function (data, textStatus, jqXHR) {
             alert("Get all orders for single package GET fail!");
             serviceTile.dataset.period1 = purchasesByPeriod[0].toString();
@@ -73,20 +75,69 @@ $(document).ready(function () {
         });
     }
 
-    function updatePurchaseCount() {
-        let titleList = document.getElementById("id_allServicesPackageTiles");
-        let info = titleList.querySelectorAll("a");
-        let buttonsPurchases = titleList.querySelectorAll("button.purchases");
-        for(let i = 0; i < buttonsPurchases.length; i++) {
-            buttonsPurchases[i].textContent = parseInt(info[i].dataset.period1) + parseInt(info[i].dataset.period2) + parseInt(info[i].dataset.period3);
-        }
-        let buttonsOptions = titleList.querySelectorAll("button.options");
-        for(let i = 0; i < buttonsOptions.length; i++) {
-            buttonsOptions[i].textContent = parseInt(info[i].dataset.avgNumOptions);
-        }
+
+    function updateServiceButtons(package_id) {
+        let tile = document.getElementById("id_package"+ package_id);
+        let buttonPurchases = tile.querySelector("button.purchases");
+        let buttonOptions = tile.querySelector("button.options");
+        buttonPurchases.textContent = parseInt(tile.dataset.period1) + parseInt(tile.dataset.period2) + parseInt(tile.dataset.period3);
+        buttonOptions.textContent = parseInt(tile.dataset.avgNumOptions);
+    }
+
+
+    function showAllOptions() {
+        let getRequest = $.get("GetAllOptions");
+        getRequest.done(function (data, textStatus, jqXHR) {
+            let response = jqXHR.responseJSON;
+            for(let i = 0; i < response.length; i++) {
+                showOneOption(response[i].name, response[i].price, response[i].option_id);
+            }
+        });
+        getRequest.fail(function (data, textStatus, jqXHR) {
+        });
+    }
+
+    function showOneOption(name, price, id) {
+        let tilesList = document.getElementById("id_allOptionsTiles");
+        let template = document.getElementById("id_option_tile_template");
+        let clone = template.content.cloneNode(true);
+        let lineItem = clone.querySelector("a");
+        lineItem.id = "id_option" + id;
+
+        let text = clone.querySelectorAll("p");
+        text[0].textContent = name;
+        text[1].textContent = "Option ID " + id;
+        lineItem.querySelector("button").textContent = 0;
+        tilesList.appendChild(clone);
+        getOptionInformation(id); // this is where this should be, uncomment after debugging
+
+    }
+
+    function getOptionInformation(option_id) {
+        let optionTile = document.getElementById("id_option" + option_id);
+        let getRequest = $.get("GetOptionValue", {option_id: option_id});
+        getRequest.done(function (data, textStatus, jqXHR) {
+            //alert("option value GET success");
+            let response = jqXHR.responseJSON;
+            optionTile.dataset.salesValue = response.value;
+            updateOptionButtons(option_id);
+
+
+
+            });
+        getRequest.fail(function (data, textStatus, jqXHR) {
+        });
+    }
+
+    function updateOptionButtons(option_id) {
+        let tile = document.getElementById("id_option" + option_id);
+        let button = tile.querySelector("button.optionsSales");
+        button.textContent = tile.dataset.salesValue;
 
 
     }
+
+
 
     function showTable(elementId) {
         //alert("clicked:" + elementId);
@@ -100,41 +151,43 @@ $(document).ready(function () {
         let name = clone.querySelector("h5");
         name.textContent = "Sales Summary: " + info.querySelector("p").textContent;
         let td = clone.querySelectorAll("td");
-        td[0].textContent = info.dataset.period1;
-        td[1].textContent = info.dataset.period2;
-        td[2].textContent = info.dataset.period3;
-        td[3].textContent = parseInt(info.dataset.period1) + parseInt(info.dataset.period2) + parseInt(info.dataset.period3);
+        td[0].textContent = parseInt(info.dataset.period1) + parseInt(info.dataset.period2) + parseInt(info.dataset.period3);
+        td[2].textContent = info.dataset.period1;
+        td[4].textContent = info.dataset.period2;
+        td[6].textContent = info.dataset.period3;
         //TODO: use the euro money sign?
-        td[7].textContent = "$" + info.dataset.totalNoOptions;
-        td[11].textContent = "$" + info.dataset.totalWithOptions;
+        td[7].textContent = info.dataset.avgNumOptions;
+        td[8].textContent = "$" + info.dataset.totalNoOptions;
+        td[9].textContent = "$" + info.dataset.totalWithOptions;
         tablePlacement.appendChild(clone);
-        showChart();
+        showChart(info.dataset.period1, info.dataset.period2, info.dataset.period3);
     }
 
-    function showChart() {
-
-            var chart = new CanvasJS.Chart("chartContainer", {
-                animationEnabled: true,
-                title: {
-                    text: "Desktop Search Engine Market Share - 2016"
-                },
-                data: [{
-                    type: "pie",
-                    startAngle: 240,
-                    yValueFormatString: "##0.00\"%\"",
-                    indexLabel: "{label} {y}",
-                    dataPoints: [
-                        {y: 79.45, label: "Google"},
-                        {y: 7.31, label: "Bing"},
-                        {y: 7.06, label: "Baidu"},
-                        {y: 4.91, label: "Yahoo"},
-                        {y: 1.26, label: "Others"}
-                    ]
-                }]
-            });
-            chart.render();
-
+    function showChart(period1, period2, period3) {
+        let currentPlot = document.getElementById("id_plotPlaceholder");
+        while (currentPlot.hasChildNodes()) {
+            currentPlot.removeChild(currentPlot.lastChild);
         }
+
+        let template = document.getElementById("id_validity_plot_template");
+        let clone = template.content.cloneNode(true);
+        currentPlot.appendChild(clone);
+
+        var data = [{
+
+            title: 'Purchases By Period',
+            values: [period1, period2, period3],
+            labels: ['Period 1', 'Period 2', 'Period 3'],
+            type: 'pie',
+            textinfo: 'percent+value'
+        }];
+
+
+        var layout = {height: 400, width: 400};
+
+        Plotly.newPlot('validityPeriodPlot', data, layout);
+    }
+
 
 
 });

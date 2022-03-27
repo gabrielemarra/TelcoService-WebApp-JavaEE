@@ -16,7 +16,7 @@ import java.util.List;
 @NamedQuery(name = "Order.getOrderBySingleUser", query = "SELECT o FROM Order o WHERE o.user = ?1")
 @NamedQuery(name = "Order.getRejectedOrdersBySingleUser", query = "SELECT o FROM Order o WHERE o.user = ?1 AND o.status = it.polimi.telco_webapp.auxiliary.OrderStatus.REJECTED")
 @NamedQuery(name = "Order.getOrderByPackage", query = "SELECT o FROM Order o WHERE o.packageId = ?1")
-
+@NamedQuery(name = "Order.getAllOrdersByOption", query = "SELECT o FROM Order o WHERE o.optionalProductOrderedList = ?1")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -135,12 +135,6 @@ public class Order {
     public void setOptionalProductOrderedList(List<Option> optionalProducts) {
         this.optionalProductOrderedList = optionalProducts;
     }
-/*
-    public String toString() {
-        return "[" + id + " " + status + " " + timestamp + " " + subscriptionStart + " " + baseCost + " " + totalPrice + " " + chosenValidityPeriod + " " + packageId + "]";
-
-    }
-* */
 
     public Order(){};
 }

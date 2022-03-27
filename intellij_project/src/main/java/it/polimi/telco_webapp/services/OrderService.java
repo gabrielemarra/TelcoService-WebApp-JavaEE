@@ -95,6 +95,17 @@ public class OrderService {
             return orders;
     }
 
+    public List<Order> getAllOrdersByOption(Option option) {
+        List<Order> orders = em.createNamedQuery("Order.getAllOrdersByOption", Order.class).setParameter(1, option).getResultList();
+        if (orders == null || orders.isEmpty()) {
+            // orders CAN be empty....
+            //throw new IllegalArgumentException("No orders have been placed for that service package [id:" + servicePackage.getId() + "].");
+        } else {
+        }
+        return orders;
+
+    }
+
     public List<Order> getAllOrderCreatedByUser(int userId) {
         List<Order> orders = em.createNamedQuery("Order.getOrder", Order.class).setParameter(1, userId).getResultList();
         if (orders == null || orders.isEmpty()) {

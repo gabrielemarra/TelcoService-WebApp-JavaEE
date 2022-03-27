@@ -23,6 +23,10 @@
   <!-- My JS-->
   <script src="scripts/reports.js"></script>
 
+  <!-- Plots -->
+  <script src="https://cdn.plot.ly/plotly-2.9.0.min.js"></script>
+  <!--script src="plotly-2.9.0.min.js"></script-->
+
   <title>Employee Homepage</title>
 </head>
 <body>
@@ -84,19 +88,39 @@
 
     <div class="row">
 
-      <div class="col-5 mb-3" id="servicePackagesDisplay">
-        <h5>Service Package Name - # Purchases</h5>
+      <div class="col-4 mb-3" id="servicePackagesDisplay">
+        <h5>Service Packages</h5>
         <div class="scrollWindow" id="id_allServicePackagesContainer">
           <ul class="list-group list-group-flush" id="id_allServicesPackageTiles">
 
           </ul>
         </div>
 
+        <h5>Options</h5>
+        <div class="scrollWindow" id="id_allOptionsContainer">
+          <ul class="list-group list-group-flush" id="id_allOptionsTiles">
+
+          </ul>
+        </div>
+
       </div>
 
-      <div class="col-6 mb-3" id="id_packageSalesTableCol">
+      <div class="col-8">
+        <div class="row">
+
+          <div class="mb-3 col-4" id="id_packageSalesTableCol"></div>
+
+          <div class="col-8" id="id_plotPlaceholder"></div>
+        </div>
+
 
       </div>
+
+      <template id="id_validity_plot_template">
+
+        <div id="validityPeriodPlot"></div>
+
+      </template>
 
 
       <template id="id_sales_summary_package_template">
@@ -105,35 +129,42 @@
             <thead>
             <tr>
               <th scope="col"></th>
-              <th scope="col">12-Month Plans</th>
-              <th scope="col">24-Month Plans</th>
-              <th scope="col">36-Month Plans</th>
               <th scope="col">Total</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-              <th scope="row">Total Purchases</th>
-              <td>purchases_period1</td>
-              <td>purchases_period2</td>
-              <td>purchases_period3</td>
-              <td>purchases_total</td>
             </tr>
             </tbody>
             <tfoot>
 
             <tr>
+              <th scope="row">Number of Purchases</th>
+              <td>{sales_total_NoOptions}</td>
+            </tr>
+            <tr>
+              <td>Period 1</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Period 2</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Period 3</td>
+              <td></td>
+            </tr>
+
+            <tr>
+              <th scope="row">Avg Number of Options</th>
+              <td>{avg options}</td>
+            </tr>
+            <tr>
               <th scope="row">Gross Sales</th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>{sales_total_NoOptions}}</td>
+              <td>{sales_total_NoOptions}</td>
             </tr>
             <tr>
               <th scope="row">Gross Sales With Options</th>
-              <td></td>
-              <td></td>
-              <td></td>
               <td>{sales_total_WithOptions}</td>
             </tr>
             </tfoot>
@@ -168,6 +199,27 @@
 
       </template>
 
+      <template id="id_option_tile_template">
+        <a type="button" class="list-group-item list-group-item-action" id="">
+          <div class="d-flex w-100 align-content-center justify-content-between row">
+            <div class="col-8">
+              <p class="lead mb-1"></p>
+            </div>
+
+            <div class="col-2">
+              <button type="button" id="id_totalSalesOption" class="btn btn-primary optionsSales">44</button>
+            </div>
+
+          </div>
+          <div class="d-flex w-100 align-content-center row">
+            <div class="col-5">
+              <p class="text-muted mb-1" class="option_id">Option ID 1843</p>
+            </div>
+          </div>
+        </a>
+
+
+      </template>
 
     </div>
 
