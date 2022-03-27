@@ -77,7 +77,26 @@ $(document).ready(function () {
     }
 
     function showTable(elementId) {
-        alert("clicked:" + elementId);
+        //alert("clicked:" + elementId);
+        let info = document.getElementById(elementId);
+        let tablePlacement = document.getElementById("id_packageSalesTableCol");
+        while(tablePlacement.hasChildNodes()) {
+            tablePlacement.removeChild(tablePlacement.lastChild);
+        }
+        let template = document.getElementById("id_sales_summary_package_template");
+        let clone = template.content.cloneNode(true);
+
+        let name = clone.querySelector("h5");
+        name.textContent = "Sales Summary: " + info.querySelector("p").textContent;
+        let td = clone.querySelectorAll("td");
+        td[0].textContent = info.dataset.period1;
+        td[1].textContent = info.dataset.period2;
+        td[2].textContent = info.dataset.period3;
+        td[3].textContent = parseInt(info.dataset.period1) + parseInt(info.dataset.period2) + parseInt(info.dataset.period3);
+        td[7].textContent = "$" + info.dataset.totalNoOptions;
+        td[11].textContent = "$" + info.dataset.totalWithOptions;
+
+        tablePlacement.appendChild(clone);
     }
 
 });
