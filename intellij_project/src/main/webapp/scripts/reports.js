@@ -4,6 +4,7 @@ $(document).ready(function () {
 
     showAllPackages();
     showAllOptions();
+
     showAllRejectedOrders()
     manageTabs();
 
@@ -13,7 +14,7 @@ $(document).ready(function () {
             let response = jqXHR.responseJSON;
             //alert("get all packages: success");
             for(let i = 0; i < response.length; i++) {
-                showOnePackage(response[i].name, response[i].package_id);
+                showOnePackage(response[i].package_name, response[i].package_id);
             }
         });
         getRequest.fail(function (data, textStatus, jqXHR) {

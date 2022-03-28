@@ -5,6 +5,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.auxiliary.exceptions.NoServicePackageFound;
+import it.polimi.telco_webapp.entities.PackageServiceLink;
+import it.polimi.telco_webapp.entities.Service;
 import it.polimi.telco_webapp.entities.ServicePackage;
 import it.polimi.telco_webapp.services.ServicePackageService;
 import it.polimi.telco_webapp.services.UserService;
@@ -17,6 +19,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @WebServlet(name = "GetAvailableServicePackages", value = "/GetAvailableServicePackages")
@@ -59,12 +62,48 @@ public class GetAvailableServicePackages extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             JsonArray jsonArray = new JsonArray();
-            for (int i = 0; i < packages.size(); i++) {
+
+            for (ServicePackage aPackage : packages) {
+
+                Double packagePrice1 = (double) 0;
+                Double packagePrice2 = (double) 0;
+                Double packagePrice3 = (double) 0;
+                JsonArray jsonArrayServices = new JsonArray();
+
+                for (PackageServiceLink packageServiceLink : aPackage.getServicesLinkedToPackage()) {
+                    Service service = packageServiceLink.getService();
+                    //Sum the prices
+                    packagePrice1 += service.getBasePrice1();
+                    packagePrice2 += service.getBasePrice2();
+                    packagePrice3 += service.getBasePrice3();
+
+                    //Store some properties about the services
+                    JsonElement jsonService = new JsonObject();
+                    jsonService.getAsJsonObject().addProperty("id", service.getId());
+                    jsonService.getAsJsonObject().addProperty("serviceType", service.getServiceType().toString());
+
+                    jsonArrayServices.add(jsonService);
+                }
+
                 JsonElement jsonElement = new JsonObject();
-                ServicePackage temp = packages.get(i);
-                jsonElement.getAsJsonObject().addProperty("name", temp.getName());
-                jsonElement.getAsJsonObject().addProperty("package_id", temp.getId());
-                jsonElement.getAsJsonObject().addProperty("validity_period", temp.getValidityPeriod());
+
+                jsonElement.getAsJsonObject().addProperty("package_name", aPackage.getName());
+                jsonElement.getAsJsonObject().addProperty("package_id", aPackage.getId());
+                jsonElement.getAsJsonObject().addProperty("default_validity_period", aPackage.getValidityPeriod());
+
+                JsonArray jsonPrices = new JsonArray();
+                jsonPrices.add(packagePrice1);
+                jsonPrices.add(packagePrice2);
+                jsonPrices.add(packagePrice3);
+                jsonElement.getAsJsonObject().add("prices", jsonPrices);
+
+                jsonElement.getAsJsonObject().add("services", jsonArrayServices);
+
+                /*
+                 * TODO: I think we also need to add Services and Optional Products to the json element... for now those
+                 *  objects have not been "serialized is in json-pretty way...
+                 * */
+
                 jsonArray.add(jsonElement);
             }
 
