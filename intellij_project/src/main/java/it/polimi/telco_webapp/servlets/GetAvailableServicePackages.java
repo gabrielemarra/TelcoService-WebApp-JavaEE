@@ -8,6 +8,7 @@ import it.polimi.telco_webapp.auxiliary.exceptions.NoServicePackageFound;
 import it.polimi.telco_webapp.entities.PackageServiceLink;
 import it.polimi.telco_webapp.entities.Service;
 import it.polimi.telco_webapp.entities.ServicePackage;
+import it.polimi.telco_webapp.services.PackageServiceLinkService;
 import it.polimi.telco_webapp.services.ServicePackageService;
 import it.polimi.telco_webapp.services.UserService;
 import jakarta.ejb.EJB;
@@ -26,6 +27,9 @@ import java.util.List;
 public class GetAvailableServicePackages extends HttpServlet {
     @EJB(name = "it.polimi.db2.entities.services/ServicePackageService")
     private ServicePackageService servicePackageService;
+
+    @EJB(name = "it.polimi.db2.entities.services/PackageServiceLinkService")
+    private PackageServiceLinkService packageServiceLinkService;
 
     /**
      * Method to handle errors, send json with error info
@@ -70,8 +74,7 @@ public class GetAvailableServicePackages extends HttpServlet {
                 Double packagePrice3 = (double) 0;
                 JsonArray jsonArrayServices = new JsonArray();
 
-                for (PackageServiceLink packageServiceLink : aPackage.getServicesLinkedToPackage()) {
-                    Service service = packageServiceLink.getService();
+                for (Service service : packageServiceLinkService.getServicesByPackage(aPackage)) {
                     //Sum the prices
                     packagePrice1 += service.getBasePrice1();
                     packagePrice2 += service.getBasePrice2();

@@ -18,7 +18,7 @@ public class PackageServiceLink {
     @JoinColumn(name = "package_id")
     private ServicePackage servicePackage;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional =  false)
     @JoinColumn(name = "service_id")
     private Service service;
 
