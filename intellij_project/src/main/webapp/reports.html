@@ -84,7 +84,7 @@
     </li>
   </ul>
   <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="servicepackages-tab-tab">...</div>
+    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="servicepackages-tab-tab"></div>
     <!-- Number of total purchases per package. -->
     <!-- Number of total purchases per package and validity period.-->
     <!-- Total value of sales per package with and without the optional products.-->
@@ -92,38 +92,58 @@
     <div class="row">
 
       <div class="col-4 mb-3" id="servicePackagesDisplay">
-        <h5>Service Packages</h5>
-        <i class="bi bi-bookmark-star-fill"></i>
-        <div class="scrollWindow" id="id_allServicePackagesContainer">
-          <ul class="list-group list-group-flush" id="id_allServicesPackageTiles">
+        <div class="row title-row">
+          <div class="col-7">
+            <h5>Service Packages</h5>
+          </div>
 
-          </ul>
+          <div class="col-2">
+            <p><small>Avg # Options</small></p>
+          </div>
+
+          <div class="col-2">
+            <p><small>Total Purchases</small></p>
+          </div>
+        </div>
+        <div class="row body-row mb-3">
+          <div class="scrollWindow" id="id_allServicePackagesContainer">
+            <ul class="list-group list-group-flush" id="id_allServicesPackageTiles">
+
+            </ul>
+          </div>
+        </div>
+        <div class="row title-row">
+          <div class="col-9">
+            <h5>Options</h5>
+          </div>
+
+          <div class="col-3">
+            <p><small>Sales Value</small></p>
+          </div>
         </div>
 
-        <h5>Options</h5>
-        <div class="scrollWindow" id="id_allOptionsContainer">
-          <ul class="list-group list-group-flush" id="id_allOptionsTiles">
+        <div class="row body-row">
+          <div class="scrollWindow mb-3" id="id_allOptionsContainer">
+            <ul class="list-group list-group-flush" id="id_allOptionsTiles">
 
-          </ul>
+            </ul>
+          </div>
         </div>
+
+
+
 
       </div>
 
       <div class="col-8">
         <div class="row">
-
           <div class="mb-3 col-4" id="id_packageSalesTableCol"></div>
-
           <div class="col-8" id="id_plotPlaceholder"></div>
         </div>
-
-
       </div>
 
       <template id="id_validity_plot_template">
-
         <div id="validityPeriodPlot"></div>
-
       </template>
 
 
@@ -158,7 +178,6 @@
               <td>Period 3</td>
               <td></td>
             </tr>
-
             <tr>
               <th scope="row">Avg Number of Options</th>
               <td>{avg options}</td>
@@ -173,10 +192,6 @@
             </tr>
             </tfoot>
           </table>
-
-
-
-
       </template>
 
       <template id="id_package_tile_template">

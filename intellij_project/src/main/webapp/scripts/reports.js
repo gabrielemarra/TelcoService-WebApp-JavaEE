@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     showAllPackages();
     showAllOptions();
-    identifyBestSeller();
+    window.identifyBestSeller();
 
     function showAllPackages() {
         let getRequest = $.get("GetAvailableServicePackages");
@@ -16,7 +16,6 @@ $(document).ready(function () {
             }
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
-            alert("Could not get all service packages...fail");
         });
     };
 
@@ -64,7 +63,6 @@ $(document).ready(function () {
             updateServiceButtons(package_id);
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
-            alert("Get all orders for single package GET fail!");
             serviceTile.dataset.period1 = purchasesByPeriod[0].toString();
             serviceTile.dataset.period2 = purchasesByPeriod[1].toString();
             serviceTile.dataset.period3 = purchasesByPeriod[2].toString();
@@ -92,6 +90,8 @@ $(document).ready(function () {
                 showOneOption(response[i].name, response[i].price, response[i].option_id);
             }
         });
+
+
         getRequest.fail(function (data, textStatus, jqXHR) {
         });
     }
@@ -184,11 +184,10 @@ $(document).ready(function () {
                 optionTileId = temp.id;
             }
         }
-        document.getElementById(optionTileId).textContent += "\uF19E";
-
-
+        document.getElementById(optionTileId).textContent += "* Best Seller *";
 
     }
+
 
 
 });
