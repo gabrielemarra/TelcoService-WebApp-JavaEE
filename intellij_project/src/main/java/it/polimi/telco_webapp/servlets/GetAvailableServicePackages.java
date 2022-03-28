@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.auxiliary.exceptions.NoServicePackageFound;
+import it.polimi.telco_webapp.entities.PackageServiceLink;
 import it.polimi.telco_webapp.entities.Service;
 import it.polimi.telco_webapp.entities.ServicePackage;
 import it.polimi.telco_webapp.services.ServicePackageService;
@@ -68,11 +69,13 @@ public class GetAvailableServicePackages extends HttpServlet {
                 Double packagePrice2 = (double) 0;
                 Double packagePrice3 = (double) 0;
                 JsonArray jsonArrayServices = new JsonArray();
-                for (Service service : aPackage.getServices()){
+
+                for (PackageServiceLink packageServiceLink : aPackage.getServicesLinkedToPackage()) {
+                    Service service = packageServiceLink.getService();
                     //Sum the prices
-                    packagePrice1+=service.getBasePrice1();
-                    packagePrice2+=service.getBasePrice2();
-                    packagePrice3+=service.getBasePrice3();
+                    packagePrice1 += service.getBasePrice1();
+                    packagePrice2 += service.getBasePrice2();
+                    packagePrice3 += service.getBasePrice3();
 
                     //Store some properties about the services
                     JsonElement jsonService = new JsonObject();
