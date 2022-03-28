@@ -2,15 +2,16 @@ package it.polimi.telco_webapp.entities;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Table(name = "service_package", schema = "telco_db")
 @Entity
 @NamedQuery(name = "ServicePackage.getAllServicePackages", query = "SELECT s FROM ServicePackage s")
 
-public class ServicePackage {
-
-    /* JPA definitions */
+public class ServicePackage implements Serializable {
+    private static final long serialVersionUID = 1L;
+  
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "package_id", nullable = false)
@@ -23,12 +24,12 @@ public class ServicePackage {
     private Integer validityPeriod;
 
     @OneToMany(mappedBy = "packageId")
-    private List <Order> orders;
+    private List<Order> orders;
 
     @OneToMany(mappedBy = "servicePackage")
     private List<PackageServiceLink> servicesLinkedToPackage;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "package_id"),
             inverseJoinColumns = @JoinColumn(name = "opt_id"))
     private List<Option> options;
