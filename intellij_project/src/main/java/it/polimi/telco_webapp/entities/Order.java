@@ -13,6 +13,7 @@ import java.util.List;
         @Index(name = "user_id_idx", columnList = "user_id")
 })
 @NamedQuery(name = "Order.getRejectedOrdersBySingleUser", query = "SELECT o FROM Order o WHERE o.user = ?1 AND o.status = it.polimi.telco_webapp.auxiliary.OrderStatus.REJECTED")
+@NamedQuery(name = "Order.getAllRejectedOrders", query = "SELECT o FROM Order o WHERE o.status = it.polimi.telco_webapp.auxiliary.OrderStatus.REJECTED")
 @NamedQuery(name = "Order.getAllOrdersByPackage", query = "SELECT o FROM Order o WHERE o.packageId = ?1")
 @NamedQuery(name = "Order.getAllOrdersByOption", query = "SELECT o FROM Order o WHERE o.optionalProductOrderedList = ?1")
 @NamedQuery(name = "Order.getAllOrdersByUser", query = "SELECT o FROM Order o WHERE o.user = ?1")

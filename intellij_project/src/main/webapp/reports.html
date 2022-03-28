@@ -54,11 +54,9 @@
             <!-- Total value of sales per package with and without the optional products.-->
             <li><a class="dropdown-item" href="#">Service Packages</a></li>
             <!-- Average number of optional products sold together with each service package.-->
-            <li><a class="dropdown-item" href="#">Optional Products</a></li>
             <!-- List of insolvent users, suspended orders and alerts. -->
             <li><a class="dropdown-item" href="#">Insolvent Users, Suspended Orders, Alerts</a></li>
             <!--  Best seller optional product, i.e. the optional product with the greatest value of sales across all the sold service packages.-->
-            <li><a class="dropdown-item" href="#">Best Seller Optional Products</a></li>
           </ul>
         </li>
       </ul>
@@ -67,206 +65,207 @@
 </nav>
 
 <div class="container">
-
-
   <ul class="nav nav-tabs" id="myTabs" role="tablist">
     <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="servicepackages-tab" data-bs-toggle="tab" data-bs-target="#servicepackages" type="button" role="tab" aria-controls="servicepackages" aria-selected="true">Service Packages</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="optionalproducts-tab" data-bs-toggle="tab" data-bs-target="#optionalproducts" type="button" role="tab" aria-controls="optionalproducts" aria-selected="false">Optional Products</button>
+      <button class="nav-link active" id="goodthings-tab" data-bs-toggle="tab" data-bs-target="#goodthings" type="button" role="tab" aria-controls="goodthings" aria-selected="true">Service Packages & Optional Products</button>
     </li>
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="badthings-tab" data-bs-toggle="tab" data-bs-target="#badthings" type="button" role="tab" aria-controls="badthings" aria-selected="false">Insolvent Users, Rejected Orders, Alerts</button>
     </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="bestsellers-tab" data-bs-toggle="tab" data-bs-target="#bestsellers" type="button" role="tab" aria-controls="bestsellers" aria-selected="false">Best Sellers</button>
-    </li>
   </ul>
   <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="servicepackages-tab-tab"></div>
-    <!-- Number of total purchases per package. -->
-    <!-- Number of total purchases per package and validity period.-->
-    <!-- Total value of sales per package with and without the optional products.-->
+    <div class="tab-pane fade show active" id="goodthings" role="tabpanel" aria-labelledby="goodthings-tab-tab">
+      <div class="row">
+        <div class="col-4 mb-3" id="servicePackagesDisplay">
+          <div class="row title-row">
+            <div class="col-7">
+              <h5>Service Packages</h5>
+            </div>
 
-    <div class="row">
+            <div class="col-2">
+              <p><small>Avg # Options</small></p>
+            </div>
 
-      <div class="col-4 mb-3" id="servicePackagesDisplay">
-        <div class="row title-row">
-          <div class="col-7">
-            <h5>Service Packages</h5>
+            <div class="col-2">
+              <p><small>Total Purchases</small></p>
+            </div>
           </div>
-
-          <div class="col-2">
-            <p><small>Avg # Options</small></p>
+          <div class="row body-row mb-3">
+            <div class="scrollWindow" id="id_allServicePackagesContainer">
+              <ul class="list-group list-group-flush" id="id_allServicesPackageTiles"></ul>
+            </div>
           </div>
-
-          <div class="col-2">
-            <p><small>Total Purchases</small></p>
+          <div class="row title-row">
+            <div class="col-9">
+              <h5>Options</h5>
+            </div>
+            <div class="col-3">
+              <p><small>Sales Value</small></p>
+            </div>
           </div>
-        </div>
-        <div class="row body-row mb-3">
-          <div class="scrollWindow" id="id_allServicePackagesContainer">
-            <ul class="list-group list-group-flush" id="id_allServicesPackageTiles">
-
-            </ul>
-          </div>
-        </div>
-        <div class="row title-row">
-          <div class="col-9">
-            <h5>Options</h5>
-          </div>
-
-          <div class="col-3">
-            <p><small>Sales Value</small></p>
+          <div class="row body-row">
+            <div class="scrollWindow mb-3" id="id_allOptionsContainer">
+              <ul class="list-group list-group-flush" id="id_allOptionsTiles"></ul>
+            </div>
           </div>
         </div>
-
-        <div class="row body-row">
-          <div class="scrollWindow mb-3" id="id_allOptionsContainer">
-            <ul class="list-group list-group-flush" id="id_allOptionsTiles">
-
-            </ul>
+        <div class="col-8">
+          <div class="row">
+            <h5 id="id_table_name">Sales Summary: Family Plan Deluxe</h5>
+            <div class="mb-3 col-4" id="id_packageSalesTableCol"></div>
+            <div class="col-8" id="id_plotPlaceholder"></div>
           </div>
-        </div>
-
-
-
-
-      </div>
-
-      <div class="col-8">
-        <div class="row">
-          <div class="mb-3 col-4" id="id_packageSalesTableCol"></div>
-          <div class="col-8" id="id_plotPlaceholder"></div>
         </div>
       </div>
-
-      <template id="id_validity_plot_template">
-        <div id="validityPeriodPlot"></div>
-      </template>
-
-
-      <template id="id_sales_summary_package_template">
-          <h5>Sales Summary: Family Plan Deluxe</h5>
-          <table class="table">
-            <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col">Total</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-            </tr>
-            </tbody>
-            <tfoot>
-
-            <tr>
-              <th scope="row">Number of Purchases</th>
-              <td>{sales_total_NoOptions}</td>
-            </tr>
-            <tr>
-              <td>Period 1</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Period 2</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Period 3</td>
-              <td></td>
-            </tr>
-            <tr>
-              <th scope="row">Avg Number of Options</th>
-              <td>{avg options}</td>
-            </tr>
-            <tr>
-              <th scope="row">Gross Sales</th>
-              <td>{sales_total_NoOptions}</td>
-            </tr>
-            <tr>
-              <th scope="row">Gross Sales With Options</th>
-              <td>{sales_total_WithOptions}</td>
-            </tr>
-            </tfoot>
-          </table>
-      </template>
-
-      <template id="id_package_tile_template">
-        <a type="button" class="list-group-item list-group-item-action" id="">
-          <div class="d-flex w-100 align-content-center justify-content-between row">
-            <div class="col-8">
-              <p class="lead mb-1">${package.name}</p>
-            </div>
-            <div class="col-2">
-              <button type="button" id="id_avgOptionsPackage" class="btn btn-secondary options">77</button>
-            </div>
-            <div class="col-2">
-              <button type="button" id="id_totalPurchasesPackage" class="btn btn-primary purchases">33</button>
-            </div>
-
-          </div>
-          <div class="d-flex w-100 align-content-center row">
-            <div class="col-5">
-              <p class="text-muted mb-1" class="package_id">Package ID 1843</p>
-            </div>
-          </div>
-        </a>
-
-
-      </template>
-
-      <template id="id_option_tile_template">
-        <a type="button" class="list-group-item list-group-item-action" id="">
-          <div class="d-flex w-100 align-content-center justify-content-between row">
-            <div class="col-8">
-              <p class="lead mb-1"></p>
-            </div>
-
-            <div class="col-2">
-              <button type="button" id="id_totalSalesOption" class="btn btn-primary optionsSales">44</button>
-            </div>
-
-          </div>
-          <div class="d-flex w-100 align-content-center row">
-            <div class="col-5">
-              <p class="text-muted mb-1" class="option_id">Option ID 1843</p>
-            </div>
-          </div>
-        </a>
-
-
-      </template>
-
     </div>
+    <div class="tab-pane fade" id="badthings" role="tabpanel" aria-labelledby="badthings-tab-tab">
 
+      <div class="row" id="id_rejected_orders_table">
+        <table class="table">
+          <h4>Suspended Orders</h4>
+          <thead>
+          <tr>
+            <th scope="col">Order ID</th>
+            <th scope="col">Customer ID</th>
+            <th scope="col">Package Name</th>
+            <th scope="col">Total Price</th>
+          </tr>
+          </thead>
+          <tbody id="id_rejected_orders_table_body">
 
+          </tbody>
+        </table>
+      </div>
 
+      <div class="row" id="id_insolvent_users_table">
+        <table class="table">
+          <h4>Insolvent Users</h4>
+          <thead>
+          <tr>
+            <th scope="col">User ID</th>
+            <th scope="col"># Rejected Orders</th>
+            <th scope="col">Pending Amount</th>
+          </tr>
+          </thead>
+          <tbody id="id_insolvent_users_table_body">
 
-    <div class="tab-pane fade" id="optionalproducts" role="tabpanel" aria-labelledby="optionalproducts-tab-tab">
-
-
-
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="tab-pane fade" id="badthings" role="tabpanel" aria-labelledby="badthings-tab-tab">...</div>
-    <div class="tab-pane fade" id="bestsellers" role="tabpanel" aria-labelledby="bestsellers-tab-tab">...</div>
-
   </div>
-
-
-
-
-
-
-
-
-
 </div>
 
+<!-- Templates -->
+
+<template id="id_rejected_order_row_template">
+  <tr>
+    <th scope="row"></th>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+</template>
+<template id="id_insolvent_users_row_template">
+  <tr>
+    <th scope="row"></th>
+    <td></td>
+    <td></td>
+  </tr>
+</template>
+<template id="id_validity_plot_template">
+  <div id="validityPeriodPlot"></div>
+</template>
+<template id="id_sales_summary_package_template">
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    </tr>
+    </tbody>
+    <tfoot>
+
+    <tr>
+      <th scope="row">Number of Purchases</th>
+      <td>{sales_total_NoOptions}</td>
+    </tr>
+    <tr>
+      <td>Period 1</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Period 2</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Period 3</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th scope="row">Avg Number of Options</th>
+      <td>{avg options}</td>
+    </tr>
+    <tr>
+      <th scope="row">Gross Sales</th>
+      <td>{sales_total_NoOptions}</td>
+    </tr>
+    <tr>
+      <th scope="row">Gross Sales With Options</th>
+      <td>{sales_total_WithOptions}</td>
+    </tr>
+    </tfoot>
+  </table>
+</template>
+<template id="id_package_tile_template">
+  <a type="button" class="list-group-item list-group-item-action" id="">
+    <div class="d-flex w-100 align-content-center justify-content-between row">
+      <div class="col-8">
+        <p class="lead mb-1">${package.name}</p>
+      </div>
+      <div class="col-2">
+        <button type="button" id="id_avgOptionsPackage" class="btn btn-secondary options">77</button>
+      </div>
+      <div class="col-2">
+        <button type="button" id="id_totalPurchasesPackage" class="btn btn-primary purchases">33</button>
+      </div>
+
+    </div>
+    <div class="d-flex w-100 align-content-center row">
+      <div class="col-5">
+        <p class="text-muted mb-1" class="package_id">Package ID 1843</p>
+      </div>
+    </div>
+  </a>
 
 
+</template>
+<template id="id_option_tile_template">
+  <a type="button" class="list-group-item list-group-item-action" id="">
+    <div class="d-flex w-100 align-content-center justify-content-between row">
+      <div class="col-8">
+        <p class="lead mb-1"></p>
+      </div>
+
+      <div class="col-2">
+        <button type="button" id="id_totalSalesOption" class="btn btn-primary optionsSales">44</button>
+      </div>
+
+    </div>
+    <div class="d-flex w-100 align-content-center row">
+      <div class="col-5">
+        <p class="text-muted mb-1" class="option_id">Option ID 1843</p>
+      </div>
+    </div>
+  </a>
+
+
+</template>
 </body>
 </html>
 

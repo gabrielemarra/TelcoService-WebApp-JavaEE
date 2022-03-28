@@ -4,7 +4,8 @@ $(document).ready(function () {
 
     showAllPackages();
     showAllOptions();
-    window.identifyBestSeller();
+    showAllRejectedOrders()
+    manageTabs();
 
     function showAllPackages() {
         let getRequest = $.get("GetAvailableServicePackages");
@@ -137,7 +138,7 @@ $(document).ready(function () {
         }
         let template = document.getElementById("id_sales_summary_package_template");
         let clone = template.content.cloneNode(true);
-        let name = clone.querySelector("h5");
+        let name = document.getElementById("id_table_name");
         name.textContent = "Sales Summary: " + info.querySelector("p").textContent;
         let td = clone.querySelectorAll("td");
         td[0].textContent = parseInt(info.dataset.period1) + parseInt(info.dataset.period2) + parseInt(info.dataset.period3);
@@ -185,8 +186,63 @@ $(document).ready(function () {
             }
         }
         document.getElementById(optionTileId).textContent += "* Best Seller *";
+    }
+
+    function showAllRejectedOrders() {
+
+        let getRequest = $.get("GetAllRejectedOrders");
+        getRequest.done(function (data, textStatus, jqXHR) {
+            let response = jqXHR.responseJSON;
+            let template = document.getElementById("id_rejected_order_row_template");
+            let table = document.getElementById("id_rejected_orders_table_body")
+
+            for(let i = 0; i < response.length; i++) {
+                let clone = template.content.cloneNode(true);
+                let orderID = clone.querySelector("th");
+                let orderInfo = clone.querySelectorAll("td");
+                // populate rows
+                orderID.textContent = response[i].order_id;
+                orderInfo[0].textContent = response[i].user_id;
+                orderInfo[1].textContent = response[i].service_package_name;
+                orderInfo[2].textContent = response[i].total_price;
+                table.appendChild(clone);
+            }
+        });
+        getRequest.fail(function (data, textStatus, jqXHR) {
+            alert("rejected orders GET fail");
+
+        });
 
     }
+
+    function showAllInsolventUsers() {
+        //id_insolvent_users_row_template
+    }
+
+
+    function manageTabs(){
+
+        var triggerTabList = [].slice.call(document.querySelectorAll('#goodthings button'))
+        triggerTabList.forEach(function (triggerEl) {
+            var tabTrigger = new bootstrap.Tab(triggerEl)
+            triggerEl.addEventListener('click', function (event) {
+                event.preventDefault()
+                tabTrigger.show()
+            })
+        })
+
+
+        var triggerTabList = [].slice.call(document.querySelectorAll('#badthings button'))
+        triggerTabList.forEach(function (triggerEl) {
+            var tabTrigger = new bootstrap.Tab(triggerEl)
+            triggerEl.addEventListener('click', function (event) {
+                event.preventDefault()
+                tabTrigger.show()
+            })
+        })
+
+    }
+
 
 
 

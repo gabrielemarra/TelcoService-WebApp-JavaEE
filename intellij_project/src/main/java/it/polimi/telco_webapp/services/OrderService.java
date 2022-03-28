@@ -107,4 +107,12 @@ public class OrderService {
         return orders;
     }
 
+    public List<Order> getAllRejectedOrders() {
+        List <Order> orders = em.createNamedQuery("Order.getAllRejectedOrders",Order.class).getResultList();
+        if (orders == null || orders.isEmpty()) {
+            throw new IllegalArgumentException("No rejected orders exist");
+        }
+        return orders;
+    }
+
 }
