@@ -113,101 +113,22 @@ $(document).ready(function () {
      * @param price: Decimal price of the optional product
      */
     function showOneOption(name, price, option_id) {
-        let ul = document.getElementById("id_allOptionsTiles");
+        let tileList = document.getElementById("id_allOptionsTiles");
+        let template = document.getElementById("id_service_tile_template");
+        let clone = template.content.cloneNode(true);
+        clone.id = "id_option" + option_id;
+
+        let pElements = clone.querySelectorAll("p");
+        pElements[0].textContent = name;
+        pElements[1].textContent = "€" + price + "/mo";// for 12 months";//gigIncl.toString() + " GB";
+
+        tilesList.appendChild(clone);
 
 
 
-        /*
-        *
-        *
-
-        let li = document.createElement("li");
-        li.className = "list-group-item list-group-item-action";
-        li.setAttribute("aria-current", "true");
-        li.id = "id_option" + option_id;
-        li.setAttribute("name", "option");
 
 
-        let rowMajor = document.createElement("div");
-        rowMajor.className = "d-flex w-100 align-content-center row";
-        let rowMinor = document.createElement("div");
-        rowMinor.className = "d-flex w-100 align-content-center row";
 
-        let majorTitle = document.createElement("div");
-        majorTitle.className = "col-5";
-        let majorParams = document.createElement("div"); //empty
-        majorParams.className = "col-5"; // empty
-        let majorBtns = document.createElement("div");
-        majorBtns.className = "col-2";
-
-        let minorMonth = document.createElement("div");
-        minorMonth.className = "col-5";
-
-        let title = document.createElement("p");
-        title.className = "lead mb-1";
-        title.appendChild(document.createTextNode(name));
-        majorTitle.appendChild(title);
-
-        let plusBtn = document.createElement("input");
-        plusBtn = makeBtn("plus", "Opt", plusBtn, option_id);
-
-        let quantity = document.createElement("small");
-        quantity.className = "text-muted";
-        quantity.id = "id_optionQuantity" + option_id.toString();
-        //quantity.setAttribute("value", "0");
-        quantity.appendChild(document.createTextNode("0"));
-        quantity.type = "number";
-        quantity.value = "0";
-
-        let minusBtn = document.createElement("input");
-        minusBtn = makeBtn("minus", "Opt", minusBtn, option_id);
-
-        majorBtns.appendChild(plusBtn);
-        majorBtns.appendChild(quantity);
-        majorBtns.appendChild(minusBtn);
-
-        let p2 = document.createElement("p");
-        p2.className = "text-muted mb-1";
-        p2.appendChild(document.createTextNode("$" + price + "/mo"));
-
-        minorMonth.appendChild(p2);
-
-        rowMajor.appendChild(majorTitle);
-        rowMajor.appendChild(majorParams); // empty
-        rowMajor.appendChild(majorBtns);
-
-        rowMinor.appendChild(minorMonth);
-
-        li.appendChild(rowMajor);
-        li.appendChild(rowMinor);
-
-        ul.appendChild(li);
-
-        plusBtn.onclick = function () { // increment
-            let quantityElement = this.parentElement.childNodes[1];
-            let oldValue = quantityElement.value;
-            let oldSum = parseInt(oldValue);
-            quantityElement.removeChild(quantityElement.lastChild);
-            let newSum = oldSum + 1;
-            quantityElement.value = newSum;
-            quantityElement.appendChild(document.createTextNode(newSum.toString()));
-            addItemToSummary(this.parentElement.parentElement.parentElement, newSum, true, "Option");
-        }
-
-        minusBtn.onclick = function () { // decrement
-            let quantityElement = this.parentElement.childNodes[1];
-            let oldValue = quantityElement.value;
-            let oldSum = parseInt(oldValue);
-            quantityElement.removeChild(quantityElement.lastChild);
-            let newSum = oldSum - 1;
-            if (newSum < 0) {
-                newSum = 0;
-            }
-            quantityElement.value = newSum;
-            quantityElement.appendChild(document.createTextNode(newSum.toString()));
-            addItemToSummary(this.parentElement.parentElement.parentElement, newSum, false, "Option");
-        }
-        */
     };
 
     /**
