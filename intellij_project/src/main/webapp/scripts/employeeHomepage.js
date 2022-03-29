@@ -117,12 +117,14 @@ $(document).ready(function () {
         let template = document.getElementById("id_service_tile_template");
         let clone = template.content.cloneNode(true);
         clone.id = "id_option" + option_id;
+        //clone.setAttribute("name", "option");
+        clone.name = "option";
 
         let pElements = clone.querySelectorAll("p");
         pElements[0].textContent = name;
         pElements[1].textContent = "€" + price + "/mo";// for 12 months";//gigIncl.toString() + " GB";
 
-        tilesList.appendChild(clone);
+        tileList.appendChild(clone);
 
 
 
@@ -165,6 +167,11 @@ $(document).ready(function () {
             if (services.length > 0) {
                 for (let i = 0; i < services.length; i++) {
                     showService(services[i].planType, services[i].bp1, services[i].bp2, services[i].bp3, services[i].service_id, services[i].gigIncl, services[i].smsIncl, services[i].minIncl, services[i].gigExtra, services[i].smsExtra, services[i].minExtra);
+                    let newTile = document.getElementById("id_template");
+                    newTile.setAttribute("id", "id_service"+services[i].service_id);
+                    newTile.setAttribute("name", "service");
+
+
                 }
             }
         });
@@ -187,7 +194,7 @@ $(document).ready(function () {
         let pElements = clone.querySelectorAll("p");
         let smallElements = clone.querySelectorAll("small");
 
-        clone.id = "id_service" + service_id;
+
         pElements[0].textContent = planType.replace('_', ' ');
         pElements[1].textContent = "€" + bp1 + "/mo for 12 months";//gigIncl.toString() + " GB";
         pElements[1].id = "id_defaultPeriod" + service_id;
@@ -209,6 +216,8 @@ $(document).ready(function () {
         }
 
         tilesList.appendChild(clone);
+        //clone.setAttribute("id", "id_service" + service_id.toString());
+        //clone.name = "service";
 
     };
 
@@ -255,12 +264,8 @@ $(document).ready(function () {
             costs.splice(period-1, 1);
             let defaultElement = document.getElementById("id_defaultPeriod" + service.service_id);
             let otherElement = document.getElementById("id_otherPeriods" + service.service_id);
-
-            defaultElement.removeChild(defaultElement.lastChild);
-            otherElement.removeChild(otherElement.lastChild);
-
-            defaultElement.appendChild(document.createTextNode("$" + defaultBasePrice + "/mo for " + period * 12 + " months"));
-            otherElement.appendChild(document.createTextNode("$" + costs[0] + " - " + periods[0] * 12 + "mo | $" + costs[1] + " - " + periods[1] * 12 + "mo"));
+            defaultElement.textContent = "€" + defaultBasePrice + "/mo for " + period * 12 + " months";
+            otherElement.textContent = "€" + costs[0] + " - " + periods[0] * 12 + "mo | €" + costs[1] + " - " + periods[1] * 12 + "mo";
 
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
