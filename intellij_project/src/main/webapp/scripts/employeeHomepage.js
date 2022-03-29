@@ -115,23 +115,18 @@ $(document).ready(function () {
     function showOneOption(name, price, option_id) {
         let ul = document.getElementById("id_allOptionsTiles");
 
+
+
+        /*
+        *
+        *
+
         let li = document.createElement("li");
         li.className = "list-group-item list-group-item-action";
         li.setAttribute("aria-current", "true");
         li.id = "id_option" + option_id;
         li.setAttribute("name", "option");
 
-        /*
-        * <div row dflex w100>
-        *   <div col-5> // title
-            <div col-5> // params (empty)
-            <div col-2> // buttons
-        *
-        *
-        * <div row dflex w100>
-            <div col-5> // cost
-        *
-        * */
 
         let rowMajor = document.createElement("div");
         rowMajor.className = "d-flex w-100 align-content-center row";
@@ -212,6 +207,7 @@ $(document).ready(function () {
             quantityElement.appendChild(document.createTextNode(newSum.toString()));
             addItemToSummary(this.parentElement.parentElement.parentElement, newSum, false, "Option");
         }
+        */
     };
 
     /**
@@ -263,171 +259,36 @@ $(document).ready(function () {
      */
     function showService(planType, bp1, bp2, bp3, service_id, gigIncl, smsIncl, minIncl, gigExtr, smsExtr, minExtr) {
 
-        let ul = document.getElementById("id_allServicesTiles");
+        let tilesList = document.getElementById("id_allServicesTiles");
+        let template = document.getElementById("id_service_tile_template");
+        let clone = template.content.cloneNode(true);
 
-        let li = document.createElement("li");
-        li.className = "list-group-item list-group-item-action";
-        li.setAttribute("name", "service");
-        li.id = "id_service" + service_id.toString();
-        li.setAttribute("aria-current", "true");
+        let pElements = clone.querySelectorAll("p");
+        let smallElements = clone.querySelectorAll("small");
 
-        /////////////////////////// Outline of the guts ////////////////////////////
-        let rowMajor = document.createElement("div");
-        rowMajor.className = "d-flex w-100 align-content-center row";
+        clone.id = "id_service" + service_id;
+        pElements[0].textContent = planType.replace('_', ' ');
+        pElements[1].textContent = "€" + bp1 + "/mo for 12 months";//gigIncl.toString() + " GB";
+        pElements[1].id = "id_defaultPeriod" + service_id;
+        smallElements[0].textContent = "€" + bp2 + " - 24mo | €" + bp3 + " - 36mo";
+        smallElements[0].id = "id_otherPeriods" + service_id;
+        if (planType == "Mobile_Internet" | planType == "Fixed_Internet") { // gigIncl.toString() + " GB"
+            pElements[2].textContent = gigIncl.toString() + " GB";
+            smallElements[1].textContent = "€" + gigExtr.toString() + "/extra";
 
-        let majorBtns = document.createElement("div");
-        let majorTitle = document.createElement("div");
-        let majorParams = document.createElement("div");
-        majorBtns.className = "col-2";
-        majorParams.className = "col-5";
-        majorTitle.className = "col-5";
-
-        let rowMinor = document.createElement("div");
-        rowMinor.className = "d-flex w-100 align-content-center row";
-
-        let minorMonth = document.createElement("div");
-        let minorExtra = document.createElement("div");
-        minorMonth.className = "col-5";
-        minorExtra.className = "col-5";
-
-        ////////////////////// Getting into each of the cols ///////////////////////
-
-        // Filling out majorTitle <div class="col-5">
-        let title = document.createElement("p");
-        title.className = "lead mb-1";
-        title.appendChild(document.createTextNode(planType.replace('_', ' ')));
-        majorTitle.appendChild(title);
-
-        // Filling out majorParams <div class="col-5">
-        let majorParamsRow = document.createElement("div");
-        majorParamsRow.className = "row";
-
-        let majorParamsCol1 = document.createElement("div");
-        majorParamsCol1.className = "col scrollLabelDiv";
-        let param1 = document.createElement("p");
-        param1.className = "lead text-muted";
-        let majorParamsCol2 = document.createElement("div");
-        majorParamsCol2.className = "col d-flex";
-        let param2 = document.createElement("p");
-        param2.className = "lead text-muted";
-
-        // Filling out minorExtra <div class="col-5">
-        let minorExtraRow = document.createElement("div");
-        minorExtraRow.className = "row";
-
-        let minorExtraCol1 = document.createElement("div");
-        let minorExtraCol2 = document.createElement("div");
-
-        minorExtraCol1.className = "col scrollLabelDiv";
-        let extra1 = document.createElement("small");
-        extra1.className = "fw-lighter text-muted";
-
-        minorExtraCol2.className = "col d-flex";
-        let extra2 = document.createElement("small");
-        extra2.className = "fw-lighter text-muted";
-
-        // Filling out params by plan type
-        if (planType == "Mobile_Internet" | planType == "Fixed_Internet") {
-            param1.appendChild(document.createTextNode(gigIncl.toString() + " GB"));
-            extra1.appendChild(document.createTextNode("$" + gigExtr.toString() + "/extra GB"));
         } else if (planType == "Mobile_Phone") {
-
-            param1.appendChild(document.createTextNode(minIncl.toString() + " min"));
-            param2.appendChild(document.createTextNode(smsIncl.toString() + " sms"));
-
-            extra1.appendChild(document.createTextNode("$" + minExtr.toString() + "/extra min"));
-            extra2.appendChild(document.createTextNode("$" + smsExtr.toString() + "/extra sms"));
+            pElements[2].textContent = minIncl.toString() + " min";
+            smallElements[1].textContent = "€" + minExtr.toString() + "/extra";
+            pElements[3].textContent = smsIncl.toString() + " sms";
+            smallElements[2].textContent = "€" + smsIncl.toString() + "/extra";
 
         } else {
-            // do nothing?
-        }
-        majorParamsCol1.appendChild(param1);
-        majorParamsCol2.appendChild(param2);
-        majorParamsRow.appendChild(majorParamsCol1);
-        majorParamsRow.appendChild(majorParamsCol2);
-        majorParams.appendChild(majorParamsRow);
-
-        minorExtraCol1.appendChild(extra1);
-        minorExtraCol2.appendChild(extra2);
-        minorExtraRow.appendChild(minorExtraCol1);
-        minorExtraRow.appendChild(minorExtraCol2);
-        minorExtra.appendChild(minorExtraRow);
-
-        // Filling out majorBtns <div class="col-2">
-        let btnP = document.createElement("input");
-        btnP = makeBtn("plus", "", btnP, service_id);
-
-        let count = document.createElement("small");
-        count.className = "text-muted";
-        count.id = "id_serviceQuantity" + service_id.toString();
-        //count.setAttribute("value", "0");
-        count.appendChild(document.createTextNode("0"));
-        count.type = "number";
-        count.value = "0";
-
-        let btnM = document.createElement("input");
-        btnM = makeBtn("minus", "", btnM, service_id);
-
-        majorBtns.appendChild(btnP);
-        majorBtns.appendChild(count);
-        majorBtns.appendChild(btnM);
-
-        // Filling out minorMonth <div class="col-5">
-
-        let defaultPeriodTag = document.createElement("p");
-        defaultPeriodTag.id = "id_defaultPeriod" + service_id.toString();
-        defaultPeriodTag.className = "text-muted mb-1";
-        let defaultStr = "$" + bp1.toString() + " /mo for 12 months";
-        defaultPeriodTag.appendChild(document.createTextNode(defaultStr));
-
-        let otherPeriodsTag = document.createElement("small");
-        otherPeriodsTag.className = "fw-lighter text-muted";
-        otherPeriodsTag.id = "id_otherPeriods" + service_id.toString();
-        let otherStr = "$" + bp2.toString() + " - 24mo | $" + bp3.toString() + " - 36mo";
-        otherPeriodsTag.appendChild(document.createTextNode(otherStr));
-
-        minorMonth.appendChild(defaultPeriodTag);
-        minorMonth.appendChild(otherPeriodsTag);
-
-        rowMajor.appendChild(majorTitle);
-        rowMajor.appendChild(majorParams);
-        rowMajor.appendChild(majorBtns);
-
-        rowMinor.appendChild(minorMonth);
-        rowMinor.appendChild(minorExtra);
-
-        li.appendChild(rowMajor);
-        li.appendChild(rowMinor);
-        ul.appendChild(li);
-
-        btnP.onclick = function () { // increment
-            let quantityElement = this.parentElement.childNodes[1];
-            let oldValue = quantityElement.value; //quantityElement.getAttribute("value");
-            let oldSum = parseInt(oldValue);
-            quantityElement.removeChild(quantityElement.lastChild);
-            let newSum = oldSum + 1;
-            quantityElement.value = newSum;
-            quantityElement.appendChild(document.createTextNode(newSum.toString()));
-            addItemToSummary(this.parentElement.parentElement.parentElement, newSum, true, "Service");
-            updateTotalInSummary();
+            // specify unlimited...?
+            pElements[2].textContent = "Unlimited";
         }
 
-        btnM.onclick = function () { // decrement
-            let quantityElement = this.parentElement.childNodes[1];
-            let oldValue = quantityElement.value; //quantityElement.getAttribute("value");
-            let oldSum = parseInt(oldValue);
-            quantityElement.removeChild(quantityElement.lastChild);
-            let newSum = oldSum - 1;
-            if (newSum < 0) {
-                newSum = 0;
-            } else {
+        tilesList.appendChild(clone);
 
-            }
-            quantityElement.value = newSum;
-            quantityElement.appendChild(document.createTextNode(newSum.toString()));
-            addItemToSummary(this.parentElement.parentElement.parentElement, newSum, false, "Service");
-            updateTotalInSummary();
-        }
     };
 
 
@@ -623,25 +484,4 @@ $(document).ready(function () {
 
     }
 
-
-    /**
-     *         * plus_minus: "plus" or "minus"
-     * type: "" or "Opt"
-     * the caller function needs to create the element first
-     * @param plus_minus
-     * @param type
-     * @param element
-     * @param id
-     * @returns {*}
-     */
-
-    function makeBtn(plus_minus, type, element, id) {
-        element.setAttribute("name", plus_minus + "Btn" + type);
-        element.className = "btn btn-sm btn-default btn-" + plus_minus;
-        element.type = "button";
-        element.id = "id_btn" + plus_minus + type + id;
-        if(plus_minus == "plus") { element.value = "+";}
-        else {element.value = "-";}
-        return element;
-    };
 });

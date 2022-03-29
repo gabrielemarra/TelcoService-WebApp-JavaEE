@@ -96,15 +96,10 @@
             <div class="row big-row mb-3" id="id_row_services">
                 <div class="col-3 mb-3 scrollLabelDiv">
                     <h5>Add Services</h5>
-                    <!--label class="text-muted col-form-label">Total</label-->
-                    <!--p id="id_totalCostServices" value="0">0</p-->
                 </div>
                 <div class="col-8 mb-3" id="addingServicesColId">
                     <div class="scrollWindow" id="id_allServicesContainer">
                         <ul class="list-group list-group-flush" id="id_allServicesTiles">
-
-
-
 
                         </ul>
                     </div>
@@ -276,15 +271,33 @@
             </div>
 
 
-
-
-
-
-
-
         </div>
     </div>
 </div>
+
+<template id="id_service_tile_template">
+<li class="list-group-item list-group-item-action" name="service" id="id_service" aria-current="true">
+    <div class="d-flex w-100 align-content-center row">
+        <div class="col-6">
+            <p id = "id_service_name" class="lead mb-1"></p>
+            <p id="id_defaultPeriod"  class="text-muted mb-1"></p>
+            <small id="id_otherPeriods7" class="fw-lighter text-muted" ></small>
+        </div>
+        <div class="col-3">
+            <div class="row scrollLabelDiv">
+                <p id="id_incl_1" class="lead text-muted mb-1"></p>
+                <small id="id_extra1" class="fw-lighter text-muted row"></small>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="row d-flex">
+                <p id="id_incl2" class="lead text-muted mb-1"></p>
+                <small id="id_extra2" class="fw-lighter text-muted"></small>
+            </div>
+        </div>
+    </div>
+</li>
+</template>
 
 
 

@@ -28,6 +28,12 @@ public class Option {
             inverseJoinColumns = @JoinColumn(name = "order_id"))
     private List<Order> orders;
 
+    @ManyToMany
+    @JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "opt_id"),
+            inverseJoinColumns = @JoinColumn(name = "package_id"))
+    private List <ServicePackage> packages;
+
+
     public Integer getQuantitySold() {
         return quantitySold;
     }
@@ -67,4 +73,7 @@ public class Option {
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
+
+    public void setPackages(List<ServicePackage> packages) {this.packages = packages;}
+    public List<ServicePackage> getPackages() {return packages;}
 }

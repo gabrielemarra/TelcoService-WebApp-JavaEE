@@ -26,13 +26,15 @@ public class ServicePackage implements Serializable {
     @OneToMany(mappedBy = "packageId")
     private List<Order> orders;
 
-    @OneToMany(mappedBy = "servicePackage")
-    private List<PackageServiceLink> servicesLinkedToPackage;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "package_id"),
             inverseJoinColumns = @JoinColumn(name = "opt_id"))
     private List<Option> options;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "service_bundles", joinColumns = @JoinColumn(name = "package_id"),
+            inverseJoinColumns = @JoinColumn(name = "service_id"))
+    private List<Service> services;
 
 
     /* Public Getters and Setters */
@@ -64,8 +66,8 @@ public class ServicePackage implements Serializable {
         this.orders = orders;
     }
 
-    public void setServicesLinkedToPackage(List<PackageServiceLink> servicesLinkedToPackage) {this.servicesLinkedToPackage = servicesLinkedToPackage;}
-    public List<PackageServiceLink> getServicesLinkedToPackage() {return servicesLinkedToPackage;}
+    public List<Service> getServices() {return services;}
+    public void setServices(List<Service> services) {this.services = services;}
 
     public List<Option> getOptions() {
         return options;

@@ -48,8 +48,12 @@ public class Service {
     @Column(name = "sms_extra", precision = 2)
     private Double smsExtra;
 
-    @OneToMany(mappedBy = "service")
-    private List<PackageServiceLink> packageServiceLinks; // better name: packagesLinkedToService?
+    @ManyToMany
+    @JoinTable(name = "service_bundles", joinColumns = @JoinColumn(name = "service_id"),
+            inverseJoinColumns = @JoinColumn(name = "package_id"))
+    private List<ServicePackage> servicePackages;
+
+
 
     public Double getSmsExtra() {return smsExtra;}
     public Double getMinExtra() {return minExtra;}
@@ -79,6 +83,6 @@ public class Service {
     public Integer getId() {return id;}
     public void setId(Integer id) {this.id = id;}
 
-    public List<PackageServiceLink> getPackageServiceLinks() {return packageServiceLinks;}
-    public void setPackageServiceLinks(List<PackageServiceLink> packageServiceLinks) {this.packageServiceLinks = packageServiceLinks; }
+    public List<ServicePackage> getPackageServices() {return servicePackages;}
+    public void setPackageServices(List<ServicePackage> servicePackages) {this.servicePackages = servicePackages; }
 }

@@ -5,12 +5,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.auxiliary.exceptions.NoServicePackageFound;
-import it.polimi.telco_webapp.entities.PackageServiceLink;
 import it.polimi.telco_webapp.entities.Service;
 import it.polimi.telco_webapp.entities.ServicePackage;
-import it.polimi.telco_webapp.services.PackageServiceLinkService;
 import it.polimi.telco_webapp.services.ServicePackageService;
-import it.polimi.telco_webapp.services.UserService;
+import it.polimi.telco_webapp.services.ServiceService;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.servlet.ServletException;
@@ -20,7 +18,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.List;
 
 @WebServlet(name = "GetAvailableServicePackages", value = "/GetAvailableServicePackages")
@@ -28,8 +25,8 @@ public class GetAvailableServicePackages extends HttpServlet {
     @EJB(name = "it.polimi.db2.entities.services/ServicePackageService")
     private ServicePackageService servicePackageService;
 
-    @EJB(name = "it.polimi.db2.entities.services/PackageServiceLinkService")
-    private PackageServiceLinkService packageServiceLinkService;
+    @EJB(name = "it.polimi.db2.entities.services/ServiceService")
+    private ServiceService serviceService;
 
     /**
      * Method to handle errors, send json with error info
@@ -74,7 +71,7 @@ public class GetAvailableServicePackages extends HttpServlet {
                 Double packagePrice3 = (double) 0;
                 JsonArray jsonArrayServices = new JsonArray();
 
-                for (Service service : packageServiceLinkService.getServicesByPackage(aPackage)) {
+                for (Service service : aPackage.getServices()) {
                     //Sum the prices
                     packagePrice1 += service.getBasePrice1();
                     packagePrice2 += service.getBasePrice2();

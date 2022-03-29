@@ -3,7 +3,6 @@ package it.polimi.telco_webapp.servlets;
 import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.entities.*;
 import it.polimi.telco_webapp.services.OptionService;
-import it.polimi.telco_webapp.services.PackageServiceLinkService;
 
 import it.polimi.telco_webapp.services.ServiceService;
 import it.polimi.telco_webapp.services.ServicePackageService;
@@ -29,9 +28,6 @@ public class AddServicePackage extends HttpServlet {
     private ServiceService serviceService;
     @EJB(name = "it.polimi.db2.entities.services/OptionService")
     private OptionService optionService;
-    @EJB(name = "it.polimi.db2.entities.services/PackageServiceLinkService")
-    private PackageServiceLinkService packageAndServiceLinkService;
-
 
 
     /**
@@ -59,13 +55,15 @@ public class AddServicePackage extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = StringEscapeUtils.escapeJava(request.getParameter("name"));
         Integer period = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("period")));
+
         String serviceIds[] = request.getParameterValues("serviceIds[]");
-        String serviceQuantities[] = request.getParameterValues("serviceQuantities[]");
         String optionIds[] = request.getParameterValues("optionIds[]");
 
-        HashMap<Service, Integer> servicesAndQuantities = new HashMap<>();
+        try{
+
+        List<Service> services = new ArrayList<>();
         for(int i = 0; i < serviceIds.length; i++) {
-            servicesAndQuantities.put(serviceService.getService(Integer.parseInt(serviceIds[i])), Integer.parseInt(serviceQuantities[i]));
+            services.add(serviceService.getService(Integer.parseInt(serviceIds[i])));
         }
 
         List<Option> options = new ArrayList<>();
@@ -73,16 +71,7 @@ public class AddServicePackage extends HttpServlet {
             options.add(optionService.getOption(Integer.parseInt(optionIds[i])));
         }
 
-        try{
-            // Create the new Service Package inside the DB (and therefore generate ID)
-            ServicePackage servicePackage = servicePackageService.insertNewServicePackage(name, period, options);
-
-            // CREATE the LINKS that define the quantities per optional product/ per service
-            List<PackageServiceLink> servicesLinkedToPackage = packageAndServiceLinkService.insertNewPackageAndServiceLinks(servicePackage, servicesAndQuantities);
-
-            // LINK the links of -pkgID-serviceID-quantity- associations with the newly created service package
-            servicePackageService.addServices(servicesLinkedToPackage);
-
+            ServicePackage servicePackage = servicePackageService.insertNewServicePackage(name, period, options, services);
         } catch (EJBException e) {
             sendError(request, response, "InternalDBErrorException", e.getCause().getMessage());
         }

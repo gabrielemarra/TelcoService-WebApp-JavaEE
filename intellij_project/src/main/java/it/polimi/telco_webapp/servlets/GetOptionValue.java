@@ -56,11 +56,14 @@ public class GetOptionValue extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            // Get the option object from the option ID
             Integer optionId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("option_id")));
             Option option = optionService.getOption(optionId);
 
-            List<Order> ordersWithOption = orderService.getAllOrdersByOption(option);
-            BigDecimal value = option.getPrice().multiply(BigDecimal.valueOf(ordersWithOption.size()));
+            // Multiply the price of the option by the # of times the option was ordered (the size of the list)
+            BigDecimal timesOrdered = BigDecimal.valueOf(orderService.getAllOrdersByOption(option).size());
+            BigDecimal value = option.getPrice().multiply(timesOrdered);
+
             Gson gson = new Gson();
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("application/json");

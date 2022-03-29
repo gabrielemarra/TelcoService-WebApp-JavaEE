@@ -1,11 +1,8 @@
 package it.polimi.telco_webapp.services;
 
-import java.util.HashMap;
 import java.util.List;
 
-import it.polimi.telco_webapp.auxiliary.exceptions.NoServicePackageFound;
 import it.polimi.telco_webapp.entities.Option;
-import it.polimi.telco_webapp.entities.PackageServiceLink;
 import it.polimi.telco_webapp.entities.Service;
 import it.polimi.telco_webapp.entities.ServicePackage;
 import jakarta.ejb.Stateless;
@@ -35,11 +32,12 @@ public class ServicePackageService {
      * @throws PersistenceException
      * @throws IllegalArgumentException
      */
-    public ServicePackage insertNewServicePackage(String name, int validity, List<Option> options) throws PersistenceException, IllegalArgumentException {
+    public ServicePackage insertNewServicePackage(String name, int validity, List<Option> options, List<Service> services) throws PersistenceException, IllegalArgumentException {
         ServicePackage servicePackage = new ServicePackage();
         servicePackage.setName(name);
         servicePackage.setValidityPeriod(validity);
         servicePackage.setOptions(options);
+        servicePackage.setServices(services);
 
         em.persist(servicePackage);
         return servicePackage;
@@ -88,17 +86,4 @@ public class ServicePackageService {
             em.persist(servicePackage);
         }
     }
-
-    /**
-     * Only AFTER a new service package is created (ie, after the new package ID is generated) can we then define the
-     * services linked to the new service package. This method takes in the service-package links, obtains the service
-     * ID from any one of the links, and then associates the links to the specified package ID.
-     * @param servicesLinkedToPackage
-     */
-    public void addServices(List <PackageServiceLink> servicesLinkedToPackage) {
-        ServicePackage servicePackage = servicesLinkedToPackage.get(0).getServicePackage();
-        servicePackage.setServicesLinkedToPackage(servicesLinkedToPackage);
-
-    }
-
 }
