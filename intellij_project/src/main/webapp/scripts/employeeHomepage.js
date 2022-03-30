@@ -118,11 +118,14 @@ $(document).ready(function () {
         let clone = template.content.cloneNode(true);
         let pElements = clone.querySelectorAll("p");
         pElements[0].textContent = name;
-        pElements[1].textContent = "€" + price + "/mo";// for 12 months";//gigIncl.toString() + " GB";
+        pElements[1].textContent = "€" + price + "/mo";
         clone.querySelector("input").id = "id_option" + option_id;
+        clone.querySelector("input").name = "option";
+        clone.querySelector("input").addEventListener("click", function(){alert("clicked with event listener")});
         clone.querySelector("label").setAttribute("for", "id_option" + option_id);
 
         tileList.appendChild(clone);
+
     };
 
     /**
@@ -204,6 +207,11 @@ $(document).ready(function () {
 
         clone.querySelector("input").id = "id_service" + service_id;
         clone.querySelector("label").setAttribute("for", "id_service" + service_id);
+        clone.querySelector("input").name = "service";
+        clone.querySelector("input").addEventListener("click", function(){alert("clicked with event listener")});
+
+
+
         tilesList.appendChild(clone);
     };
 
@@ -288,7 +296,12 @@ $(document).ready(function () {
         }
     );
 
-    function addItemToSummary(element, quantity, increment, type) {
+
+    $('#id_allOptionalProductsContainer').on('click', '.option', function() {
+        alert("clicked in static parent");
+    });
+
+    function addItemToSummary(element, type) {
         let id = element.id.replace(/\D/g, '');
         let item_id = "id_item" + type + id;
         let getRequestText = "Get"+ type; //(type == "Option")? "GetOption" : "GetService";
