@@ -15,7 +15,7 @@ $(document).ready(function () {
     function displayServicePackages(servicePackageList) {
         let servicePackageSelect = document.getElementById("servicePackage_select");
 
-        servicePackageSelect.innerHTML="";
+        servicePackageSelect.innerHTML = "";
 
         for (let key in servicePackageList) {
             displayOneServicePackage(servicePackageList[key])
@@ -34,10 +34,33 @@ $(document).ready(function () {
 
         servicePackageRow.textContent = servicePackageInfo.package_name;
 
+        let params = new URLSearchParams(document.location.search);
+        let requested_service_package_id = parseInt(params.get("package_id"));
+
+        if (servicePackageInfo.package_id === requested_service_package_id) {
+            servicePackageRow.selected = true;
+            set_default_validity_period(servicePackageInfo.default_validity_period);
+        }
+
         //the package id is stored inside this custom attribute
-        servicePackageRow.dataset.package_id = servicePackageInfo.package_id
+        servicePackageRow.dataset.package_id = servicePackageInfo.package_id;
 
         servicePackageSelect.appendChild(clone)
+    }
+
+    function set_default_validity_period(default_validity_period) {
+        switch (default_validity_period) {
+            case 1:
+                $("#validityPeriodCheckbox12").prop("checked", true);
+                break;
+            case 2:
+                $("#validityPeriodCheckbox24").prop("checked", true);
+                break;
+            case 3:
+                $("#validityPeriodCheckbox36").prop("checked", true);
+                break;
+            default: alert("ERROR_VALIDITY PERIOD")
+        }
     }
 
 });
