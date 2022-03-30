@@ -85,7 +85,7 @@ $(document).ready(function () {
     }
 
     function showAllOptions() {
-        let getRequest = $.get("GetAllOptions");
+        let getRequest = $.get("GetAllOptionalProducts");
         getRequest.done(function (data, textStatus, jqXHR) {
             let response = jqXHR.responseJSON;
             for(let i = 0; i < response.length; i++) {
