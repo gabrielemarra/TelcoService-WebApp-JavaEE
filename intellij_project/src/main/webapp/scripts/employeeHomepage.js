@@ -98,9 +98,6 @@ $(document).ready(function () {
             if (options.length > 0) {
                 for (let i = 0; i < options.length; i++) {
                     showOneOption(options[i].name, options[i].price, options[i].option_id);
-                    let newTile = document.getElementById("id_template");
-                    newTile.setAttribute("id", "id_option"+options[i].option_id);
-                    newTile.setAttribute("name", "option");
                 }
             }
         });
@@ -122,6 +119,9 @@ $(document).ready(function () {
         let pElements = clone.querySelectorAll("p");
         pElements[0].textContent = name;
         pElements[1].textContent = "€" + price + "/mo";// for 12 months";//gigIncl.toString() + " GB";
+        clone.querySelector("input").id = "id_option" + option_id;
+        clone.querySelector("label").setAttribute("for", "id_option" + option_id);
+
         tileList.appendChild(clone);
     };
 
@@ -159,11 +159,6 @@ $(document).ready(function () {
             if (services.length > 0) {
                 for (let i = 0; i < services.length; i++) {
                     showService(services[i].planType, services[i].bp1, services[i].bp2, services[i].bp3, services[i].service_id, services[i].gigIncl, services[i].smsIncl, services[i].minIncl, services[i].gigExtra, services[i].smsExtra, services[i].minExtra);
-                    let newTile = document.getElementById("id_template");
-                    newTile.setAttribute("id", "id_service"+services[i].service_id);
-                    newTile.setAttribute("name", "service");
-
-
                 }
             }
         });
@@ -207,10 +202,9 @@ $(document).ready(function () {
             pElements[2].textContent = "Unlimited";
         }
 
+        clone.querySelector("input").id = "id_service" + service_id;
+        clone.querySelector("label").setAttribute("for", "id_service" + service_id);
         tilesList.appendChild(clone);
-        //clone.setAttribute("id", "id_service" + service_id.toString());
-        //clone.name = "service";
-
     };
 
 
