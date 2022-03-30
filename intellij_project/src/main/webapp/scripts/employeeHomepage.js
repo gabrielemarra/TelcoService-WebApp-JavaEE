@@ -55,6 +55,37 @@ $(document).ready(function () {
     );
 
     /**
+     * FUNCTIONS TO DYNAMICALLY CHANGE CONTENT ACCORDING TO USER CLICKS
+     */
+
+    /**
+     * The form for adding a service package changes depending on which plan type is selected.
+     */
+    $('input[name="planType"]').click(
+        function () {
+            let planSelected = $(this).val();
+            $("div.selectDiv").hide();
+            $("#show" + planSelected).show();
+        }
+    );
+
+    $('input[name="defaultValidity"]').click(
+        function () {
+            let period = $(this).val();
+            let services = document.getElementsByName("service")
+            for (let i = 0; i < services.length; i++) {
+                let id = services[i].getAttribute("id").replace(/\D/g, '');
+                changeServiceLabel(id, period);
+            }
+            updatePricesInSummary();
+            updateTotalInSummary();
+        }
+    );
+
+
+
+
+    /**
      * FUNCTION CALLS FOR THE ENTIRE DOCUMENT:
      */
     showAllOptions();
@@ -121,10 +152,6 @@ $(document).ready(function () {
         input.addEventListener("click", function(){addItemToSummary(this, "OptionalProduct")});
         label.setAttribute("for", "id_option" + option_id);
         tileList.appendChild(clone);
-
-
-
-
     };
 
     /**
@@ -138,7 +165,6 @@ $(document).ready(function () {
         let postRequest = $.post("AddService", {
             planType: planType, bp1: bp1, bp2: bp2, bp3: bp3, gigIncl: gigIncl, smsIncl: smsIncl, minIncl: minIncl,
             gigExtra: gigExtra, smsExtra: smsExtra, minExtra: minExtra});
-
         postRequest.done(function (data, textStatus, jqXHR) {
             let service_id = jqXHR.responseText.replace(/\D/g, '');
             showService(planType, bp1, bp2, bp3, service_id, gigIncl, smsIncl, minIncl, gigExtra, smsExtra, minExtra);
@@ -246,33 +272,7 @@ $(document).ready(function () {
         otherElement.textContent = "€" + prices.otherPrice1 + " - " + prices.otherPeriod1 * 12 + "mo | €" + prices.otherPrice2 + " - " + prices.otherPeriod2 * 12 + "mo";
     };
 
-    /**
-     * FUNCTIONS TO DYNAMICALLY CHANGE CONTENT ACCORDING TO USER CLICKS
-     */
 
-    /**
-     * The form for adding a service package changes depending on which plan type is selected.
-     */
-    $('input[name="planType"]').click(
-        function () {
-            let planSelected = $(this).val();
-            $("div.selectDiv").hide();
-            $("#show" + planSelected).show();
-        }
-    );
-
-    $('input[name="defaultValidity"]').click(
-        function () {
-            let period = $(this).val();
-            let services = document.getElementsByName("service")
-            for (let i = 0; i < services.length; i++) {
-                let id = services[i].getAttribute("id").replace(/\D/g, '');
-                changeServiceLabel(id, period);
-            }
-            updatePricesInSummary(period);
-            updateTotalInSummary();
-        }
-    );
 
     function priceBasedOnPeriod(costs) {
         let period = document.querySelector('input[name=defaultValidity]:checked').value;
@@ -289,8 +289,6 @@ $(document).ready(function () {
             otherPeriod2 : period[1]
         }
         return prices;
-
-
     }
 
     function addItemToSummary(element, type) {
@@ -312,6 +310,7 @@ $(document).ready(function () {
                 let toRemove = document.getElementById(item_id);
                 summaryList.removeChild(toRemove);
             }
+            updateTotalInSummary();
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
             alert("adding item to summary GET fail");
@@ -320,50 +319,30 @@ $(document).ready(function () {
 
 
     // this only applies to services
-    function updatePricesInSummary(newValidity) {
+    function updatePricesInSummary() {
         let items = document.getElementById("id_packageSummary").childNodes;
-        let itemIds = [];
         // Get all the IDs of only the services listed in the summary
         for (let i = 0; i < items.length; i++) {
             if (items[i].id != null) {
-                // get only the service IDs
-                itemIds.push((items[i].id).replace(/\D/g, ''));
-            }
-        }
-        // For all the IDs found, update the price
-        for (let i = 0; i < itemIds.length; i++) {
-            let element = document.getElementById("id_itemService" + itemIds[i]);
-            if(element != null) { // if element is in fact a service, the search by ID will find a match.
-                let info = document.getElementById("id_service" + itemIds[i]);
-                element.querySelector("div.price").textContent = priceBasedOnPeriod([info.dataset.bp1, info.dataset.bp2, info.dataset.bp3]).defaultPrice;
+                let id = items[i].id.replace(/\D/g, '');
+                let element = document.getElementById("id_itemService" + id); // get only the service IDs
+                if(element != null) { // if element is in fact a service, the search by ID will find a match.
+                    let info = document.getElementById("id_service" + id);
+                    element.querySelector("div.price").textContent = priceBasedOnPeriod([info.dataset.bp1, info.dataset.bp2, info.dataset.bp3]).defaultPrice;
+                }
             }
         }
     };
 
-    /**
-     *
-     * @param element: The li element that requires two child nodes: and node for quantity + name
-     * and a node for the total price
-     * @param id: ID of the service package associated with the line item
-     * @param validity: the validity period drives which price tier we select
-     */
-
     function updateTotalInSummary() {
-        let serviceItems = document.getElementById("id_packageSummary").childNodes;
-        let total = 0;
-        for(let i = 0; i < serviceItems.length; i++) {
-            if(serviceItems[i] != null){
-                console.log(serviceItems[i].textContent);
-                //if((serviceItems[i].id).contains("Service")) { // document.getElementById("id_itemService2").lastChild.data
-                //    let contributionToTotal = serviceItems[i].lastChild.textContent.replace(/\D/g, '');
-                //    total = total + contributionToTotal;
-                //}
+        let cartPrices = document.getElementById("id_packageSummary").querySelectorAll("div.price");
+        let total = 0.0;
+        for (let i = 0; i < cartPrices.length; i++) {
+            if(cartPrices[i] != null) {
+                total = total + parseFloat(cartPrices[i].textContent);
             }
         }
-        let totalElement = document.getElementById("id_summaryTotal");
-        //totalElement.textContent = total;
-        //totalElement.appendChild(document.createTextNode("Default Base Cost: $" + total.toString()));
-
+        document.getElementById("id_summaryTotal").textContent = "€" + total.toString();
     }
 
 });
