@@ -77,7 +77,7 @@ $(document).ready(function () {
      * @param price: Decimal number of the monthly price of the optional product
      */
     function addOption(name, price) {
-        let postRequest = $.post("AddOption", {name: name, price: price});
+        let postRequest = $.post("AddOptionalProduct", {name: name, price: price});
         postRequest.done(function (data, textStatus, jqXHR) {
             let response = jqXHR.responseJSON;
             showOneOption(name, price, response.id);
@@ -92,7 +92,7 @@ $(document).ready(function () {
      * need to be displayed to the user.
      */
     function showAllOptions() {
-        let getRequest = $.get("GetAllOptions");
+        let getRequest = $.get("GetAllOptionalProducts");
         getRequest.done(function (data, textStatus, jqXHR) {
             let options = jqXHR.responseJSON;
             if (options.length > 0) {

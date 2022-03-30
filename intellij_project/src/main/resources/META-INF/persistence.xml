@@ -7,7 +7,7 @@
     <persistence-unit name="telco_webapp" transaction-type="JTA">
         <jta-data-source>telco_db</jta-data-source>
         <class>it.polimi.telco_webapp.entities.Employee</class>
-        <class>it.polimi.telco_webapp.entities.Option</class>
+        <class>it.polimi.telco_webapp.entities.OptionalProduct</class>
         <class>it.polimi.telco_webapp.entities.ServicePackage</class>
         <class>it.polimi.telco_webapp.entities.Service</class>
         <class>it.polimi.telco_webapp.entities.Order</class>

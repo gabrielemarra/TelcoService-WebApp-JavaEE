@@ -27,7 +27,7 @@ public class OrderService {
      * @param optionalProductList   The optional products included in the order
      * @return The new created order
      */
-    public Order insertNewOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<Option> optionalProductList) {
+    public Order insertNewOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<OptionalProduct> optionalProductList) {
         Order newOrder = new Order();
         newOrder.setPackageId(servicePackage);
         newOrder.setUser(user);
@@ -42,7 +42,7 @@ public class OrderService {
 
         //Extract the prices from the selected optional products
         List<BigDecimal> optionalProductPriceList = new ArrayList<>();
-        for (Option optionalProduct : optionalProductList) {
+        for (OptionalProduct optionalProduct : optionalProductList) {
             optionalProductPriceList.add(optionalProduct.getPrice());
         }
 
@@ -90,7 +90,7 @@ public class OrderService {
         return orders;
     }
 
-    public List<Order> getAllOrdersByOption(Option option) {
+    public List<Order> getAllOrdersByOption(OptionalProduct option) {
         List<Order> orders = em.createNamedQuery("Order.getAllOrdersByOption", Order.class).setParameter(1, option).getResultList();
         if (orders == null || orders.isEmpty()) {
             // orders CAN be empty....

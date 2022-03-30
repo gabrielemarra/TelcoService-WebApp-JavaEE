@@ -3,8 +3,8 @@ package it.polimi.telco_webapp.servlets;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.polimi.telco_webapp.entities.Option;
-import it.polimi.telco_webapp.services.OptionService;
+import it.polimi.telco_webapp.entities.OptionalProduct;
+import it.polimi.telco_webapp.services.OptionalProductService;
 import it.polimi.telco_webapp.services.OrderService;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
@@ -22,7 +22,7 @@ import java.util.List;
 @WebServlet(name = "GetOptionValue", value = "/GetOptionValue")
 public class GetOptionValue extends HttpServlet {
     @EJB(name = "it.polimi.db2.entities.services/OptionService")
-    private OptionService optionService;
+    private OptionalProductService optionService;
     @EJB(name = "it.polimi.db2.entities.services/OrderService")
     private OrderService orderService;
 
@@ -57,7 +57,7 @@ public class GetOptionValue extends HttpServlet {
         try {
             // Get the option object from the option ID
             Integer optionId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("option_id")));
-            Option option = optionService.getOption(optionId);
+            OptionalProduct option = optionService.getOption(optionId);
 
             // Multiply the price of the option by the # of times the option was ordered (the size of the list)
             BigDecimal timesOrdered = BigDecimal.valueOf(orderService.getAllOrdersByOption(option).size());

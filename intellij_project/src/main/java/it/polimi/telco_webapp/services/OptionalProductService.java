@@ -1,6 +1,6 @@
 package it.polimi.telco_webapp.services;
 
-import it.polimi.telco_webapp.entities.Option;
+import it.polimi.telco_webapp.entities.OptionalProduct;
 import it.polimi.telco_webapp.entities.Order;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
@@ -11,16 +11,16 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Stateless(name = "OptionService")
+@Stateless(name = "OptionalProductService")
 
-public class OptionService {
+public class OptionalProductService {
     @PersistenceContext(unitName = "telco_webapp")
     private EntityManager em;
 
-    public OptionService() {}
+    public OptionalProductService() {}
 
-    public Option insertNewOption(String name, BigDecimal price) {
-        Option newOption = new Option();
+    public OptionalProduct insertNewOption(String name, BigDecimal price) {
+        OptionalProduct newOption = new OptionalProduct();
         newOption.setName(name);
         newOption.setPrice(price);
         newOption.setQuantitySold(0);
@@ -29,16 +29,16 @@ public class OptionService {
         return newOption;
     }
 
-    public Option getOption(int optionId){
-        Option option = em.find(Option.class, optionId);
+    public OptionalProduct getOption(int optionId){
+        OptionalProduct option = em.find(OptionalProduct.class, optionId);
         if (option == null) {
             throw new EntityNotFoundException("Cannot find option with ID: " + optionId);
         }
         return option;
     }
 
-    public List<Option> getAllOptions() {
-        List<Option> options = em.createNamedQuery("Option.getAllAvailableOptions", Option.class).getResultList();
+    public List<OptionalProduct> getAllOptions() {
+        List<OptionalProduct> options = em.createNamedQuery("OptionalProduct.getAllAvailableOptions", OptionalProduct.class).getResultList();
         if (options == null || options.isEmpty()) {
             throw new IllegalArgumentException("No options found.");
         } else {

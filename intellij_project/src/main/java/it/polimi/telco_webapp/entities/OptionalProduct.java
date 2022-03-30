@@ -6,9 +6,9 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "optional_product", schema = "telco_db")
-@NamedQuery(name = "Option.getAllAvailableOptions", query = "SELECT o FROM Option o")
+@NamedQuery(name = "OptionalProduct.getAllAvailableOptions", query = "SELECT o FROM OptionalProduct o")
 
-public class Option {
+public class OptionalProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "opt_id", nullable = false)

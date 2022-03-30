@@ -3,8 +3,8 @@ package it.polimi.telco_webapp.servlets;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.polimi.telco_webapp.entities.Option;
-import it.polimi.telco_webapp.services.OptionService;
+
+import it.polimi.telco_webapp.services.OptionalProductService;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.servlet.ServletException;
@@ -15,11 +15,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
-@WebServlet(name = "GetOption", value = "/GetOption")
-public class GetOption extends HttpServlet {
-    @EJB(name = "it.polimi.db2.entities.services/OptionService")
-    private OptionService optionService;
+
+@WebServlet(name = "AddOptionalProduct", value = "/AddOptionalProduct")
+public class AddOptionalProduct extends HttpServlet {
+    @EJB(name = "it.polimi.db2.entities.services/OptionalProductService")
+    private OptionalProductService optionService;
 
     /**
      * Method to handle errors, send json with error info
@@ -44,25 +46,29 @@ public class GetOption extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //doGet(request, response);
+        /* QUESTION: difference between passing info via getParameter() versus getting from items put in sessionStorage() */
+        String name = StringEscapeUtils.escapeJava(request.getParameter("name"));
+        String priceStr = StringEscapeUtils.escapeJava(request.getParameter("price"));
+
+        try {
+            int id = optionService.insertNewOption(name, new BigDecimal(priceStr)).getId();
+            Gson gson = new Gson();
+
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
+            JsonElement jsonElement = new JsonObject();
+            jsonElement.getAsJsonObject().addProperty("id", id);
+            response.getWriter().println(gson.toJson(jsonElement));
+
+        } catch (EJBException e) {
+            sendError(request, response, "InternalDBErrorException", e.getCause().getMessage());
+        }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            Option option = optionService.getOption(Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("id"))));
-            Gson gson = new Gson();
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            JsonElement jsonElement = new JsonObject();
-            jsonElement.getAsJsonObject().addProperty("name", option.getName());
-            jsonElement.getAsJsonObject().addProperty("price", option.getPrice());
-
-            response.getWriter().println(gson.toJson(jsonElement));
-        } catch (EJBException e) {
-            sendError(request, response, "No Option Found", e.getCause().getMessage());
-        }
-
+        doPost(request, response);
     }
 }

@@ -2,7 +2,7 @@ package it.polimi.telco_webapp.services;
 
 import java.util.List;
 
-import it.polimi.telco_webapp.entities.Option;
+import it.polimi.telco_webapp.entities.OptionalProduct;
 import it.polimi.telco_webapp.entities.Service;
 import it.polimi.telco_webapp.entities.ServicePackage;
 import jakarta.ejb.Stateless;
@@ -32,7 +32,7 @@ public class ServicePackageService {
      * @throws PersistenceException
      * @throws IllegalArgumentException
      */
-    public ServicePackage insertNewServicePackage(String name, int validity, List<Option> options, List<Service> services) throws PersistenceException, IllegalArgumentException {
+    public ServicePackage insertNewServicePackage(String name, int validity, List<OptionalProduct> options, List<Service> services) throws PersistenceException, IllegalArgumentException {
         ServicePackage servicePackage = new ServicePackage();
         servicePackage.setName(name);
         servicePackage.setValidityPeriod(validity);

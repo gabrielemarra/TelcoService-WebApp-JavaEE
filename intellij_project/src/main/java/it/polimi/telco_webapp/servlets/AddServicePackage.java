@@ -2,7 +2,7 @@ package it.polimi.telco_webapp.servlets;
 
 import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.entities.*;
-import it.polimi.telco_webapp.services.OptionService;
+import it.polimi.telco_webapp.services.OptionalProductService;
 
 import it.polimi.telco_webapp.services.ServiceService;
 import it.polimi.telco_webapp.services.ServicePackageService;
@@ -27,7 +27,7 @@ public class AddServicePackage extends HttpServlet {
     @EJB(name = "it.polimi.db2.entities.services/ServiceService")
     private ServiceService serviceService;
     @EJB(name = "it.polimi.db2.entities.services/OptionService")
-    private OptionService optionService;
+    private OptionalProductService optionService;
 
 
     /**
@@ -66,7 +66,7 @@ public class AddServicePackage extends HttpServlet {
             services.add(serviceService.getService(Integer.parseInt(serviceIds[i])));
         }
 
-        List<Option> options = new ArrayList<>();
+        List<OptionalProduct> options = new ArrayList<>();
         for(int i = 0; i < optionIds.length; i++) {
             options.add(optionService.getOption(Integer.parseInt(optionIds[i])));
         }

@@ -5,7 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.auxiliary.OrderStatus;
-import it.polimi.telco_webapp.entities.Option;
+import it.polimi.telco_webapp.entities.OptionalProduct;
 import it.polimi.telco_webapp.entities.Order;
 import it.polimi.telco_webapp.entities.ServicePackage;
 import it.polimi.telco_webapp.services.ServicePackageService;

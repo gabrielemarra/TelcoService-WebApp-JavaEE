@@ -29,7 +29,7 @@ public class ServicePackage implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "package_id"),
             inverseJoinColumns = @JoinColumn(name = "opt_id"))
-    private List<Option> options;
+    private List<OptionalProduct> options;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "service_bundles", joinColumns = @JoinColumn(name = "package_id"),
@@ -69,10 +69,10 @@ public class ServicePackage implements Serializable {
     public List<Service> getServices() {return services;}
     public void setServices(List<Service> services) {this.services = services;}
 
-    public List<Option> getOptions() {
+    public List<OptionalProduct> getOptions() {
         return options;
     }
-    public void setOptions(List<Option> options) {
+    public void setOptions(List<OptionalProduct> options) {
         this.options = options;
     }
 
