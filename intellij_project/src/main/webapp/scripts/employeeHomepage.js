@@ -112,11 +112,19 @@ $(document).ready(function () {
         let pElements = clone.querySelectorAll("p");
         pElements[0].textContent = name;
         pElements[1].textContent = "€" + price + "/mo";
-        clone.querySelector("input").id = "id_option" + option_id;
-        clone.querySelector("input").name = "option";
-        clone.querySelector("input").addEventListener("click", function(){alert("clicked with event listener")});
-        clone.querySelector("label").setAttribute("for", "id_option" + option_id);
+
+        let input = clone.querySelector("input");
+        let label = clone.querySelector("label");
+        input.id = "id_option" + option_id;
+        input.name = "option";
+        input.dataset.price = price
+        input.addEventListener("click", function(){addItemToSummary(this, "OptionalProduct")});
+        label.setAttribute("for", "id_option" + option_id);
         tileList.appendChild(clone);
+
+
+
+
     };
 
     /**
@@ -191,10 +199,16 @@ $(document).ready(function () {
         } else {
             pElements[2].textContent = "Unlimited";
         }
-        clone.querySelector("input").id = "id_service" + service_id;
-        clone.querySelector("label").setAttribute("for", "id_service" + service_id);
-        clone.querySelector("input").name = "service";
-        clone.querySelector("input").addEventListener("click", function(){addItemToSummary(this, "Service")});
+        let input = clone.querySelector("input")
+        let label = clone.querySelector("label");
+        input.id = "id_service" + service_id;
+        input.name = "service";
+        input.addEventListener("click", function(){addItemToSummary(this, "Service")});
+        input.dataset.bp1 = bp1;
+        input.dataset.bp2 = bp2;
+        input.dataset.bp3 = bp3;
+
+        label.setAttribute("for", "id_service" + service_id);
         tilesList.appendChild(clone);
     };
 
@@ -224,24 +238,13 @@ $(document).ready(function () {
      */
 
     function changeServiceLabel(id, period) {
-        let getRequest = $.get("GetService", {id: id});
-        getRequest.done(function (data, textStatus, jqXHR) {
-            let service = jqXHR.responseJSON;
-            let costs = [service.bp1, service.bp2, service.bp3];
-            let defaultBasePrice = costs[period - 1];
-            let periods = [1, 2, 3];
-            periods.splice(period-1, 1);
-            costs.splice(period-1, 1);
-            let defaultElement = document.getElementById("id_defaultPeriod" + service.service_id);
-            let otherElement = document.getElementById("id_otherPeriods" + service.service_id);
-            defaultElement.textContent = "€" + defaultBasePrice + "/mo for " + period * 12 + " months";
-            otherElement.textContent = "€" + costs[0] + " - " + periods[0] * 12 + "mo | €" + costs[1] + " - " + periods[1] * 12 + "mo";
-        });
-        getRequest.fail(function (data, textStatus, jqXHR) {
-            alert("Houston we have a problemo");
-        });
+        let element = document.getElementById("id_service" + id);
+        let prices = priceBasedOnPeriod([element.dataset.bp1, element.dataset.bp2, element.dataset.bp3]);
+        let defaultElement = document.getElementById("id_defaultPeriod" + id);
+        let otherElement = document.getElementById("id_otherPeriods" + id);
+        defaultElement.textContent = "€" + prices.defaultPrice + "/mo for " + prices.defaultPeriod * 12 + " months";
+        otherElement.textContent = "€" + prices.otherPrice1 + " - " + prices.otherPeriod1 * 12 + "mo | €" + prices.otherPrice2 + " - " + prices.otherPeriod2 * 12 + "mo";
     };
-
 
     /**
      * FUNCTIONS TO DYNAMICALLY CHANGE CONTENT ACCORDING TO USER CLICKS
@@ -278,17 +281,17 @@ $(document).ready(function () {
         periods.splice(period-1, 1);
         costs.splice(period-1, 1);
         const prices = {
+            defaultPeriod : period,
             defaultPrice : defaultBasePrice,
             otherPrice1 : costs[0],
-            period1 : periods[0],
+            otherPeriod1 : periods[0],
             otherPrice2 : costs[1],
-            period2 : period[1]
+            otherPeriod2 : period[1]
         }
         return prices;
 
 
     }
-
 
     function addItemToSummary(element, type) {
         let id = element.id.replace(/\D/g, '');
@@ -297,8 +300,6 @@ $(document).ready(function () {
         let getRequest = $.get(getRequestText, {id: id});
         getRequest.done(function (data, textStatus, jqXHR) {
             let resp = jqXHR.responseJSON;
-            // To get the current validity period
-
             let summaryList = document.getElementById("id_packageSummary");
             if(element.checked) {
                 let clone = document.getElementById("id_summary_item_template").content.cloneNode(true);
@@ -307,11 +308,10 @@ $(document).ready(function () {
                 divs[0].textContent = (type == "OptionalProduct")? resp.name : resp.type.replace("_", " ");
                 divs[1].textContent = (type == "OptionalProduct")? resp.price: (priceBasedOnPeriod([resp.bp1, resp.bp2, resp.bp3]).defaultPrice);
                 summaryList.appendChild(clone);
-            } else { // delete from summary
+            } else { // element is not checked: delete from summary
                 let toRemove = document.getElementById(item_id);
                 summaryList.removeChild(toRemove);
             }
-
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
             alert("adding item to summary GET fail");
@@ -323,18 +323,19 @@ $(document).ready(function () {
     function updatePricesInSummary(newValidity) {
         let items = document.getElementById("id_packageSummary").childNodes;
         let itemIds = [];
+        // Get all the IDs of only the services listed in the summary
         for (let i = 0; i < items.length; i++) {
             if (items[i].id != null) {
                 // get only the service IDs
                 itemIds.push((items[i].id).replace(/\D/g, ''));
             }
         }
-        let total = 0;
+        // For all the IDs found, update the price
         for (let i = 0; i < itemIds.length; i++) {
             let element = document.getElementById("id_itemService" + itemIds[i]);
             if(element != null) { // if element is in fact a service, the search by ID will find a match.
-                element.removeChild(element.lastChild);
-                appendNewPriceInSummary(element, itemIds[i], newValidity, element.value, "GetService");
+                let info = document.getElementById("id_service" + itemIds[i]);
+                element.querySelector("div.price").textContent = priceBasedOnPeriod([info.dataset.bp1, info.dataset.bp2, info.dataset.bp3]).defaultPrice;
             }
         }
     };
@@ -346,24 +347,6 @@ $(document).ready(function () {
      * @param id: ID of the service package associated with the line item
      * @param validity: the validity period drives which price tier we select
      */
-    function appendNewPriceInSummary(element, id, validity, quantity, request) {
-        let newPrice = 0;
-        let getRequest = $.get(request, {id: id});
-        getRequest.done(function (data, textStatus, jqXHR) {
-            let response = jqXHR.responseJSON;
-            let costPer;
-            if(request == "GetService") {
-                let costs = [response.bp1, response.bp2, response.bp3];
-                costPer = costs[validity - 1];
-            } else {
-                costPer = response.price;
-            }
-            element.appendChild(document.createTextNode("$" + quantity * costPer));
-        });
-        getRequest.fail(function (data, textStatus, jqXHR) {
-            alert(request + " ID:" + id + "failed");
-        });
-    };
 
     function updateTotalInSummary() {
         let serviceItems = document.getElementById("id_packageSummary").childNodes;
