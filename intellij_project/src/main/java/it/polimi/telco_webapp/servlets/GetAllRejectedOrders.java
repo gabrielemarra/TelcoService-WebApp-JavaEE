@@ -6,7 +6,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.auxiliary.exceptions.UserNotFoundException;
 import it.polimi.telco_webapp.entities.Order;
-import it.polimi.telco_webapp.entities.User;
 import it.polimi.telco_webapp.services.OrderService;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;

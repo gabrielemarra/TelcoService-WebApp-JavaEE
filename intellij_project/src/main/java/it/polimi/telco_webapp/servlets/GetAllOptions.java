@@ -19,7 +19,7 @@ import java.util.List;
 
 @WebServlet(name = "GetAllOptions", value = "/GetAllOptions")
 public class GetAllOptions extends HttpServlet {
-    @EJB(name = "it.polimi.db2.entities.services/Options")
+    @EJB(name = "it.polimi.db2.entities.services/OptionService")
     private OptionService optionService;
 
     /**

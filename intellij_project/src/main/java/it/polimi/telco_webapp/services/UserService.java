@@ -12,8 +12,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceException;
 
 import it.polimi.telco_webapp.entities.User;
-
-import javax.persistence.criteria.CriteriaBuilder;
 import java.security.InvalidParameterException;
 
 @Stateless(name = "UserService")

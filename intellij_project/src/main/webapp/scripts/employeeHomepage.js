@@ -98,6 +98,9 @@ $(document).ready(function () {
             if (options.length > 0) {
                 for (let i = 0; i < options.length; i++) {
                     showOneOption(options[i].name, options[i].price, options[i].option_id);
+                    let newTile = document.getElementById("id_template");
+                    newTile.setAttribute("id", "id_option"+options[i].option_id);
+                    newTile.setAttribute("name", "option");
                 }
             }
         });
@@ -116,21 +119,10 @@ $(document).ready(function () {
         let tileList = document.getElementById("id_allOptionsTiles");
         let template = document.getElementById("id_service_tile_template");
         let clone = template.content.cloneNode(true);
-        clone.id = "id_option" + option_id;
-        //clone.setAttribute("name", "option");
-        clone.name = "option";
-
         let pElements = clone.querySelectorAll("p");
         pElements[0].textContent = name;
         pElements[1].textContent = "€" + price + "/mo";// for 12 months";//gigIncl.toString() + " GB";
-
         tileList.appendChild(clone);
-
-
-
-
-
-
     };
 
     /**

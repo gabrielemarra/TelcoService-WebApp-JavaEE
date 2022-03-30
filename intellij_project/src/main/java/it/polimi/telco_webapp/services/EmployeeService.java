@@ -4,7 +4,6 @@ import it.polimi.telco_webapp.auxiliary.exceptions.CredentialsNotValidException;
 import it.polimi.telco_webapp.auxiliary.exceptions.InternalDBErrorException;
 import it.polimi.telco_webapp.auxiliary.exceptions.UserNotFoundException;
 import it.polimi.telco_webapp.entities.Employee;
-import it.polimi.telco_webapp.entities.User;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

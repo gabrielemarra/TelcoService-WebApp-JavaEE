@@ -12,7 +12,6 @@
         <class>it.polimi.telco_webapp.entities.Service</class>
         <class>it.polimi.telco_webapp.entities.Order</class>
         <class>it.polimi.telco_webapp.entities.User</class>
-        <class>it.polimi.telco_webapp.entities.PackageServiceLink</class>
         <properties>
             <property name="eclipselink.logging.level" value="FINE" />
         </properties>

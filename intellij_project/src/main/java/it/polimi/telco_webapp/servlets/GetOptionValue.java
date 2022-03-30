@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.entities.Option;
-import it.polimi.telco_webapp.entities.Order;
 import it.polimi.telco_webapp.services.OptionService;
 import it.polimi.telco_webapp.services.OrderService;
 import jakarta.ejb.EJB;
