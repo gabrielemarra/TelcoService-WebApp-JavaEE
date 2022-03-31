@@ -123,5 +123,19 @@ $(document).ready(function () {
 
     function attemptTransaction(order_id) {
         alert("button clicked for order:" + order_id);
+
+        let postResponse = $.post("ResubmitOrder", {order_id: order_id});
+
+        postResponse.done(function (data, textStatus, jqXHR) {
+            alert("success?");
+
+        });
+        postResponse.fail(function (data, textStatus, jqXHR) {
+            alert("fail?");
+
+
+        });
+
+
     }
 });

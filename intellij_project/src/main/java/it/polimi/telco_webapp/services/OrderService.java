@@ -115,4 +115,10 @@ public class OrderService {
         return orders;
     }
 
+    public void changeOrderStatus(int order_id, OrderStatus status) {
+        Order order = this.getOrder(order_id);
+        order.setStatus(status);
+        // TODO: maybe add some checks here...
+    }
+
 }
