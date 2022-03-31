@@ -6,7 +6,8 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "optional_product", schema = "telco_db")
-@NamedQuery(name = "OptionalProduct.getOptionalProduct", query = "SELECT o FROM Order o WHERE o.id = ?1")
+@NamedQuery(name = "OptionalProduct.getAllAvailableOptions", query = "SELECT o FROM OptionalProduct o")
+
 public class OptionalProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,22 +24,14 @@ public class OptionalProduct {
     private Integer quantitySold;
 
     @ManyToMany
-    @JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "opt_id"),
-            inverseJoinColumns = @JoinColumn(name = "package_id"))
-    private List<ServicePackage> servicePackages;
-
-    public List<ServicePackage> getServicePackages() {
-        return servicePackages;
-    }
-  
-    public void setServicePackages(List<ServicePackage> servicePackages) {
-        this.servicePackages = servicePackages;
-    }
-
-    @ManyToMany
     @JoinTable(name = "optional_product_ordered", joinColumns = @JoinColumn(name = "opt_id"),
             inverseJoinColumns = @JoinColumn(name = "order_id"))
     private List<Order> orders;
+
+    @ManyToMany
+    @JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "opt_id"),
+            inverseJoinColumns = @JoinColumn(name = "package_id"))
+    private List <ServicePackage> packages;
 
 
     public Integer getQuantitySold() {
@@ -80,4 +73,7 @@ public class OptionalProduct {
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
+
+    public void setPackages(List<ServicePackage> packages) {this.packages = packages;}
+    public List<ServicePackage> getPackages() {return packages;}
 }

@@ -1,0 +1,51 @@
+.scrollWindow{
+    max-height: 300px;
+    overflow-y: scroll;
+}
+.navbar{
+    margin-bottom: 40px;
+}
+
+.selectDiv{
+    display:none;
+}
+
+.row-cols-4 {
+    /*padding: 2%;
+    max-height: 350px;*/
+}
+
+.form-control {
+    /*padding:8px;
+    margin-block: 15px;
+    margin-left: 10%;
+    width: 80%*/
+
+}
+
+.btnmodal {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.btn-group{
+    width: 100%;
+}
+
+.modal-content {
+    height: 475px;
+}
+
+.inputLabelDiv{
+    display: flex;
+    align-self: center; /* vertical alignment */
+    justify-content: right; /* text justification */
+}
+
+.scrollLabelDiv{
+    display: flex;
+    justify-content: right;
+}
+
+
+
