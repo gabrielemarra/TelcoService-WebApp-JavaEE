@@ -26,6 +26,7 @@ $(document).ready(function () {
     );
 
 
+
     function displayPersonalData() {
         //    Should we make a request? For now we use the stored values
         let personalInfoString = sessionStorage.getItem("name") + " | " + sessionStorage.getItem("email")
@@ -94,7 +95,6 @@ $(document).ready(function () {
             let table = document.getElementById("id_rejected_orders_body");
             let rejectedOrders = jqXHR.responseJSON;
             if (rejectedOrders.length > 0) {
-                let rejectedOrdersTable = document.getElementById("id_rejected_orders_table_body");
                 for (let i = 0; i < rejectedOrders.length; i++) {
                     let template = document.getElementById("id_rejected_orders_template");
                     let clone = template.content.cloneNode(true);
@@ -102,11 +102,16 @@ $(document).ready(function () {
                     divs[0].textContent = rejectedOrders[i].order_id;
                     divs[1].textContent = rejectedOrders[i].service_package_name;
                     divs[2].textContent = rejectedOrders[i].total_price;
-                    divs[3].querySelector("button").dataset.orderId = rejectedOrders[i].order_id;
-                    rejectedOrdersTable.appendChild(clone);
+                    let button = divs[3].querySelector("button");
+                    // this dataset val may not be necessary since we can pass it as a param to the event listener directly
+                    button.dataset.orderId = rejectedOrders[i].order_id;
+                    button.id = "buyAgainButton";
+                    //         input.addEventListener("click", function(){addItemToSummary(this, "OptionalProduct")});
+                    button.addEventListener('click', function(){attemptTransaction(rejectedOrders[i].order_id)});
+                    table.appendChild(clone);
                 }
             } else {
-                document.getElementById("id_rejected_orders").style.display = "none";
+                table.style.display = "none";
                 document.getElementById("id_rejected_orders_table_title").style.display = "none";
             }
         });
@@ -114,5 +119,9 @@ $(document).ready(function () {
         getResponse.fail(function (data, textStatus, errorThrown) {
             alert("world");
         });
+    }
+
+    function attemptTransaction(order_id) {
+        alert("button clicked for order:" + order_id);
     }
 });
