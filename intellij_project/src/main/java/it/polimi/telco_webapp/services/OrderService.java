@@ -1,9 +1,9 @@
 package it.polimi.telco_webapp.services;
-
 import it.polimi.telco_webapp.auxiliary.OrderStatus;
 import it.polimi.telco_webapp.entities.*;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 
 import java.math.BigDecimal;
@@ -11,12 +11,12 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Stateless(name = "OrderService")
+
 public class OrderService {
     @PersistenceContext(unitName = "telco_webapp")
     private EntityManager em;
 
-    public OrderService() {
-    }
+    public OrderService() {}
 
     /**
      * Create a new Order and store in the Persistence Context
@@ -27,7 +27,7 @@ public class OrderService {
      * @param optionalProductList   The optional products included in the order
      * @return The new created order
      */
-    public Order insertOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<OptionalProduct> optionalProductList) {
+    public Order insertNewOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<OptionalProduct> optionalProductList) {
         Order newOrder = new Order();
         newOrder.setPackageId(servicePackage);
         newOrder.setUser(user);
@@ -35,9 +35,9 @@ public class OrderService {
         newOrder.setStatus(OrderStatus.PENDING);
 
         //Check if the OptionalProducts are available for the selected ServicePackage OR null, then add the opt. prod. list to the order
-        if (optionalProductList == null || !servicePackage.getOptionalProducts().containsAll(optionalProductList)) {
-            throw new IllegalArgumentException("Some selected Optional Products are not compatible with the selected Service Package");
-        }
+        //if (optionalProductList == null || !servicePackage.getOptionalProducts().containsAll(optionalProductList)) {
+        //    throw new IllegalArgumentException("Some selected Optional Products are not compatible with the selected Service Package");
+        //}
         newOrder.setOptionalProductOrderedList(optionalProductList);
 
         //Extract the prices from the selected optional products
@@ -51,7 +51,8 @@ public class OrderService {
 
         //Extract the correct prices from the services included in the service package
         List<BigDecimal> servicesPriceList = new ArrayList<>();
-        for (Service service : servicePackage.getServices()) {
+        List <Service> dummy = new ArrayList<>();
+        for (Service service : dummy){//servicePackage.getServices()) {
             switch (servicePackage.getValidityPeriod()) {
                 case 1:
                     servicesPriceList.add(BigDecimal.valueOf(service.getBasePrice1()));
@@ -72,25 +73,46 @@ public class OrderService {
         return newOrder;
     }
 
-    //TODO use FIND instead of NamedQuery
     public Order getOrder(int orderId) {
-        List<Order> orders = em.createNamedQuery("Order.getOrder", Order.class).setParameter(1, orderId).getResultList();
-        if (orders == null || orders.isEmpty()) {
-            throw new IllegalArgumentException("Invalid orderID");
-        } else if (orders.size() != 1) {
-            throw new IllegalArgumentException("Internal database error: too many result for a single ID");
-        } else {
-            return orders.get(0);
+        Order order = em.find(Order.class, orderId);
+        if (order == null) {
+            throw new EntityNotFoundException("Cannot find order with ID: " + orderId);
         }
+        return order;
     }
 
-    public List<Order> getAllOrderCreatedByUser(int userId) {
-        List<Order> orders = em.createNamedQuery("Order.getOrder", Order.class).setParameter(1, userId).getResultList();
+    public List<Order> getAllOrdersByPackage(ServicePackage servicePackage) {
+        List<Order> orders = em.createNamedQuery("Order.getAllOrdersByPackage", Order.class).setParameter(1, servicePackage).getResultList();
         if (orders == null || orders.isEmpty()) {
-            throw new IllegalArgumentException("User has no orders or the userID is invalid");
-        } else {
-            return orders;
+            // orders CAN be empty....
+            throw new EntityNotFoundException("No orders have been placed for service package with ID:" + servicePackage.getId());
         }
+        return orders;
+    }
+
+    public List<Order> getAllOrdersByOption(OptionalProduct option) {
+        List<Order> orders = em.createNamedQuery("Order.getAllOrdersByOption", Order.class).setParameter(1, option).getResultList();
+        if (orders == null || orders.isEmpty()) {
+            // orders CAN be empty....
+            throw new EntityNotFoundException("No orders have included option with ID:" + option.getId());
+        }
+        return orders;
+    }
+
+    public List<Order> getAllOrdersByUser(User user) {
+        List<Order> orders = em.createNamedQuery("Order.getAllOrdersByUser", Order.class).setParameter(1, user).getResultList();
+        if (orders == null || orders.isEmpty()) {
+            throw new IllegalArgumentException("No orders have been placed by user or the userID is invalid ID: " + user.getId());
+        }
+        return orders;
+    }
+
+    public List<Order> getAllRejectedOrders() {
+        List <Order> orders = em.createNamedQuery("Order.getAllRejectedOrders",Order.class).getResultList();
+        if (orders == null || orders.isEmpty()) {
+            throw new IllegalArgumentException("No rejected orders exist");
+        }
+        return orders;
     }
 
 }

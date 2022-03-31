@@ -113,32 +113,32 @@ public class Login extends HttpServlet {
             jsonElement.getAsJsonObject().addProperty("email", credentialCheckResultUser.getEmail());
 
             response.getWriter().println(gson.toJson(jsonElement));
-        } catch (CredentialsNotValidException e) {
-            try {
-                Employee employee = employeeService.checkEmployeeCredentials(email, password);
-                request.getSession().setAttribute("employee", employee.getId());
-                String url = "Employee/index.html";
+        } catch (EJBException e) {
+            if (e.getCausedByException() instanceof CredentialsNotValidException) {
+                try {
+                    Employee employee = employeeService.checkEmployeeCredentials(email, password);
+                    request.getSession().setAttribute("employee", employee.getId());
+                    String url = "employeeHomepage.html";
+//                    String url = "Employee/index.html";
 
-                response.setStatus(HttpServletResponse.SC_OK);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
 
-                Gson gson = new Gson();
-                JsonElement jsonElement = gson.toJsonTree(employee);
-                jsonElement.getAsJsonObject().addProperty("new_url", url);
-                jsonElement.getAsJsonObject().addProperty("employee", "true");
-                jsonElement.getAsJsonObject().remove("password");
-                jsonElement.getAsJsonObject().remove("id");
+                    Gson gson = new Gson();
+                    JsonElement jsonElement = gson.toJsonTree(employee);
+                    jsonElement.getAsJsonObject().addProperty("new_url", url);
+                    jsonElement.getAsJsonObject().addProperty("employee", "true");
+                    jsonElement.getAsJsonObject().remove("password");
+                    jsonElement.getAsJsonObject().remove("id");
 
-                response.getWriter().println(gson.toJson(jsonElement));
-            } catch (CredentialsNotValidException f) {
-                sendError(request, response, f.getErrorCode(), f.getCause().getMessage());
-            } catch (InternalDBErrorException | EJBException f) {
-                sendError(request, response, "Internal Error", f.getCause().getMessage());
+                    response.getWriter().println(gson.toJson(jsonElement));
+                } catch (EJBException f) {
+                    sendError(request, response, "Internal Error", f.getCause().getMessage());
+                }
+            } else {
+                sendError(request, response, "Internal Error", e.getCause().getMessage());
             }
-
-        } catch (InternalDBErrorException | EJBException e) {
-            sendError(request, response, "Internal Error", e.getCause().getMessage());
         }
     }
 }

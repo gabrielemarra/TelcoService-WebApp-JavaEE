@@ -16,96 +16,111 @@ public class ServiceService {
     @PersistenceContext(unitName = "telco_webapp")
     private EntityManager em;
 
-    public ServiceService() {
-    }
+    public ServiceService() {}
 
     /**
      * Inserts a new service into the database.
-     * @param service_id: Serivce id of the service
-     * @param type: Enum Fixed_Phone, Mobile_Phone, Fixed_Internet, or Mobile_Internet
-     * @param basePrices: Array with the three tiers of prices
-     * @param incl: Array with the cost of the included amounts (of sms/min or gig)
-     * @param extra: Array with the cost of extra services (of sms/min or gig) that exceed the amount included in the plan
+     * @param typeStr: String: Fixed_Phone, Mobile_Phone, Fixed_Internet, or Mobile_Internet
+     * @param bp1,bp2, bp3: Base prices 1,2,3
+     * @param *_incl: The amount of gig/sms/or min included in the plan
+     * @param *_extra: The COST for each gig/sms/ or min exceeding the included amount in the plan
      *
      * @return Service that was entered into the database.
      * @throws PersistenceException
      * @throws IllegalArgumentException: When the service type is not specified correctly, three baseprices are not
      * correctly provided, or plan parameters are not correctly specified.
      */
-    public Service insertNewService(int service_id, ServiceType type, Double[] basePrices, int[] incl, double[] extra) throws PersistenceException, IllegalArgumentException{
-        if(basePrices.length != 3) {
-            throw new IllegalArgumentException("Correctly specify the base places for the plan.");
-        }
+    public Service insertNewService(String typeStr, double bp1, double bp2, double bp3, int gigIncl, int minIncl, int smsIncl, double gigExtra, double minExtra, double smsExtra) throws PersistenceException, IllegalArgumentException{
+        Service service = new Service();
 
-        Service service;
-        switch(type) {
-            case Fixed_Phone:
-                service = new Service();
+        service.setBasePrice1(bp1);
+        service.setBasePrice2(bp2);
+        service.setBasePrice3(bp3);
+
+        switch(typeStr) {
+            case "Fixed_Phone":
+                service.setType(ServiceType.Fixed_Phone);
+                /**
+                 * These parameters are already initialized to zero in AddService.java servlet. This is done in the
+                 * doPost function so that the unused parameters are still initialized. By commenting these setfunctions
+                 * however, we ensure that parameters that are irrelevant to the selected plan are entered as NULL in
+                 * the DB.
+                 * service.setGigIncluded(0);
+                 * service.setGigExtra(0.0);
+                 * service.setMinIncluded(0);
+                 * service.setMinExtra(0.0);
+                 * service.setSmsIncluded(0);
+                 * service.setSmsExtra(0.0);
+                 *
+                 */
                 break;
-            case Mobile_Internet: case Fixed_Internet:
-                if (incl.length != 1 || extra.length != 1) {
+            case "Mobile_Internet":
+                if (gigIncl < 1 || gigExtra < 0) { // Internet plans need to offer Gig greater than 1!
                     throw new IllegalArgumentException("Correctly specify the parameters for the internet plan.");
                 }
-                int gig_incl = incl[0];
-                double gig_extra = extra[0];
-                service = insertInternet(gig_incl, gig_extra);
+                /** Do we want to add a check if EXTRA/ erroneous fields are also entered?
+                 *  if (smsIncl > 0 || smsExtra > 0 || minIncl > 0 || minExtra > 0) {
+                 *      // throw exception?
+                 *  }
+                 */
+                service.setType(ServiceType.Mobile_Internet);
+                service.setGigIncluded(gigIncl);
+                service.setGigExtra(gigExtra);
+                /**
+                 * These parameters are already initialized to zero in AddService.java servlet. This is done in the
+                 * doPost function so that the unused parameters are still initialized.  By commenting these setfunctions
+                 * however, we ensure that parameters that are irrelevant to the selected plan are entered as NULL in
+                 * the DB.
+                 * service.setMinIncluded(0);
+                 * service.setMinExtra(0.0);
+                 * service.setSmsIncluded(0);
+                 * service.setSmsExtra(0.0);
+                 *
+                 */
                 break;
-            case Mobile_Phone:
-                if (incl.length != 2 || extra.length != 2) {
+            case "Fixed_Internet":
+                if (gigIncl < 1 || gigExtra < 0) { // Internet plans need to offer Gig greater than 1!
+                    throw new IllegalArgumentException("Correctly specify the parameters for the internet plan.");
+                }
+                service.setType(ServiceType.Fixed_Internet);
+                service.setGigIncluded(gigIncl);
+                service.setGigExtra(gigExtra);
+                /**
+                 * These parameters are already initialized to zero in AddService.java servlet. This is done in the
+                 * doPost function so that the unused parameters are still initialized. By commenting these setfunctions
+                 * however, we ensure that parameters that are irrelevant to the selected plan are entered as NULL in
+                 * the DB.
+                 * service.setMinIncluded(0);
+                 * service.setMinExtra(0.0);
+                 * service.setSmsIncluded(0);
+                 * service.setSmsExtra(0.0);
+                 *
+                 */
+                break;
+            case "Mobile_Phone":
+                if (smsIncl < 0 || smsExtra < 0 || minIncl < 0 || minExtra < 0) { // Phone plans CAN have included minutes or included sms set to zero:  imagine a sms-only plan
                     throw new IllegalArgumentException("Correctly specify the parameters for the mobile phone plan.");
                 }
-                int sms_incl = incl[0];
-                double sms_extra = extra[0];
-                int min_incl = incl[1];
-                double min_extra = extra[1];
-                service = insertMobilePhone(sms_incl, sms_extra, min_incl, min_extra);
+                service.setType(ServiceType.Mobile_Phone);
+                service.setMinIncluded(minIncl);
+                service.setMinExtra(minExtra);
+                service.setSmsIncluded(smsIncl);
+                service.setSmsExtra(smsExtra);
+                /**
+                 * These parameters are already initialized to zero in AddService.java servlet. This is done in the
+                 * doPost function so that the unused parameters are still initialized. By commenting these setfunctions
+                 * however, we ensure that parameters that are irrelevant to the selected plan are entered as NULL in
+                 * the DB.
+                 * service.setGigIncluded(0);
+                 * service.setGigExtra(0.0);
+                 *
+                 */
                 break;
             default:
                 throw new IllegalArgumentException("Invalid plan type.");
         }
 
-        service.setType(type);
-        service.setBasePrice1(basePrices[0]);
-        service.setBasePrice2(basePrices[1]);
-        service.setBasePrice3(basePrices[2]);
-        service.setId(service_id);
         em.persist(service);
-
-        return service;
-    }
-
-    /**
-     * Helper method to interpret planParams[] as the amount of gig included from planParam[0] and the cost for extra
-     * gig from planParams[1]
-     * @param gig_incl: Amount of gig included in the internet plan
-     * @param gig_extra: Cost of extra gig in the internet plan
-     * @return The service with the gig inclu/extra parameters specified.
-     */
-
-    private Service insertInternet(int gig_incl, double gig_extra) {
-        Service service = new Service();
-        service.setGigIncluded(gig_incl);
-        service.setGigExtra(gig_extra);
-
-        return service;
-    }
-
-    /**
-     * Helper method to interpret planParams[] as the amount of sms included, cost of extra sms, amount of min included,
-     *  and cost of extra min
-     * @param sms_incl: Amount of sms included in the plan
-     * @param sms_extra: Cost of extra sms exceeding the amount allotted in the plan.
-     * @param min_incl: Number of min included in the plan
-     * @param min_extra: Cost of extra min exceeding the amount allotted in the plan.
-     * @return The service with the plan parameters specified.
-     */
-
-    private Service insertMobilePhone(int sms_incl, double sms_extra, int min_incl, double min_extra) {
-        Service service = new Service();
-        service.setSmsIncluded(sms_incl);
-        service.setSmsExtra(sms_extra);
-        service.setMinIncluded(min_incl);
-        service.setMinExtra(min_extra);
         return service;
     }
 
@@ -115,14 +130,19 @@ public class ServiceService {
      * @return: the service with the matching service id
      */
     public Service getService(int service_id) {
-        List<Service> services = em.createNamedQuery("Service.getService", Service.class).setParameter(1, service_id).getResultList();
+        Service service = em.find(Service.class, service_id);
+        if (service == null) {
+            throw new InvalidParameterException("Invalid service ID: " + service_id);
+        }
+        return service;
+    }
 
+    public List<Service> getAllServices() {
+        List<Service> services = em.createNamedQuery("Service.getAllAvailableServices", Service.class).getResultList();
         if (services == null || services.isEmpty()) {
-            throw new InvalidParameterException("Invalid service id.");
-        } else if( services.size() != 1) {
-            throw new InvalidParameterException("DB error.");
+            throw new InvalidParameterException("No services found.");
         } else {
-            return services.get(0);
+            return services;
         }
     }
 }

@@ -128,7 +128,7 @@ public class Signup extends HttpServlet {
                 sendError(request, response, "Invalid username", "The username is already associated tu an user");
             } catch (InvalidParameterException | EJBException f) {
                 //No user found. We can create a new user!
-                User newUser = userService.insertUser(name, email, password, username);
+                User newUser = userService.insertNewUser(name, email, password, username);
 
                 request.getSession().setAttribute("user", newUser.getEmail());
                 String url = "homepage.html";
