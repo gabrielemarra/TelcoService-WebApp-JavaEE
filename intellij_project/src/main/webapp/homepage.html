@@ -107,7 +107,8 @@
                             <th> Total Price</th>
                         </tr>
                         </thead>
-                        <tbody id="id_rejected_orders_body"></tbody>
+                        <tbody id="id_rejected_orders_body">
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -137,6 +138,16 @@
             </div>
         </div>
     </div>
+</template>
+
+
+<template id="id_rejected_orders_template">
+    <tr>
+        <td>order id</td>
+        <td>plan name</td>
+        <td> delinquent cost</td>
+        <td><button type="button" class="btn btn-outline-danger buy-again">Buy Again</button></td>
+    </tr>
 </template>
 
 </body>

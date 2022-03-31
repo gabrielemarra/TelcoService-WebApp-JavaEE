@@ -26,10 +26,6 @@ $(document).ready(function () {
     );
 
 
-    getServicePackages();
-    getRejectedOrders();
-
-
     function displayPersonalData() {
         //    Should we make a request? For now we use the stored values
         let personalInfoString = sessionStorage.getItem("name") + " | " + sessionStorage.getItem("email")
@@ -98,18 +94,16 @@ $(document).ready(function () {
             let table = document.getElementById("id_rejected_orders_body");
             let rejectedOrders = jqXHR.responseJSON;
             if (rejectedOrders.length > 0) {
-
+                let rejectedOrdersTable = document.getElementById("id_rejected_orders_table_body");
                 for (let i = 0; i < rejectedOrders.length; i++) {
-                    let row = table.insertRow();
-
-                    let orderIdCell = row.insertCell(0);
-                    orderIdCell.innerHTML = rejectedOrders[i].order_id;
-
-                    let servicePackageNameCell = row.insertCell(1);
-                    servicePackageNameCell.innerHTML = rejectedOrders[i].service_package_name;
-
-                    let totalPriceCell = row.insertCell(2);
-                    totalPriceCell.innerHTML = rejectedOrders[i].total_price;
+                    let template = document.getElementById("id_rejected_orders_template");
+                    let clone = template.content.cloneNode(true);
+                    let divs = clone.querySelectorAll("td");
+                    divs[0].textContent = rejectedOrders[i].order_id;
+                    divs[1].textContent = rejectedOrders[i].service_package_name;
+                    divs[2].textContent = rejectedOrders[i].total_price;
+                    divs[3].querySelector("button").dataset.orderId = rejectedOrders[i].order_id;
+                    rejectedOrdersTable.appendChild(clone);
                 }
             } else {
                 document.getElementById("id_rejected_orders").style.display = "none";
