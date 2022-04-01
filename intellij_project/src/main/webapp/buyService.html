@@ -105,7 +105,9 @@
                     </h2>
                     <div id="optionalProductSelectionCollapse" class="accordion-collapse collapse"
                          aria-labelledby="optionalProductSelectionHeading" data-bs-parent="#accordionFlushSelection">
-                        <div class="accordion-body">Optional Products selected:
+                        <div class="accordion-body">
+                            <span id="label_optional_product_available">Optional Products available:</span>
+                            <span id="label_optional_product_not_available" hidden>There are no optional products available for this package</span>
                             <div class="placeholder-glow" id="selectedOptionalProductsText">
                                 <div class="form-check placeholder">
                                     <input class="form-check-input" type="checkbox" value="" id="netflix">
@@ -164,6 +166,13 @@
 
 <template id="package_select_row_template">
     <option></option>
+</template>
+
+<template id="optional_product_checkbox_template">
+    <div class="form-check placeholder">
+        <input class="form-check-input" type="checkbox" value="">
+        <label class="form-check-label"></label>
+    </div>
 </template>
 </body>
 </html>

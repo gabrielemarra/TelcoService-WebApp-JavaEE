@@ -1,13 +1,20 @@
 $(document).ready(function () {
+    let servicePackagesAvailable;
+    let optionalProductsAvailable;
+    let servicesAvailable;
+
 
     getServicePackages()
+    getServiceList()
+    getOptionalProductList()
 
     function getServicePackages() {
-        let packages = $.get("GetAvailableServicePackages");
-        packages.done(function (data, textStatus, jqXHR) {
-            displayServicePackages(jqXHR.responseJSON);
+        let packages_request = $.get("GetAvailableServicePackages");
+        packages_request.done(function (data, textStatus, jqXHR) {
+            servicePackagesAvailable = jqXHR.responseJSON;
+            displayServicePackages();
         });
-        packages.fail(function (jqXHR, textStatus, errorThrown) {
+        packages_request.fail(function (jqXHR, textStatus, errorThrown) {
             throw "UnableToRetrieveServicePackages"
         });
     }
@@ -17,33 +24,34 @@ $(document).ready(function () {
 
         servicePackageSelect.innerHTML = "";
 
-        for (let key in servicePackageList) {
-            displayOneServicePackage(servicePackageList[key])
+        for (let key in servicePackagesAvailable) {
+            displayOneServicePackage(servicePackagesAvailable[key])
         }
 
         servicePackageSelect.classList.remove("placeholder")
         servicePackageSelect.disabled = false;
     }
 
-    function displayOneServicePackage(servicePackageInfo) {
+    function displayOneServicePackage(singleServicePackageInfo) {
         let servicePackageSelect = document.getElementById("servicePackage_select");
         let template = document.getElementById("package_select_row_template");
 
         let clone = template.content.cloneNode(true);
         let servicePackageRow = clone.querySelector("option");
 
-        servicePackageRow.textContent = servicePackageInfo.package_name;
+        servicePackageRow.textContent = singleServicePackageInfo.package_name;
 
         let params = new URLSearchParams(document.location.search);
         let requested_service_package_id = parseInt(params.get("package_id"));
 
-        if (servicePackageInfo.package_id === requested_service_package_id) {
+        if (singleServicePackageInfo.package_id === requested_service_package_id) {
             servicePackageRow.selected = true;
-            set_default_validity_period(servicePackageInfo.default_validity_period);
+            set_default_validity_period(singleServicePackageInfo.default_validity_period);
+            display_default_optional_products(singleServicePackageInfo.optional_products)
         }
 
         //the package id is stored inside this custom attribute
-        servicePackageRow.dataset.package_id = servicePackageInfo.package_id;
+        servicePackageRow.dataset.package_id = singleServicePackageInfo.package_id;
 
         servicePackageSelect.appendChild(clone)
     }
@@ -59,8 +67,67 @@ $(document).ready(function () {
             case 3:
                 $("#validityPeriodCheckbox36").prop("checked", true);
                 break;
-            default: alert("ERROR_VALIDITY PERIOD")
+            default:
+                alert("ERROR_VALIDITY PERIOD")
         }
+    }
+
+    function display_default_optional_products(optional_prod_to_show) {
+        let optionalProductAccordion = document.getElementById("selectedOptionalProductsText");
+
+        optionalProductAccordion.innerHTML = "";
+
+        if (optional_prod_to_show.length === 0) {
+            $("#label_optional_product_available").prop("hidden", true);
+            $("#label_optional_product_not_available").prop("hidden", false);
+        } else {
+            $("#label_optional_product_available").prop("hidden", false);
+            $("#label_optional_product_not_available").prop("hidden", true);
+            for (let key in optional_prod_to_show) {
+                displayOneOptionalProduct(optional_prod_to_show[key])
+            }
+        }
+    }
+
+    function displayOneOptionalProduct(singleOptionalProduct) {
+        let optionalProductAccordion = document.getElementById("selectedOptionalProductsText");
+        let template = document.getElementById("optional_product_checkbox_template");
+
+        let clone = template.content.cloneNode(true);
+        let optionProdInput = clone.querySelector("input");
+        let optionProdLabel = clone.querySelector("label");
+
+        optionProdInput.id = "opt_prod_" + singleOptionalProduct.opt_id;
+        optionProdInput.value = singleOptionalProduct.opt_id;
+
+        optionProdLabel.textContent = singleOptionalProduct.opt_name + " - " + singleOptionalProduct.opt_cost + "€/mo";
+        optionProdLabel.for = "opt_prod_" + singleOptionalProduct.opt_id;
+
+        //the package id is stored inside this custom attribute
+        optionProdInput.dataset.opt_id = singleOptionalProduct.opt_id;
+
+        clone.querySelector("div").classList.remove("placeholder");
+        optionalProductAccordion.appendChild(clone);
+    }
+
+    function getServiceList() {
+        let service_request = $.get("GetAllServices");
+        service_request.done(function (data, textStatus, jqXHR) {
+            servicesAvailable = jqXHR.responseJSON;
+        });
+        service_request.fail(function (jqXHR, textStatus, errorThrown) {
+            throw "UnableToRetrieveServices"
+        });
+    }
+
+    function getOptionalProductList() {
+        let service_request = $.get("GetAllOptionalProducts");
+        service_request.done(function (data, textStatus, jqXHR) {
+            optionalProductsAvailable = jqXHR.responseJSON;
+        });
+        service_request.fail(function (jqXHR, textStatus, errorThrown) {
+            throw "UnableToRetrieveOptionalProducts"
+        });
     }
 
 });
