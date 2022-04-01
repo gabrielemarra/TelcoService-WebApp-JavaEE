@@ -59,7 +59,7 @@ public class GetPackage extends HttpServlet {
 
 
         try {
-            ServicePackage servicePackage = servicePackageService.getServicePackage(Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("service_id"))));
+            ServicePackage servicePackage = servicePackageService.getServicePackage(Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("package_id"))));
             List <Service> services = servicePackage.getServices();
             Gson gson = new Gson();
             JsonArray packageInfo = new JsonArray();

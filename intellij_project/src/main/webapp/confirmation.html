@@ -59,79 +59,102 @@
   <main>
     <div class="container row">
       <div class="row info">
-      <div class="col">
-        <h4>Order Information</h4>
-        <table class="table" id="id_order_info_table">
-          <tbody>
-          <tr>
-            <th scope="row" id="id_packageName">Name</th>
-            <td>Package Name</td>
-          </tr>
-          <tr>
-            <th scope="row">Start Date</th>
-            <td>31 Mar, 2021</td>
-          </tr>
-          <tr>
-            <th scope="row">Period</th>
-            <td>1/2/3</td>
-          </tr>
-          <tr>
-            <th scope="row">Grand Total</th>
-            <td>€73884</td>
-          </tr>
-          </tbody>
-        </table>
+
+        <div class="col">
+          <h4>Order Information</h4>
+          <table class="table" id="id_order_info_table">
+            <tbody>
+            <tr>
+              <th scope="row" id="id_packageName">Name</th>
+              <td>Package Name</td>
+            </tr>
+            <tr>
+              <th scope="row">Start Date</th>
+              <td id="id_start_date">31 Mar, 2021</td>
+            </tr>
+            <tr>
+              <th scope="row">Period</th>
+              <td id="id_validity_period">1/2/3</td>
+            </tr>
+            <tr>
+              <th scope="row">Grand Total</th>
+              <td id="id_grand_total">€73884</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="col">
+          <div class="row">
+          <h4>Monthly Costs</h4>
+          <div class="col">
+            <table class="table" id="id_cost_services_table">
+              <thead>
+              <tr>
+                <th scope="col">Services</th>
+                <th scope="col">€</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>Service 1</td>
+                <td>€55</td>
+              </tr>
+              <tr>
+                <td>Service 2</td>
+                <td>€55</td>
+              </tr>
+              <tr>
+                <td>Service 3</td>
+                <td>€55</td>
+              </tr>
+              <tr>
+                <td>Service 4</td>
+                <td>€55</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col">
+            <table class="table" id="id_cost_options_table">
+              <thead>
+              <tr>
+                <th scope="col">Options</th>
+                <th scope="col">€</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>Option 1</td>
+                <td>€55</td>
+              </tr>
+              <tr>
+                <td>Option 2</td>
+                <td>€55</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+            <table class="table">
+            <tfoot>
+            <tr>
+              <th scope="col">Monthly Services</th>
+              <th scope="col" id="id_monthly_services">€544</th>
+              <th scope="col">Monthly Options</th>
+              <th scope="col" id="id_monthly_options">€544</th>
+            </tr>
+              </tfoot>
+            </table>
+
+          </div>
+
+        </div>
+
+
       </div>
 
-      <div class="col">
-        <h4>Monthly Costs</h4>
 
-        <table class="table" id="id_cost_breakdown_table">
-          <thead>
-          <tr>
-            <th scope="col">Services</th>
-            <th scope="col">€</th>
-            <th scope="col">Options</th>
-            <th scope="col">€</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>Service 1</td>
-            <td>€55</td>
-            <td>Option 1</td>
-            <td>€55</td>
-          </tr>
-          <tr>
-            <td>Service 2</td>
-            <td>€55</td>
-            <td>Option 2</td>
-            <td>€55</td>
-          </tr>
-          <tr>
-            <td>Service 3</td>
-            <td>€55</td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>Service 4</td>
-            <td>€55</td>
-            <td></td>
-            <td></td>
-          </tr>
-          </tbody>
-          <tfoot>
-          <tr>
-            <th scope="col">Monthly Services</th>
-            <th scope="col">€450</th>
-            <th scope="col">Monthly Options</th>
-            <th scope="col">€544</th>
-          </tr>
-          </tfoot>
-        </table>
-      </div>
-      </div>
+
       <div class="d-grid gap-2 col-6 mx-auto" id="id_buttons_row">
         <button class="btn btn-primary" type="button" id="idBuyButton">Buy</button>
         <button class="btn btn-primary" type="button" id="idLoginRegButton">Login or Register</button>
