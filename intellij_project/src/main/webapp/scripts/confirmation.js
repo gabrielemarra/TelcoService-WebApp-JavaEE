@@ -3,6 +3,7 @@ $(document).ready(function () {
 
     showOrderInfo();
     showOptionsInfo();
+    setPendingStatus();
 
 
     $("#loginButton").click(
@@ -14,7 +15,17 @@ $(document).ready(function () {
         }
     );
 
+    function setPendingStatus() {
+        let orderId = sessionStorage.getItem("order_id");
+        let postRequest = $.post("SetOrderStatus", {order_id: orderId, status: "PENDING"});
 
+        postRequest.done(function (data, textStatus, jqXHR) {
+            alert("Order: " + orderId + " is PENDING.");
+        });
+        postRequest.fail(function (jqXHR, textStatus, errorThrown) {
+            alert("Order: " + orderId + " status not updated.");
+        });
+    }
 
     function showOrderInfo() {
         document.getElementById("id_start_date").textContent = sessionStorage.getItem('startDate');
@@ -41,7 +52,6 @@ $(document).ready(function () {
         });
         getRequest.fail(function (jqXHR, textStatus, errorThrown) {
         });
-
     };
 
     function appendTable(tableId, name, cost) {
@@ -53,8 +63,16 @@ $(document).ready(function () {
 
     function showOptionsInfo() {
         let options = JSON.parse(sessionStorage.getItem('optionalProducts'));
-        for(let i = 0; i < options.length; i++) {
-            appendTable("id_cost_options_table", options[i].name, options[i].price);
+        if(options.length == 0) {
+            document.getElementById("id_options_table2").style.display = "none";
+            document.getElementById("id_monthly_options1").style.display = "none";
+            document.getElementById("id_monthly_options2").style.display = "none";
+// id_options_monthly
+
+        } else {
+            for(let i = 0; i < options.length; i++) {
+                appendTable("id_cost_options_table", options[i].name, options[i].price);
+            }
         }
     }
 })

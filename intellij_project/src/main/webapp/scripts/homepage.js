@@ -130,12 +130,15 @@ $(document).ready(function () {
             alert("success?");
             // add all the info to sesison and navigation to confirmation page
             let allInfo = jqXHR.responseJSON;
+            sessionStorage.setItem('order_id', order_id);
+
             sessionStorage.setItem('startDate', allInfo[0].startDate);
             sessionStorage.setItem('total_cost', allInfo[0].total_cost);
             sessionStorage.setItem('package_id', allInfo[0].package_id);
             sessionStorage.setItem('validity_period', allInfo[0].validity_period);
-            let optionsInfo = allInfo.splice(0,1);
-            sessionStorage.setItem('optionalProducts', JSON.stringify(optionsInfo));
+            allInfo.splice(0,1);
+            sessionStorage.setItem('optionalProducts', JSON.stringify(allInfo));
+
 
             window.location.href = "confirmation.html";
         });

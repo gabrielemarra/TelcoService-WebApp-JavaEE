@@ -65,7 +65,6 @@ public class GetOrderInfo extends HttpServlet {
 
             Order order = orderService.getOrder(orderId);
 
-            orderService.changeOrderStatus(orderId, OrderStatus.CONFIRMED);
             JsonElement orderInfo = new JsonObject();
             orderInfo.getAsJsonObject().addProperty("status", order.getStatus().toString());
             orderInfo.getAsJsonObject().addProperty("startDate", order.getSubscriptionStart().toString());
