@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.auxiliary.OrderStatus;
 import it.polimi.telco_webapp.auxiliary.exceptions.UserNotFoundException;
+import it.polimi.telco_webapp.entities.OptionalProduct;
 import it.polimi.telco_webapp.entities.Order;
 import it.polimi.telco_webapp.services.OrderService;
 import jakarta.ejb.EJB;
@@ -21,8 +22,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet(name = "ResubmitOrder", value = "/ResubmitOrder")
-public class ResubmitOrder extends HttpServlet {
+@WebServlet(name = "GetOrderInfo", value = "/GetOrderInfo")
+public class GetOrderInfo extends HttpServlet {
     @EJB(name = "it.polimi.db2.entities.services/OrderService")
     private OrderService orderService;
 
@@ -49,6 +50,11 @@ public class ResubmitOrder extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpServletResponse.SC_OK);
@@ -57,23 +63,31 @@ public class ResubmitOrder extends HttpServlet {
             // which instead finds the rejected order, calls the exteral service, and changes that status in the DB from rejected to confirmed?
             Integer orderId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("order_id")));
 
+            Order order = orderService.getOrder(orderId);
+
             orderService.changeOrderStatus(orderId, OrderStatus.CONFIRMED);
-            JsonElement jsonElement = new JsonObject();
-            jsonElement.getAsJsonObject().addProperty("status", OrderStatus.CONFIRMED.toString());
+            JsonElement orderInfo = new JsonObject();
+            orderInfo.getAsJsonObject().addProperty("status", order.getStatus().toString());
+            orderInfo.getAsJsonObject().addProperty("startDate", order.getStatus().toString());
+            orderInfo.getAsJsonObject().addProperty("total_cost", order.getStatus().toString());
+            orderInfo.getAsJsonObject().addProperty("package_id", order.getPackageId().getId());
+            orderInfo.getAsJsonObject().addProperty("validity_period", order.getChosenValidityPeriod());
+
+            List <OptionalProduct> options = order.getOptionalServices();
+            JsonArray allInfo = new JsonArray();
+            allInfo.add(orderInfo);
+            for(int i = 0; i <options.size(); i++) {
+                JsonElement option = new JsonObject();
+                option.getAsJsonObject().addProperty("name", options.get(i).getName());
+                option.getAsJsonObject().addProperty("price", options.get(i).getPrice());
+                option.getAsJsonObject().addProperty("id", options.get(i).getId());
+                allInfo.add(option);
+            }
             Gson gson = new Gson();
-            response.getWriter().println(gson.toJson(jsonElement));
-/*
-*
-            JsonArray orderInfo = new JsonArray();
-* */
+            response.getWriter().println(gson.toJson(allInfo));
 
         } catch (UserNotFoundException | EJBException e) { // TODO: change to correct exception...
             sendError(request, response, "UserNotFoundException", e.getCause().getMessage());
         }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 }

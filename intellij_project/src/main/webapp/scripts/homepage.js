@@ -124,16 +124,21 @@ $(document).ready(function () {
     function attemptTransaction(order_id) {
         alert("button clicked for order:" + order_id);
 
-        let postResponse = $.post("ResubmitOrder", {order_id: order_id});
+        let getRequest = $.post("GetOrderInfo", {order_id: order_id});
 
-        postResponse.done(function (data, textStatus, jqXHR) {
+        getRequest.done(function (data, textStatus, jqXHR) {
             alert("success?");
-
+            // add all the info to sesison and navigation to confirmation page
+            let allInfo = jqXHR.responseJSON;
+            sessionStorage.setItem('startDate', allInfo[0].startDate);
+            sessionStorage.setItem('total_cost', allInfo[0].total_cost);
+            sessionStorage.setItem('package_id', allInfo[0].package_id);
+            sessionStorage.setItem('validity_period', allInfo[0].validity_period);
+            let optionsInfo = allInfo.splice(0,1);
+            sessionStorage.setItem('optionalProducts', JSON.stringify(optionsInfo));
         });
-        postResponse.fail(function (data, textStatus, jqXHR) {
+        getRequest.fail(function (data, textStatus, jqXHR) {
             alert("fail?");
-
-
         });
 
 
