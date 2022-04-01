@@ -124,7 +124,7 @@ $(document).ready(function () {
     function attemptTransaction(order_id) {
         alert("button clicked for order:" + order_id);
 
-        let getRequest = $.post("GetOrderInfo", {order_id: order_id});
+        let getRequest = $.get("GetOrderInfo", {order_id: order_id});
 
         getRequest.done(function (data, textStatus, jqXHR) {
             alert("success?");
@@ -136,6 +136,8 @@ $(document).ready(function () {
             sessionStorage.setItem('validity_period', allInfo[0].validity_period);
             let optionsInfo = allInfo.splice(0,1);
             sessionStorage.setItem('optionalProducts', JSON.stringify(optionsInfo));
+
+            window.location.href = "confirmation.html";
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
             alert("fail?");

@@ -18,16 +18,16 @@ $(document).ready(function () {
 
     function showOrderInfo() {
         document.getElementById("id_start_date").textContent = sessionStorage.getItem('startDate');
-        document.getElementById("id_validity_period").textContent = (parseInt(sessionStorage.getItem('validity_period')) * 12).toString();
+        document.getElementById("id_validity_period").textContent = (parseInt(sessionStorage.getItem('validity_period')) * 12).toString() + " months";
         let packageId = sessionStorage.getItem('package_id');
         let getRequest = $.get("GetPackage", {package_id: packageId});
 
         getRequest.done(function (data, textStatus, jqXHR) {
             let package_info = jqXHR.responseJSON;
-            document.getElementById("id_packageName").textContent = package_info[0].name
+            document.getElementById("id_packageName").textContent = package_info[0].name;
             let period = sessionStorage.getItem('validity_period');
             for (let i = 1; i < package_info.length; i++) {
-                let type = package_info[i].type;
+                let type = package_info[i].type.replace("_", " ");
                 let cost;
                 if(period == "1") {
                     cost = package_info[i].bp1;
