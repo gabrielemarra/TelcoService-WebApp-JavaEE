@@ -3,6 +3,7 @@ package it.polimi.telco_webapp.servlets;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import it.polimi.telco_webapp.auxiliary.ExternalService;
 import it.polimi.telco_webapp.auxiliary.OrderStatus;
 import it.polimi.telco_webapp.entities.Order;
 import it.polimi.telco_webapp.services.OrderService;
@@ -49,9 +50,11 @@ public class Transact extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try{
+            ExternalService externalService = new ExternalService();
+            boolean isOrderRejected = Boolean.parseBoolean(StringEscapeUtils.escapeJava(request.getParameter("isOrderRejected")));
 
             Integer orderId = (Integer) request.getSession().getAttribute("order_id");
-            if (true) {// externalService.call(isOrderRejected) == false {
+            if (externalService.call(isOrderRejected) == false) {
                 orderService.changeOrderStatus(orderId, OrderStatus.CONFIRMED);
             } else {
                 orderService.changeOrderStatus(orderId, OrderStatus.REJECTED);
