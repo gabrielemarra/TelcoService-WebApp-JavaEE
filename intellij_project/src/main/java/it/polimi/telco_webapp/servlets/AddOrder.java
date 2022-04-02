@@ -68,12 +68,16 @@ public class AddOrder extends HttpServlet {
             User user = userService.getUserByEmail(email);
             ServicePackage servicePackage = servicePackageService.getServicePackage(packageId);
 
-            Order completedOrder = orderService.insertNewOrder(LocalDate.now(), user, servicePackage, new ArrayList<OptionalProduct>());
+            // TODO: get the optional products from the get request...
+            Order pendingOrder = orderService.insertNewOrder(LocalDate.now(), user, servicePackage, new ArrayList<OptionalProduct>());
+            request.getSession().setAttribute("order_id", pendingOrder.getId());
+
+
+
+            // TODO: perform the actual "transaction" in another servlet...
             // if externalService.call(isOrderRejected) == false {
-            orderService.changeOrderStatus(completedOrder.getId(), OrderStatus.CONFIRMED);
+            //orderService.changeOrderStatus(completedOrder.getId(), OrderStatus.CONFIRMED);
             //} else {orderService.changeOrderStatus(completedOrder.getId(), OrderStatus.REJECTED);}
-
-
 
 
 
