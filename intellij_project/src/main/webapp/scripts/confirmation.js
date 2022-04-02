@@ -9,6 +9,8 @@ $(document).ready(function () {
         function (event) {
             event.preventDefault();
             submitTransaction(false);
+            window.location.href = "homepage.html"; //             window.location.href = "confirmation.html";
+
 
         }
     );
@@ -17,6 +19,7 @@ $(document).ready(function () {
         function (event) {
             event.preventDefault();
             submitTransaction(true);
+            window.location.href = "homepage.html";
 
         }
     );
@@ -24,23 +27,11 @@ $(document).ready(function () {
     $("#idLoginRegButton").click(
         function (event) {
             event.preventDefault();
+            // TODO: navigate to login page
+            window.location.href = "";
 
         }
     );
-
-
-    function setStatus(status) {
-        let orderId = sessionStorage.getItem("order_id");
-        let postRequest = $.post("SetOrderStatus", {order_id: orderId, status: status});
-
-        postRequest.done(function (data, textStatus, jqXHR) {
-            alert("Order: " + orderId + " is " + status);
-        });
-        postRequest.fail(function (jqXHR, textStatus, errorThrown) {
-            alert("Order: " + orderId + " status not updated.");
-        });
-
-    }
 
     function submitTransaction(isOrderRejected) {
         let orderID = sessionStorage.getItem("order_id");
@@ -52,8 +43,7 @@ $(document).ready(function () {
         postRequest.fail(function (jqXHR, textStatus, errorThrown) {
             alert("Transaction failed");
         });
-    }
-
+    };
 
     function showOrderInfo() {
         document.getElementById("id_start_date").textContent = sessionStorage.getItem('startDate');
@@ -112,13 +102,11 @@ $(document).ready(function () {
                 appendTable("id_cost_options_table", options[i].name, options[i].price);
             }
             writeTotal("id_cost_options_table");
-
         }
     };
 
     function buttonFilter() {
         let isLoggedIn = sessionStorage.getItem("isLoggedIn");
-
         if(isLoggedIn == "true") {
             document.getElementById("idLoginRegButton").style.display = "none";
         } else {
