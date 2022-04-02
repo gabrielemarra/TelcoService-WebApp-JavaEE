@@ -9,7 +9,6 @@ $(document).ready(function () {
         function (event) {
             event.preventDefault();
             submitTransaction(false);
-            window.location.href = "homepage.html"; //             window.location.href = "confirmation.html";
 
 
         }
@@ -19,7 +18,6 @@ $(document).ready(function () {
         function (event) {
             event.preventDefault();
             submitTransaction(true);
-            window.location.href = "homepage.html";
 
         }
     );
@@ -39,6 +37,8 @@ $(document).ready(function () {
 
         postRequest.done(function (data, textStatus, jqXHR) {
             alert("Transaction performed. Payment rejected? " + isOrderRejected);
+            window.location.href = "homepage.html"; //             window.location.href = "confirmation.html";
+
         });
         postRequest.fail(function (jqXHR, textStatus, errorThrown) {
             alert("Transaction failed");
