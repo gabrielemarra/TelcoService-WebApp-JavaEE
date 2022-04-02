@@ -3,12 +3,13 @@ $(document).ready(function () {
 
     showOrderInfo();
     showOptionsInfo();
-    setStatus("PENDING");
+    //setStatus("PENDING");
     buttonFilter();
 
     $("#idBuyButton").click(
         function (event) {
             event.preventDefault();
+            submitTransaction(false);
 
         }
     );
@@ -16,6 +17,7 @@ $(document).ready(function () {
     $("#idBuyButtonFail").click(
         function (event) {
             event.preventDefault();
+            submitTransaction(true);
 
         }
     );
@@ -39,6 +41,18 @@ $(document).ready(function () {
             alert("Order: " + orderId + " status not updated.");
         });
 
+    }
+
+    function submitTransaction(isOrderRejected) {
+        let orderID = sessionStorage.getItem("order_id");
+        let postRequest = $.post("Transact", {isOrderRejected: isOrderRejected, order_id: orderID});
+
+        postRequest.done(function (data, textStatus, jqXHR) {
+            alert("Transaction performed. Payment rejected? " + isOrderRejected);
+        });
+        postRequest.fail(function (jqXHR, textStatus, errorThrown) {
+            alert("Transaction failed");
+        });
     }
 
 
@@ -100,10 +114,12 @@ $(document).ready(function () {
         }
     };
 
+    /*
     window.addEventListener('beforeunload', function (event) {
         event.preventDefault();
         setStatus("REJECTED");
     });
+    * */
 
 
 })

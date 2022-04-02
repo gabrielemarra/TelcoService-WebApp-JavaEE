@@ -53,7 +53,7 @@ public class Transact extends HttpServlet {
             ExternalService externalService = new ExternalService();
             boolean isOrderRejected = Boolean.parseBoolean(StringEscapeUtils.escapeJava(request.getParameter("isOrderRejected")));
 
-            Integer orderId = (Integer) request.getSession().getAttribute("order_id");
+            Integer orderId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("order_id")));
             if (externalService.call(isOrderRejected) == false) {
                 orderService.changeOrderStatus(orderId, OrderStatus.CONFIRMED);
             } else {
