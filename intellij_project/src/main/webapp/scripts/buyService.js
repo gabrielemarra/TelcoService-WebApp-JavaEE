@@ -4,9 +4,15 @@ $(document).ready(function () {
     let servicesAvailable;
 
 
-    getServicePackages()
-    getServiceList()
-    getOptionalProductList()
+    setAvailableDate();
+    getServicePackages();
+    getServiceList();
+    getOptionalProductList();
+
+
+    $("#servicePackage_select").change(function (e) {
+        changePackageSelection();
+    });
 
     function getServicePackages() {
         let packages_request = $.get("GetAvailableServicePackages");
@@ -46,14 +52,31 @@ $(document).ready(function () {
 
         if (singleServicePackageInfo.package_id === requested_service_package_id) {
             servicePackageRow.selected = true;
-            set_default_validity_period(singleServicePackageInfo.default_validity_period);
-            display_default_optional_products(singleServicePackageInfo.optional_products)
+            updateDataOnPackageSelection(singleServicePackageInfo)
         }
 
         //the package id is stored inside this custom attribute
         servicePackageRow.dataset.package_id = singleServicePackageInfo.package_id;
 
         servicePackageSelect.appendChild(clone)
+    }
+
+    function changePackageSelection() {
+        let servicePackageSelect = document.getElementById("servicePackage_select");
+        let selected_package_id = parseInt(servicePackageSelect.options[servicePackageSelect.selectedIndex].dataset.package_id);
+
+        for (let servicePackagesAvailableKey in servicePackagesAvailable) {
+            if (servicePackagesAvailable[servicePackagesAvailableKey].package_id === selected_package_id) {
+                updateDataOnPackageSelection(servicePackagesAvailable[servicePackagesAvailableKey])
+                break;
+            }
+        }
+    }
+
+    function updateDataOnPackageSelection(singleServicePackageInfo) {
+        console.log("Update package " + singleServicePackageInfo.package_id + " - " + singleServicePackageInfo.package_name)
+        set_default_validity_period(singleServicePackageInfo.default_validity_period);
+        display_default_optional_products(singleServicePackageInfo.optional_products)
     }
 
     function set_default_validity_period(default_validity_period) {
@@ -130,4 +153,10 @@ $(document).ready(function () {
         });
     }
 
+    function setAvailableDate() {
+        let today = new Date().toISOString().split('T')[0];
+        $("#startDate").prop('min', today);
+    }
 });
+
+
