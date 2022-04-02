@@ -3,9 +3,8 @@ $(document).ready(function () {
 
     showOrderInfo();
     showOptionsInfo();
-    setPendingStatus();
+    setStatus("PENDING");
     buttonFilter();
-
 
     $("#idBuyButton").click(
         function (event) {
@@ -28,17 +27,20 @@ $(document).ready(function () {
         }
     );
 
-    function setPendingStatus() {
+
+    function setStatus(status) {
         let orderId = sessionStorage.getItem("order_id");
-        let postRequest = $.post("SetOrderStatus", {order_id: orderId, status: "PENDING"});
+        let postRequest = $.post("SetOrderStatus", {order_id: orderId, status: status});
 
         postRequest.done(function (data, textStatus, jqXHR) {
-            alert("Order: " + orderId + " is PENDING.");
+            alert("Order: " + orderId + " is " + status);
         });
         postRequest.fail(function (jqXHR, textStatus, errorThrown) {
             alert("Order: " + orderId + " status not updated.");
         });
-    };
+
+    }
+
 
     function showOrderInfo() {
         document.getElementById("id_start_date").textContent = sessionStorage.getItem('startDate');
@@ -97,4 +99,12 @@ $(document).ready(function () {
             document.getElementById("idBuyButtonFail").style.display = "none";
         }
     };
+
+    window.addEventListener('beforeunload', function (event) {
+        event.preventDefault();
+        setStatus("REJECTED");
+        alert("before unload has been invoked");
+    });
+
+
 })
