@@ -31,6 +31,10 @@ public class User {
     @Column(name = "username", nullable = false, length = 45)
     private String username;
 
+    // This is set/updated/changed completely by a trigger in the DB
+    @Column(name = "insolvent")
+    private boolean insolvent;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List <Order> orders;
 
