@@ -103,7 +103,6 @@ $(document).ready(function () {
     window.addEventListener('beforeunload', function (event) {
         event.preventDefault();
         setStatus("REJECTED");
-        alert("before unload has been invoked");
     });
 
 
