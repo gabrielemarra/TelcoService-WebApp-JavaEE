@@ -111,6 +111,8 @@ public class Login extends HttpServlet {
             jsonElement.getAsJsonObject().addProperty("new_url", url);
             jsonElement.getAsJsonObject().addProperty("name", credentialCheckResultUser.getName());
             jsonElement.getAsJsonObject().addProperty("email", credentialCheckResultUser.getEmail());
+            jsonElement.getAsJsonObject().addProperty("employee", "false");
+
 
             response.getWriter().println(gson.toJson(jsonElement));
         } catch (EJBException e) {

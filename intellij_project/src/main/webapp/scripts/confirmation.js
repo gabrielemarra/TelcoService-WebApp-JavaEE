@@ -4,14 +4,27 @@ $(document).ready(function () {
     showOrderInfo();
     showOptionsInfo();
     setPendingStatus();
+    buttonFilter();
 
 
-    $("#loginButton").click(
+    $("#idBuyButton").click(
         function (event) {
             event.preventDefault();
-            let email = $("#loginEmailInput").val();
-            let password = $("#loginPasswordInput").val();
-            login(email, password);
+
+        }
+    );
+
+    $("#idBuyButtonFail").click(
+        function (event) {
+            event.preventDefault();
+
+        }
+    );
+
+    $("#idLoginRegButton").click(
+        function (event) {
+            event.preventDefault();
+
         }
     );
 
@@ -25,7 +38,7 @@ $(document).ready(function () {
         postRequest.fail(function (jqXHR, textStatus, errorThrown) {
             alert("Order: " + orderId + " status not updated.");
         });
-    }
+    };
 
     function showOrderInfo() {
         document.getElementById("id_start_date").textContent = sessionStorage.getItem('startDate');
@@ -59,7 +72,7 @@ $(document).ready(function () {
         let newRow = table.insertRow();
         newRow.insertCell().appendChild(document.createTextNode(name));
         newRow.insertCell().appendChild(document.createTextNode(cost));
-    }
+    };
 
     function showOptionsInfo() {
         let options = JSON.parse(sessionStorage.getItem('optionalProducts'));
@@ -67,12 +80,21 @@ $(document).ready(function () {
             document.getElementById("id_options_table2").style.display = "none";
             document.getElementById("id_monthly_options1").style.display = "none";
             document.getElementById("id_monthly_options2").style.display = "none";
-// id_options_monthly
-
         } else {
             for(let i = 0; i < options.length; i++) {
                 appendTable("id_cost_options_table", options[i].name, options[i].price);
             }
         }
-    }
+    };
+
+    function buttonFilter() {
+        let isLoggedIn = sessionStorage.getItem("isLoggedIn");
+
+        if(isLoggedIn == "true") {
+            document.getElementById("idLoginRegButton").style.display = "none";
+        } else {
+            document.getElementById("idBuyButton").style.display = "none";
+            document.getElementById("idBuyButtonFail").style.display = "none";
+        }
+    };
 })
