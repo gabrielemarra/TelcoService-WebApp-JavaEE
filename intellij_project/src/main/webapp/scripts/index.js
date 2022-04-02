@@ -48,7 +48,11 @@ $(document).ready(function () {
             sessionStorage.setItem('employee', user_data.employee);
 
             //Redirect to the homepage (if user) or to employee page
-            window.location.href = window.location.href + jqXHR.responseJSON.new_url;
+            if (sessionStorage.getItem("pendingOrder") == "true") {
+                window.location.href = window.location.href + "/confirmation.html";
+            } else {
+                window.location.href = window.location.href + jqXHR.responseJSON.new_url;
+            }
 
         });
         postRequest.fail(function (jqXHR, textStatus, errorThrown) {

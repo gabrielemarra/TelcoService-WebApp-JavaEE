@@ -123,9 +123,7 @@ $(document).ready(function () {
 
     function attemptTransaction(order_id) {
         alert("button clicked for order:" + order_id);
-
         let getRequest = $.get("GetOrderInfo", {order_id: order_id});
-
         getRequest.done(function (data, textStatus, jqXHR) {
             alert("success?");
             // add all the info to sesison and navigation to confirmation page
@@ -138,8 +136,6 @@ $(document).ready(function () {
             sessionStorage.setItem('validity_period', allInfo[0].validity_period);
             allInfo.splice(0,1);
             sessionStorage.setItem('optionalProducts', JSON.stringify(allInfo));
-
-
             window.location.href = "confirmation.html";
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
