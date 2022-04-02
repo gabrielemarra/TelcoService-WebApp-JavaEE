@@ -9,8 +9,6 @@ $(document).ready(function () {
         function (event) {
             event.preventDefault();
             submitTransaction(false);
-
-
         }
     );
 
@@ -35,12 +33,13 @@ $(document).ready(function () {
         let postRequest = $.post("Transact", {isOrderRejected: isOrderRejected, order_id: orderID});
 
         postRequest.done(function (data, textStatus, jqXHR) {
-            alert("Transaction performed. Payment rejected? " + isOrderRejected);
+            //alert("Transaction performed. Payment rejected? " + isOrderRejected);
             window.location.href = "homepage.html"; //             window.location.href = "confirmation.html";
+            sessionStorage.setItem("pendingOrder", "false");
 
         });
         postRequest.fail(function (jqXHR, textStatus, errorThrown) {
-            alert("Transaction failed");
+            //alert("Transaction failed");
         });
     };
 

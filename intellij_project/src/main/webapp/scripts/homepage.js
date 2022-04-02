@@ -117,12 +117,12 @@ $(document).ready(function () {
         });
 
         getResponse.fail(function (data, textStatus, errorThrown) {
-            alert("world");
+            //alert("world");
         });
     }
 
     function attemptTransaction(order_id) {
-        alert("button clicked for order:" + order_id);
+        //alert("button clicked for order:" + order_id);
         let getRequest = $.get("GetOrderInfo", {order_id: order_id});
         getRequest.done(function (data, textStatus, jqXHR) {
             alert("success?");
@@ -139,7 +139,7 @@ $(document).ready(function () {
             window.location.href = "confirmation.html";
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
-            alert("fail?");
+            //alert("fail?");
         });
 
 
