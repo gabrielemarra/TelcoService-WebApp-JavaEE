@@ -1,10 +1,9 @@
 $(document).ready(function () {
     $.ajaxSetup({cache: false});
 
+    buttonFilter();
     showOrderInfo();
     showOptionsInfo();
-    //setStatus("PENDING");
-    buttonFilter();
 
     $("#idBuyButton").click(
         function (event) {
@@ -78,13 +77,25 @@ $(document).ready(function () {
                 }
                 appendTable("id_cost_services_table", type, cost);
             }
+            writeTotal("id_cost_services_table");
         });
         getRequest.fail(function (jqXHR, textStatus, errorThrown) {
         });
     };
 
+    function writeTotal(tableId) {
+        let total = document.getElementById(tableId).getAttribute("value");
+        if(tableId == "id_cost_services_table") {
+            document.getElementById("id_monthly_services").textContent = "€" + total.toString();
+        } else {
+            document.getElementById("id_monthly_options2").textContent = "€" + total.toString();
+        }
+        grandTotal(tableId);
+    }
+
     function appendTable(tableId, name, cost) {
         let table = document.getElementById(tableId);
+        table.setAttribute("value", parseInt(table.getAttribute("value")) + cost);
         let newRow = table.insertRow();
         newRow.insertCell().appendChild(document.createTextNode(name));
         newRow.insertCell().appendChild(document.createTextNode(cost));
@@ -100,6 +111,8 @@ $(document).ready(function () {
             for(let i = 0; i < options.length; i++) {
                 appendTable("id_cost_options_table", options[i].name, options[i].price);
             }
+            writeTotal("id_cost_options_table");
+
         }
     };
 
@@ -114,12 +127,11 @@ $(document).ready(function () {
         }
     };
 
-    /*
-    window.addEventListener('beforeunload', function (event) {
-        event.preventDefault();
-        setStatus("REJECTED");
-    });
-    * */
-
-
+    function grandTotal(id) {
+        let monthly = parseInt(document.getElementById(id).getAttribute("value"));
+        let current = parseInt(document.getElementById("id_grand_total").getAttribute("value"));
+        current = current + (monthly * 12 *  parseInt(sessionStorage.getItem("validity_period")));
+        document.getElementById("id_grand_total").setAttribute("value", current.toString());
+        document.getElementById("id_grand_total").textContent = "€" + current.toString();
+    };
 })
