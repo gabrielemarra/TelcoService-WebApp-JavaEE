@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.services.*;
 import it.polimi.telco_webapp.entities.ServicePackageView;
+import it.polimi.telco_webapp.services.ServicePackageViewService;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.servlet.ServletException;
@@ -19,12 +20,12 @@ import java.util.List;
 
 @WebServlet(name = "GetServicePackageReport", value = "/GetServicePackageReport")
 public class GetServicePackageReport extends HttpServlet {
-    @EJB(name = "it.polimi.db2.entities.services/ServicePackageViewService")
+
+    @EJB(name = "it.polimi.telco_webapp.services/ServicePackageViewService")
     private ServicePackageViewService packageViewService;
 
-    @EJB(name = "it.polimi.db2.entities.services/ServicePackageService")
+    @EJB(name = "it.polimi.telco_webapp.services/ServicePackageService")
     private ServicePackageService packageService;
-
 
 
     protected void sendError(HttpServletRequest request, HttpServletResponse response, String errorType, String errorInfo) throws IOException {

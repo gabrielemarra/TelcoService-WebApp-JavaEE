@@ -14,6 +14,7 @@ import java.util.List;
 public class ServicePackageViewService {
     @PersistenceContext(unitName = "telco_webapp")
     private EntityManager em;
+
     public ServicePackageViewService() {}
 
     public List<ServicePackageView> getAll() {
