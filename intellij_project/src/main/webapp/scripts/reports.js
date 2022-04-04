@@ -1,7 +1,6 @@
 $(document).ready(function () {
 
     $.ajaxSetup({cache: false});
-    showAllRejectedOrders()
 
 
     /*
@@ -192,7 +191,6 @@ $(document).ready(function () {
     }
 
 
-    * */
 
     function showAllRejectedOrders() {
 
@@ -226,6 +224,7 @@ $(document).ready(function () {
     }
 
 
+    * */
     function manageTabs(){
 
         var triggerTabList = [].slice.call(document.querySelectorAll('#goodthings button'))

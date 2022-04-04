@@ -4,9 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.polimi.telco_webapp.views.ServicePackageView;
-import it.polimi.telco_webapp.services.ServicePackageService;
-import it.polimi.telco_webapp.services.ServicePackageViewService;
+import it.polimi.telco_webapp.services.*;
+import it.polimi.telco_webapp.entities.ServicePackageView;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.servlet.ServletException;
@@ -21,7 +20,8 @@ import java.util.List;
 @WebServlet(name = "GetServicePackageReport", value = "/GetServicePackageReport")
 public class GetServicePackageReport extends HttpServlet {
     @EJB(name = "it.polimi.db2.entities.services/ServicePackageViewService")
-    private ServicePackageViewService viewService;
+    private ServicePackageViewService packageViewService;
+
     @EJB(name = "it.polimi.db2.entities.services/ServicePackageService")
     private ServicePackageService packageService;
 
@@ -54,7 +54,7 @@ public class GetServicePackageReport extends HttpServlet {
             JsonArray jsonArray = new JsonArray();
             Gson gson = new Gson();
 
-            List<ServicePackageView> rowItems = viewService.getAll();
+            List<ServicePackageView> rowItems = packageViewService.getAll();
             for(int i = 0; i < rowItems.size(); i++) {
                 JsonElement jsonElement = new JsonObject();
                 ServicePackageView row = rowItems.get(i);

@@ -1,4 +1,4 @@
-package it.polimi.telco_webapp.views;
+package it.polimi.telco_webapp.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

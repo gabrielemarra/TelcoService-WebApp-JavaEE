@@ -1,7 +1,6 @@
 package it.polimi.telco_webapp.services;
 
-import it.polimi.telco_webapp.views.ServicePackageView;
-import it.polimi.telco_webapp.views.SuspendedOrdersView;
+import it.polimi.telco_webapp.entities.SuspendedOrdersView;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

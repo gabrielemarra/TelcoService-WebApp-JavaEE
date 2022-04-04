@@ -12,7 +12,9 @@
         <class>it.polimi.telco_webapp.entities.Service</class>
         <class>it.polimi.telco_webapp.entities.Order</class>
         <class>it.polimi.telco_webapp.entities.User</class>
-        <class>it.polimi.telco_webapp.views.ServicePackageView</class>
+        <class>it.polimi.telco_webapp.entities.InsolventUsersView</class>
+        <class>it.polimi.telco_webapp.entities.SuspendedOrdersView</class>
+        <class>it.polimi.telco_webapp.entities.ServicePackageView</class>
 
         <properties>
             <property name="eclipselink.logging.level" value="FINE" />
