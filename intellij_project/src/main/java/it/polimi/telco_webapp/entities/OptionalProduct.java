@@ -20,6 +20,7 @@ public class OptionalProduct {
     @Column(name = "price", nullable = false, precision = 2)
     private BigDecimal price;
 
+    // this should also be populated/ calculated by trigger
     @Column(name = "quantity_sold")
     private Integer quantitySold;
 

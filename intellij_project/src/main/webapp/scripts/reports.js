@@ -245,6 +245,20 @@ $(document).ready(function () {
     }
 
 
+    getAll();
+
+    function getAll() {
+        let getRequest = $.get("Test");
+        getRequest.done(function (data, textStatus, jqXHR) {
+            alert("gotten");
+        });
+        getRequest.fail(function (data, textStatus, jqXHR) {
+            alert("fallen");
+
+        });
+    };
+
+
 
 
 });
