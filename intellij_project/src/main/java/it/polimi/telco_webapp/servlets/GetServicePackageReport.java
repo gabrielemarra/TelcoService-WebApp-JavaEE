@@ -63,11 +63,13 @@ public class GetServicePackageReport extends HttpServlet {
                 ServicePackageView row = rowItems.get(i);
                 jsonElement.getAsJsonObject().addProperty("package_id", row.getPackage_id());
                 jsonElement.getAsJsonObject().addProperty("package_name", packageService.getServicePackage(row.getPackage_id()).getName());
+                jsonElement.getAsJsonObject().addProperty("purchases_total", row.getPurchasesTotal());
                 jsonElement.getAsJsonObject().addProperty("purchases_period1", row.getPurchasesPeriod1());
                 jsonElement.getAsJsonObject().addProperty("purchases_period2", row.getPurchasesPeriod2());
                 jsonElement.getAsJsonObject().addProperty("purchases_period3", row.getPurchasesPeriod3());
                 jsonElement.getAsJsonObject().addProperty("sales_base", row.getSalesBase());
                 jsonElement.getAsJsonObject().addProperty("sales_total", row.getSalesTotal());
+                // TODO: include the query/view that calculates the avg num of options sold with each pkg
                 jsonArray.add(jsonElement);
             }
             response.getWriter().println(gson.toJson(jsonArray));

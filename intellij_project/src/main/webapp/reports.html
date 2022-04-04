@@ -75,48 +75,37 @@
   </ul>
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="goodthings" role="tabpanel" aria-labelledby="goodthings-tab-tab">
-      <div class="row">
-        <div class="col-4 mb-3" id="servicePackagesDisplay">
-          <div class="row title-row">
-            <div class="col-7">
-              <h5>Service Packages</h5>
-            </div>
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">Package ID #</th>
+          <th scope="col">Name</th>
+          <th scope="col">Total Purchases</th>
+          <th scope="col">Purchases for Period 1</th>
+          <th scope="col">Purchases for Period 2</th>
+          <th scope="col">Purchases for Period 3</th>
+          <th scope="col">Sales excluding Options</th>
+          <th scope="col">Sales including Options</th>
+          <th scope="col">Avg Number of Optional Products Sold</th>
 
-            <div class="col-2">
-              <p><small>Avg # Options</small></p>
-            </div>
-
-            <div class="col-2">
-              <p><small>Total Purchases</small></p>
-            </div>
-          </div>
-          <div class="row body-row mb-3">
-            <div class="scrollWindow" id="id_allServicePackagesContainer">
-              <ul class="list-group list-group-flush" id="id_allServicesPackageTiles"></ul>
-            </div>
-          </div>
-          <div class="row title-row">
-            <div class="col-9">
-              <h5>Options</h5>
-            </div>
-            <div class="col-3">
-              <p><small>Sales Value</small></p>
-            </div>
-          </div>
-          <div class="row body-row">
-            <div class="scrollWindow mb-3" id="id_allOptionsContainer">
-              <ul class="list-group list-group-flush" id="id_allOptionsTiles"></ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-8">
-          <div class="row">
-            <h5 id="id_table_name">Sales Summary: Family Plan Deluxe</h5>
-            <div class="mb-3 col-4" id="id_packageSalesTableCol"></div>
-            <div class="col-8" id="id_plotPlaceholder"></div>
-          </div>
-        </div>
-      </div>
+        </tr>
+        </thead>
+        <tbody id="id_package_report_body">
+        <template id="id_package_report_template">
+          <tr>
+            <th scope="row">ID</th>
+            <td>name</td>
+            <td>purchases_total</td>
+            <td>purchases_period1</td>
+            <td>purchases_period2</td>
+            <td>purchases_period3</td>
+            <td>sales_base</td>
+            <td>sales_total</td>
+            <td>TODO</td>
+          </tr>
+        </template>
+        </tbody>
+      </table>
     </div>
     <div class="tab-pane fade" id="badthings" role="tabpanel" aria-labelledby="badthings-tab-tab">
 

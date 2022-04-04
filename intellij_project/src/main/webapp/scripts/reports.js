@@ -1,11 +1,13 @@
 $(document).ready(function () {
 
     $.ajaxSetup({cache: false});
+    showAllRejectedOrders()
 
+
+    /*
     showAllPackages();
     showAllOptions();
 
-    showAllRejectedOrders()
     manageTabs();
 
     function showAllPackages() {
@@ -189,6 +191,9 @@ $(document).ready(function () {
         document.getElementById(optionTileId).textContent += "* Best Seller *";
     }
 
+
+    * */
+
     function showAllRejectedOrders() {
 
         let getRequest = $.get("GetAllRejectedOrders");
@@ -248,9 +253,25 @@ $(document).ready(function () {
     getAll();
 
     function getAll() {
-        let getRequest = $.get("Test");
+        let getRequest = $.get("GetServicePackageReport");
         getRequest.done(function (data, textStatus, jqXHR) {
-            alert("gotten");
+            let response = jqXHR.responseJSON;
+            let table = document.getElementById("id_package_report_body")
+            let template = document.getElementById("id_package_report_template");
+            for(let i = 0; i < response.length; i++) {
+                let clone = template.content.cloneNode(true);
+                let packageID = clone.querySelector("th");
+                let packageInfo = clone.querySelectorAll("td"); // should be size 7
+                packageID.textContent = response[i].package_id;
+                packageInfo[0].textContent = response[i].package_name;
+                packageInfo[1].textContent = response[i].purchases_total;
+                packageInfo[2].textContent = response[i].purchases_period1;
+                packageInfo[3].textContent = response[i].purchases_period2;
+                packageInfo[4].textContent = response[i].purchases_period3;
+                packageInfo[5].textContent = response[i].sales_base;
+                packageInfo[6].textContent = response[i].sales_total;
+                table.appendChild(clone);
+            }
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
             alert("fallen");
