@@ -5,7 +5,7 @@ import org.eclipse.persistence.annotations.ReadOnly;
 
 
 @Entity
-@Table(name = "views/service_package_view", schema = "telco_db")
+@Table(name = "service_package_view", schema = "telco_db")
 @ReadOnly
 public class ServicePackageView {
 
