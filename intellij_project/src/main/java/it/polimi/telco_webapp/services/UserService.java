@@ -83,6 +83,14 @@ public class UserService {
         }
     }
 
+    public User getUserById(int userID) throws InvalidParameterException {
+        User user = em.find(User.class, userID);
+        if (user == null) {
+            throw new InvalidParameterException("Invalid service ID: " + userID);
+        }
+        return user;
+    }
+
     /**
      * Checks that the credentials are correct and match the info in the database.
      *

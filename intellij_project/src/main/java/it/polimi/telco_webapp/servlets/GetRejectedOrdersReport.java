@@ -4,11 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import it.polimi.telco_webapp.services.*;
 import it.polimi.telco_webapp.views.ServicePackageView;
-import it.polimi.telco_webapp.services.ServicePackageService;
-import it.polimi.telco_webapp.services.ServicePackageViewService;
+import it.polimi.telco_webapp.views.SuspendedOrdersView;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,10 +20,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GetServicePackageReport", value = "/GetServicePackageReport")
-public class GetServicePackageReport extends HttpServlet {
+@WebServlet(name = "GetRejectedOrdersReport", value = "/GetRejectedOrdersReport")
+public class GetRejectedOrdersReport extends HttpServlet {
     @EJB(name = "it.polimi.db2.entities.services/ServicePackageViewService")
-    private ServicePackageViewService viewService;
+    private SuspendedOrdersViewService viewService;
+    @EJB(name = "it.polimi.db2.entities.services/UserService")
+    private UserService userService;
     @EJB(name = "it.polimi.db2.entities.services/ServicePackageService")
     private ServicePackageService packageService;
 
@@ -54,19 +58,17 @@ public class GetServicePackageReport extends HttpServlet {
             JsonArray jsonArray = new JsonArray();
             Gson gson = new Gson();
 
-            List<ServicePackageView> rowItems = viewService.getAll();
+            List<SuspendedOrdersView> rowItems = viewService.getAll();
             for(int i = 0; i < rowItems.size(); i++) {
                 JsonElement jsonElement = new JsonObject();
-                ServicePackageView row = rowItems.get(i);
-                jsonElement.getAsJsonObject().addProperty("package_id", row.getPackage_id());
-                jsonElement.getAsJsonObject().addProperty("package_name", packageService.getServicePackage(row.getPackage_id()).getName());
-                jsonElement.getAsJsonObject().addProperty("purchases_total", row.getPurchasesTotal());
-                jsonElement.getAsJsonObject().addProperty("purchases_period1", row.getPurchasesPeriod1());
-                jsonElement.getAsJsonObject().addProperty("purchases_period2", row.getPurchasesPeriod2());
-                jsonElement.getAsJsonObject().addProperty("purchases_period3", row.getPurchasesPeriod3());
-                jsonElement.getAsJsonObject().addProperty("sales_base", row.getSalesBase());
-                jsonElement.getAsJsonObject().addProperty("sales_total", row.getSalesTotal());
-                // TODO: include the query/view that calculates the avg num of options sold with each pkg
+                SuspendedOrdersView row = rowItems.get(i);
+
+                jsonElement.getAsJsonObject().addProperty("order_id", row.getOrderId());
+                jsonElement.getAsJsonObject().addProperty("user_id", row.getUserId());
+                jsonElement.getAsJsonObject().addProperty("user_name", userService.getUserById(row.getUserId()).getName());
+                jsonElement.getAsJsonObject().addProperty("package_id", row.getPackageId());
+                jsonElement.getAsJsonObject().addProperty("package_name", packageService.getServicePackage(row.getPackageId()).getName());
+                jsonElement.getAsJsonObject().addProperty("total", row.getTotal());
                 jsonArray.add(jsonElement);
             }
             response.getWriter().println(gson.toJson(jsonArray));

@@ -1,4 +1,4 @@
-package it.polimi.telco_webapp.entities;
+package it.polimi.telco_webapp.views;
 
 import jakarta.persistence.*;
 import org.eclipse.persistence.annotations.ReadOnly;

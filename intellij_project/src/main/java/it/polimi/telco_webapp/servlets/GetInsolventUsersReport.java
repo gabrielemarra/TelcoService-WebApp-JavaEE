@@ -4,9 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.polimi.telco_webapp.views.ServicePackageView;
+import it.polimi.telco_webapp.services.InsolventUsersViewService;
 import it.polimi.telco_webapp.services.ServicePackageService;
-import it.polimi.telco_webapp.services.ServicePackageViewService;
+import it.polimi.telco_webapp.services.SuspendedOrdersViewService;
+import it.polimi.telco_webapp.services.UserService;
+import it.polimi.telco_webapp.views.InsolventUsersView;
+import it.polimi.telco_webapp.views.SuspendedOrdersView;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.servlet.ServletException;
@@ -18,12 +21,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GetServicePackageReport", value = "/GetServicePackageReport")
-public class GetServicePackageReport extends HttpServlet {
-    @EJB(name = "it.polimi.db2.entities.services/ServicePackageViewService")
-    private ServicePackageViewService viewService;
-    @EJB(name = "it.polimi.db2.entities.services/ServicePackageService")
-    private ServicePackageService packageService;
+@WebServlet(name = "GetInsolventUsersReport", value = "/GetInsolventUsersReport")
+public class GetInsolventUsersReport extends HttpServlet {
+    @EJB(name = "it.polimi.db2.entities.services/InsolventUsersViewService")
+    private InsolventUsersViewService viewService;
+    @EJB(name = "it.polimi.db2.entities.services/UserService")
+    private UserService userService;
+
 
 
 
@@ -54,19 +58,16 @@ public class GetServicePackageReport extends HttpServlet {
             JsonArray jsonArray = new JsonArray();
             Gson gson = new Gson();
 
-            List<ServicePackageView> rowItems = viewService.getAll();
+            List<InsolventUsersView> rowItems = viewService.getAll();
             for(int i = 0; i < rowItems.size(); i++) {
                 JsonElement jsonElement = new JsonObject();
-                ServicePackageView row = rowItems.get(i);
-                jsonElement.getAsJsonObject().addProperty("package_id", row.getPackage_id());
-                jsonElement.getAsJsonObject().addProperty("package_name", packageService.getServicePackage(row.getPackage_id()).getName());
-                jsonElement.getAsJsonObject().addProperty("purchases_total", row.getPurchasesTotal());
-                jsonElement.getAsJsonObject().addProperty("purchases_period1", row.getPurchasesPeriod1());
-                jsonElement.getAsJsonObject().addProperty("purchases_period2", row.getPurchasesPeriod2());
-                jsonElement.getAsJsonObject().addProperty("purchases_period3", row.getPurchasesPeriod3());
-                jsonElement.getAsJsonObject().addProperty("sales_base", row.getSalesBase());
-                jsonElement.getAsJsonObject().addProperty("sales_total", row.getSalesTotal());
-                // TODO: include the query/view that calculates the avg num of options sold with each pkg
+                InsolventUsersView row = rowItems.get(i);
+
+                jsonElement.getAsJsonObject().addProperty("user_id", row.getUserId());
+                jsonElement.getAsJsonObject().addProperty("user_name", userService.getUserById(row.getUserId()).getName());
+                jsonElement.getAsJsonObject().addProperty("num_rej_orders", row.getNumOrders());
+                jsonElement.getAsJsonObject().addProperty("delinquent_total", row.getDelinquentTotal());
+
                 jsonArray.add(jsonElement);
             }
             response.getWriter().println(gson.toJson(jsonArray));
