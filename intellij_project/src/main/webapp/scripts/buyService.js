@@ -3,6 +3,11 @@ $(document).ready(function () {
     let optionalProductsAvailable;
     let servicesAvailable;
 
+    let servicePackageSelected;
+    let optionalProductsSelected = [];
+    let validityPeriodSelected;
+    let startingDateSelected = null;
+
 
     setAvailableDate();
     getServicePackages();
@@ -10,8 +15,46 @@ $(document).ready(function () {
     getOptionalProductList();
 
 
-    $("#servicePackage_select").change(function (e) {
+    $("#servicePackage_select").change(function () {
         changePackageSelection();
+    });
+
+    $("#startDate").change(function () {
+        startingDateSelected = new Date(Date.parse($("#startDate").val()));
+        updateSummaryStartingDate();
+    });
+
+    $('input[type=radio][name=validityPeriodCheckbox]').change(function () {
+        if (this.value === 'option1') {
+            validityPeriodSelected = 1;
+        } else if (this.value === 'option2') {
+            validityPeriodSelected = 2;
+        } else if (this.value === 'option3') {
+            validityPeriodSelected = 3;
+        }
+
+        updateSummaryValidityPeriod();
+    });
+
+    $("#optionalProductSelectionCollapse").on('change', '.optional_prod_checkboxes', function () {
+        let read_opt_id = parseInt(this.dataset.opt_id);
+        if (this.checked) {
+            for (let optionalProductsAvailableKey in optionalProductsAvailable) {
+                if (optionalProductsAvailable[optionalProductsAvailableKey].option_id === read_opt_id) {
+                    optionalProductsSelected.push(optionalProductsAvailable[optionalProductsAvailableKey]);
+                    break;
+                }
+            }
+        } else {
+            for (let optionalProductsSelectedKey in optionalProductsSelected) {
+                if (optionalProductsSelected[optionalProductsSelectedKey].option_id === read_opt_id) {
+                    optionalProductsSelected.splice(optionalProductsSelectedKey, 1);
+                    break;
+                }
+            }
+        }
+
+        updateSummaryOptionalProducts();
     });
 
     function getServicePackages() {
@@ -52,13 +95,15 @@ $(document).ready(function () {
 
         if (singleServicePackageInfo.package_id === requested_service_package_id) {
             servicePackageRow.selected = true;
-            updateDataOnPackageSelection(singleServicePackageInfo)
+            servicePackageSelected = singleServicePackageInfo;
+            updateDataOnPackageSelection(singleServicePackageInfo);
+            updateSummaryServicePackage();
         }
 
         //the package id is stored inside this custom attribute
         servicePackageRow.dataset.package_id = singleServicePackageInfo.package_id;
 
-        servicePackageSelect.appendChild(clone)
+        servicePackageSelect.appendChild(clone);
     }
 
     function changePackageSelection() {
@@ -67,14 +112,18 @@ $(document).ready(function () {
 
         for (let servicePackagesAvailableKey in servicePackagesAvailable) {
             if (servicePackagesAvailable[servicePackagesAvailableKey].package_id === selected_package_id) {
-                updateDataOnPackageSelection(servicePackagesAvailable[servicePackagesAvailableKey])
+                servicePackageSelected = servicePackagesAvailable[servicePackagesAvailableKey];
+                updateDataOnPackageSelection(servicePackageSelected);
+                updateSummaryServicePackage();
+                optionalProductsSelected=[];
+                updateSummaryOptionalProducts();
                 break;
             }
         }
     }
 
     function updateDataOnPackageSelection(singleServicePackageInfo) {
-        console.log("Update package " + singleServicePackageInfo.package_id + " - " + singleServicePackageInfo.package_name)
+        validityPeriodSelected = servicePackageSelected.default_validity_period;
         set_default_validity_period(singleServicePackageInfo.default_validity_period);
         display_default_optional_products(singleServicePackageInfo.optional_products)
     }
@@ -156,6 +205,78 @@ $(document).ready(function () {
     function setAvailableDate() {
         let today = new Date().toISOString().split('T')[0];
         $("#startDate").prop('min', today);
+    }
+
+
+    function updateSummaryServicePackage() {
+        $("#summary_service_package_name").text(servicePackageSelected.package_name).removeClass("placeholder");
+        $("#summary_service_package_price").text(servicePackageSelected.prices[servicePackageSelected.default_validity_period - 1]).removeClass("placeholder");
+        updateSummaryValidityPeriod();
+
+        updateSummaryEndingDate();
+        updateSummaryTotalPrice();
+    }
+
+    function updateSummaryValidityPeriod() {
+        $("#summary_validity_period").text(validityPeriodSelected * 12).removeClass("placeholder");
+        $("#summary_service_package_price").text(servicePackageSelected.prices[validityPeriodSelected - 1]).removeClass("placeholder");
+
+        updateSummaryTotalPrice();
+        updateSummaryEndingDate();
+    }
+
+    function updateSummaryStartingDate() {
+        $("#summary_starting_date").text(startingDateSelected.toDateString());
+
+        updateSummaryEndingDate();
+    }
+
+    function updateSummaryEndingDate() {
+        if (startingDateSelected != null) {
+            let year = startingDateSelected.getFullYear();
+            let endingDate = new Date(startingDateSelected);
+            endingDate.setFullYear(year + validityPeriodSelected);
+            $("#summary_ending_date").text(endingDate.toDateString());
+        }
+    }
+
+    function updateSummaryOptionalProducts() {
+        let summaryTable = document.getElementById("summary_table");
+
+        for (let i = summaryTable.rows.length - 2; i > 0; i--) {
+            summaryTable.deleteRow(i);
+        }
+
+        let summaryTableBody = document.getElementById("summary_table_body");
+
+        for (let optionalProductsSelectedKey in optionalProductsSelected) {
+
+            let template = document.getElementById("summary_optional_prod_row_template");
+
+            let clone = template.content.cloneNode(true);
+            let optionProdText = clone.querySelector(".summary_opt_prod_name");
+            let optionProdPrice = clone.querySelector(".summary_opt_prod_price");
+
+            optionProdText.textContent = optionalProductsSelected[optionalProductsSelectedKey].name;
+            optionProdPrice.textContent = optionalProductsSelected[optionalProductsSelectedKey].price;
+
+            summaryTableBody.appendChild(clone);
+        }
+
+        updateSummaryTotalPrice();
+    }
+
+    function updateSummaryTotalPrice() {
+        let totalPrice = 0;
+        let optProdPriceSum = 0;
+
+        for (let optionalProductsSelectedKey in optionalProductsSelected) {
+            optProdPriceSum += optionalProductsSelected[optionalProductsSelectedKey].price;
+        }
+
+        totalPrice = optProdPriceSum + servicePackageSelected.prices[validityPeriodSelected - 1];
+
+        $("#summary_total_price").text(totalPrice).removeClass("placeholder");
     }
 });
 
