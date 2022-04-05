@@ -29,6 +29,7 @@ $(document).ready(function () {
     getServicePackageReport();
     getRejectedOrdersReport();
     getInsolventUsersReport();
+    getBestSeller();
 
     function getServicePackageReport() {
         let getRequest = $.get("GetServicePackageReport");
@@ -109,6 +110,18 @@ $(document).ready(function () {
 
 
 
+    function getBestSeller() {
+        let getRequest = $.get("GetBestSellerOptionalProduct");
+        getRequest.done(function (data, textStatus, jqXHR) {
+            let response = jqXHR.responseJSON;
+            document.getElementById("id_best_seller_id").textContent = response.opt_id.toString();
+            document.getElementById("id_best_seller_name").textContent = response.opt_name.toString();
+            document.getElementById("id_best_seller_sales").textContent = response.sales_value.toString();
+        });
+        getRequest.fail(function (data, textStatus, jqXHR) {
+            alert("could not get best seller OH NO!");
+        });
+    };
 
 
 
