@@ -48,6 +48,7 @@ $(document).ready(function () {
                 packageInfo[4].textContent = response[i].purchases_period3;
                 packageInfo[5].textContent = response[i].sales_base;
                 packageInfo[6].textContent = response[i].sales_total;
+                packageInfo[7].textContent = response[i].avg_options;
                 table.appendChild(clone);
             }
         });

@@ -23,6 +23,8 @@ public class ServicePackageView {
     private float sales_base;
     @Column
     private float sales_total;
+    @Column
+    private float avg_opt;
 
     public int getPackage_id(){return package_id;}
     public float getPurchasesTotal() {return purchases_total;}
@@ -31,6 +33,7 @@ public class ServicePackageView {
     public float getPurchasesPeriod3() {return purchases_period3;}
     public float getSalesBase() {return sales_base;}
     public float getSalesTotal() {return sales_total;}
+    public float getAvgOptionsOrdered(){return avg_opt;}
 
     /* Since this is a view, the data is read-only. No setters. */
 }
