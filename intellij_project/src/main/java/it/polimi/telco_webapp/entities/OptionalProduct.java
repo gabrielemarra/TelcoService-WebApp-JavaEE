@@ -21,8 +21,8 @@ public class OptionalProduct {
     private BigDecimal price;
 
     // this should also be populated/ calculated by trigger
-    @Column(name = "quantity_sold")
-    private Integer quantitySold;
+    //@Column(name = "quantity_sold")
+    //private Integer quantitySold;
 
     @ManyToMany
     @JoinTable(name = "optional_product_ordered", joinColumns = @JoinColumn(name = "opt_id"),
@@ -35,13 +35,13 @@ public class OptionalProduct {
     private List <ServicePackage> packages;
 
 
-    public Integer getQuantitySold() {
-        return quantitySold;
-    }
+    //public Integer getQuantitySold() {
+    //    return quantitySold;
+    //}
 
-    public void setQuantitySold(Integer quantitySold) {
-        this.quantitySold = quantitySold;
-    }
+    //public void setQuantitySold(Integer quantitySold) {
+    //    this.quantitySold = quantitySold;
+    //}
 
     public BigDecimal getPrice() {
         return price;

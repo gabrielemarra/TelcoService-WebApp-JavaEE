@@ -107,7 +107,7 @@ $(document).ready(function () {
             showOneOption(name, price, response.id);
         });
         postRequest.fail(function (data, textStatus, jqXHR) {
-            alert("Adding new optional product POST fail");
+            //alert("Adding new optional product POST fail");
         });
     };
 
@@ -126,7 +126,7 @@ $(document).ready(function () {
             }
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
-            alert("Show all options GET fail!");
+            //alert("Show all options GET fail!");
         });
     };
 
@@ -172,7 +172,7 @@ $(document).ready(function () {
             changeServiceLabel(service_id, period);
         });
         postRequest.fail(function (data, textStatus, jqXHR) {
-            alert("Adding new service POST fail");
+            //alert("Adding new service POST fail");
         });
     };
 
@@ -249,10 +249,10 @@ $(document).ready(function () {
     function addPackage(name, period, serviceIds, optionIds) {
         let postRequest = $.post("AddServicePackage", {name: name, period: period, serviceIds: serviceIds, optionIds: optionIds});
         postRequest.done(function (data, textStatus, jqXHR) {
-            alert("Adding service package SUCCESS");
+            //alert("Adding service package SUCCESS");
         });
         postRequest.fail(function (data, textStatus, jqXHR) {
-            alert("adding service POST fail");
+            //alert("adding service POST fail");
         });
     };
 
@@ -313,7 +313,7 @@ $(document).ready(function () {
             updateTotalInSummary();
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
-            alert("adding item to summary GET fail");
+            //alert("adding item to summary GET fail");
         });
     };
 
@@ -344,5 +344,4 @@ $(document).ready(function () {
         }
         document.getElementById("id_summaryTotal").textContent = "€" + total.toString();
     }
-
 });

@@ -5,10 +5,9 @@ import org.eclipse.persistence.annotations.ReadOnly;
 
 
 @Entity
-@Table(name = "best_seller_optional_product", schema = "telco_db")
 @ReadOnly
 @NamedQuery(name = "BestSeller.getBestSeller", query = "SELECT b FROM BestSellerView b")
-////         BestSellerView bestSeller = em.createNamedQuery("BestSeller.getBestSeller", BestSellerView.class);
+@Table(name = "best_seller_optional_product", schema = "telco_db")
 public class BestSellerView {
 
     @Id
