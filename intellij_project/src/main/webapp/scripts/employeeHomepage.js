@@ -9,11 +9,53 @@ $(document).ready(function () {
     $("#addOptionalProductButton").click(
         function (event) {
             event.preventDefault();
+
             let name = $("#optionalProductNameId").val();
             let price = $("#optionalProductPriceId").val();
-            addOption(name, price);
+            if (!document.getElementById("optionsForm").checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+                if(name == "") {
+                    userInvalidFeedback(document.getElementById("optionalProductNameId"));
+                } else {
+                    userValidFeedback(document.getElementById("optionalProductNameId"));
+                }
+                if(price == "") {
+                    userInvalidFeedback(document.getElementById("optionalProductPriceId"));
+                } else {
+                    userValidFeedback(document.getElementById("optionalProductPriceId"));
+                }
+            } else {
+                addOption(name, price);
+                resetModal("createOptionModal");
+                document.getElementById("optionsForm").reset();
+            }
         }
     );
+
+    function userInvalidFeedback(element) {
+        element.style.borderColor = "red";
+        element.nextElementSibling.style = "visibility: show";
+    }
+
+    function userValidFeedback(element) {
+        element.style.borderColor = "gray";
+        element.nextElementSibling.style = "visibility: hidden";
+    }
+
+
+
+    function resetModal(modalId) {
+        let element = document.getElementById(modalId);
+        //let str = "\'#" + modalId + "\'"; // $('#myModal').modal('hide');
+        $("#"+modalId).modal('hide');
+        let inputs = element.querySelectorAll("input");
+        for(let i = 0; i < inputs.length; i++) {
+            userValidFeedback(inputs[i]);
+        }
+    }
+
+
 
     $("#addServiceButton").click(
         function (event) {
@@ -28,6 +70,9 @@ $(document).ready(function () {
             let gigExtra = $("#gigExtraId").val();
             let smsExtra = $("#smsExtraId").val();
             let minExtra = $("#minExtraId").val();
+
+
+
             addService(planType, bp1, bp2, bp3, gigIncl, smsIncl, minIncl, gigExtra, smsExtra, minExtra);
         }
     );
