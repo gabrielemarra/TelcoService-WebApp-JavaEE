@@ -121,6 +121,7 @@ public class ServiceService {
         }
 
         em.persist(service);
+        em.flush();
         return service;
     }
 

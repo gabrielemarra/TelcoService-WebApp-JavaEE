@@ -41,6 +41,7 @@ public class UserService {
 //        user.setInsolvency(insolvent);
 
         em.persist(user);
+        em.flush();
         /* QUESTION: does this method *need* to return anything? */
         return user;
     }

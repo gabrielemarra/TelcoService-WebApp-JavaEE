@@ -70,6 +70,7 @@ public class OrderService {
         newOrder.setTotalPrice(totalPrice);
 
         em.persist(newOrder);
+        em.flush();
         return newOrder;
     }
 

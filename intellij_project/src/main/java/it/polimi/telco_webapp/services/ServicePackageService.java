@@ -40,6 +40,7 @@ public class ServicePackageService {
         servicePackage.setServices(services);
 
         em.persist(servicePackage);
+        em.flush();
         return servicePackage;
     }
 

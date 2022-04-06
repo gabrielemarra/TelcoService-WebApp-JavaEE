@@ -26,6 +26,7 @@ public class OptionalProductService {
         //newOption.setQuantitySold(0);
         newOption.setOrders(new ArrayList<Order>());
         em.persist(newOption);
+        em.flush();
         return newOption;
     }
 
