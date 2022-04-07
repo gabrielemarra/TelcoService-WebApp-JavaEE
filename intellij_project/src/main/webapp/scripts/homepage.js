@@ -9,6 +9,8 @@ $(document).ready(function () {
     getServicePackages();
     getRejectedOrders();
 
+    showActivationRecords();
+
     $("#selectButton").click(
         function (event) {
             event.preventDefault();
@@ -141,7 +143,72 @@ $(document).ready(function () {
         getRequest.fail(function (data, textStatus, jqXHR) {
             //alert("fail?");
         });
+    }
+
+    function showActivationRecords() {
+        let getRequest = $.get("GetAllOrders");
+
+        getRequest.done(function (data, textStatus, jqXHR) {
+            let allOrders = jqXHR.responseJSON;
+            for(let i = 0; i < allOrders.length; i++) {
+                let oneOrder = allOrders[i];
+                //if(oneOrder.orderInfo.status == "CONFIRMED") {
+                    document.getElementById("id_schedule_name").textContent = oneOrder[0].package_name;
+                    document.getElementById("id_schedule_start").textContent = oneOrder[0].start_date;
+
+                    let start = new Date(oneOrder[0].start_date);
+                    let end = new Date(start.setMonth(start.getMonth()+(12 * oneOrder[0].validity_period))).toISOString().split('T')[0];
+
+                    document.getElementById("id_schedule_end").textContent = end;
+
+                    let servicesUl = document.getElementById("id_schedule_services");
+                    for(let j = 0; j < oneOrder[1].length; j++) {
+                        let newElement = document.createElement("li");
+                        newElement.textContent = (oneOrder[1][i].type).replace("_", " ");
+                        servicesUl.append(newElement);
+                    }
+                    let optionsUl = document.getElementById("id_schedule_options");
+                    for(let j = 0; j < oneOrder[2].length; j++) {
+                            let newElement = document.createElement("li");
+                            newElement.textContent = (oneOrder[2][i].name);
+                            optionsUl.append(newElement);
+                    }
+
+
+
+
+
+                //}
+                // oneOrder.orderInfo.status
+                // oneOrder.orderInfo.start_date
+                // oneOrder.orderInfo.package_name
+                // oneOrder.orderInfo.validity_period
+
+                // oneOrder.servicesList[i].type
+                // depending on type:
+                // oneOrder.servicesList[i].gig_incl
+                // oneOrder.servicesList[i].gig_extra
+                // OR
+                // oneOrder.servicesList[i].min_incl
+                // oneOrder.servicesList[i].min_extra
+                // oneOrder.servicesList[i].sms_incl
+                // oneOrder.servicesList[i].sms_extra
+
+                // oneOrder.optionsList[i].name
+
+
+            }
+
+
+
+        });
+
+        getRequest.fail(function (data, textStatus, jqXHR) {
+            alert("failed all orders for scheudles?");
+        });
 
 
     }
+
+
 });
