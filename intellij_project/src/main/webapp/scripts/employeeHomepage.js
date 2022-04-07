@@ -45,7 +45,7 @@ $(document).ready(function () {
     function resetModal(modalId) {
         let element = document.getElementById(modalId);
         $("#"+modalId).modal('hide');
-        let inputs = element.querySelectorAll("input");
+        let inputs = element.querySelectorAll("input.form-control");
         for(let i = 0; i < inputs.length; i++) {
             userValidFeedback(inputs[i]);
         }
@@ -94,12 +94,13 @@ $(document).ready(function () {
                     userValidFeedback(document.getElementById("id_addServicesLabel"));
                 }
             } else {
+                userValidFeedback(document.getElementById("servicePackageNameId"));
+                userValidFeedback(document.getElementById("id_addServicesLabel"));
                 addPackage(name, period[0].value, services, options);
                 resetSummary();
                 updateTotalInSummary();
                 $('.alert').toggleClass('show');
                 document.getElementById("packageForm").reset();
-
             }
         }
     );
@@ -111,8 +112,6 @@ $(document).ready(function () {
             let bp1 = $("#baseprice1Id").val();
             let bp2 = $("#baseprice2Id").val();
             let bp3 = $("#baseprice3Id").val();
-
-
             let gigIncl = $("#gigInclId").val();
             let smsIncl = $("#smsInclId").val();
             let minIncl = $("#minInclId").val();
@@ -120,9 +119,65 @@ $(document).ready(function () {
             let smsExtra = $("#smsExtraId").val();
             let minExtra = $("#minExtraId").val();
 
+            if (bp1 == "" | bp2 == "" | bp3 == "" | ((planType == "Mobile_Phone") & (minIncl == "" | minExtra == "" | smsIncl == "" | smsExtra == "")) | (((planType == "Fixed_Internet") | (planType == "Mobile_Internet")) & (gigIncl == "" | gigExtra == ""))) {
+                if (bp1 == "") {
+                    userInvalidFeedback(document.getElementById("baseprice1Id"));
+                } else {
+                    userValidFeedback(document.getElementById("baseprice1Id"));
+                }
 
+                if (bp2 == "") {
+                    userInvalidFeedback(document.getElementById("baseprice2Id"));
+                } else {
+                    userValidFeedback(document.getElementById("baseprice2Id"));
+                }
 
-            addService(planType, bp1, bp2, bp3, gigIncl, smsIncl, minIncl, gigExtra, smsExtra, minExtra);
+                if (bp3 == "") {
+                    userInvalidFeedback(document.getElementById("baseprice3Id"));
+                } else {
+                    userValidFeedback(document.getElementById("baseprice3Id"));
+                }
+
+                if ((planType == "Mobile_Phone")) {
+                    if (smsIncl == "") {
+                        userInvalidFeedback(document.getElementById("smsInclId"));
+                    } else {
+                        userValidFeedback(document.getElementById("smsInclId"));
+                    }
+                    if (smsExtra == "") {
+                        userInvalidFeedback(document.getElementById("smsExtraId"));
+                    } else {
+                        userValidFeedback(document.getElementById("smsExtraId"));
+                    }
+                    if (minIncl == "") {
+                        userInvalidFeedback(document.getElementById("minInclId"));
+                    } else {
+                        userValidFeedback(document.getElementById("minInclId"));
+                    }
+                    if (minExtra == "") {
+                        userInvalidFeedback(document.getElementById("minExtraId"));
+                    } else {
+                        userValidFeedback(document.getElementById("minExtraId"));
+                    }
+                }
+
+                if ((planType == "Fixed_Internet") | (planType == "Mobile_Internet")) {
+                    if (gigIncl == "") {
+                        userInvalidFeedback(document.getElementById("gigInclId"));
+                    } else {
+                        userValidFeedback(document.getElementById("gigInclId"));
+                    }
+                    if (gigExtra == "") {
+                        userInvalidFeedback(document.getElementById("gigExtraId"));
+                    } else {
+                        userValidFeedback(document.getElementById("gigExtraId"));
+                    }
+                }
+            } else {
+                addService(planType, bp1, bp2, bp3, gigIncl, smsIncl, minIncl, gigExtra, smsExtra, minExtra);
+                resetModal("createServiceModal");
+                document.getElementById("serviceForm").reset();
+            }
         }
     );
 
@@ -139,6 +194,7 @@ $(document).ready(function () {
         function () {
             let planSelected = $(this).val();
             $("div.selectDiv").hide();
+            (planSelected == "Mobile_Internet")? planSelected = "Fixed_Internet": planSelected = planSelected;
             $("#show" + planSelected).show();
         }
     );

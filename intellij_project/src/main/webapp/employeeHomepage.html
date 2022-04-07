@@ -159,93 +159,92 @@
                 <h5 class="modal-title" id="serviceModalLabel">Create New Service</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div id="creatingServicesId">
-                    <form method="post">
-                        <div class="btn-group mb-3" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="planType" id="fixed_phone" value="Fixed_Phone" autocomplete="off" checked>
-                            <label class="btn btn-outline-primary" for="fixed_phone">Fixed Phone</label>
-                            <input type="radio" class="btn-check" name="planType" id="mobile_phone" value="Mobile_Phone" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="mobile_phone">Mobile Phone</label>
-                            <input type="radio" class="btn-check" name="planType" id="fixed_internet" value="Fixed_Internet" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="fixed_internet">Fixed Internet</label>
-                            <input type="radio" class="btn-check" name="planType" id="mobile_internet" value="Mobile_Internet" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="mobile_internet">Mobile Internet</label>
-                        </div>
-                        <div class="row service-inputs" id="inputServiceParamsRowId">
-                            <div class="col" id="inputServiceBasePricesRowId">
-                                <div class="form-group mb-3">
-                                    <input type="baseprice1" class="form-control" placeholder="Base Price 1" value="" id="baseprice1Id" required />
-                                </div>
-                                <div class="form-group mb-3">
-                                    <input type="baseprice2" class="form-control" placeholder="Base Price 2" value="" id="baseprice2Id" required />
-                                </div>
-                                <div class="form-group mb-3">
-                                    <input type="baseprice3" class="form-control" placeholder="Base Price 3" value="" id="baseprice3Id" required />
-                                </div>
-
+            <form method="post" id = "serviceForm">
+                <div class="modal-body">
+                    <div id="creatingServicesId">
+                            <div class="btn-group mb-3" role="group" aria-label="Basic radio toggle button group">
+                                <input type="radio" class="btn-check" name="planType" id="fixed_phone" value="Fixed_Phone" autocomplete="off" checked>
+                                <label class="btn btn-outline-primary" for="fixed_phone">Fixed Phone</label>
+                                <input type="radio" class="btn-check" name="planType" id="mobile_phone" value="Mobile_Phone" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="mobile_phone">Mobile Phone</label>
+                                <input type="radio" class="btn-check" name="planType" id="fixed_internet" value="Fixed_Internet" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="fixed_internet">Fixed Internet</label>
+                                <input type="radio" class="btn-check" name="planType" id="mobile_internet" value="Mobile_Internet" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="mobile_internet">Mobile Internet</label>
                             </div>
-                            <div class="col" id="inputServicePlanParamsRowId">
-                                <div id="showFixed_Phone" class="selectDiv">
+                            <div class="row service-inputs" id="inputServiceParamsRowId">
+                                <div class="col" id="inputServiceBasePricesRowId">
                                     <div class="form-group mb-3">
-                                        <strong>No extra parameters needed for a Fixed Phone plan!</strong>
+                                        <input type="baseprice1" class="form-control" placeholder="Base Price 1" value="" id="baseprice1Id" required />
+                                        <div style="visibility: hidden"><p class="text-danger"><small>Enter a value.</small></p></div>
                                     </div>
-                                </div>
-                                <div id="showMobile_Phone" class="selectDiv">
                                     <div class="form-group mb-3">
-                                        <form id="MyForm" action="" method="post">
+                                        <input type="baseprice2" class="form-control" placeholder="Base Price 2" value="" id="baseprice2Id" required />
+                                        <div style="visibility: hidden"><p class="text-danger"><small>Enter a value.</small></p></div>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <input type="baseprice3" class="form-control" placeholder="Base Price 3" value="" id="baseprice3Id" required />
+                                        <div style="visibility: hidden"><p class="text-danger"><small>Enter a value.</small></p></div>
+                                    </div>
+
+                                </div>
+                                <div class="col" id="inputServicePlanParamsRowId">
+                                    <div id="showFixed_Phone" class="selectDiv">
+                                            <strong>No extra parameters needed for a Fixed Phone plan!</strong>
+                                    </div>
+                                    <div id="showMobile_Phone" class="selectDiv">
                                             <div class="form-group mb-3">
                                                 <input type="min_incl" class="form-control" placeholder="Included Minutes" value="" id="minInclId" display="none">
+                                                <div style="visibility: hidden"><p class="text-danger"><small>Enter a value.</small></p></div>
                                             </div>
                                             <div class="form-group mb-3">
                                                 <input type="sms_incl" class="form-control" placeholder="Included SMS" value="" id="smsInclId" display="none">
+                                                <div style="visibility: hidden"><p class="text-danger"><small>Enter a value.</small></p></div>
                                             </div>
                                             <div class="form-group mb-3">
                                                 <input type="min_extra" class="form-control" placeholder="Fee Per Extra Minute" value="" id="minExtraId" display="none">
+                                                <div style="visibility: hidden"><p class="text-danger"><small>Enter a value.</small></p></div>
                                             </div>
                                             <div class="form-group mb-3">
                                                 <input type="sms_extra" class="form-control" placeholder="Fee Per Extra SMS" value="" id="smsExtraId" display="none">
+                                                <div style="visibility: hidden"><p class="text-danger"><small>Enter a value.</small></p></div>
                                             </div>
-                                        </form>
                                     </div>
-                                </div>
-                                <div id="showFixed_Internet" class="selectDiv">
-                                    <div class="form-group mb-3">
-                                        <form id="MyForm" action="" method="post">
+                                    <div id="showFixed_Internet" class="selectDiv">
                                             <div class="form-group mb-3">
                                                 <input type="gig_incl" class="form-control" placeholder="Included Gigabytes" value="" id="gigInclId" display="none">
+                                                <div style="visibility: hidden"><p class="text-danger"><small>Enter a value.</small></p></div>
                                             </div>
                                             <div class="form-group mb-3">
                                                 <input type="gig_extra" class="form-control" placeholder="Fee Per Extra Gigabytes" value="" id="gigExtraId" display="none">
+                                                <div style="visibility: hidden"><p class="text-danger"><small>Enter a value.</small></p></div>
                                             </div>
-                                        </form>
                                     </div>
-                                </div>
-                                <div id="showMobile_Internet" class="selectDiv">
-                                    <div class="form-group mb-3">
-                                        <form id="MyForm" action="" method="post">
-                                            <div class="form-group mb-3">
-                                                <input type="gig_incl" class="form-control" placeholder="Included Gigabytes" value="" id="gigInclId" display="none">
-                                            </div>
-                                            <div class="form-group mb-3">
-                                                <input type="gig_extra" class="form-control" placeholder="Fee Per Extra Gigabytes" value="" id="gigExtraId" display="none">
-                                            </div>
-                                        </form>
-                                    </div>
+
                                 </div>
                             </div>
-                        </div>
-                    </form>
-
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="addServiceButton" value="AddService">Add Service</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="addServiceButton" value="AddService">Add Service</button>
+                </div>
+            </form>
+
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
 
 <!-- Modal -->
 <div class="modal fade" id="createOptionModal" tabindex="-1" aria-labelledby="optionModalLabel" aria-hidden="true">
