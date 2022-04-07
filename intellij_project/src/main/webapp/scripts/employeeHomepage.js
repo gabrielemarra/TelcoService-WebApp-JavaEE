@@ -9,7 +9,6 @@ $(document).ready(function () {
     $("#addOptionalProductButton").click(
         function (event) {
             event.preventDefault();
-
             let name = $("#optionalProductNameId").val();
             let price = $("#optionalProductPriceId").val();
             if (!document.getElementById("optionsForm").checkValidity()) {
@@ -43,11 +42,8 @@ $(document).ready(function () {
         element.nextElementSibling.style = "visibility: hidden";
     }
 
-
-
     function resetModal(modalId) {
         let element = document.getElementById(modalId);
-        //let str = "\'#" + modalId + "\'"; // $('#myModal').modal('hide');
         $("#"+modalId).modal('hide');
         let inputs = element.querySelectorAll("input");
         for(let i = 0; i < inputs.length; i++) {
@@ -55,7 +51,58 @@ $(document).ready(function () {
         }
     }
 
+    function resetSummary() {
+        let summary = document.getElementById("id_packageSummary");
+        while (summary.hasChildNodes()) {
+            summary.removeChild(summary.lastChild)
+        }
+    }
 
+
+
+
+
+    $("#addServicePackageButton").click(
+        function (event) {
+            event.preventDefault();
+            let name = $("#servicePackageNameId").val();
+            let period = document.querySelectorAll('input[name=defaultValidity]:checked'); //
+            let summary = document.getElementById("id_packageSummary");
+            let children = summary.childNodes;
+            let services = [];
+            let options = [];
+            for(let i = 0; i < children.length; i++) {
+                if(children[i].id != null) {
+                    let id = children[i].id.replace(/\D/g, '');
+                    if(children[i].id.includes("Service")) {
+                        services.push(id);
+                    } else { // children[i].id.includes("Option")
+                        options.push(id);
+                    }
+                }
+            }
+            if (name == "" | services.length == 0) {
+                event.stopPropagation()
+                if (name == "") {
+                    userInvalidFeedback(document.getElementById("servicePackageNameId"));
+                } else {
+                    userValidFeedback(document.getElementById("servicePackageNameId"));
+                }
+                if (services.length == 0) {
+                    userInvalidFeedback(document.getElementById("id_addServicesLabel"));
+                } else {
+                    userValidFeedback(document.getElementById("id_addServicesLabel"));
+                }
+            } else {
+                addPackage(name, period[0].value, services, options);
+                resetSummary();
+                updateTotalInSummary();
+                $('.alert').toggleClass('show');
+                document.getElementById("packageForm").reset();
+
+            }
+        }
+    );
 
     $("#addServiceButton").click(
         function (event) {
@@ -64,6 +111,8 @@ $(document).ready(function () {
             let bp1 = $("#baseprice1Id").val();
             let bp2 = $("#baseprice2Id").val();
             let bp3 = $("#baseprice3Id").val();
+
+
             let gigIncl = $("#gigInclId").val();
             let smsIncl = $("#smsInclId").val();
             let minIncl = $("#minInclId").val();
@@ -77,27 +126,7 @@ $(document).ready(function () {
         }
     );
 
-    $("#addServicePackageButton").click(
-        function (event) {
-            event.preventDefault();
-            let name = $("#servicePackageNameId").val();
-            let period = document.querySelectorAll('input[name=defaultValidity]:checked'); //
-            let children = document.getElementById("id_packageSummary").childNodes;
-            let services = [];
-            let options = [];
-            for(let i = 0; i < children.length; i++) {
-                if(children[i].id != null) {
-                    let id = children[i].id.replace(/\D/g, '');
-                    if(children[i].id.includes("Service")) {
-                        services.push(id);
-                    } else { // children[i].id.includes("Option")
-                        options.push(id);
-                    }
-                }
-            }
-            addPackage(name, period[0].value, services, options);
-        }
-    );
+
 
     /**
      * FUNCTIONS TO DYNAMICALLY CHANGE CONTENT ACCORDING TO USER CLICKS
@@ -331,7 +360,7 @@ $(document).ready(function () {
             otherPrice1 : costs[0],
             otherPeriod1 : periods[0],
             otherPrice2 : costs[1],
-            otherPeriod2 : period[1]
+            otherPeriod2 : periods[1]
         }
         return prices;
     }

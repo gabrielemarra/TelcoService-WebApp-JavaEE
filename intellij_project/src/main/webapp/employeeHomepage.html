@@ -26,6 +26,12 @@
     <title>Employee Homepage</title>
 </head>
 <body>
+
+    <div class="alert alert-success alert-dismissible fade fixed-top" role="alert">
+        <strong>Success</strong> New service package added!
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-primary">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Telco Employee Home</a>
@@ -57,18 +63,19 @@
     </div>
 </nav>
 
+
 <div class="container">
-    <form method="post">
+    <form method="post" id="packageForm">
         <div class="row">
         <div class="col-8">
             <h1 class="display-4 mb-5">Create Service Package</h1>
             <div class="row little-row" id="id_row_name">
                 <div class="col-3 mb-3 inputLabelDiv">
-                    <!--label for="servicePackageNameId" class="col-form-label ">Name of Package</label-->
                     <h5>Name of Package</h5>
                 </div>
                 <div class="form-group mb-3 col-8">
-                    <input type="text" class="form-control" placeholder="Name" value="" id="servicePackageNameId" required />
+                    <input type="text" class="form-control" placeholder="Name" value="" id="servicePackageNameId">
+                    <div style="visibility: hidden"><p class="text-danger"><small>Enter a name.</small></p></div>
                 </div>
 
             </div>
@@ -92,11 +99,14 @@
             </div>
             <div class="row big-row mb-3" id="id_row_services">
                 <div class="col-3 mb-3 scrollLabelDiv">
-                    <h5>Add Services</h5>
+                    <h5 id="id_addServicesLabel">Add Services</h5>
+                    <div class="row" style="visibility: hidden">
+                        <p class="text-danger"><small>Select at least one service.</small></p>
+                    </div>
                 </div>
                 <div class="col-8 mb-3" id="addingServicesColId">
                     <div class="scrollWindow" id="id_allServicesContainer">
-                        <div class="btn-group-vertical list-group-flush required" role ="group" id="id_allServicesTiles" aria-label="Basic checkbox toggle button group">
+                        <div class="btn-group-vertical list-group-flush" role ="group" id="id_allServicesTiles" aria-label="Basic checkbox toggle button group">
                         </div>
                     </div>
                     <div class="mb-3">
@@ -250,11 +260,11 @@
                     <div id="creatingOptionsId">
                             <div class="form-group mb-3">
                                 <input type="name" class="form-control" placeholder="Name" value="" id="optionalProductNameId" required="required">
-                                <div class="invalid" style="display: none">Name is required.</div>
+                                <div class="invalid" style="visibility: hidden"><p class="text-danger"><small>Name is required.</small></p></div>
                             </div>
                             <div class="form-group mb-3">
                                 <input type="price" class="form-control" placeholder="Price" value="" id="optionalProductPriceId" required="required">
-                                <div class="invalid" style="display: none">Price is required.</div>
+                                <div class="invalid" style="visibility: hidden"><p class="text-danger"><small>Price is required.</small></p></div>
 
                             </div>
                     </div>
