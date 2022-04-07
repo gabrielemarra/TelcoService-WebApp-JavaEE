@@ -157,9 +157,23 @@ $(document).ready(function () {
                     document.getElementById("id_schedule_start").textContent = oneOrder[0].start_date;
 
                     let start = new Date(oneOrder[0].start_date);
-                    let end = new Date(start.setMonth(start.getMonth()+(12 * oneOrder[0].validity_period))).toISOString().split('T')[0];
+                    let start1 = new Date(oneOrder[0].start_date);
+                    let today = new Date();
+                    // this also manipulates start
+                    let end = new Date(start1.setMonth(start1.getMonth()+(12 * oneOrder[0].validity_period)));
 
-                    document.getElementById("id_schedule_end").textContent = end;
+                    if(today < start) { // future
+                        document.getElementById("id_schedule_card").className += " border-primary text-primary";
+                    } else if((today > start) & (today < end)) { // current
+                        document.getElementById("id_schedule_card").className += " border-success text-success";
+                    } else if (today > end){ // expired
+                        document.getElementById("id_schedule_card").className += " border-danger text-danger";
+                    } else {
+                        document.getElementById("id_schedule_card").className += " border-secondary text-secondary";
+                    }
+                    // border-primary, border-success, border-danger
+
+                    document.getElementById("id_schedule_end").textContent = end.toISOString().split('T')[0];
 
                     let servicesUl = document.getElementById("id_schedule_services");
                     for(let j = 0; j < oneOrder[1].length; j++) {
