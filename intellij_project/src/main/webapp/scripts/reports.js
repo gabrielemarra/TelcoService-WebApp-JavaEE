@@ -30,6 +30,7 @@ $(document).ready(function () {
     getRejectedOrdersReport();
     getInsolventUsersReport();
     getBestSeller();
+    showAuditTable();
 
     function getServicePackageReport() {
         let getRequest = $.get("GetServicePackageReport");
@@ -122,6 +123,32 @@ $(document).ready(function () {
             alert("could not get best seller OH NO!");
         });
     };
+
+    function showAuditTable() {
+
+        let getRequest = $.get("GetAuditingTable");
+        getRequest.done(function (data, textStatus, jqXHR) {
+            let response = jqXHR.responseJSON;
+            let table = document.getElementById("id_audit_table_body")
+            let template = document.getElementById("id_audit_template");
+            for(let i = 0; i < response.length; i++) {
+                let alert = response[i];
+                let clone = template.content.cloneNode(true);
+                let userID = clone.querySelector("th");
+                let alertInfo = clone.querySelectorAll("td");
+                userID.textContent = response[i].user_id;
+                alertInfo[0].textContent = response[i].username;
+                alertInfo[1].textContent = response[i].email
+                alertInfo[2].textContent = response[i].delinq_amount
+                alertInfo[3].textContent = response[i].num_rej
+
+            }
+        });
+        getRequest.fail(function (data, textStatus, jqXHR) {
+            alert("could not get auditing table!");
+        });
+
+    }
 
 
 

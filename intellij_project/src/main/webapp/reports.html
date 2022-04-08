@@ -187,6 +187,35 @@
           </tbody>
         </table>
       </div>
+
+      <div class="row" id="id_audit_table">
+        <table class="table">
+          <h4>Alerts</h4>
+          <thead>
+          <tr>
+            <th scope="col" id="id_audit_userid">User ID</th>
+            <th scope="col" id="id_audit_username">Username</th>
+            <th scope="col" id="id_audit_email">Email</th>
+            <th scope="col" id="id_audit_num_rej"># Rejected Orders</th>
+            <th scope="col" id="id_audit_total_pending">Total Pending Amount €</th>
+            <th scope="col" id="id_audit_timestamp">Last Rejected Order</th>
+          </tr>
+          </thead>
+          <tbody id="id_audit_table_body">
+          <template id="id_audit_template">
+            <tr>
+              <th scope="row">User ID</th>
+              <td>username</td>
+              <td>email</td>
+              <td>num rejected orders</td>
+              <td>total pending</td>
+              <td>last rejected order</td>
+            </tr>
+          </template>
+          </tbody>
+        </table>
+      </div>
+
     </div>
   </div>
 </div>

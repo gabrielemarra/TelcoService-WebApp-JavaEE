@@ -157,9 +157,9 @@ $(document).ready(function () {
                     document.getElementById("id_schedule_start").textContent = oneOrder[0].start_date;
 
                     let start = new Date(oneOrder[0].start_date);
-                    let start1 = new Date(oneOrder[0].start_date);
                     let today = new Date();
-                    // this also manipulates start
+                    // this also manipulates start1
+                    let start1 = new Date(oneOrder[0].start_date);
                     let end = new Date(start1.setMonth(start1.getMonth()+(12 * oneOrder[0].validity_period)));
 
                     if(today < start) { // future
