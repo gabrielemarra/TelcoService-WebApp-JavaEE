@@ -41,6 +41,7 @@ public class UserService {
 //        user.setInsolvency(insolvent);
 
         em.persist(user);
+        em.flush();
         /* QUESTION: does this method *need* to return anything? */
         return user;
     }
@@ -81,6 +82,14 @@ public class UserService {
         } else {
             throw new InternalDBErrorException("InternalDBError", "Too many entries for the credentials");
         }
+    }
+
+    public User getUserById(int userID) throws InvalidParameterException {
+        User user = em.find(User.class, userID);
+        if (user == null) {
+            throw new InvalidParameterException("Invalid service ID: " + userID);
+        }
+        return user;
     }
 
     /**

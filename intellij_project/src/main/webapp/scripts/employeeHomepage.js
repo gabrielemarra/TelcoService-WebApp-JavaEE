@@ -11,7 +11,97 @@ $(document).ready(function () {
             event.preventDefault();
             let name = $("#optionalProductNameId").val();
             let price = $("#optionalProductPriceId").val();
-            addOption(name, price);
+            if (!document.getElementById("optionsForm").checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+                if(name == "") {
+                    userInvalidFeedback(document.getElementById("optionalProductNameId"));
+                } else {
+                    userValidFeedback(document.getElementById("optionalProductNameId"));
+                }
+                if(price == "") {
+                    userInvalidFeedback(document.getElementById("optionalProductPriceId"));
+                } else {
+                    userValidFeedback(document.getElementById("optionalProductPriceId"));
+                }
+            } else {
+                addOption(name, price);
+                resetModal("createOptionModal");
+                document.getElementById("optionsForm").reset();
+            }
+        }
+    );
+
+    function userInvalidFeedback(element) {
+        element.style.borderColor = "red";
+        element.nextElementSibling.style = "visibility: show";
+    }
+
+    function userValidFeedback(element) {
+        element.style.borderColor = "gray";
+        element.nextElementSibling.style = "visibility: hidden";
+    }
+
+    function resetModal(modalId) {
+        let element = document.getElementById(modalId);
+        $("#"+modalId).modal('hide');
+        let inputs = element.querySelectorAll("input.form-control");
+        for(let i = 0; i < inputs.length; i++) {
+            userValidFeedback(inputs[i]);
+        }
+    }
+
+    function resetSummary() {
+        let summary = document.getElementById("id_packageSummary");
+        while (summary.hasChildNodes()) {
+            summary.removeChild(summary.lastChild)
+        }
+    }
+
+
+
+
+
+    $("#addServicePackageButton").click(
+        function (event) {
+            event.preventDefault();
+            let name = $("#servicePackageNameId").val();
+            let period = document.querySelectorAll('input[name=defaultValidity]:checked'); //
+            let summary = document.getElementById("id_packageSummary");
+            let children = summary.childNodes;
+            let services = [];
+            let options = [];
+            for(let i = 0; i < children.length; i++) {
+                if(children[i].id != null) {
+                    let id = children[i].id.replace(/\D/g, '');
+                    if(children[i].id.includes("Service")) {
+                        services.push(id);
+                    } else { // children[i].id.includes("Option")
+                        options.push(id);
+                    }
+                }
+            }
+            if (name == "" | services.length == 0) {
+                event.stopPropagation()
+                if (name == "") {
+                    userInvalidFeedback(document.getElementById("servicePackageNameId"));
+                } else {
+                    userValidFeedback(document.getElementById("servicePackageNameId"));
+                }
+                if (services.length == 0) {
+                    userInvalidFeedback(document.getElementById("id_addServicesLabel"));
+                } else {
+                    userValidFeedback(document.getElementById("id_addServicesLabel"));
+                }
+            } else {
+                userValidFeedback(document.getElementById("servicePackageNameId"));
+                userValidFeedback(document.getElementById("id_addServicesLabel"));
+                addPackage(name, period[0].value, services, options);
+                resetSummary();
+                updateTotalInSummary();
+                $('.alert').toggleClass('show');
+                document.getElementById("packageForm").reset();
+            }
         }
     );
 
@@ -28,31 +118,70 @@ $(document).ready(function () {
             let gigExtra = $("#gigExtraId").val();
             let smsExtra = $("#smsExtraId").val();
             let minExtra = $("#minExtraId").val();
-            addService(planType, bp1, bp2, bp3, gigIncl, smsIncl, minIncl, gigExtra, smsExtra, minExtra);
+
+            if (bp1 == "" | bp2 == "" | bp3 == "" | ((planType == "Mobile_Phone") & (minIncl == "" | minExtra == "" | smsIncl == "" | smsExtra == "")) | (((planType == "Fixed_Internet") | (planType == "Mobile_Internet")) & (gigIncl == "" | gigExtra == ""))) {
+                if (bp1 == "") {
+                    userInvalidFeedback(document.getElementById("baseprice1Id"));
+                } else {
+                    userValidFeedback(document.getElementById("baseprice1Id"));
+                }
+
+                if (bp2 == "") {
+                    userInvalidFeedback(document.getElementById("baseprice2Id"));
+                } else {
+                    userValidFeedback(document.getElementById("baseprice2Id"));
+                }
+
+                if (bp3 == "") {
+                    userInvalidFeedback(document.getElementById("baseprice3Id"));
+                } else {
+                    userValidFeedback(document.getElementById("baseprice3Id"));
+                }
+
+                if ((planType == "Mobile_Phone")) {
+                    if (smsIncl == "") {
+                        userInvalidFeedback(document.getElementById("smsInclId"));
+                    } else {
+                        userValidFeedback(document.getElementById("smsInclId"));
+                    }
+                    if (smsExtra == "") {
+                        userInvalidFeedback(document.getElementById("smsExtraId"));
+                    } else {
+                        userValidFeedback(document.getElementById("smsExtraId"));
+                    }
+                    if (minIncl == "") {
+                        userInvalidFeedback(document.getElementById("minInclId"));
+                    } else {
+                        userValidFeedback(document.getElementById("minInclId"));
+                    }
+                    if (minExtra == "") {
+                        userInvalidFeedback(document.getElementById("minExtraId"));
+                    } else {
+                        userValidFeedback(document.getElementById("minExtraId"));
+                    }
+                }
+
+                if ((planType == "Fixed_Internet") | (planType == "Mobile_Internet")) {
+                    if (gigIncl == "") {
+                        userInvalidFeedback(document.getElementById("gigInclId"));
+                    } else {
+                        userValidFeedback(document.getElementById("gigInclId"));
+                    }
+                    if (gigExtra == "") {
+                        userInvalidFeedback(document.getElementById("gigExtraId"));
+                    } else {
+                        userValidFeedback(document.getElementById("gigExtraId"));
+                    }
+                }
+            } else {
+                addService(planType, bp1, bp2, bp3, gigIncl, smsIncl, minIncl, gigExtra, smsExtra, minExtra);
+                resetModal("createServiceModal");
+                document.getElementById("serviceForm").reset();
+            }
         }
     );
 
-    $("#addServicePackageButton").click(
-        function (event) {
-            event.preventDefault();
-            let name = $("#servicePackageNameId").val();
-            let period = document.querySelectorAll('input[name=defaultValidity]:checked'); //
-            let children = document.getElementById("id_packageSummary").childNodes;
-            let services = [];
-            let options = [];
-            for(let i = 0; i < children.length; i++) {
-                if(children[i].id != null) {
-                    let id = children[i].id.replace(/\D/g, '');
-                    if(children[i].id.includes("Service")) {
-                        services.push(id);
-                    } else { // children[i].id.includes("Option")
-                        options.push(id);
-                    }
-                }
-            }
-            addPackage(name, period[0].value, services, options);
-        }
-    );
+
 
     /**
      * FUNCTIONS TO DYNAMICALLY CHANGE CONTENT ACCORDING TO USER CLICKS
@@ -65,6 +194,7 @@ $(document).ready(function () {
         function () {
             let planSelected = $(this).val();
             $("div.selectDiv").hide();
+            (planSelected == "Mobile_Internet")? planSelected = "Fixed_Internet": planSelected = planSelected;
             $("#show" + planSelected).show();
         }
     );
@@ -107,7 +237,7 @@ $(document).ready(function () {
             showOneOption(name, price, response.id);
         });
         postRequest.fail(function (data, textStatus, jqXHR) {
-            alert("Adding new optional product POST fail");
+            //alert("Adding new optional product POST fail");
         });
     };
 
@@ -126,7 +256,7 @@ $(document).ready(function () {
             }
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
-            alert("Show all options GET fail!");
+            //alert("Show all options GET fail!");
         });
     };
 
@@ -172,7 +302,7 @@ $(document).ready(function () {
             changeServiceLabel(service_id, period);
         });
         postRequest.fail(function (data, textStatus, jqXHR) {
-            alert("Adding new service POST fail");
+            //alert("Adding new service POST fail");
         });
     };
 
@@ -249,10 +379,10 @@ $(document).ready(function () {
     function addPackage(name, period, serviceIds, optionIds) {
         let postRequest = $.post("AddServicePackage", {name: name, period: period, serviceIds: serviceIds, optionIds: optionIds});
         postRequest.done(function (data, textStatus, jqXHR) {
-            alert("Adding service package SUCCESS");
+            //alert("Adding service package SUCCESS");
         });
         postRequest.fail(function (data, textStatus, jqXHR) {
-            alert("adding service POST fail");
+            //alert("adding service POST fail");
         });
     };
 
@@ -286,7 +416,7 @@ $(document).ready(function () {
             otherPrice1 : costs[0],
             otherPeriod1 : periods[0],
             otherPrice2 : costs[1],
-            otherPeriod2 : period[1]
+            otherPeriod2 : periods[1]
         }
         return prices;
     }
@@ -313,7 +443,7 @@ $(document).ready(function () {
             updateTotalInSummary();
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
-            alert("adding item to summary GET fail");
+            //alert("adding item to summary GET fail");
         });
     };
 
@@ -344,5 +474,4 @@ $(document).ready(function () {
         }
         document.getElementById("id_summaryTotal").textContent = "€" + total.toString();
     }
-
 });

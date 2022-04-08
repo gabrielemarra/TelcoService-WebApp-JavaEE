@@ -1,6 +1,10 @@
 $(document).ready(function () {
     $.ajaxSetup({cache: false});
 
+    //sessionStorage.setItem('isLoggedIn', "false");
+
+
+
     $("#loginButton").click(
         function (event) {
             event.preventDefault();
@@ -29,9 +33,12 @@ $(document).ready(function () {
      * @param password
      */
     function login(email, password) {
+        sessionStorage.setItem('isLoggedIn', "false");
+
         let postRequest = $.post("Login", {email: email, password: password});
 
         postRequest.done(function (data, textStatus, jqXHR) {
+            sessionStorage.setItem('isLoggedIn', 'true');
 
             //Here we save the data into the sessionStorage
             let user_data = jqXHR.responseJSON;
@@ -40,9 +47,12 @@ $(document).ready(function () {
             sessionStorage.setItem('name', user_data.name);
             sessionStorage.setItem('employee', user_data.employee);
 
-
             //Redirect to the homepage (if user) or to employee page
-            window.location.href = window.location.href + jqXHR.responseJSON.new_url;
+            if ((sessionStorage.getItem("pendingOrder") == "true") & (sessionStorage.getItem("employee") == "false")) {
+                window.location.href = window.location.href + "/confirmation.html";
+            } else {
+                window.location.href = window.location.href + jqXHR.responseJSON.new_url;
+            }
 
         });
         postRequest.fail(function (jqXHR, textStatus, errorThrown) {

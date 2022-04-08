@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import it.polimi.telco_webapp.auxiliary.OrderStatus;
 import it.polimi.telco_webapp.auxiliary.exceptions.UserNotFoundException;
+import it.polimi.telco_webapp.entities.OptionalProduct;
 import it.polimi.telco_webapp.entities.Order;
 import it.polimi.telco_webapp.services.OrderService;
 import it.polimi.telco_webapp.services.PackagePricesViewService;
@@ -15,13 +17,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet(name = "GetAllRejectedOrders", value = "/GetAllRejectedOrders")
-public class GetAllRejectedOrders extends HttpServlet {
+@WebServlet(name = "GetOrderInfo", value = "/GetOrderInfo")
+public class GetOrderInfo extends HttpServlet {
     @EJB(name = "it.polimi.db2.entities.services/OrderService")
     private OrderService orderService;
 
@@ -51,37 +54,44 @@ public class GetAllRejectedOrders extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpServletResponse.SC_OK);
 
-        try {
-            List<Order> rejectedOrders = orderService.getAllRejectedOrders();
-            JsonArray rejectedOrdersJson = new JsonArray();
-            for(int i = 0; i < rejectedOrders.size(); i++) {
+        try { // instead: get the order info from dataset in the html table, buy button just invokes a "rebuy" servlet
+            // which instead finds the rejected order, calls the exteral service, and changes that status in the DB from rejected to confirmed?
+            Integer orderId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("order_id")));
 
-                JsonElement jsonElement = new JsonObject();
-                /* TODO: How to add LocalDateTime object as property */
-                //jsonElement.getAsJsonObject().addProperty("timestamp", temp.getTimestamp());
-                int package_id = rejectedOrders.get(i).getPackageId().getId();
-                int validity = rejectedOrders.get(i).getChosenValidityPeriod();
-                float total_price = pricesService.getBasePrice(package_id, validity);
-                jsonElement.getAsJsonObject().addProperty("order_id", rejectedOrders.get(i).getId());
-                jsonElement.getAsJsonObject().addProperty("service_package_name", rejectedOrders.get(i).getPackageId().getName());
-                jsonElement.getAsJsonObject().addProperty("total_price", total_price);
-                jsonElement.getAsJsonObject().addProperty("user_id", rejectedOrders.get(i).getUser().getId());
+            Order order = orderService.getOrder(orderId);
 
-                rejectedOrdersJson.add(jsonElement);
+            JsonElement orderInfo = new JsonObject();
+            orderInfo.getAsJsonObject().addProperty("status", order.getStatus().toString());
+            orderInfo.getAsJsonObject().addProperty("startDate", order.getSubscriptionStart().toString());
 
+            int package_id = order.getPackageId().getId();
+            int period = order.getChosenValidityPeriod();
+            float price = pricesService.getBasePrice(package_id, period);
+            orderInfo.getAsJsonObject().addProperty("total_cost", price);
+            orderInfo.getAsJsonObject().addProperty("package_id", order.getPackageId().getId());
+            orderInfo.getAsJsonObject().addProperty("validity_period", order.getChosenValidityPeriod());
+
+            List <OptionalProduct> options = order.getOptionalServices();
+            JsonArray allInfo = new JsonArray();
+            allInfo.add(orderInfo);
+            for(int i = 0; i <options.size(); i++) {
+                JsonElement option = new JsonObject();
+                option.getAsJsonObject().addProperty("name", options.get(i).getName());
+                option.getAsJsonObject().addProperty("price", options.get(i).getPrice());
+                option.getAsJsonObject().addProperty("id", options.get(i).getId());
+                allInfo.add(option);
             }
             Gson gson = new Gson();
-            response.getWriter().println(gson.toJson(rejectedOrdersJson));
+            response.getWriter().println(gson.toJson(allInfo));
 
         } catch (UserNotFoundException | EJBException e) { // TODO: change to correct exception...
             sendError(request, response, "UserNotFoundException", e.getCause().getMessage());
