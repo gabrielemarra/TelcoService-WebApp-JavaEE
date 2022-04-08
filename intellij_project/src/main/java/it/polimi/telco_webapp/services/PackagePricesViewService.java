@@ -24,7 +24,7 @@ public class PackagePricesViewService {
         } else if (period == 2) {
             price = packagePrices.getPeriod2Total();
         } else { // period == 3
-            packagePrices.getPeriod3Total();
+            price = packagePrices.getPeriod3Total();
         }
         return price;
 

@@ -9,6 +9,7 @@ import it.polimi.telco_webapp.auxiliary.exceptions.UserNotFoundException;
 import it.polimi.telco_webapp.entities.OptionalProduct;
 import it.polimi.telco_webapp.entities.Order;
 import it.polimi.telco_webapp.services.OrderService;
+import it.polimi.telco_webapp.services.PackagePricesViewService;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.servlet.ServletException;
@@ -26,6 +27,9 @@ import java.util.List;
 public class GetOrderInfo extends HttpServlet {
     @EJB(name = "it.polimi.db2.entities.services/OrderService")
     private OrderService orderService;
+
+    @EJB(name = "it.polimi.db2.entities.services/PackagePricesViewService")
+    private PackagePricesViewService pricesService;
 
     /**
      * Method to handle errors, send json with error info
@@ -68,7 +72,11 @@ public class GetOrderInfo extends HttpServlet {
             JsonElement orderInfo = new JsonObject();
             orderInfo.getAsJsonObject().addProperty("status", order.getStatus().toString());
             orderInfo.getAsJsonObject().addProperty("startDate", order.getSubscriptionStart().toString());
-            orderInfo.getAsJsonObject().addProperty("total_cost", order.getTotalPrice().toString());
+
+            int package_id = order.getPackageId().getId();
+            int period = order.getChosenValidityPeriod();
+            float price = pricesService.getBasePrice(package_id, period);
+            orderInfo.getAsJsonObject().addProperty("total_cost", price);
             orderInfo.getAsJsonObject().addProperty("package_id", order.getPackageId().getId());
             orderInfo.getAsJsonObject().addProperty("validity_period", order.getChosenValidityPeriod());
 

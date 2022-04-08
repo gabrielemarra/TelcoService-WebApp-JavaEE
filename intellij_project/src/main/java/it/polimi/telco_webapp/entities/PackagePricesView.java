@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name = "audit", schema = "telco_db")
+@Table(name = "package_prices", schema = "telco_db")
 @ReadOnly
 public class PackagePricesView {
 
