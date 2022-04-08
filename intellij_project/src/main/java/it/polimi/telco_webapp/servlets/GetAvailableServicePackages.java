@@ -72,6 +72,9 @@ public class GetAvailableServicePackages extends HttpServlet {
                 Double packagePrice3 = (double) 0;
                 JsonArray jsonArrayServices = new JsonArray();
 
+                // TODO: see HOW this info is being used in the JS. There is potential to get get the prices of the
+                //  package (sum of all the included services) via the pacakge prices VIEW instead of summing all the
+                //  services in a for loop BUT only if the JS does NOT use the prices of each service individually
                 for (Service service : aPackage.getServices()) {
                     //Sum the prices
                     packagePrice1 += service.getBasePrice1();

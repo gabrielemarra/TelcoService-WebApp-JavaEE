@@ -36,9 +36,6 @@ public class Order {
     @Column(name = "total_price", nullable = false, precision = 2)
     private BigDecimal totalPrice;
 
-    @Column(name = "base_cost", nullable = false, precision = 2)
-    private BigDecimal baseCost;
-
     @Column(name = "chosen_validity_period", nullable = false)
     private Integer chosenValidityPeriod;
 
@@ -79,21 +76,6 @@ public class Order {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
-    }
-
-    public BigDecimal getBaseCost() {
-        return baseCost;
-    }
-
-    public void setBaseCost() {
-        BigDecimal baseCost = this.totalPrice;
-
-        List<OptionalProduct> optionalProducts = this.getOptionalServices();
-        for (OptionalProduct prod: optionalProducts) {
-            baseCost = baseCost.subtract(prod.getPrice());
-        }
-
-
     }
 
     public LocalDateTime getTimestamp() {
