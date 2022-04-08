@@ -18,28 +18,36 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!--    My CSS -->
 
+    <!-- My JS-->
+    <script src="scripts/buyService.js"></script>
+
     <title>Telco - Buy Service Page</title>
 </head>
 <body>
 <div class="container">
     <div class="row justify-content-center my-5">
-        <div class="col-7 align-self-center">
+        <div class="col-lg-6 mb-4">
             <div class="accordion " id="accordionFlushSelection">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="servicePackageSelectionHeading">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#servicePackageSelectionCollapse" aria-expanded="false"
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#servicePackageSelectionCollapse" aria-expanded="true"
                                 aria-controls="servicePackageSelectionCollapse">
                             Service Package
                         </button>
                     </h2>
-                    <div id="servicePackageSelectionCollapse" class="accordion-collapse collapse"
+                    <div id="servicePackageSelectionCollapse" class="accordion-collapse collapse show"
                          aria-labelledby="servicePackageSelectionHeading"
                          data-bs-parent="#accordionFlushSelection">
                         <div class="accordion-body">Service Package selected:
                             <div class="placeholder-glow" id="selectedServicePackageText">
-<!--                                <span class="placeholder w-25"></span>-->
-                                <button type="button" class="btn btn-outline-primary placeholder"></button>
+                                <select id="servicePackage_select" class="form-select my-2 placeholder"
+                                        aria-label="Default select example" disabled>
+                                    <option selected>SeniorCitizen1</option>
+                                    <option>SeniorCitizen2</option>
+                                    <option>SeniorCitizen3</option>
+                                </select>
+                                <!--                                <button type="button" class="btn btn-outline-primary placeholder"></button>-->
                             </div>
                         </div>
                     </div>
@@ -57,7 +65,32 @@
                          data-bs-parent="#accordionFlushSelection">
                         <div class="accordion-body">Validity Period selected:
                             <div class="placeholder-glow" id="selectedValidityPeriodText">
-                                <span class="placeholder w-25"></span>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="validityPeriodCheckbox"
+                                                   id="validityPeriodCheckbox12" value="option1">
+                                            <label class="form-check-label" for="validityPeriodCheckbox12">12
+                                                months</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="validityPeriodCheckbox"
+                                                   id="validityPeriodCheckbox24" value="option2">
+                                            <label class="form-check-label" for="validityPeriodCheckbox24">24
+                                                months</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="validityPeriodCheckbox"
+                                                   id="validityPeriodCheckbox36" value="option3">
+                                            <label class="form-check-label" for="validityPeriodCheckbox36">36
+                                                months</label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -72,10 +105,22 @@
                     </h2>
                     <div id="optionalProductSelectionCollapse" class="accordion-collapse collapse"
                          aria-labelledby="optionalProductSelectionHeading" data-bs-parent="#accordionFlushSelection">
-                        <div class="accordion-body">Optional Products selected:
+                        <div class="accordion-body">
+                            <span id="label_optional_product_available">Optional Products available:</span>
+                            <span id="label_optional_product_not_available" hidden>There are no optional products available for this package</span>
                             <div class="placeholder-glow" id="selectedOptionalProductsText">
-                                <span class="placeholder w-25"></span><br>
-                                <span class="placeholder w-25"></span>
+                                <div class="form-check placeholder">
+                                    <input class="form-check-input" type="checkbox" value="" id="netflix">
+                                    <label class="form-check-label" for="netflix">
+                                        Netflix
+                                    </label>
+                                </div>
+                                <div class="form-check placeholder">
+                                    <input class="form-check-input" type="checkbox" value="" id="spotify">
+                                    <label class="form-check-label" for="spotify">
+                                        Spotify
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -92,31 +137,83 @@
                          aria-labelledby="startingDateSelectionHeading" data-bs-parent="#accordionFlushSelection">
                         <div class="accordion-body">Starting Date selected:
                             <div class="placeholder-glow" id="selectedStartingDateText">
-                                <span class="placeholder w-25"></span>
+                                <input type="date" id="startDate" name="startDate" min="2018-01-01"
+                                       data-date-format='dd-mm-yyyy'>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!--                <div class="accordion-item">-->
-                <!--                    <h2 class="accordion-header" id="flush-headingThree">-->
-                <!--                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"-->
-                <!--                                data-bs-target="#flush-collapseThree" aria-expanded="false"-->
-                <!--                                aria-controls="flush-collapseThree">-->
-                <!--                            Accordion Item #3-->
-                <!--                        </button>-->
-                <!--                    </h2>-->
-                <!--                    <div id="flush-collapseThree" class="accordion-collapse collapse"-->
-                <!--                         aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushSelection">-->
-                <!--                        <div class="accordion-body">CONTENT-->
-                <!--                        </div>-->
-                <!--                    </div>-->
-                <!--                </div>-->
             </div>
         </div>
-        <div class="col-5 align-self-center ">
-            <p class="text-center">Summary of your selection</p>
+        <div class="col-lg-5 mx-4 placeholder-glow">
+            <h4>Summary:</h4>
+            <div class="row">
+                <div class="col p-2">
+
+                    <table class="table" id="summary_table">
+                        <tbody id="summary_table_body">
+                        <tr>
+                            <td style="padding-bottom: 5px; font-size: 1.1rem;">
+                                <strong><span class="placeholder"
+                                              id="summary_service_package_name">Service Pack Family</span></strong>
+                            </td>
+                            <td class="text-end"><span id="summary_service_package_price" class="placeholder">23</span>
+                                €/mo
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+
+                            <td class="text-end"><strong>Total:</strong></td>
+                            <td class="text-end"><strong><span id="summary_total_price" class="placeholder">32</span>
+                                €/mo</strong></td>
+                        </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p style="font-size: 1.08rem;">Validity period:<strong> <span id="summary_validity_period"
+                                                                                  class="placeholder">12</span>
+                        months</strong></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p style="font-size: 1.08rem;">Starting date:<strong> <span
+                            id="summary_starting_date" class=""></span></strong></p>
+                </div>
+                <div class="col">
+                    <p style="font-size: 1.08rem;" class="text-end">Ending date:<strong> <span
+                            id="summary_ending_date" class=""></span></strong></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="d-grid gap-2 col-3 mx-auto align-self-center">
+                    <button type="button" class="btn btn-primary" id="buy_button">BUY</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<template id="package_select_row_template">
+    <option></option>
+</template>
+<template id="optional_product_checkbox_template">
+    <div class="form-check placeholder">
+        <input class="form-check-input optional_prod_checkboxes" type="checkbox" value="">
+        <label class="form-check-label"></label>
+    </div>
+</template>
+<template id="summary_optional_prod_row_template">
+    <tr class="opt_prod_row">
+        <td class="summary_opt_prod_name"></td>
+        <td class="text-end"><span class="summary_opt_prod_price"></span> €/mo</td>
+    </tr>
+</template>
 </body>
 </html>

@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.auxiliary.exceptions.NoServicePackageFound;
+import it.polimi.telco_webapp.entities.OptionalProduct;
 import it.polimi.telco_webapp.entities.Service;
 import it.polimi.telco_webapp.entities.ServicePackage;
 import it.polimi.telco_webapp.services.ServicePackageService;
@@ -85,6 +86,19 @@ public class GetAvailableServicePackages extends HttpServlet {
                     jsonArrayServices.add(jsonService);
                 }
 
+                JsonArray jsonArrayOptional = new JsonArray();
+
+                for (OptionalProduct optionalProduct : aPackage.getOptions()) {
+
+                    //Store some properties about the services
+                    JsonElement jsonOptional = new JsonObject();
+                    jsonOptional.getAsJsonObject().addProperty("opt_id", optionalProduct.getId());
+                    jsonOptional.getAsJsonObject().addProperty("opt_cost", optionalProduct.getPrice());
+                    jsonOptional.getAsJsonObject().addProperty("opt_name", optionalProduct.getName());
+
+                    jsonArrayOptional.add(jsonOptional);
+                }
+
                 JsonElement jsonElement = new JsonObject();
 
                 jsonElement.getAsJsonObject().addProperty("package_name", aPackage.getName());
@@ -98,6 +112,7 @@ public class GetAvailableServicePackages extends HttpServlet {
                 jsonElement.getAsJsonObject().add("prices", jsonPrices);
 
                 jsonElement.getAsJsonObject().add("services", jsonArrayServices);
+                jsonElement.getAsJsonObject().add("optional_products", jsonArrayOptional);
 
                 /*
                  * TODO: I think we also need to add Services and Optional Products to the json element... for now those
