@@ -7,6 +7,7 @@ $(document).ready(function () {
     let optionalProductsSelected = [];
     let validityPeriodSelected;
     let startingDateSelected = null;
+    let totalPriceSelected;
 
 
     setAvailableDate();
@@ -35,6 +36,10 @@ $(document).ready(function () {
 
         updateSummaryValidityPeriod();
     });
+
+    $("#buy_button").click(function () {
+        buyButtonPressed();
+    })
 
     $("#optionalProductSelectionCollapse").on('change', '.optional_prod_checkboxes', function () {
         let read_opt_id = parseInt(this.dataset.opt_id);
@@ -115,7 +120,7 @@ $(document).ready(function () {
                 servicePackageSelected = servicePackagesAvailable[servicePackagesAvailableKey];
                 updateDataOnPackageSelection(servicePackageSelected);
                 updateSummaryServicePackage();
-                optionalProductsSelected=[];
+                optionalProductsSelected = [];
                 updateSummaryOptionalProducts();
                 break;
             }
@@ -277,6 +282,17 @@ $(document).ready(function () {
         totalPrice = optProdPriceSum + servicePackageSelected.prices[validityPeriodSelected - 1];
 
         $("#summary_total_price").text(totalPrice).removeClass("placeholder");
+        totalPriceSelected = totalPrice;
+    }
+
+    function buyButtonPressed() {
+        sessionStorage.setItem('package_id', servicePackageSelected.package_id);
+        sessionStorage.setItem('validity_period', validityPeriodSelected);
+        sessionStorage.setItem('total_cost',totalPriceSelected);
+        sessionStorage.setItem('optionalProducts',JSON.stringify(optionalProductsSelected));
+        sessionStorage.setItem('startDate',JSON.stringify(startingDateSelected));
+
+        window.location.href = "./" + "confirmation.html"
     }
 });
 
