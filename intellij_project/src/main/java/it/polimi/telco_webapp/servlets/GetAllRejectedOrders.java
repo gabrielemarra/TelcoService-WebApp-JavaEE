@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.auxiliary.exceptions.UserNotFoundException;
 import it.polimi.telco_webapp.entities.Order;
 import it.polimi.telco_webapp.services.OrderService;
+import it.polimi.telco_webapp.services.PackagePricesViewService;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.servlet.ServletException;
@@ -23,6 +24,9 @@ import java.util.List;
 public class GetAllRejectedOrders extends HttpServlet {
     @EJB(name = "it.polimi.db2.entities.services/OrderService")
     private OrderService orderService;
+
+    @EJB(name = "it.polimi.db2.entities.services/PackagePricesViewService")
+    private PackagePricesViewService pricesService;
 
     /**
      * Method to handle errors, send json with error info
@@ -65,9 +69,12 @@ public class GetAllRejectedOrders extends HttpServlet {
                 JsonElement jsonElement = new JsonObject();
                 /* TODO: How to add LocalDateTime object as property */
                 //jsonElement.getAsJsonObject().addProperty("timestamp", temp.getTimestamp());
+                int package_id = rejectedOrders.get(i).getPackageId().getId();
+                int validity = rejectedOrders.get(i).getChosenValidityPeriod();
+                float total_price = pricesService.getBasePrice(package_id, validity);
                 jsonElement.getAsJsonObject().addProperty("order_id", rejectedOrders.get(i).getId());
                 jsonElement.getAsJsonObject().addProperty("service_package_name", rejectedOrders.get(i).getPackageId().getName());
-                jsonElement.getAsJsonObject().addProperty("total_price", rejectedOrders.get(i).getTotalPrice());
+                jsonElement.getAsJsonObject().addProperty("total_price", total_price);
                 jsonElement.getAsJsonObject().addProperty("user_id", rejectedOrders.get(i).getUser().getId());
 
                 rejectedOrdersJson.add(jsonElement);
