@@ -11,7 +11,7 @@ import it.polimi.telco_webapp.entities.ServicePackage;
 import it.polimi.telco_webapp.services.ServicePackageService;
 
 import it.polimi.telco_webapp.services.OrderService;
-import it.polimi.telco_webapp.services.ServiceService;
+import it.polimi.telco_webapp.services.PackagePricesViewService;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.servlet.ServletException;
@@ -30,6 +30,9 @@ public class GetPackageOrders extends HttpServlet {
     private OrderService orderService;
     @EJB(name = "it.polimi.db2.entities.services/ServicePackageService")
     private ServicePackageService packageService;
+    @EJB(name = "it.polimi.db2.entities.services/PackagePricesView")
+    private PackagePricesViewService pricesService;
+
 
     /**
      * Method to handle errors, send json with error info
@@ -62,6 +65,7 @@ public class GetPackageOrders extends HttpServlet {
         try {
             ServicePackage packageOfInterest = packageService.getServicePackage(Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("package_id"))));
 
+            int package_id = packageOfInterest.getId();
             List<Order> orders = orderService.getAllOrdersByPackage(packageOfInterest);
 
             Gson gson = new Gson();
@@ -77,7 +81,10 @@ public class GetPackageOrders extends HttpServlet {
 
                 if(temp.getStatus() != OrderStatus.REJECTED) {
                     jsonElement.getAsJsonObject().addProperty("order_id", temp.getId());
-                    jsonElement.getAsJsonObject().addProperty("order_baseCost", temp.getBaseCost());
+
+                    int validity = temp.getChosenValidityPeriod();
+                    float baseCost = pricesService.getBasePrice(package_id, validity);
+                    jsonElement.getAsJsonObject().addProperty("order_baseCost", baseCost);
                     jsonElement.getAsJsonObject().addProperty("order_totalCost", temp.getTotalPrice());
                     jsonElement.getAsJsonObject().addProperty("order_validity", temp.getChosenValidityPeriod());
                     jsonElement.getAsJsonObject().addProperty("order_num_options", temp.getOptionalServices().size());
