@@ -226,3 +226,7 @@ $(document).ready(function () {
 
 
 });
+
+function packageSelectButtonPressed(buttonPressed) {
+    window.location.href = "./" + "buyService.html" + "?package_id=" + buttonPressed.dataset.package_id
+}
