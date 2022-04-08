@@ -1,32 +1,32 @@
 package it.polimi.telco_webapp.services;
 
-import it.polimi.telco_webapp.entities.AuditView;
-import it.polimi.telco_webapp.entities.SuspendedOrdersView;
+
+import it.polimi.telco_webapp.entities.PackagePricesView;
+import it.polimi.telco_webapp.entities.ServicePackageView;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
+
 
 import java.util.List;
 
-@Stateless(name = "AuditViewService")
-public class AuditViewService {
+@Stateless(name = "PackagePricesView")
+public class PackagePricesViewService {
     @PersistenceContext(unitName = "telco_webapp")
     private EntityManager em;
-    public AuditViewService() {}
+    public PackagePricesViewService() {}
 
-    public List<AuditView> getAll() {
-
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-
-        CriteriaQuery<AuditView> cq = cb.createQuery(AuditView.class);
-        Root<AuditView> rootEntry = cq.from(AuditView.class);
-        CriteriaQuery<AuditView> all = cq.select(rootEntry);
-        TypedQuery<AuditView> allQuery = em.createQuery(all);
-        return allQuery.getResultList();
+    public float getBasePrice(int package_id, int period) {
+        float price = 0;
+        PackagePricesView packagePrices = em.find(PackagePricesView.class, package_id);
+        if (period == 1) {
+            price = packagePrices.getPeriod1Total();
+        } else if (period == 2) {
+            price = packagePrices.getPeriod2Total();
+        } else { // period == 3
+            packagePrices.getPeriod3Total();
+        }
+        return price;
 
     }
 

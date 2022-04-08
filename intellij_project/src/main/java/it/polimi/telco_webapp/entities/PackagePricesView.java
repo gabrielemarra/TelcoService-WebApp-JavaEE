@@ -12,28 +12,23 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "audit", schema = "telco_db")
 @ReadOnly
-public class AuditView {
+public class PackagePricesView {
 
     @Id
-    private int user_id;
+    private int package_id;
     @Column
-    private String username;
+    private float period1_total;
     @Column
-    private String email;
+    private float period2_total;
     @Column
-    private float amount;
-    @Column
-    private LocalDateTime last;
-    @Column
-    private int num_rejected;
+    private float period3_total;
 
 
-    public int getUserId(){return user_id;}
-    public String getUsername(){return username;}
-    public String getEmail(){return email;}
-    public float getDelinquentAmount() {return amount;}
-    public LocalDateTime getLastTimestamp() {return last;}
-    public int getNumRejected() {return num_rejected;}
+
+    public int getPackageId(){return package_id;}
+    public float getPeriod1Total(){return period1_total;}
+    public float getPeriod2Total(){return period2_total;}
+    public float getPeriod3Total() {return period3_total;}
 
     /* Since this is a view, the data is read-only. No setters. */
 }
