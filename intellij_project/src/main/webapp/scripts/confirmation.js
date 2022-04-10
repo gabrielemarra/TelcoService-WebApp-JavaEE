@@ -8,13 +8,23 @@ $(document).ready(function () {
     $("#idBuyButton").click(
         function (event) {
             event.preventDefault();
-            submitTransaction(false);
+            let isExistingOrder = sessionStorage.getItem("existingOrder");
+            if( isExistingOrder== "false") {
+                insertNewOrder();
+                submitTransaction(false);
+            } else {
+                submitTransaction(false);
+            }
         }
     );
 
     $("#idBuyButtonFail").click(
         function (event) {
             event.preventDefault();
+            let isExistingOrder = sessionStorage.getItem("existingOrder");
+            if(sessionStorage.getItem("isExistingOrder") == "false") {
+                insertNewOrder();
+            }
             submitTransaction(true);
         }
     );
@@ -27,6 +37,35 @@ $(document).ready(function () {
             sessionStorage.setItem("pendingOrder", "true");
         }
     );
+
+    function insertNewOrder() {
+        let package_id = sessionStorage.getItem('package_id');
+        let validity_period = sessionStorage.getItem('validity_period');
+        let total_cost = sessionStorage.getItem('total_cost');
+        let optionalProducts = sessionStorage.getItem('optionalProducts');
+        let startDate = sessionStorage.getItem('startDate');
+
+
+        let postRequest = $.post("AddOrder", {
+            email: sessionStorage.getItem("email", ),
+            package_id: package_id,
+            validity_period:validity_period,
+            total_cost: total_cost,
+            optionalProducts: optionalProducts,
+            start_date: startDate});
+
+        postRequest.done(function (data, textStatus, jqXHR) {
+            //alert("Transaction performed. Payment rejected? " + isOrderRejected);
+            //window.location.href = "homepage.html"; //             window.location.href = "confirmation.html";
+            sessionStorage.setItem("pendingOrder", "true");
+
+        });
+        postRequest.fail(function (jqXHR, textStatus, errorThrown) {
+            //alert("Transaction failed");
+            //            sessionStorage.setItem("pendingOrder", "false?");
+        });
+
+    }
 
     function submitTransaction(isOrderRejected) {
         let orderID = sessionStorage.getItem("order_id");

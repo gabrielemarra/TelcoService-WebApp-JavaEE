@@ -33,41 +33,13 @@ public class OrderService {
         newOrder.setUser(user);
         newOrder.setSubscriptionStart(subscriptionStartDate);
         newOrder.setStatus(OrderStatus.PENDING);
-
-        //Check if the OptionalProducts are available for the selected ServicePackage OR null, then add the opt. prod. list to the order
-        //if (optionalProductList == null || !servicePackage.getOptionalProducts().containsAll(optionalProductList)) {
-        //    throw new IllegalArgumentException("Some selected Optional Products are not compatible with the selected Service Package");
-        //}
         newOrder.setOptionalProductOrderedList(optionalProductList);
 
-        //Extract the prices from the selected optional products
-        List<BigDecimal> optionalProductPriceList = new ArrayList<>();
-        for (OptionalProduct optionalProduct : optionalProductList) {
-            optionalProductPriceList.add(optionalProduct.getPrice());
-        }
 
-        //Sum all the priceI don't know if this works, it's a mess working with BigDecimal
-        BigDecimal optionalProductsPrice = optionalProductPriceList.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        //Extract the correct prices from the services included in the service package
-        List<BigDecimal> servicesPriceList = new ArrayList<>();
-        List <Service> dummy = new ArrayList<>();
-        for (Service service : dummy){//servicePackage.getServices()) {
-            switch (servicePackage.getValidityPeriod()) {
-                case 1:
-                    servicesPriceList.add(BigDecimal.valueOf(service.getBasePrice1()));
-                case 2:
-                    servicesPriceList.add(BigDecimal.valueOf(service.getBasePrice2()));
-                case 3:
-                    servicesPriceList.add(BigDecimal.valueOf(service.getBasePrice3()));
-            }
-        }
-        //Sum all the price of the services included in the service package
-        BigDecimal servicesPrice = servicesPriceList.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        BigDecimal totalPrice = servicesPrice.add(optionalProductsPrice);
 
-        newOrder.setTotalPrice(totalPrice);
+
 
         em.persist(newOrder);
         em.flush();

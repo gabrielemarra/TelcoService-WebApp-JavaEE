@@ -34,6 +34,8 @@ $(document).ready(function () {
      */
     function login(email, password) {
         sessionStorage.setItem('isLoggedIn', "false");
+        sessionStorage.setItem('isEmployee', "false");
+
 
         let postRequest = $.post("Login", {email: email, password: password});
 

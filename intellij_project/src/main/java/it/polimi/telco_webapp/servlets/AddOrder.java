@@ -61,24 +61,35 @@ public class AddOrder extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try{
-            String email = StringEscapeUtils.escapeJava(request.getParameter("email"));
-            boolean isOrderRejected = Boolean.parseBoolean(StringEscapeUtils.escapeJava(request.getParameter("isOrderRejected")));
+/*
+            let postRequest = $.post("AddOrder", {
+                    email: sessionStorage.getItem("email", ),
+                    package_id: package_id,
+                    validity_period:validity_period,
+                    total_cost: total_cost,
+                    optionalProducts: optionalProducts,
+                    start_date: startDate});
+            */
 
-            Integer packageId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("package_id")));
+
+            String email = StringEscapeUtils.escapeJava(request.getParameter("email"));
+            String package_id = StringEscapeUtils.escapeJava(request.getParameter("package_id"));
+            Integer validity = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("validity_period")));
+            Float total = Float.parseFloat(StringEscapeUtils.escapeJava(request.getParameter("total_cost")));
+            //String options = StringEscapeUtils.escapeJava(request.getParameter("optionalProducts"));
+            //LocalDate start = LocalDate.parse(StringEscapeUtils.escapeJava(request.getParameter("start_date")));
             User user = userService.getUserByEmail(email);
+            // do a check here that the email gotten from the request is the same user that is saved in the session?
+
+            Integer packageId = Integer.parseInt(package_id);
             ServicePackage servicePackage = servicePackageService.getServicePackage(packageId);
 
+
             // TODO: get the optional products from the get request...
+            // public Order insertNewOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<OptionalProduct> optionalProductList) {
             Order pendingOrder = orderService.insertNewOrder(LocalDate.now(), user, servicePackage, new ArrayList<OptionalProduct>());
             request.getSession().setAttribute("order_id", pendingOrder.getId());
-
-
-
-            // TODO: perform the actual "transaction" in another servlet...
-            // if externalService.call(isOrderRejected) == false {
-            //orderService.changeOrderStatus(completedOrder.getId(), OrderStatus.CONFIRMED);
-            //} else {orderService.changeOrderStatus(completedOrder.getId(), OrderStatus.REJECTED);}
-
+            request.getSession().setAttribute("pendingOrder_S", true);
 
 
         } catch (EJBException e) {

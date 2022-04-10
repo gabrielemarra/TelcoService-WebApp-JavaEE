@@ -93,6 +93,9 @@ public class Login extends HttpServlet {
 
         if (!(isEmailValid(email) && isPasswordValid(password))) {
             sendError(request, response, "Invalid Completion", "Invalid email or password format");
+            request.getSession().setAttribute("isEmployee_S", false);
+            request.getSession().setAttribute("isLoggedIn_S", false);
+
             return;
         }
         try {
@@ -113,6 +116,8 @@ public class Login extends HttpServlet {
             jsonElement.getAsJsonObject().addProperty("email", credentialCheckResultUser.getEmail());
             jsonElement.getAsJsonObject().addProperty("employee", "false");
 
+            request.getSession().setAttribute("isEmployee_S", false);
+            request.getSession().setAttribute("isLoggedIn_S", true);
 
             response.getWriter().println(gson.toJson(jsonElement));
         } catch (EJBException e) {
@@ -133,6 +138,9 @@ public class Login extends HttpServlet {
                     jsonElement.getAsJsonObject().addProperty("employee", "true");
                     jsonElement.getAsJsonObject().remove("password");
                     jsonElement.getAsJsonObject().remove("id");
+
+                    request.getSession().setAttribute("isEmployee_S", true);
+                    request.getSession().setAttribute("isLoggedIn_S", true);
 
                     response.getWriter().println(gson.toJson(jsonElement));
                 } catch (EJBException f) {

@@ -292,6 +292,9 @@ $(document).ready(function () {
         sessionStorage.setItem('optionalProducts',JSON.stringify(optionalProductsSelected));
         sessionStorage.setItem('startDate',JSON.stringify(startingDateSelected));
 
+        sessionStorage.setItem('existingOrder', "false");
+
+
         window.location.href = "./" + "confirmation.html"
     }
 });
