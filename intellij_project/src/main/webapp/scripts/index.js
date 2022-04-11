@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     $.ajaxSetup({cache: false});
 
     //sessionStorage.setItem('isLoggedIn', "false");
@@ -92,6 +93,12 @@ $(document).ready(function () {
     }
 });
 
+function visitAsGuest (){
+    sessionStorage.setItem('isLoggedIn', "false");
+    sessionStorage.setItem('isEmployee', "false");
+
+    window.location.href = "./" + "homepage.html";
+}
 
 
 

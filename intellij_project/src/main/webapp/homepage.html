@@ -46,6 +46,7 @@
                         <span class="placeholder">username | mail.example@example.com</span>
                     </p>
                 </a>
+                <button type="button" class="btn btn-primary btn-sm" id="loginButtonRightCorner" onclick="loginButtonPressed()" hidden>Login/Register</button>
             </div>
         </div>
 
@@ -76,59 +77,54 @@
             </div>
         </div>
 
-        <h2 class="display-6 text-center mb-4" id="id_activation_schedule_title">Service Activation Schedules</h2>
+        <div class="row mb-3 text-center" id="id_activation_schedule_row">
+            <h2 class="display-6 text-center mb-4" id="id_activation_schedule_title">Service Activation Schedules</h2>
 
-        <div class="col-md-3">
-            <div class="card mb-4 rounded-3 shadow-sm" id="id_schedule_card">
-                <div class="card-header py-3">
-                    <h4 class="my-0 fw-normal" id="id_schedule_name">Package Name</h4>
-                </div>
-                <div class="card-body row" id="id_card_body">
-                    <div class="col">
-                        <ul class="list-unstyled" id="id_schedule_services"></ul>
+            <div class="col-md-3">
+                <div class="card mb-4 rounded-3 shadow-sm" id="id_schedule_card">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-normal" id="id_schedule_name">Package Name</h4>
                     </div>
-                    <div class="col">
-                        <ul class="list-unstyled" id="id_schedule_options"></ul>
+                    <div class="card-body row" id="id_card_body">
+                        <div class="col">
+                            <ul class="list-unstyled" id="id_schedule_services"></ul>
+                        </div>
+                        <div class="col">
+                            <ul class="list-unstyled" id="id_schedule_options"></ul>
+                        </div>
                     </div>
-                </div>
-                <div class="card-footer text-muted">
-                    <div class="d-flex justify-content-between">
-                        <p>Start Date: </p>
-                        <p id="id_schedule_start"></p>
+                    <div class="card-footer text-muted">
+                        <div class="d-flex justify-content-between">
+                            <p>Start Date: </p>
+                            <p id="id_schedule_start"></p>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <p>End Date:</p>
+                            <p id="id_schedule_end"></p>
+                        </div>
                     </div>
-                    <div class="d-flex justify-content-between">
-                        <p>End Date:</p>
-                        <p id="id_schedule_end"></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-
-
-        <h2 class="display-6 text-center mb-4" id="id_rejected_orders_table_title">Rejected Orders</h2>
-
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <table class="table" id="id_rejected_orders" style="align-self: auto">
-                        <!--h> Table Title? </h-->
-                        <thead>
-                        <tr>
-                            <th> Order ID</th>
-                            <th> Service Package Name</th>
-                            <th> Total Price</th>
-                        </tr>
-                        </thead>
-                        <tbody id="id_rejected_orders_body">
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
 
+
+        <div class="row mb-3 text-center" id="id_rejected_orders_table_row">
+            <h2 class="display-6 text-center mb-4" id="id_rejected_orders_table_title">Rejected Orders</h2>
+            <div class="col">
+                <table class="table" id="id_rejected_orders" style="align-self: auto">
+                    <!--h> Table Title? </h-->
+                    <thead>
+                    <tr>
+                        <th> Order ID</th>
+                        <th> Service Package Name</th>
+                        <th> Total Price</th>
+                    </tr>
+                    </thead>
+                    <tbody id="id_rejected_orders_body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
 
     </main>
@@ -152,7 +148,9 @@
                     </li>
                 </ul>
                 <div class="mb-2"><span class="validityPeriod">Default Validity Period?</span> months</div>
-                <button type="button" class="w-100 btn btn-lg btn-outline-primary" onclick="packageSelectButtonPressed(this)">Select</button>
+                <button type="button" class="w-100 btn btn-lg btn-outline-primary"
+                        onclick="packageSelectButtonPressed(this)">Select
+                </button>
             </div>
         </div>
     </div>
@@ -164,7 +162,9 @@
         <td>order id</td>
         <td>plan name</td>
         <td> delinquent cost</td>
-        <td><button type="button" class="btn btn-outline-danger buy-again">Buy Again</button></td>
+        <td>
+            <button type="button" class="btn btn-outline-danger buy-again">Buy Again</button>
+        </td>
     </tr>
 </template>
 
