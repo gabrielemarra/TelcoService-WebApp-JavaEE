@@ -1,15 +1,21 @@
 $(document).ready(function () {
     $.ajaxSetup({cache: false});
 
-    if (sessionStorage.getItem("employee") === true) {
+    if (sessionStorage.getItem("employee") === "true") {
         window.location.href = "Employee/index.html"
     }
 
-    displayPersonalData();
-    getServicePackages();
-    getRejectedOrders();
+    if (sessionStorage.getItem("isLoggedIn") === "true") {
+        displayPersonalData();
+        getRejectedOrders();
+        showActivationRecords();
+    } else {
+        hideLoggedInFunction();
+        displayLoginButton();
+    }
 
-    showActivationRecords();
+    getServicePackages();
+
 
     $("#selectButton").click(
         function (event) {
@@ -26,7 +32,6 @@ $(document).ready(function () {
             * */
         }
     );
-
 
 
     function displayPersonalData() {
@@ -109,9 +114,12 @@ $(document).ready(function () {
                     button.dataset.orderId = rejectedOrders[i].order_id;
                     button.id = "buyAgainButton";
                     //         input.addEventListener("click", function(){addItemToSummary(this, "OptionalProduct")});
-                    button.addEventListener('click', function(){attemptTransaction(rejectedOrders[i].order_id)});
+                    button.addEventListener('click', function () {
+                        attemptTransaction(rejectedOrders[i].order_id)
+                    });
                     table.appendChild(clone);
                 }
+                $("#id_rejected_orders_table_row").prop("hidden", false);
             } else {
                 table.style.display = "none";
                 document.getElementById("id_rejected_orders_table_title").style.display = "none";
@@ -135,12 +143,11 @@ $(document).ready(function () {
             sessionStorage.setItem('package_id', allInfo[0].package_id);
             sessionStorage.setItem('validity_period', allInfo[0].validity_period);
             sessionStorage.setItem('total_cost', allInfo[0].total_cost);
-            allInfo.splice(0,1);
+            allInfo.splice(0, 1);
             sessionStorage.setItem('optionalProducts', JSON.stringify(allInfo));
             sessionStorage.setItem('startDate', allInfo[0].startDate);
 
             sessionStorage.setItem('existingOrder', "true");
-
 
 
             window.location.href = "confirmation.html";
@@ -155,46 +162,43 @@ $(document).ready(function () {
 
         getRequest.done(function (data, textStatus, jqXHR) {
             let allOrders = jqXHR.responseJSON;
-            for(let i = 0; i < allOrders.length; i++) {
+            for (let i = 0; i < allOrders.length; i++) {
                 let oneOrder = allOrders[i];
                 //if(oneOrder.orderInfo.status == "CONFIRMED") {
-                    document.getElementById("id_schedule_name").textContent = oneOrder[0].package_name;
-                    document.getElementById("id_schedule_start").textContent = oneOrder[0].start_date;
+                document.getElementById("id_schedule_name").textContent = oneOrder[0].package_name;
+                document.getElementById("id_schedule_start").textContent = oneOrder[0].start_date;
 
-                    let start = new Date(oneOrder[0].start_date);
-                    let today = new Date();
-                    // this also manipulates start1
-                    let start1 = new Date(oneOrder[0].start_date);
-                    let end = new Date(start1.setMonth(start1.getMonth()+(12 * oneOrder[0].validity_period)));
+                let start = new Date(oneOrder[0].start_date);
+                let today = new Date();
+                // this also manipulates start1
+                let start1 = new Date(oneOrder[0].start_date);
+                let end = new Date(start1.setMonth(start1.getMonth() + (12 * oneOrder[0].validity_period)));
 
-                    if(today < start) { // future
-                        document.getElementById("id_schedule_card").className += " border-primary text-primary";
-                    } else if((today > start) & (today < end)) { // current
-                        document.getElementById("id_schedule_card").className += " border-success text-success";
-                    } else if (today > end){ // expired
-                        document.getElementById("id_schedule_card").className += " border-danger text-danger";
-                    } else {
-                        document.getElementById("id_schedule_card").className += " border-secondary text-secondary";
-                    }
-                    // border-primary, border-success, border-danger
+                if (today < start) { // future
+                    document.getElementById("id_schedule_card").className += " border-primary text-primary";
+                } else if ((today > start) & (today < end)) { // current
+                    document.getElementById("id_schedule_card").className += " border-success text-success";
+                } else if (today > end) { // expired
+                    document.getElementById("id_schedule_card").className += " border-danger text-danger";
+                } else {
+                    document.getElementById("id_schedule_card").className += " border-secondary text-secondary";
+                }
+                // border-primary, border-success, border-danger
 
-                    document.getElementById("id_schedule_end").textContent = end.toISOString().split('T')[0];
+                document.getElementById("id_schedule_end").textContent = end.toISOString().split('T')[0];
 
-                    let servicesUl = document.getElementById("id_schedule_services");
-                    for(let j = 0; j < oneOrder[1].length; j++) {
-                        let newElement = document.createElement("li");
-                        newElement.textContent = (oneOrder[1][i].type).replace("_", " ");
-                        servicesUl.append(newElement);
-                    }
-                    let optionsUl = document.getElementById("id_schedule_options");
-                    for(let j = 0; j < oneOrder[2].length; j++) {
-                            let newElement = document.createElement("li");
-                            newElement.textContent = (oneOrder[2][i].name);
-                            optionsUl.append(newElement);
-                    }
-
-
-
+                let servicesUl = document.getElementById("id_schedule_services");
+                for (let j = 0; j < oneOrder[1].length; j++) {
+                    let newElement = document.createElement("li");
+                    newElement.textContent = (oneOrder[1][i].type).replace("_", " ");
+                    servicesUl.append(newElement);
+                }
+                let optionsUl = document.getElementById("id_schedule_options");
+                for (let j = 0; j < oneOrder[2].length; j++) {
+                    let newElement = document.createElement("li");
+                    newElement.textContent = (oneOrder[2][i].name);
+                    optionsUl.append(newElement);
+                }
 
 
                 //}
@@ -218,8 +222,7 @@ $(document).ready(function () {
 
             }
 
-
-
+            $("#id_activation_schedule_row").prop("hidden", false);
         });
 
         getRequest.fail(function (data, textStatus, jqXHR) {
@@ -229,9 +232,22 @@ $(document).ready(function () {
 
     }
 
+    function hideLoggedInFunction() {
+        $("#id_rejected_orders_table_row").prop("hidden", true);
+        $("#id_activation_schedule_row").prop("hidden", true);
+    }
+    function displayLoginButton() {
+        $("#username_right_corner").prop("hidden", true);
+        $("#loginButtonRightCorner").prop("hidden", false);
+    }
+
 
 });
 
 function packageSelectButtonPressed(buttonPressed) {
     window.location.href = "./" + "buyService.html" + "?package_id=" + buttonPressed.dataset.package_id
+}
+
+function loginButtonPressed(){
+    window.location.href = "./";
 }

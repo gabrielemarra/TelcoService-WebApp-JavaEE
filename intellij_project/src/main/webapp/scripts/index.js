@@ -1,8 +1,8 @@
 $(document).ready(function () {
+
     $.ajaxSetup({cache: false});
 
     //sessionStorage.setItem('isLoggedIn', "false");
-
 
 
     $("#loginButton").click(
@@ -50,10 +50,10 @@ $(document).ready(function () {
             sessionStorage.setItem('employee', user_data.employee);
 
             //Redirect to the homepage (if user) or to employee page
-            if ((sessionStorage.getItem("pendingOrder") == "true") & (sessionStorage.getItem("employee") == "false")) {
-                window.location.href = window.location.href + "/confirmation.html";
+            if ((sessionStorage.getItem("pendingOrder") === "true") && (sessionStorage.getItem("employee") === "false")) {
+                window.location.href = "./" + "confirmation.html";
             } else {
-                window.location.href = window.location.href + jqXHR.responseJSON.new_url;
+                window.location.href = "./" + jqXHR.responseJSON.new_url;
             }
 
         });
@@ -71,7 +71,7 @@ $(document).ready(function () {
     function signup(email, name, username, password, password_confirmation) {
         if (password === password_confirmation) {
 
-            let postRequest = $.post("Signup", {email: email, password: password, username:username, name:name});
+            let postRequest = $.post("Signup", {email: email, password: password, username: username, name: name});
 
             postRequest.done(function (data, textStatus, jqXHR) {
                 //Spawn a success message after now login
@@ -92,6 +92,12 @@ $(document).ready(function () {
     }
 });
 
+function visitAsGuest() {
+    sessionStorage.setItem('isLoggedIn', "false");
+    sessionStorage.setItem('isEmployee', "false");
+
+    window.location.href = "./" + "homepage.html";
+}
 
 
 
