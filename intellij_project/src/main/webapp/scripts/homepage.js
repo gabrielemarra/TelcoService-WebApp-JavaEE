@@ -249,5 +249,5 @@ function packageSelectButtonPressed(buttonPressed) {
 }
 
 function loginButtonPressed(){
-    window.location.href = "./" + "index.html"
+    window.location.href = "./";
 }

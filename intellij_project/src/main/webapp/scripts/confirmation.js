@@ -9,7 +9,7 @@ $(document).ready(function () {
         function (event) {
             event.preventDefault();
             let isExistingOrder = sessionStorage.getItem("existingOrder");
-            if( isExistingOrder== "false") {
+            if (isExistingOrder == "false") {
                 insertNewOrder();
                 submitTransaction(false);
             } else {
@@ -22,7 +22,7 @@ $(document).ready(function () {
         function (event) {
             event.preventDefault();
             let isExistingOrder = sessionStorage.getItem("existingOrder");
-            if(sessionStorage.getItem("isExistingOrder") == "false") {
+            if (sessionStorage.getItem("isExistingOrder") == "false") {
                 insertNewOrder();
             }
             submitTransaction(true);
@@ -47,12 +47,13 @@ $(document).ready(function () {
 
 
         let postRequest = $.post("AddOrder", {
-            email: sessionStorage.getItem("email", ),
+            email: sessionStorage.getItem("email",),
             package_id: package_id,
-            validity_period:validity_period,
+            validity_period: validity_period,
             total_cost: total_cost,
             optionalProducts: optionalProducts,
-            start_date: startDate});
+            start_date: startDate
+        });
 
         postRequest.done(function (data, textStatus, jqXHR) {
             //alert("Transaction performed. Payment rejected? " + isOrderRejected);
@@ -95,7 +96,7 @@ $(document).ready(function () {
             for (let i = 1; i < package_info.length; i++) {
                 let type = package_info[i].type.replace("_", " ");
                 let cost;
-                if(period == "1") {
+                if (period == "1") {
                     cost = package_info[i].bp1;
                 } else if (period == "2") {
                     cost = package_info[i].bp2;
@@ -112,7 +113,7 @@ $(document).ready(function () {
 
     function writeTotal(tableId) {
         let total = document.getElementById(tableId).getAttribute("value");
-        if(tableId == "id_cost_services_table") {
+        if (tableId == "id_cost_services_table") {
             document.getElementById("id_monthly_services").textContent = "€" + total.toString();
         } else {
             document.getElementById("id_monthly_options2").textContent = "€" + total.toString();
@@ -130,12 +131,12 @@ $(document).ready(function () {
 
     function showOptionsInfo() {
         let options = JSON.parse(sessionStorage.getItem('optionalProducts'));
-        if(options.length == 0) {
+        if (options.length == 0) {
             document.getElementById("id_options_table2").style.display = "none";
             document.getElementById("id_monthly_options1").style.display = "none";
             document.getElementById("id_monthly_options2").style.display = "none";
         } else {
-            for(let i = 0; i < options.length; i++) {
+            for (let i = 0; i < options.length; i++) {
                 appendTable("id_cost_options_table", options[i].name, options[i].price);
             }
             writeTotal("id_cost_options_table");
@@ -144,19 +145,36 @@ $(document).ready(function () {
 
     function buttonFilter() {
         let isLoggedIn = sessionStorage.getItem("isLoggedIn");
-        if(isLoggedIn == "true") {
+        if (isLoggedIn == "true") {
             document.getElementById("idLoginRegButton").style.display = "none";
+            displayPersonalData();
         } else {
             document.getElementById("idBuyButton").style.display = "none";
             document.getElementById("idBuyButtonFail").style.display = "none";
+            displayLoginButton();
         }
     };
 
     function grandTotal(id) {
         let monthly = parseInt(document.getElementById(id).getAttribute("value"));
         let current = parseInt(document.getElementById("id_grand_total").getAttribute("value"));
-        current = current + (monthly * 12 *  parseInt(sessionStorage.getItem("validity_period")));
+        current = current + (monthly * 12 * parseInt(sessionStorage.getItem("validity_period")));
         document.getElementById("id_grand_total").setAttribute("value", current.toString());
         document.getElementById("id_grand_total").textContent = "€" + current.toString();
     };
+
+    function displayLoginButton() {
+        $("#username_right_corner").prop("hidden", true);
+        $("#loginButtonRightCorner").prop("hidden", false);
+    }
+
+    function displayPersonalData() {
+        //    Should we make a request? For now we use the stored values
+        let personalInfoString = sessionStorage.getItem("name") + " | " + sessionStorage.getItem("email")
+        $("#username_right_corner").html(personalInfoString)
+    }
 })
+
+function loginButtonPressed() {
+    window.location.href = "./";
+}
