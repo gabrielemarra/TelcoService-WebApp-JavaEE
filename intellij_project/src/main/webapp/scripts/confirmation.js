@@ -33,7 +33,7 @@ $(document).ready(function () {
         let validity_period = sessionStorage.getItem('validity_period');
         let total_cost = sessionStorage.getItem('total_cost');
         let optionalProducts = JSON.parse(sessionStorage.getItem('optionalProducts'));
-        let startDate = JSON.parse(sessionStorage.getItem('startDate'));
+        let startDate = JSON.parse(sessionStorage.getItem('startDate')).split("T")[0];
 
 
         let postRequest = $.post("PlaceNewOrder", {
@@ -73,7 +73,7 @@ $(document).ready(function () {
     }
 
     function showOrderInfo() {
-        document.getElementById("id_start_date").textContent = JSON.parse(sessionStorage.getItem('startDate'));
+        document.getElementById("id_start_date").textContent = JSON.parse(sessionStorage.getItem('startDate')).split("T")[0];
         document.getElementById("id_validity_period").textContent = (parseInt(sessionStorage.getItem('validity_period')) * 12).toString() + " months";
         let packageId = sessionStorage.getItem('package_id');
         let getRequest = $.get("GetPackage", {package_id: packageId});

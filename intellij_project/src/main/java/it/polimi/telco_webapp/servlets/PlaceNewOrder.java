@@ -60,8 +60,7 @@ public class PlaceNewOrder extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-/*
+        try {/*
             let postRequest = $.post("AddOrder", {
                     email: sessionStorage.getItem("email", ),
                     package_id: package_id,
@@ -71,13 +70,12 @@ public class PlaceNewOrder extends HttpServlet {
                     start_date: startDate});
             */
 
-
             String email = escapeJava(request.getParameter("email"));
             Integer package_id = Integer.parseInt(escapeJava(request.getParameter("package_id")));
             Integer validity = Integer.parseInt(escapeJava(request.getParameter("validity_period")));
             Float total = Float.parseFloat(escapeJava(request.getParameter("total_cost")));
             //String options = StringEscapeUtils.escapeJava(request.getParameter("optionalProducts"));
-            //LocalDate start = LocalDate.parse(StringEscapeUtils.escapeJava(request.getParameter("start_date")));
+            LocalDate startDate = LocalDate.parse(escapeJava(request.getParameter("start_date")));
             User user = userService.getUserByEmail(email);
             // do a check here that the email gotten from the request is the same user that is saved in the session?
 
@@ -86,7 +84,7 @@ public class PlaceNewOrder extends HttpServlet {
 
             // TODO: get the optional products from the get request...
             // public Order insertNewOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<OptionalProduct> optionalProductList) {
-            Order pendingOrder = orderService.insertNewOrder(LocalDate.now(), user, servicePackage, new ArrayList<OptionalProduct>(), validity);
+            Order pendingOrder = orderService.insertNewOrder(startDate, user, servicePackage, new ArrayList<OptionalProduct>(), validity);
 
             int pendingOrderId = pendingOrder.getId();
 
