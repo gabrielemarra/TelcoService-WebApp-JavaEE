@@ -1,4 +1,5 @@
 package it.polimi.telco_webapp.services;
+
 import it.polimi.telco_webapp.auxiliary.OrderStatus;
 import it.polimi.telco_webapp.entities.*;
 import jakarta.ejb.Stateless;
@@ -16,7 +17,8 @@ public class OrderService {
     @PersistenceContext(unitName = "telco_webapp")
     private EntityManager em;
 
-    public OrderService() {}
+    public OrderService() {
+    }
 
     /**
      * Create a new Order and store in the Persistence Context
@@ -27,18 +29,14 @@ public class OrderService {
      * @param optionalProductList   The optional products included in the order
      * @return The new created order
      */
-    public Order insertNewOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<OptionalProduct> optionalProductList) {
+    public Order insertNewOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<OptionalProduct> optionalProductList, Integer validityPeriod) {
         Order newOrder = new Order();
         newOrder.setPackageId(servicePackage);
         newOrder.setUser(user);
         newOrder.setSubscriptionStart(subscriptionStartDate);
         newOrder.setStatus(OrderStatus.PENDING);
         newOrder.setOptionalProductOrderedList(optionalProductList);
-
-
-
-
-
+        newOrder.setChosenValidityPeriod(validityPeriod);
 
 
         em.persist(newOrder);
@@ -81,7 +79,7 @@ public class OrderService {
     }
 
     public List<Order> getAllRejectedOrders() {
-        List <Order> orders = em.createNamedQuery("Order.getAllRejectedOrders",Order.class).getResultList();
+        List<Order> orders = em.createNamedQuery("Order.getAllRejectedOrders", Order.class).getResultList();
         if (orders == null || orders.isEmpty()) {
             throw new IllegalArgumentException("No rejected orders exist");
         }

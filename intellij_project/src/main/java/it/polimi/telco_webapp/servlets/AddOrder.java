@@ -60,7 +60,7 @@ public class AddOrder extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try{
+        try {
 /*
             let postRequest = $.post("AddOrder", {
                     email: sessionStorage.getItem("email", ),
@@ -87,11 +87,18 @@ public class AddOrder extends HttpServlet {
 
             // TODO: get the optional products from the get request...
             // public Order insertNewOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<OptionalProduct> optionalProductList) {
-            Order pendingOrder = orderService.insertNewOrder(LocalDate.now(), user, servicePackage, new ArrayList<OptionalProduct>());
+            Order pendingOrder = orderService.insertNewOrder(LocalDate.now(), user, servicePackage, new ArrayList<OptionalProduct>(), validity);
             request.getSession().setAttribute("order_id", pendingOrder.getId());
             request.getSession().setAttribute("pendingOrder_S", true);
 
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            Gson gson = new Gson();
 
+            JsonElement jsonElement = new JsonObject();
+            jsonElement.getAsJsonObject().addProperty("order_id", pendingOrder.getId());
+
+            response.getWriter().println(gson.toJson(jsonElement));
         } catch (EJBException e) {
             sendError(request, response, "NoService", e.getCause().getMessage());
 
