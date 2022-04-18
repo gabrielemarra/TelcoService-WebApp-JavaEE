@@ -1,16 +1,16 @@
 package it.polimi.telco_webapp.servlets;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import it.polimi.telco_webapp.auxiliary.ExternalPaymentService;
 import it.polimi.telco_webapp.auxiliary.OrderStatus;
 import it.polimi.telco_webapp.entities.OptionalProduct;
+import it.polimi.telco_webapp.entities.Order;
+import it.polimi.telco_webapp.entities.ServicePackage;
 import it.polimi.telco_webapp.entities.User;
 import it.polimi.telco_webapp.services.OrderService;
-import it.polimi.telco_webapp.entities.Order;
 import it.polimi.telco_webapp.services.ServicePackageService;
-import it.polimi.telco_webapp.entities.ServicePackage;
 import it.polimi.telco_webapp.services.UserService;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
@@ -19,15 +19,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
-@WebServlet(name = "AddOrder", value = "/AddOrder")
-public class AddOrder extends HttpServlet {
+import static org.apache.commons.text.StringEscapeUtils.escapeJava;
+
+@WebServlet(name = "PlaceNewOrder", value = "/PlaceNewOrder")
+public class PlaceNewOrder extends HttpServlet {
     @EJB(name = "it.polimi.db2.entities.services/OrderService")
     private OrderService orderService;
 
@@ -72,38 +72,50 @@ public class AddOrder extends HttpServlet {
             */
 
 
-            String email = StringEscapeUtils.escapeJava(request.getParameter("email"));
-            String package_id = StringEscapeUtils.escapeJava(request.getParameter("package_id"));
-            Integer validity = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("validity_period")));
-            Float total = Float.parseFloat(StringEscapeUtils.escapeJava(request.getParameter("total_cost")));
+            String email = escapeJava(request.getParameter("email"));
+            Integer package_id = Integer.parseInt(escapeJava(request.getParameter("package_id")));
+            Integer validity = Integer.parseInt(escapeJava(request.getParameter("validity_period")));
+            Float total = Float.parseFloat(escapeJava(request.getParameter("total_cost")));
             //String options = StringEscapeUtils.escapeJava(request.getParameter("optionalProducts"));
             //LocalDate start = LocalDate.parse(StringEscapeUtils.escapeJava(request.getParameter("start_date")));
             User user = userService.getUserByEmail(email);
             // do a check here that the email gotten from the request is the same user that is saved in the session?
 
-            Integer packageId = Integer.parseInt(package_id);
-            ServicePackage servicePackage = servicePackageService.getServicePackage(packageId);
+            ServicePackage servicePackage = servicePackageService.getServicePackage(package_id);
 
 
             // TODO: get the optional products from the get request...
             // public Order insertNewOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<OptionalProduct> optionalProductList) {
             Order pendingOrder = orderService.insertNewOrder(LocalDate.now(), user, servicePackage, new ArrayList<OptionalProduct>(), validity);
-            request.getSession().setAttribute("order_id", pendingOrder.getId());
-            request.getSession().setAttribute("pendingOrder_S", true);
+
+            int pendingOrderId = pendingOrder.getId();
+
+            request.getSession().setAttribute("order_id", pendingOrderId);
+
+            ExternalPaymentService externalPaymentService = new ExternalPaymentService();
+            boolean isOrderRejected = Boolean.parseBoolean(escapeJava(request.getParameter("is_order_rejected")));
+
+            if (!externalPaymentService.call(isOrderRejected)) {
+                orderService.changeOrderStatus(pendingOrderId, OrderStatus.CONFIRMED);
+            } else {
+                orderService.changeOrderStatus(pendingOrderId, OrderStatus.REJECTED);
+            }
+
+            Order newOrder = orderService.getOrder(pendingOrderId);
 
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             Gson gson = new Gson();
 
             JsonElement jsonElement = new JsonObject();
-            jsonElement.getAsJsonObject().addProperty("order_id", pendingOrder.getId());
+            jsonElement.getAsJsonObject().addProperty("order_id", newOrder.getId());
+            jsonElement.getAsJsonObject().addProperty("order_status", newOrder.getStatus().toString());
 
             response.getWriter().println(gson.toJson(jsonElement));
         } catch (EJBException e) {
             sendError(request, response, "NoService", e.getCause().getMessage());
 
         }
-
     }
 
     @Override
