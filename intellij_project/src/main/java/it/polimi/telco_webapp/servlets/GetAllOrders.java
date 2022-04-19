@@ -45,7 +45,6 @@ public class GetAllOrders extends HttpServlet {
     private OptionalProductService optionalProductService;
 
 
-
     /**
      * Method to handle errors, send json with error info
      *
@@ -84,53 +83,60 @@ public class GetAllOrders extends HttpServlet {
 
             JsonArray allOrders = new JsonArray();
 
-            List <Order> orders = orderService.getAllOrdersByUser(userService.getUserByEmail(request.getSession().getAttribute("user").toString()));
-            // For each order associated with the user:
-            for(int i = 0; i < orders.size(); i++) {
-                JsonArray oneOrder = new JsonArray();
-                JsonElement orderInfo = new JsonObject();
-                JsonArray servicesList = new JsonArray();
-                JsonArray optionsList = new JsonArray();
-                // Get the other info - JSON ELEMENT
-                orderInfo.getAsJsonObject().addProperty("status", orders.get(i).getStatus().toString());
-                orderInfo.getAsJsonObject().addProperty("start_date", orders.get(i).getSubscriptionStart().toString());
-                orderInfo.getAsJsonObject().addProperty("validity_period", orders.get(i).getChosenValidityPeriod());
-                orderInfo.getAsJsonObject().addProperty("package_name", orders.get(i).getPackageId().getName());
+            List<Order> orders = orderService.getAllOrdersByUser(userService.getUserByEmail(request.getSession().getAttribute("user").toString()));
 
-                // Collect info for each service - JSON ARRAY
-                List<Service> services = orders.get(i).getPackageId().getServices();
-                for(int j = 0; j < services.size(); j++) {
-                    JsonElement serviceJSON = new JsonObject();
-                    serviceJSON.getAsJsonObject().addProperty("type",services.get(i).getServiceType().toString());
-                    if(services.get(i).getServiceType().equals(ServiceType.Fixed_Internet) | services.get(i).getServiceType().equals(ServiceType.Mobile_Internet)) {
-                        serviceJSON.getAsJsonObject().addProperty("gig_incl", services.get(i).getGigIncluded());
-                        serviceJSON.getAsJsonObject().addProperty("gig_extra", services.get(i).getGigExtra());
-                    } else if(services.get(i).getServiceType().equals(ServiceType.Mobile_Phone) ) {
-                        serviceJSON.getAsJsonObject().addProperty("sms_incl", services.get(i).getGigIncluded());
-                        serviceJSON.getAsJsonObject().addProperty("sms_extra", services.get(i).getGigExtra());
-                        serviceJSON.getAsJsonObject().addProperty("min_incl", services.get(i).getGigIncluded());
-                        serviceJSON.getAsJsonObject().addProperty("min_extra", services.get(i).getGigExtra());
-                    } else {
-                        // nothing?
+            if (orders != null) {
+                // For each order associated with the user:
+                for (Order order : orders) {
+                    JsonArray oneOrder = new JsonArray();
+                    JsonElement orderInfo = new JsonObject();
+                    JsonArray servicesList = new JsonArray();
+                    JsonArray optionsList = new JsonArray();
+                    // Get the other info - JSON ELEMENT
+                    orderInfo.getAsJsonObject().addProperty("status", order.getStatus().toString());
+                    orderInfo.getAsJsonObject().addProperty("start_date", order.getSubscriptionStart().toString());
+                    orderInfo.getAsJsonObject().addProperty("validity_period", order.getChosenValidityPeriod());
+                    orderInfo.getAsJsonObject().addProperty("package_name", order.getPackageId().getName());
+
+                    // Collect info for each service - JSON ARRAY
+                    List<Service> services = order.getPackageId().getServices();
+                    if (services != null) {
+                        for (Service service : services) {
+                            JsonElement serviceJSON = new JsonObject();
+                            serviceJSON.getAsJsonObject().addProperty("type", service.getServiceType().toString());
+                            if (service.getServiceType().equals(ServiceType.Fixed_Internet) | service.getServiceType().equals(ServiceType.Mobile_Internet)) {
+                                serviceJSON.getAsJsonObject().addProperty("gig_incl", service.getGigIncluded());
+                                serviceJSON.getAsJsonObject().addProperty("gig_extra", service.getGigExtra());
+                            } else if (service.getServiceType().equals(ServiceType.Mobile_Phone)) {
+                                serviceJSON.getAsJsonObject().addProperty("sms_incl", service.getGigIncluded());
+                                serviceJSON.getAsJsonObject().addProperty("sms_extra", service.getGigExtra());
+                                serviceJSON.getAsJsonObject().addProperty("min_incl", service.getGigIncluded());
+                                serviceJSON.getAsJsonObject().addProperty("min_extra", service.getGigExtra());
+                            } else {
+                                // nothing?
+                            }
+                            servicesList.add(serviceJSON);
+                        }
                     }
-                    servicesList.add(serviceJSON);
+
+                    // Collect info for each option - JSON ARRAY
+                    List<OptionalProduct> options = order.getOptionalServices();
+                    if (options != null) {
+                        for (OptionalProduct optionalProduct : options) {
+                            JsonElement optionJSON = new JsonObject();
+                            optionJSON.getAsJsonObject().addProperty("name", optionalProduct.getName());
+                            optionsList.add(optionJSON);
+                        }
+                    }
+
+                    // oneOrder is a JSON array for all the info for ONE order
+                    // (order info, all services info, all options info)
+                    oneOrder.add(orderInfo);
+                    oneOrder.add(servicesList);
+                    oneOrder.add(optionsList);
+
+                    allOrders.add(oneOrder);
                 }
-
-                // Collect info for each option - JSON ARRAY
-                List<OptionalProduct> options = orders.get(i).getOptionalServices();
-                for(int j = 0; j < options.size(); j++) {
-                    JsonElement optionJSON = new JsonObject();
-                    optionJSON.getAsJsonObject().addProperty("name",options.get(i).getName());
-                    optionsList.add(optionJSON);
-                }
-
-                // oneOrder is a JSON array for all the info for ONE order
-                // (order info, all services info, all options info)
-                oneOrder.add(orderInfo);
-                oneOrder.add(servicesList);
-                oneOrder.add(optionsList);
-
-                allOrders.add(oneOrder);
             }
 
             Gson gson = new Gson();
