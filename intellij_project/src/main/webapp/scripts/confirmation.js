@@ -31,17 +31,21 @@ $(document).ready(function () {
     function insertNewOrder(isOrderRejected) {
         let package_id = sessionStorage.getItem('package_id');
         let validity_period = sessionStorage.getItem('validity_period');
-        let total_cost = sessionStorage.getItem('total_cost');
         let optionalProducts = JSON.parse(sessionStorage.getItem('optionalProducts'));
         let startDate = JSON.parse(sessionStorage.getItem('startDate')).split("T")[0];
+
+        let optionalProductsIDs = [];
+
+        for (let optionalProductsKey in optionalProducts) {
+            optionalProductsIDs.push(optionalProducts[optionalProductsKey].option_id);
+        }
 
 
         let postRequest = $.post("PlaceNewOrder", {
             email: sessionStorage.getItem("email",),
             package_id: package_id,
             validity_period: validity_period,
-            total_cost: total_cost,
-            optionalProducts: optionalProducts,
+            optionalProducts: JSON.stringify(optionalProductsIDs),
             start_date: startDate,
             is_order_rejected: isOrderRejected
         });
@@ -57,12 +61,9 @@ $(document).ready(function () {
                 displayWarningAlert("Your order has been placed but the payment process has been interrupted, please retry from the homepage");
             }
 
-            window.setTimeout(function () {
-                window.location.href = "./homepage.html";
-            }, 5000);
-
-
-            //window.location.href = "homepage.html"; //             window.location.href = "confirmation.html";
+            // window.setTimeout(function () {
+            //     window.location.href = "./homepage.html";
+            // }, 5000);
 
         });
         postRequest.fail(function (jqXHR, textStatus, errorThrown) {
