@@ -56,14 +56,14 @@ $(document).ready(function () {
 
 
             if (order_status === "CONFIRMED") {
-                displaySuccesssAlert("Your order has been placed correctly, you will be redirected to the homepage");
+                displaySuccesssAlert("Your order has been placed correctly, you will be redirected to the <a href='./homepage.html' class='alert-link'>homepage</a>");
             } else if (order_status === "REJECTED") {
-                displayWarningAlert("Your order has been placed but the payment process has been interrupted, please retry from the homepage");
+                displayWarningAlert("Your order has been placed but the payment process has been interrupted, please retry from the <a href='./homepage.html' class='alert-link'>homepage</a>");
             }
 
-            // window.setTimeout(function () {
-            //     window.location.href = "./homepage.html";
-            // }, 5000);
+            window.setTimeout(function () {
+                window.location.href = "./homepage.html";
+            }, 5000);
 
         });
         postRequest.fail(function (jqXHR, textStatus, errorThrown) {
@@ -166,13 +166,13 @@ $(document).ready(function () {
 
     function displayWarningAlert(textToDisplay) {
         $("#success_alert").prop("hidden", true);
-        $("#danger_alert_text").text(textToDisplay);
+        $("#danger_alert_text").html(textToDisplay);
         $("#danger_alert").prop("hidden", false);
     }
 
     function displaySuccesssAlert(textToDisplay) {
         $("#danger_alert").prop("hidden", true);
-        $("#success_alert_text").text(textToDisplay);
+        $("#success_alert_text").html(textToDisplay);
         $("#success_alert").prop("hidden", false);
     }
 })
