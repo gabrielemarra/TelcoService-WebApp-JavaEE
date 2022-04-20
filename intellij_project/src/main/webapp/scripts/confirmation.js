@@ -56,9 +56,13 @@ $(document).ready(function () {
 
 
             if (order_status === "CONFIRMED") {
-                displaySuccesssAlert("Your order has been placed correctly, you will be redirected to the <a href='./homepage.html' class='alert-link'>homepage</a>");
+                displaySuccesssAlert("Your order has been placed correctly, you will be redirected to the <a href='./homepage.html' class='alert-link'>homepage</a><span>  </span><div class='spinner-border text-success' style='width: 1rem; height: 1rem;' role='status'>\n" +
+                    "  <span class='visually-hidden'>Loading...</span>\n" +
+                    "</div>");
             } else if (order_status === "REJECTED") {
-                displayWarningAlert("Your order has been placed but the payment process has been interrupted, please retry from the <a href='./homepage.html' class='alert-link'>homepage</a>");
+                displayWarningAlert("Your order has been placed but the payment process has been interrupted, please retry from the <a href='./homepage.html' class='alert-link'>homepage</a> <span>  </span><div class='spinner-border text-danger' style='width: 1rem; height: 1rem;' role='status'>\n" +
+                    "  <span class='visually-hidden'>Loading...</span>\n" +
+                    "</div>");
             }
 
             window.setTimeout(function () {
