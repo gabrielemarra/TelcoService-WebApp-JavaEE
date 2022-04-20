@@ -198,13 +198,13 @@ $(document).ready(function () {
                 let servicesUl = clone.querySelector(".schedule_services");
                 for (let j = 0; j < oneOrder[1].length; j++) {
                     let newElement = document.createElement("li");
-                    newElement.textContent = (oneOrder[1][i].type).replace("_", " ");
+                    newElement.textContent = (oneOrder[1][j].type).replace("_", " ");
                     servicesUl.append(newElement);
                 }
                 let optionsUl = clone.querySelector(".schedule_optionsschedule_options");
                 for (let j = 0; j < oneOrder[2].length; j++) {
                     let newElement = document.createElement("li");
-                    newElement.textContent = (oneOrder[2][i].name);
+                    newElement.textContent = (oneOrder[2][j].name);
                     optionsUl.append(newElement);
                 }
 
