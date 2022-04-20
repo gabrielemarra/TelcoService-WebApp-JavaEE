@@ -31,9 +31,16 @@ public class Order {
     @Column(name = "subscription_start", nullable = false)
     private LocalDate subscriptionStart;
 
+ 
     @Column(name = "timestamp")
     private java.sql.Timestamp timestamp;
     //private LocalDateTime timestamp;
+
+    //@Column(name = "timestamp", nullable = false)
+    //private LocalDateTime timestamp;
+
+    //@Column(name = "total_price", nullable = false, precision = 2)
+    //private BigDecimal totalPrice;
 
     @Column(name = "chosen_validity_period", nullable = false)
     private Integer chosenValidityPeriod;
@@ -70,6 +77,16 @@ public class Order {
     public void setUser(User user) {this.user = user;}
 
     public Timestamp getTimestamp() {
+
+    //public BigDecimal getTotalPrice() {
+    //    return totalPrice;
+    //}
+
+    //public void setTotalPrice(BigDecimal totalPrice) {
+    //    this.totalPrice = totalPrice;
+    //}
+
+    //public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
