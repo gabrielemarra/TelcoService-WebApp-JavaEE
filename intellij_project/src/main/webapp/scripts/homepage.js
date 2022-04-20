@@ -169,8 +169,12 @@ $(document).ready(function () {
             for (let i = 0; i < allOrders.length; i++) {
                 let oneOrder = allOrders[i];
                 //if(oneOrder.orderInfo.status == "CONFIRMED") {
-                document.getElementById("id_schedule_name").textContent = oneOrder[0].package_name;
-                document.getElementById("id_schedule_start").textContent = oneOrder[0].start_date;
+
+                let template = document.getElementById("id_ActivationRecords");
+                let clone = template.content.cloneNode(true);
+
+                clone.querySelector(".schedule_name").textContent = oneOrder[0].package_name;
+                clone.querySelector(".schedule_start_date").textContent = oneOrder[0].start_date;
 
                 let start = new Date(oneOrder[0].start_date);
                 let today = new Date();
@@ -179,51 +183,32 @@ $(document).ready(function () {
                 let end = new Date(start1.setMonth(start1.getMonth() + (12 * oneOrder[0].validity_period)));
 
                 if (today < start) { // future
-                    document.getElementById("id_schedule_card").className += " border-primary text-primary";
-                } else if ((today > start) & (today < end)) { // current
-                    document.getElementById("id_schedule_card").className += " border-success text-success";
+                    clone.querySelector(".schedule_card").className += " border-primary text-primary";
+                } else if ((today > start) && (today < end)) { // current
+                    clone.querySelector(".schedule_card").className += " border-success text-success";
                 } else if (today > end) { // expired
-                    document.getElementById("id_schedule_card").className += " border-danger text-danger";
+                    clone.querySelector(".schedule_card").className += " border-danger text-danger";
                 } else {
-                    document.getElementById("id_schedule_card").className += " border-secondary text-secondary";
+                    clone.querySelector(".schedule_card").className += " border-secondary text-secondary";
                 }
                 // border-primary, border-success, border-danger
 
-                document.getElementById("id_schedule_end").textContent = end.toISOString().split('T')[0];
+                clone.querySelector(".schedule_end_date").textContent = end.toISOString().split('T')[0];
 
-                let servicesUl = document.getElementById("id_schedule_services");
+                let servicesUl = clone.querySelector(".schedule_services");
                 for (let j = 0; j < oneOrder[1].length; j++) {
                     let newElement = document.createElement("li");
                     newElement.textContent = (oneOrder[1][i].type).replace("_", " ");
                     servicesUl.append(newElement);
                 }
-                let optionsUl = document.getElementById("id_schedule_options");
+                let optionsUl = clone.querySelector(".schedule_optionsschedule_options");
                 for (let j = 0; j < oneOrder[2].length; j++) {
                     let newElement = document.createElement("li");
                     newElement.textContent = (oneOrder[2][i].name);
                     optionsUl.append(newElement);
                 }
 
-
-                //}
-                // oneOrder.orderInfo.status
-                // oneOrder.orderInfo.start_date
-                // oneOrder.orderInfo.package_name
-                // oneOrder.orderInfo.validity_period
-
-                // oneOrder.servicesList[i].type
-                // depending on type:
-                // oneOrder.servicesList[i].gig_incl
-                // oneOrder.servicesList[i].gig_extra
-                // OR
-                // oneOrder.servicesList[i].min_incl
-                // oneOrder.servicesList[i].min_extra
-                // oneOrder.servicesList[i].sms_incl
-                // oneOrder.servicesList[i].sms_extra
-
-                // oneOrder.optionsList[i].name
-
-
+                document.getElementById("id_activation_schedule_row").appendChild(clone);
             }
 
             $("#id_activation_schedule_row").prop("hidden", false);
@@ -240,6 +225,7 @@ $(document).ready(function () {
         $("#id_rejected_orders_table_row").prop("hidden", true);
         $("#id_activation_schedule_row").prop("hidden", true);
     }
+
     function displayLoginButton() {
         $("#username_right_corner").prop("hidden", true);
         $("#loginButtonRightCorner").prop("hidden", false);
@@ -252,6 +238,6 @@ function packageSelectButtonPressed(buttonPressed) {
     window.location.href = "./" + "buyService.html" + "?package_id=" + buttonPressed.dataset.package_id
 }
 
-function loginButtonPressed(){
+function loginButtonPressed() {
     window.location.href = "./";
 }
