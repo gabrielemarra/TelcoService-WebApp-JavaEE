@@ -121,13 +121,17 @@ $(document).ready(function () {
                 }
                 $("#id_rejected_orders_table_row").prop("hidden", false);
             } else {
+                $("#id_rejected_orders_table_row").prop("hidden", true);
                 table.style.display = "none";
                 document.getElementById("id_rejected_orders_table_title").style.display = "none";
             }
         });
 
         getResponse.fail(function (data, textStatus, errorThrown) {
-            //alert("world");
+            $("#id_rejected_orders_table_row").prop("hidden", true);
+            table.style.display = "none";
+            document.getElementById("id_rejected_orders_table_title").style.display = "none";
+            console.log("Error while retrieving Rejected Orders");
         });
     }
 
@@ -226,7 +230,7 @@ $(document).ready(function () {
         });
 
         getRequest.fail(function (data, textStatus, jqXHR) {
-            alert("failed all orders for scheudles?");
+            $("#id_activation_schedule_row").prop("hidden", true);
         });
 
 
