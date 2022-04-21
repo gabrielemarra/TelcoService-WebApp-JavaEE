@@ -10,7 +10,7 @@ import org.eclipse.persistence.annotations.ReadOnly;
 @Entity
 @Table(name = "options_ordered_prices", schema = "telco_db")
 @ReadOnly
-/* This view shows the total (monthly) amount that options add to the monthly cost of one order.
+/* This view shows the total (not monthly) amount that options add to the monthly cost of one order.
  * (IE, this amount + sales_base = sales_total)
  * */
 public class OptionsOrderedPricesView {

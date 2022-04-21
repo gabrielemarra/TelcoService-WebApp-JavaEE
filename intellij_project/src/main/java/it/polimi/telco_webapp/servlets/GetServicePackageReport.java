@@ -67,7 +67,6 @@ public class GetServicePackageReport extends HttpServlet {
                 jsonElement.getAsJsonObject().addProperty("purchases_period3", row.getPurchasesPeriod3());
                 jsonElement.getAsJsonObject().addProperty("sales_base", row.getSalesBase());
                 jsonElement.getAsJsonObject().addProperty("sales_total", row.getSalesTotal());
-                // TODO: include the query/view that calculates the avg num of options sold with each pkg
                 jsonElement.getAsJsonObject().addProperty("avg_options", row.getAvgOptionsOrdered());
                 
                 jsonArray.add(jsonElement);

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import it.polimi.telco_webapp.entities.OptionsOrderedPricesView;
 import it.polimi.telco_webapp.services.*;
 import it.polimi.telco_webapp.entities.SuspendedOrdersView;
 import jakarta.ejb.EJB;
@@ -19,12 +20,19 @@ import java.util.List;
 
 @WebServlet(name = "GetRejectedOrdersReport", value = "/GetRejectedOrdersReport")
 public class GetRejectedOrdersReport extends HttpServlet {
-    @EJB(name = "it.polimi.db2.entities.services/ServicePackageViewService")
+    @EJB(name = "it.polimi.db2.entities.services/SuspendedOrdersViewService")
     private SuspendedOrdersViewService viewService;
     @EJB(name = "it.polimi.db2.entities.services/UserService")
     private UserService userService;
     @EJB(name = "it.polimi.db2.entities.services/ServicePackageService")
     private ServicePackageService packageService;
+
+    @EJB(name = "it.polimi.db2.entities.services/PackagePricesViewService")
+    private PackagePricesViewService pkgPricesViewService;
+    @EJB(name = "it.polimi.db2.entities.services/OptionsOrderedPricesView")
+    private OptionsOrderedPricesView optPricesViewService;
+
+
 
 
 
@@ -65,7 +73,10 @@ public class GetRejectedOrdersReport extends HttpServlet {
                 jsonElement.getAsJsonObject().addProperty("user_name", userService.getUserById(row.getUserId()).getName());
                 jsonElement.getAsJsonObject().addProperty("package_id", row.getPackageId());
                 jsonElement.getAsJsonObject().addProperty("package_name", packageService.getServicePackage(row.getPackageId()).getName());
-                //jsonElement.getAsJsonObject().addProperty("total", row.getTotal());
+
+                // total for one rejected order is package base price (validity, package_id) + options ordered (order_id)
+                float orderTotal = pkgPricesViewService.getBasePrice(row.getPackageId(), row.getValidity()) + optPricesViewService.getSumOfSales();
+                jsonElement.getAsJsonObject().addProperty("total", orderTotal);
                 jsonArray.add(jsonElement);
             }
             response.getWriter().println(gson.toJson(jsonArray));

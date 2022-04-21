@@ -21,9 +21,12 @@ public class SuspendedOrdersView {
     private int user_id;
     @Column
     private int package_id;
+    @Column
+    private int validity;
 
     public int getOrderId(){return order_id;}
     public int getUserId(){return user_id;}
     public int getPackageId(){return package_id;}
+    public int getValidity() {return validity;}
     /* Since this is a view, the data is read-only. No setters. */
 }
