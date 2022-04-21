@@ -65,7 +65,7 @@ public class GetRejectedOrdersReport extends HttpServlet {
                 jsonElement.getAsJsonObject().addProperty("user_name", userService.getUserById(row.getUserId()).getName());
                 jsonElement.getAsJsonObject().addProperty("package_id", row.getPackageId());
                 jsonElement.getAsJsonObject().addProperty("package_name", packageService.getServicePackage(row.getPackageId()).getName());
-                jsonElement.getAsJsonObject().addProperty("total", row.getTotal());
+                //jsonElement.getAsJsonObject().addProperty("total", row.getTotal());
                 jsonArray.add(jsonElement);
             }
             response.getWriter().println(gson.toJson(jsonArray));

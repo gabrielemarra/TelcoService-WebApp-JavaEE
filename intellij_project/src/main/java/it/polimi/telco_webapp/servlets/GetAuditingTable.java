@@ -61,7 +61,7 @@ public class GetAuditingTable extends HttpServlet {
                 jsonElement.getAsJsonObject().addProperty("user_id", oneRow.getUserId());
                 jsonElement.getAsJsonObject().addProperty("username", oneRow.getUsername());
                 jsonElement.getAsJsonObject().addProperty("email", oneRow.getEmail());
-                jsonElement.getAsJsonObject().addProperty("delinq_amount", oneRow.getDelinquentAmount());
+                //jsonElement.getAsJsonObject().addProperty("delinq_amount", oneRow.getDelinquentAmount());
                 jsonElement.getAsJsonObject().addProperty("num_rej", oneRow.getNumRejected());
                 allAlerts.add(jsonElement);
             }

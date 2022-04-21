@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "optional_product", schema = "telco_db")
 @NamedQuery(name = "OptionalProduct.getAllAvailableOptions", query = "SELECT o FROM OptionalProduct o")
-
 public class OptionalProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

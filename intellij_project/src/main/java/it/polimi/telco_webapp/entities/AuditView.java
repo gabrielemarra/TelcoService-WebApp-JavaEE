@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "audit", schema = "telco_db")
 @ReadOnly
+/* This view is the auditing table for the employee user. When a user is has three or more
+* rejected orders, the user is added to this auditing table.
+* */
 public class AuditView {
 
     @Id
@@ -21,8 +24,6 @@ public class AuditView {
     @Column
     private String email;
     @Column
-    private float amount;
-    @Column
     private LocalDateTime last;
     @Column
     private int num_rejected;
@@ -31,7 +32,6 @@ public class AuditView {
     public int getUserId(){return user_id;}
     public String getUsername(){return username;}
     public String getEmail(){return email;}
-    public float getDelinquentAmount() {return amount;}
     public LocalDateTime getLastTimestamp() {return last;}
     public int getNumRejected() {return num_rejected;}
 

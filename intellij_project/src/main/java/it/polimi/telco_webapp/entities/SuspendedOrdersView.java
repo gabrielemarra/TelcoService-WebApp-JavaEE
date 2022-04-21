@@ -10,6 +10,9 @@ import org.eclipse.persistence.annotations.ReadOnly;
 @Entity
 @Table(name = "suspended_orders_view", schema = "telco_db")
 @ReadOnly
+/* TODO: can we delete this view?
+* */
+
 public class SuspendedOrdersView {
 
     @Id
@@ -18,13 +21,9 @@ public class SuspendedOrdersView {
     private int user_id;
     @Column
     private int package_id;
-    @Column
-    private float total;
 
     public int getOrderId(){return order_id;}
     public int getUserId(){return user_id;}
     public int getPackageId(){return package_id;}
-    public float getTotal() {return total;}
-
     /* Since this is a view, the data is read-only. No setters. */
 }
