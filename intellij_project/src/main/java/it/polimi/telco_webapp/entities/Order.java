@@ -17,6 +17,7 @@ import java.util.List;
 @NamedQuery(name = "Order.getAllOrdersByPackage", query = "SELECT o FROM Order o WHERE o.packageId = ?1")
 @NamedQuery(name = "Order.getAllOrdersByOption", query = "SELECT o FROM Order o WHERE o.optionalProductOrderedList = ?1")
 @NamedQuery(name = "Order.getAllOrdersByUser", query = "SELECT o FROM Order o WHERE o.user = ?1")
+
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

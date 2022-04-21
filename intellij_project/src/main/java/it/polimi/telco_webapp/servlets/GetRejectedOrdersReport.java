@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.telco_webapp.entities.OptionsOrderedPricesView;
+import it.polimi.telco_webapp.entities.OrdersAndCostsView;
 import it.polimi.telco_webapp.services.*;
 import it.polimi.telco_webapp.entities.SuspendedOrdersView;
 import jakarta.ejb.EJB;
@@ -26,13 +27,6 @@ public class GetRejectedOrdersReport extends HttpServlet {
     private UserService userService;
     @EJB(name = "it.polimi.db2.entities.services/ServicePackageService")
     private ServicePackageService packageService;
-
-    @EJB(name = "it.polimi.db2.entities.services/PackagePricesViewService")
-    private PackagePricesViewService pkgPricesViewService;
-    @EJB(name = "it.polimi.db2.entities.services/OptionsOrderedPricesView")
-    private OptionsOrderedPricesView optPricesViewService;
-
-
 
 
 
@@ -73,10 +67,7 @@ public class GetRejectedOrdersReport extends HttpServlet {
                 jsonElement.getAsJsonObject().addProperty("user_name", userService.getUserById(row.getUserId()).getName());
                 jsonElement.getAsJsonObject().addProperty("package_id", row.getPackageId());
                 jsonElement.getAsJsonObject().addProperty("package_name", packageService.getServicePackage(row.getPackageId()).getName());
-
-                // total for one rejected order is package base price (validity, package_id) + options ordered (order_id)
-                float orderTotal = pkgPricesViewService.getBasePrice(row.getPackageId(), row.getValidity()) + optPricesViewService.getSumOfSales();
-                jsonElement.getAsJsonObject().addProperty("total", orderTotal);
+                jsonElement.getAsJsonObject().addProperty("total", row.getAmount());
                 jsonArray.add(jsonElement);
             }
             response.getWriter().println(gson.toJson(jsonArray));

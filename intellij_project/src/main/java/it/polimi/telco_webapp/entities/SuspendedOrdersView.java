@@ -22,11 +22,11 @@ public class SuspendedOrdersView {
     @Column
     private int package_id;
     @Column
-    private int validity;
+    private float delinquent_amount;
 
     public int getOrderId(){return order_id;}
     public int getUserId(){return user_id;}
     public int getPackageId(){return package_id;}
-    public int getValidity() {return validity;}
+    public float getAmount() {return delinquent_amount;}
     /* Since this is a view, the data is read-only. No setters. */
 }

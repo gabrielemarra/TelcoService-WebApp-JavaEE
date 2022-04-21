@@ -27,6 +27,8 @@ public class AuditView {
     private LocalDateTime last;
     @Column
     private int num_rejected;
+    @Column
+    private float totalAmount;
 
 
     public int getUserId(){return user_id;}
@@ -34,6 +36,8 @@ public class AuditView {
     public String getEmail(){return email;}
     public LocalDateTime getLastTimestamp() {return last;}
     public int getNumRejected() {return num_rejected;}
+    public float getTotal() {return totalAmount;}
+
 
     /* Since this is a view, the data is read-only. No setters. */
 }
