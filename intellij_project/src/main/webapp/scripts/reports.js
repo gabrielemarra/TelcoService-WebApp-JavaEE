@@ -142,6 +142,8 @@ $(document).ready(function () {
                 alertInfo[2].textContent = response[i].delinq_amount
                 alertInfo[3].textContent = response[i].num_rej
 
+                table.appendChild(clone);
+
             }
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
