@@ -108,8 +108,7 @@ $(document).ready(function () {
                     let divs = clone.querySelectorAll("td");
                     divs[0].textContent = rejectedOrders[i].order_id;
                     divs[1].textContent = rejectedOrders[i].service_package_name;
-                    divs[2].textContent = rejectedOrders[i].total_price;
-                    let button = divs[3].querySelector("button");
+                    let button = divs[2].querySelector("button");
                     // this dataset val may not be necessary since we can pass it as a param to the event listener directly
                     button.dataset.orderId = rejectedOrders[i].order_id;
                     button.id = "buyAgainButton";
