@@ -1,8 +1,8 @@
 package it.polimi.telco_webapp.auxiliary;
 
-public class ExternalService {
+public class ExternalPaymentService {
 
-    public ExternalService() {
+    public ExternalPaymentService() {
     }
     public boolean call(boolean isPurchaseSuccessful) {
         return isPurchaseSuccessful;

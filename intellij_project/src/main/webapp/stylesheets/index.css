@@ -1,10 +1,20 @@
-.login-container {
-    margin-top: 5%;
-    margin-bottom: 5%;
+html, body {
+    height: 97%;
 }
 
+.login-container {
+    margin-top: 2%;
+    /*margin-bottom: 3%;*/
+    overflow-y: auto;
+    height: 95%;
+}
+
+/*.login-row{*/
+/*    height: 50vh;*/
+/*}*/
+
 .login-form-1 {
-    padding: 5%;
+    padding: 4%;
     box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -14,7 +24,7 @@
 }
 
 .signup-form {
-    padding: 5%;
+    padding: 4%;
     background: #0062cc;
     box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
 }
@@ -25,7 +35,7 @@
 }
 
 .login-container form {
-    padding: 10%;
+    padding: 4%;
 }
 
 .btnSubmit {

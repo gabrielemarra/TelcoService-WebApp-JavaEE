@@ -4,6 +4,7 @@ import it.polimi.telco_webapp.auxiliary.OrderStatus;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,11 +32,16 @@ public class Order {
     @Column(name = "subscription_start", nullable = false)
     private LocalDate subscriptionStart;
 
-    @Column(name = "timestamp", nullable = false)
-    private LocalDateTime timestamp;
+ 
+    @Column(name = "timestamp")
+    private java.sql.Timestamp timestamp;
+    //private LocalDateTime timestamp;
 
-    @Column(name = "total_price", nullable = false, precision = 2)
-    private BigDecimal totalPrice;
+    //@Column(name = "timestamp", nullable = false)
+    //private LocalDateTime timestamp;
+
+    //@Column(name = "total_price", nullable = false, precision = 2)
+    //private BigDecimal totalPrice;
 
     @Column(name = "chosen_validity_period", nullable = false)
     private Integer chosenValidityPeriod;
@@ -71,20 +77,18 @@ public class Order {
 
     public void setUser(User user) {this.user = user;}
 
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
+    public Timestamp getTimestamp() {
 
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
-    }
+    //public BigDecimal getTotalPrice() {
+    //    return totalPrice;
+    //}
 
-    public LocalDateTime getTimestamp() {
+    //public void setTotalPrice(BigDecimal totalPrice) {
+    //    this.totalPrice = totalPrice;
+    //}
+
+    //public LocalDateTime getTimestamp() {
         return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
     }
 
     public LocalDate getSubscriptionStart() {

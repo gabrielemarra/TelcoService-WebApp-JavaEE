@@ -1,15 +1,21 @@
 $(document).ready(function () {
     $.ajaxSetup({cache: false});
 
-    if (sessionStorage.getItem("employee") === true) {
+    if (sessionStorage.getItem("employee") === "true") {
         window.location.href = "Employee/index.html"
     }
 
-    displayPersonalData();
-    getServicePackages();
-    getRejectedOrders();
+    if (sessionStorage.getItem("isLoggedIn") === "true") {
+        displayPersonalData();
+        getRejectedOrders();
+        showActivationRecords();
+    } else {
+        hideLoggedInFunction();
+        displayLoginButton();
+    }
 
-    showActivationRecords();
+    getServicePackages();
+
 
     $("#selectButton").click(
         function (event) {
@@ -26,7 +32,6 @@ $(document).ready(function () {
             * */
         }
     );
-
 
 
     function displayPersonalData() {
@@ -109,17 +114,24 @@ $(document).ready(function () {
                     button.dataset.orderId = rejectedOrders[i].order_id;
                     button.id = "buyAgainButton";
                     //         input.addEventListener("click", function(){addItemToSummary(this, "OptionalProduct")});
-                    button.addEventListener('click', function(){attemptTransaction(rejectedOrders[i].order_id)});
+                    button.addEventListener('click', function () {
+                        attemptTransaction(rejectedOrders[i].order_id)
+                    });
                     table.appendChild(clone);
                 }
+                $("#id_rejected_orders_table_row").prop("hidden", false);
             } else {
+                $("#id_rejected_orders_table_row").prop("hidden", true);
                 table.style.display = "none";
                 document.getElementById("id_rejected_orders_table_title").style.display = "none";
             }
         });
 
         getResponse.fail(function (data, textStatus, errorThrown) {
-            //alert("world");
+            $("#id_rejected_orders_table_row").prop("hidden", true);
+            table.style.display = "none";
+            document.getElementById("id_rejected_orders_table_title").style.display = "none";
+            console.log("Error while retrieving Rejected Orders");
         });
     }
 
@@ -132,12 +144,16 @@ $(document).ready(function () {
             let allInfo = jqXHR.responseJSON;
             sessionStorage.setItem('order_id', order_id);
 
-            sessionStorage.setItem('startDate', allInfo[0].startDate);
-            sessionStorage.setItem('total_cost', allInfo[0].total_cost);
             sessionStorage.setItem('package_id', allInfo[0].package_id);
             sessionStorage.setItem('validity_period', allInfo[0].validity_period);
-            allInfo.splice(0,1);
+            sessionStorage.setItem('total_cost', allInfo[0].total_cost);
+            allInfo.splice(0, 1);
             sessionStorage.setItem('optionalProducts', JSON.stringify(allInfo));
+            sessionStorage.setItem('startDate', allInfo[0].startDate);
+
+            sessionStorage.setItem('existingOrder', "true");
+
+
             window.location.href = "confirmation.html";
         });
         getRequest.fail(function (data, textStatus, jqXHR) {
@@ -150,78 +166,69 @@ $(document).ready(function () {
 
         getRequest.done(function (data, textStatus, jqXHR) {
             let allOrders = jqXHR.responseJSON;
-            for(let i = 0; i < allOrders.length; i++) {
+            for (let i = 0; i < allOrders.length; i++) {
                 let oneOrder = allOrders[i];
                 //if(oneOrder.orderInfo.status == "CONFIRMED") {
-                    document.getElementById("id_schedule_name").textContent = oneOrder[0].package_name;
-                    document.getElementById("id_schedule_start").textContent = oneOrder[0].start_date;
 
-                    let start = new Date(oneOrder[0].start_date);
-                    let today = new Date();
-                    // this also manipulates start1
-                    let start1 = new Date(oneOrder[0].start_date);
-                    let end = new Date(start1.setMonth(start1.getMonth()+(12 * oneOrder[0].validity_period)));
+                let template = document.getElementById("id_ActivationRecords");
+                let clone = template.content.cloneNode(true);
 
-                    if(today < start) { // future
-                        document.getElementById("id_schedule_card").className += " border-primary text-primary";
-                    } else if((today > start) & (today < end)) { // current
-                        document.getElementById("id_schedule_card").className += " border-success text-success";
-                    } else if (today > end){ // expired
-                        document.getElementById("id_schedule_card").className += " border-danger text-danger";
-                    } else {
-                        document.getElementById("id_schedule_card").className += " border-secondary text-secondary";
-                    }
-                    // border-primary, border-success, border-danger
+                clone.querySelector(".schedule_name").textContent = oneOrder[0].package_name;
+                clone.querySelector(".schedule_start_date").textContent = oneOrder[0].start_date;
 
-                    document.getElementById("id_schedule_end").textContent = end.toISOString().split('T')[0];
+                let start = new Date(oneOrder[0].start_date);
+                let today = new Date();
+                // this also manipulates start1
+                let start1 = new Date(oneOrder[0].start_date);
+                let end = new Date(start1.setMonth(start1.getMonth() + (12 * oneOrder[0].validity_period)));
 
-                    let servicesUl = document.getElementById("id_schedule_services");
-                    for(let j = 0; j < oneOrder[1].length; j++) {
-                        let newElement = document.createElement("li");
-                        newElement.textContent = (oneOrder[1][i].type).replace("_", " ");
-                        servicesUl.append(newElement);
-                    }
-                    let optionsUl = document.getElementById("id_schedule_options");
-                    for(let j = 0; j < oneOrder[2].length; j++) {
-                            let newElement = document.createElement("li");
-                            newElement.textContent = (oneOrder[2][i].name);
-                            optionsUl.append(newElement);
-                    }
+                if (today < start) { // future
+                    clone.querySelector(".schedule_card").className += " border-primary text-primary";
+                } else if ((today > start) && (today < end)) { // current
+                    clone.querySelector(".schedule_card").className += " border-success text-success";
+                } else if (today > end) { // expired
+                    clone.querySelector(".schedule_card").className += " border-danger text-danger";
+                } else {
+                    clone.querySelector(".schedule_card").className += " border-secondary text-secondary";
+                }
+                // border-primary, border-success, border-danger
 
+                clone.querySelector(".schedule_end_date").textContent = end.toISOString().split('T')[0];
 
+                let servicesUl = clone.querySelector(".schedule_services");
+                for (let j = 0; j < oneOrder[1].length; j++) {
+                    let newElement = document.createElement("li");
+                    newElement.textContent = (oneOrder[1][j].type).replace("_", " ");
+                    servicesUl.append(newElement);
+                }
+                let optionsUl = clone.querySelector(".schedule_optionsschedule_options");
+                for (let j = 0; j < oneOrder[2].length; j++) {
+                    let newElement = document.createElement("li");
+                    newElement.textContent = (oneOrder[2][j].name);
+                    optionsUl.append(newElement);
+                }
 
-
-
-                //}
-                // oneOrder.orderInfo.status
-                // oneOrder.orderInfo.start_date
-                // oneOrder.orderInfo.package_name
-                // oneOrder.orderInfo.validity_period
-
-                // oneOrder.servicesList[i].type
-                // depending on type:
-                // oneOrder.servicesList[i].gig_incl
-                // oneOrder.servicesList[i].gig_extra
-                // OR
-                // oneOrder.servicesList[i].min_incl
-                // oneOrder.servicesList[i].min_extra
-                // oneOrder.servicesList[i].sms_incl
-                // oneOrder.servicesList[i].sms_extra
-
-                // oneOrder.optionsList[i].name
-
-
+                document.getElementById("id_activation_schedule_row").appendChild(clone);
             }
 
-
-
+            $("#id_activation_schedule_row").prop("hidden", false);
         });
 
         getRequest.fail(function (data, textStatus, jqXHR) {
-            alert("failed all orders for scheudles?");
+            $("#id_activation_schedule_row").prop("hidden", true);
         });
 
 
+    }
+
+    function hideLoggedInFunction() {
+        $("#id_rejected_orders_table_row").prop("hidden", true);
+        $("#id_activation_schedule_row").prop("hidden", true);
+    }
+
+    function displayLoginButton() {
+        $("#username_right_corner").prop("hidden", true);
+        $("#loginButtonRightCorner").prop("hidden", false);
     }
 
 
@@ -229,4 +236,8 @@ $(document).ready(function () {
 
 function packageSelectButtonPressed(buttonPressed) {
     window.location.href = "./" + "buyService.html" + "?package_id=" + buttonPressed.dataset.package_id
+}
+
+function loginButtonPressed() {
+    window.location.href = "./";
 }

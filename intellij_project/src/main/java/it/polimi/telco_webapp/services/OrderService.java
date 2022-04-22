@@ -1,4 +1,5 @@
 package it.polimi.telco_webapp.services;
+
 import it.polimi.telco_webapp.auxiliary.OrderStatus;
 import it.polimi.telco_webapp.entities.*;
 import jakarta.ejb.Stateless;
@@ -16,7 +17,8 @@ public class OrderService {
     @PersistenceContext(unitName = "telco_webapp")
     private EntityManager em;
 
-    public OrderService() {}
+    public OrderService() {
+    }
 
     /**
      * Create a new Order and store in the Persistence Context
@@ -27,47 +29,15 @@ public class OrderService {
      * @param optionalProductList   The optional products included in the order
      * @return The new created order
      */
-    public Order insertNewOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<OptionalProduct> optionalProductList) {
+    public Order insertNewOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<OptionalProduct> optionalProductList, Integer validityPeriod) {
         Order newOrder = new Order();
         newOrder.setPackageId(servicePackage);
         newOrder.setUser(user);
         newOrder.setSubscriptionStart(subscriptionStartDate);
         newOrder.setStatus(OrderStatus.PENDING);
-
-        //Check if the OptionalProducts are available for the selected ServicePackage OR null, then add the opt. prod. list to the order
-        //if (optionalProductList == null || !servicePackage.getOptionalProducts().containsAll(optionalProductList)) {
-        //    throw new IllegalArgumentException("Some selected Optional Products are not compatible with the selected Service Package");
-        //}
         newOrder.setOptionalProductOrderedList(optionalProductList);
+        newOrder.setChosenValidityPeriod(validityPeriod);
 
-        //Extract the prices from the selected optional products
-        List<BigDecimal> optionalProductPriceList = new ArrayList<>();
-        for (OptionalProduct optionalProduct : optionalProductList) {
-            optionalProductPriceList.add(optionalProduct.getPrice());
-        }
-
-        //Sum all the priceI don't know if this works, it's a mess working with BigDecimal
-        BigDecimal optionalProductsPrice = optionalProductPriceList.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        //Extract the correct prices from the services included in the service package
-        List<BigDecimal> servicesPriceList = new ArrayList<>();
-        List <Service> dummy = new ArrayList<>();
-        for (Service service : dummy){//servicePackage.getServices()) {
-            switch (servicePackage.getValidityPeriod()) {
-                case 1:
-                    servicesPriceList.add(BigDecimal.valueOf(service.getBasePrice1()));
-                case 2:
-                    servicesPriceList.add(BigDecimal.valueOf(service.getBasePrice2()));
-                case 3:
-                    servicesPriceList.add(BigDecimal.valueOf(service.getBasePrice3()));
-            }
-        }
-        //Sum all the price of the services included in the service package
-        BigDecimal servicesPrice = servicesPriceList.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        BigDecimal totalPrice = servicesPrice.add(optionalProductsPrice);
-
-        newOrder.setTotalPrice(totalPrice);
 
         em.persist(newOrder);
         em.flush();
@@ -109,7 +79,7 @@ public class OrderService {
     }
 
     public List<Order> getAllRejectedOrders() {
-        List <Order> orders = em.createNamedQuery("Order.getAllRejectedOrders",Order.class).getResultList();
+        List<Order> orders = em.createNamedQuery("Order.getAllRejectedOrders", Order.class).getResultList();
         if (orders == null || orders.isEmpty()) {
             throw new IllegalArgumentException("No rejected orders exist");
         }
