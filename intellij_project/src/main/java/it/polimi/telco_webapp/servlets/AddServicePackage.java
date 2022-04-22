@@ -61,15 +61,17 @@ public class AddServicePackage extends HttpServlet {
 
         try{
 
-        List<Service> services = new ArrayList<>();
-        for(int i = 0; i < serviceIds.length; i++) {
-            services.add(serviceService.getService(Integer.parseInt(serviceIds[i])));
-        }
+            List<Service> services = new ArrayList<>();
+            for(int i = 0; i < serviceIds.length; i++) {
+                services.add(serviceService.getService(Integer.parseInt(serviceIds[i])));
+            }
 
-        List<OptionalProduct> options = new ArrayList<>();
-        for(int i = 0; i < optionIds.length; i++) {
-            options.add(optionService.getOption(Integer.parseInt(optionIds[i])));
-        }
+            List<OptionalProduct> options = new ArrayList<>();
+            if(options.size() > 0) {
+                for(int i = 0; i < optionIds.length; i++) {
+                    options.add(optionService.getOption(Integer.parseInt(optionIds[i])));
+                }
+            }
 
             ServicePackage servicePackage = servicePackageService.insertNewServicePackage(name, period, options, services);
         } catch (EJBException e) {
