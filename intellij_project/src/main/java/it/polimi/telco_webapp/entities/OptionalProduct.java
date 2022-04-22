@@ -20,12 +20,12 @@ public class OptionalProduct {
     @Column(name = "price", nullable = false, precision = 2)
     private BigDecimal price;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "optional_product_ordered", joinColumns = @JoinColumn(name = "opt_id"),
             inverseJoinColumns = @JoinColumn(name = "order_id"))
     private List<Order> orders;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "opt_id"),
             inverseJoinColumns = @JoinColumn(name = "package_id"))
     private List<ServicePackage> packages;
