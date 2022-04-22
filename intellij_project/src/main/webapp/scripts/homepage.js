@@ -167,7 +167,8 @@ $(document).ready(function () {
             let allOrders = jqXHR.responseJSON;
             for (let i = 0; i < allOrders.length; i++) {
                 let oneOrder = allOrders[i];
-                //if(oneOrder.orderInfo.status == "CONFIRMED") {
+                if(oneOrder[0].status != "REJECTED") {
+
 
                 let template = document.getElementById("id_ActivationRecords");
                 let clone = template.content.cloneNode(true);
@@ -208,6 +209,7 @@ $(document).ready(function () {
                 }
 
                 document.getElementById("id_activation_schedule_row").appendChild(clone);
+                }
             }
 
             $("#id_activation_schedule_row").prop("hidden", false);
