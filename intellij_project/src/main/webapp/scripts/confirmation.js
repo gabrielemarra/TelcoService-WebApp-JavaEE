@@ -8,14 +8,37 @@ $(document).ready(function () {
     $("#idBuyButton").click(
         function (event) {
             event.preventDefault();
-            insertNewOrder(false);
+            let isExistingOrder = sessionStorage.getItem("existingOrder");
+            if(isExistingOrder == "false") {
+                insertNewOrder(false);
+            } else {
+                submitTransaction(false);
+            }
         }
     );
+
+    function submitTransaction(isOrderRejected) {
+        let orderID = sessionStorage.getItem("order_id");
+        let postRequest = $.post("Transact", {isOrderRejected: isOrderRejected, order_id: orderID});
+        postRequest.done(function (data, textStatus, jqXHR) {
+            //alert("Transaction performed. Payment rejected? " + isOrderRejected);
+            window.location.href = "homepage.html"; //             window.location.href = "confirmation.html";
+            sessionStorage.setItem("pendingOrder", "false");
+        });
+        postRequest.fail(function (jqXHR, textStatus, errorThrown) {
+            //alert("Transaction failed");
+        });
+    };
 
     $("#idBuyButtonFail").click(
         function (event) {
             event.preventDefault();
-            insertNewOrder(true);
+            let isExistingOrder = sessionStorage.getItem("existingOrder");
+            if(isExistingOrder == "false") {
+                insertNewOrder(true);
+            } else {
+                submitTransaction(true);
+            }
         }
     );
 
@@ -78,7 +101,7 @@ $(document).ready(function () {
     }
 
     function showOrderInfo() {
-        document.getElementById("id_start_date").textContent = JSON.parse(sessionStorage.getItem('startDate')).split("T")[0];
+        //document.getElementById("id_start_date").textContent = JSON.parse(sessionStorage.getItem('startDate')).split("T")[0];
         document.getElementById("id_validity_period").textContent = (parseInt(sessionStorage.getItem('validity_period')) * 12).toString() + " months";
         let packageId = sessionStorage.getItem('package_id');
         let getRequest = $.get("GetPackage", {package_id: packageId});
@@ -124,12 +147,13 @@ $(document).ready(function () {
     }
 
     function showOptionsInfo() {
-        let options = JSON.parse(sessionStorage.getItem('optionalProducts'));
-        if (options.length === 0) {
+        let items = sessionStorage.getItem('optionalProducts');
+        if (items == null | items == "" | items.length === 0) {
             document.getElementById("id_options_table2").style.display = "none";
             document.getElementById("id_monthly_options1").style.display = "none";
             document.getElementById("id_monthly_options2").style.display = "none";
         } else {
+            let options = JSON.parse(items);
             for (let i = 0; i < options.length; i++) {
                 appendTable("id_cost_options_table", options[i].name, options[i].price);
             }
