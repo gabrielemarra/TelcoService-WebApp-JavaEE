@@ -238,9 +238,11 @@ $(document).ready(function () {
 
     function updateSummaryEndingDate() {
         if (startingDateSelected != null) {
-            let year = startingDateSelected.getFullYear();
-            let endingDate = new Date(startingDateSelected);
-            endingDate.setFullYear(year + validityPeriodSelected);
+            //let year = startingDateSelected.getFullYear();
+            //let endingDate = new Date(startingDateSelected);
+            //endingDate.setFullYear(year + validityPeriodSelected);
+            let endingDate = new Date(startingDateSelected.setMonth(startingDateSelected.getMonth() + (12 * validityPeriodSelected)));
+            endingDate.setDate(endingDate.getDate() - 1);
             $("#summary_ending_date").text(endingDate.toDateString());
         }
     }

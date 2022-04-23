@@ -185,6 +185,7 @@ $(document).ready(function () {
                 // this also manipulates start1
                 let start1 = new Date(oneOrder[0].start_date);
                 let end = new Date(start1.setMonth(start1.getMonth() + (12 * oneOrder[0].validity_period)));
+                end.setDate(end.getDate() - 1);
 
                 if (today < start) { // future
                     clone.querySelector(".schedule_card").className += " border-primary text-primary";
