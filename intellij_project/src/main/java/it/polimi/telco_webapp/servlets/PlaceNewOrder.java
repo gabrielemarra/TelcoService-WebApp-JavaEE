@@ -104,7 +104,7 @@ public class PlaceNewOrder extends HttpServlet {
 
             // TODO: Caused by: java.lang.NullPointerException: Cannot invoke "it.polimi.telco_webapp.entities.OptionsPricesView.getSumOfOptionsPurchased()" because the return value of "jakarta.persistence.EntityManager.find(java.lang.Class, Object)" is null
 
-            Order pendingOrder = orderService.insertNewOrder(startDate, user, servicePackage, new ArrayList<OptionalProduct>(), validity);
+            Order pendingOrder = orderService.insertNewOrder(startDate, user, servicePackage, optionalProductList, validity);
 
             int pendingOrderId = pendingOrder.getId();
 
