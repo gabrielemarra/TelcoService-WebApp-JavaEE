@@ -12,6 +12,10 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "package_prices", schema = "telco_db")
 @ReadOnly
+/* The three price tiers for the packages are FIXED, therefore this view compiles them here for
+* easy access.
+*
+* */
 public class PackagePricesView {
 
     @Id

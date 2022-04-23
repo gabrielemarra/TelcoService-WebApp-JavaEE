@@ -10,6 +10,7 @@ import it.polimi.telco_webapp.entities.ServicePackage;
 import it.polimi.telco_webapp.entities.User;
 import it.polimi.telco_webapp.services.OptionsPricesViewService;
 import it.polimi.telco_webapp.services.PackagePricesViewService;
+import it.polimi.telco_webapp.services.SuspendedOrdersViewService;
 import it.polimi.telco_webapp.services.UserService;
 import it.polimi.telco_webapp.entities.Order;
 import jakarta.ejb.EJB;
@@ -31,12 +32,6 @@ import static java.lang.Integer.parseInt;
 public class GetRejectedOrders extends HttpServlet {
     @EJB(name = "it.polimi.db2.entities.services/UserService")
     private UserService userService;
-
-    @EJB(name = "it.polimi.db2.entities.services/OptionsPricesViewService")
-    private OptionsPricesViewService optionsPricesService;
-
-    @EJB(name = "it.polimi.db2.entities.services/PackagePricesViewService")
-    private PackagePricesViewService packagePricesViewService;
 
     /**
      * Method to handle errors, send json with error info
@@ -90,9 +85,6 @@ public class GetRejectedOrders extends HttpServlet {
             //jsonElement.getAsJsonObject().addProperty("timestamp", temp.getTimestamp());
             jsonElement.getAsJsonObject().addProperty("order_id", rejectedOrders.get(i).getId());
             jsonElement.getAsJsonObject().addProperty("service_package_name", rejectedOrders.get(i).getPackageId().getName());
-            float total = packagePricesViewService.getBasePrice(rejectedOrders.get(i).getPackageId().getId(), rejectedOrders.get(i).getChosenValidityPeriod());
-            total += optionsPricesService.getOptionsCost(rejectedOrders.get(i).getId());
-            jsonElement.getAsJsonObject().addProperty("total_price", total);
             rejectedOrdersJson.add(jsonElement);
 
         }

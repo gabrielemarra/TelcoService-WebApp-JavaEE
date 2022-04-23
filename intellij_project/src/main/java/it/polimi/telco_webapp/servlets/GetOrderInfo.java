@@ -83,6 +83,7 @@ public class GetOrderInfo extends HttpServlet {
             List <OptionalProduct> options = order.getOptionalServices();
             JsonArray allInfo = new JsonArray();
             allInfo.add(orderInfo);
+
             for(int i = 0; i <options.size(); i++) {
                 JsonElement option = new JsonObject();
                 option.getAsJsonObject().addProperty("name", options.get(i).getName());

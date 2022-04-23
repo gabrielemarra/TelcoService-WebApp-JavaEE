@@ -1,13 +1,13 @@
 package it.polimi.telco_webapp.entities;
 
 import jakarta.persistence.*;
+
 import java.util.List;
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "optional_product", schema = "telco_db")
 @NamedQuery(name = "OptionalProduct.getAllAvailableOptions", query = "SELECT o FROM OptionalProduct o")
-
 public class OptionalProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,10 +20,6 @@ public class OptionalProduct {
     @Column(name = "price", nullable = false, precision = 2)
     private BigDecimal price;
 
-    // this should also be populated/ calculated by trigger
-    //@Column(name = "quantity_sold")
-    //private Integer quantitySold;
-
     @ManyToMany
     @JoinTable(name = "optional_product_ordered", joinColumns = @JoinColumn(name = "opt_id"),
             inverseJoinColumns = @JoinColumn(name = "order_id"))
@@ -32,16 +28,7 @@ public class OptionalProduct {
     @ManyToMany
     @JoinTable(name = "optional_product_available", joinColumns = @JoinColumn(name = "opt_id"),
             inverseJoinColumns = @JoinColumn(name = "package_id"))
-    private List <ServicePackage> packages;
-
-
-    //public Integer getQuantitySold() {
-    //    return quantitySold;
-    //}
-
-    //public void setQuantitySold(Integer quantitySold) {
-    //    this.quantitySold = quantitySold;
-    //}
+    private List<ServicePackage> packages;
 
     public BigDecimal getPrice() {
         return price;
@@ -75,6 +62,11 @@ public class OptionalProduct {
         this.orders = orders;
     }
 
-    public void setPackages(List<ServicePackage> packages) {this.packages = packages;}
-    public List<ServicePackage> getPackages() {return packages;}
+    public void setPackages(List<ServicePackage> packages) {
+        this.packages = packages;
+    }
+
+    public List<ServicePackage> getPackages() {
+        return packages;
+    }
 }

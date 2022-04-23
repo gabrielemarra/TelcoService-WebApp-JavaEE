@@ -99,7 +99,7 @@ $(document).ready(function () {
                 addPackage(name, period[0].value, services, options);
                 resetSummary();
                 updateTotalInSummary();
-                $('.alert').toggleClass('show');
+
                 document.getElementById("packageForm").reset();
             }
         }
@@ -380,6 +380,7 @@ $(document).ready(function () {
         let postRequest = $.post("AddServicePackage", {name: name, period: period, serviceIds: serviceIds, optionIds: optionIds});
         postRequest.done(function (data, textStatus, jqXHR) {
             //alert("Adding service package SUCCESS");
+            $('.alert').toggleClass('show');
         });
         postRequest.fail(function (data, textStatus, jqXHR) {
             //alert("adding service POST fail");

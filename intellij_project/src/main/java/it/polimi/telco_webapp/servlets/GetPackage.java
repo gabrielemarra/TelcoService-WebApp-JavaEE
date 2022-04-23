@@ -66,6 +66,9 @@ public class GetPackage extends HttpServlet {
             JsonElement jsonElement = new JsonObject();
             jsonElement.getAsJsonObject().addProperty("name", servicePackage.getName());
             packageInfo.add(jsonElement);
+            // TODO: see HOW this info is being used in the JS. There is potential to get get the prices of the
+            //  package (sum of all the included services) via the pacakge prices VIEW instead of summing all the
+            //  services in a for loop BUT only if the JS does NOT use the prices of each service individually
             for(int i = 0; i < services.size(); i++) {
                 JsonElement serviceJson = new JsonObject();
                 serviceJson.getAsJsonObject().addProperty("type", services.get(i).getServiceType().toString());

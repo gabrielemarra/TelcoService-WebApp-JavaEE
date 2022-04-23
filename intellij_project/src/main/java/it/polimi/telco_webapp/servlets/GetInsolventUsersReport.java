@@ -63,7 +63,7 @@ public class GetInsolventUsersReport extends HttpServlet {
                 jsonElement.getAsJsonObject().addProperty("user_id", row.getUserId());
                 jsonElement.getAsJsonObject().addProperty("user_name", userService.getUserById(row.getUserId()).getName());
                 jsonElement.getAsJsonObject().addProperty("num_rej_orders", row.getNumOrders());
-                jsonElement.getAsJsonObject().addProperty("delinquent_total", row.getDelinquentTotal());
+                jsonElement.getAsJsonObject().addProperty("delinquent_total", row.getTotal());
 
                 jsonArray.add(jsonElement);
             }

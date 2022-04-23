@@ -108,8 +108,7 @@ $(document).ready(function () {
                     let divs = clone.querySelectorAll("td");
                     divs[0].textContent = rejectedOrders[i].order_id;
                     divs[1].textContent = rejectedOrders[i].service_package_name;
-                    divs[2].textContent = rejectedOrders[i].total_price;
-                    let button = divs[3].querySelector("button");
+                    let button = divs[2].querySelector("button");
                     // this dataset val may not be necessary since we can pass it as a param to the event listener directly
                     button.dataset.orderId = rejectedOrders[i].order_id;
                     button.id = "buyAgainButton";
@@ -147,12 +146,16 @@ $(document).ready(function () {
             sessionStorage.setItem('package_id', allInfo[0].package_id);
             sessionStorage.setItem('validity_period', allInfo[0].validity_period);
             sessionStorage.setItem('total_cost', allInfo[0].total_cost);
-            allInfo.splice(0, 1);
-            sessionStorage.setItem('optionalProducts', JSON.stringify(allInfo));
             sessionStorage.setItem('startDate', allInfo[0].startDate);
+            allInfo.splice(0, 1);
+            if(allInfo.length > 0) {
+                sessionStorage.setItem('optionalProducts', JSON.stringify(allInfo));
+            } else {
+                sessionStorage.setItem('optionalProducts', "");
+
+            }
 
             sessionStorage.setItem('existingOrder', "true");
-
 
             window.location.href = "confirmation.html";
         });
@@ -168,7 +171,8 @@ $(document).ready(function () {
             let allOrders = jqXHR.responseJSON;
             for (let i = 0; i < allOrders.length; i++) {
                 let oneOrder = allOrders[i];
-                //if(oneOrder.orderInfo.status == "CONFIRMED") {
+                if(oneOrder[0].status != "REJECTED") {
+
 
                 let template = document.getElementById("id_ActivationRecords");
                 let clone = template.content.cloneNode(true);
@@ -181,6 +185,7 @@ $(document).ready(function () {
                 // this also manipulates start1
                 let start1 = new Date(oneOrder[0].start_date);
                 let end = new Date(start1.setMonth(start1.getMonth() + (12 * oneOrder[0].validity_period)));
+                end.setDate(end.getDate() - 1);
 
                 if (today < start) { // future
                     clone.querySelector(".schedule_card").className += " border-primary text-primary";
@@ -201,7 +206,7 @@ $(document).ready(function () {
                     newElement.textContent = (oneOrder[1][j].type).replace("_", " ");
                     servicesUl.append(newElement);
                 }
-                let optionsUl = clone.querySelector(".schedule_optionsschedule_options");
+                let optionsUl = clone.querySelector(".schedule_options");
                 for (let j = 0; j < oneOrder[2].length; j++) {
                     let newElement = document.createElement("li");
                     newElement.textContent = (oneOrder[2][j].name);
@@ -209,6 +214,7 @@ $(document).ready(function () {
                 }
 
                 document.getElementById("id_activation_schedule_row").appendChild(clone);
+                }
             }
 
             $("#id_activation_schedule_row").prop("hidden", false);

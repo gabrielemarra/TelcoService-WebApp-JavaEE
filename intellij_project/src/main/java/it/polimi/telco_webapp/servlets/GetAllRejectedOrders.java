@@ -74,6 +74,7 @@ public class GetAllRejectedOrders extends HttpServlet {
                 float total_price = pricesService.getBasePrice(package_id, validity);
                 jsonElement.getAsJsonObject().addProperty("order_id", rejectedOrders.get(i).getId());
                 jsonElement.getAsJsonObject().addProperty("service_package_name", rejectedOrders.get(i).getPackageId().getName());
+                // TODO: we care are TOTAL price, not base price
                 jsonElement.getAsJsonObject().addProperty("total_price", total_price);
                 jsonElement.getAsJsonObject().addProperty("user_id", rejectedOrders.get(i).getUser().getId());
 

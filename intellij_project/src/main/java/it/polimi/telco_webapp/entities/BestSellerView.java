@@ -8,6 +8,9 @@ import org.eclipse.persistence.annotations.ReadOnly;
 @ReadOnly
 @NamedQuery(name = "BestSeller.getBestSeller", query = "SELECT b FROM BestSellerView b")
 @Table(name = "best_seller_optional_product", schema = "telco_db")
+/* This view lists the optional products in order from greatest to least total sales made in purchases across all
+* orders. To get the best-selling optional product, just retrieve the first entry in the view.
+* */
 public class BestSellerView {
 
     @Id
