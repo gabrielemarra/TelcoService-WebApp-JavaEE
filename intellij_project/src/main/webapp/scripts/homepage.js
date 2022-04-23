@@ -205,7 +205,7 @@ $(document).ready(function () {
                     newElement.textContent = (oneOrder[1][j].type).replace("_", " ");
                     servicesUl.append(newElement);
                 }
-                let optionsUl = clone.querySelector(".schedule_optionsschedule_options");
+                let optionsUl = clone.querySelector(".schedule_options");
                 for (let j = 0; j < oneOrder[2].length; j++) {
                     let newElement = document.createElement("li");
                     newElement.textContent = (oneOrder[2][j].name);

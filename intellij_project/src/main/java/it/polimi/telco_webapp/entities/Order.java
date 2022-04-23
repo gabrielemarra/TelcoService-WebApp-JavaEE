@@ -32,7 +32,7 @@ public class Order {
     @Column(name = "subscription_start", nullable = false)
     private LocalDate subscriptionStart;
 
- 
+
     @Column(name = "timestamp")
     private java.sql.Timestamp timestamp;
     //private LocalDateTime timestamp;
@@ -56,38 +56,48 @@ public class Order {
     @JoinColumn(name = "package_id", nullable = false)
     private ServicePackage packageId;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "optional_product_ordered", joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "opt_id"))
     private List<OptionalProduct> optionalProductOrderedList;
+
     /* TODO: should packageID be an integer? (2/3) */
     public ServicePackage getPackageId() {
         return packageId;
     }
+
     /* TODO: should packageID be an integer? (3/3) */
     public void setPackageId(ServicePackage packageId) {
         this.packageId = packageId;
     }
 
-    public void setChosenValidityPeriod(int period) { this.chosenValidityPeriod = period; }
+    public void setChosenValidityPeriod(int period) {
+        this.chosenValidityPeriod = period;
+    }
 
-    public int getChosenValidityPeriod() { return chosenValidityPeriod; }
+    public int getChosenValidityPeriod() {
+        return chosenValidityPeriod;
+    }
 
-    public User getUser() {return user;}
+    public User getUser() {
+        return user;
+    }
 
-    public void setUser(User user) {this.user = user;}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Timestamp getTimestamp() {
 
-    //public BigDecimal getTotalPrice() {
-    //    return totalPrice;
-    //}
+        //public BigDecimal getTotalPrice() {
+        //    return totalPrice;
+        //}
 
-    //public void setTotalPrice(BigDecimal totalPrice) {
-    //    this.totalPrice = totalPrice;
-    //}
+        //public void setTotalPrice(BigDecimal totalPrice) {
+        //    this.totalPrice = totalPrice;
+        //}
 
-    //public LocalDateTime getTimestamp() {
+        //public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
@@ -123,5 +133,8 @@ public class Order {
         this.optionalProductOrderedList = optionalProducts;
     }
 
-    public Order(){};
+    public Order() {
+    }
+
+    ;
 }
