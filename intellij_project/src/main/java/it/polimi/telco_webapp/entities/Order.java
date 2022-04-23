@@ -33,7 +33,7 @@ public class Order {
     private LocalDate subscriptionStart;
 
 
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", insertable = false)
     private java.sql.Timestamp timestamp;
     //private LocalDateTime timestamp;
 
