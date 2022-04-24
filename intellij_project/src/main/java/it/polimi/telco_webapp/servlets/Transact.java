@@ -53,13 +53,25 @@ public class Transact extends HttpServlet {
             ExternalPaymentService externalService = new ExternalPaymentService();
             boolean isOrderRejected = Boolean.parseBoolean(StringEscapeUtils.escapeJava(request.getParameter("isOrderRejected")));
 
-            Integer orderId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("order_id")));
-            if (externalService.call(isOrderRejected) == false) {
+            int orderId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("order_id")));
+            if (!externalService.call(isOrderRejected)) {
                 orderService.changeOrderStatus(orderId, OrderStatus.CONFIRMED);
             } else {
                 orderService.changeOrderStatus(orderId, OrderStatus.REJECTED);
             }
 
+            Order order = orderService.getOrder(orderId);
+            Gson gson = new Gson();
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
+
+            JsonElement jsonElement = new JsonObject();
+            jsonElement.getAsJsonObject().addProperty("order_id", order.getId());
+            jsonElement.getAsJsonObject().addProperty("order_status", order.getStatus().toString());
+
+            response.getWriter().println(gson.toJson(jsonElement));
         } catch (EJBException e) {
             sendError(request, response, "InternalDBErrorException", e.getCause().getMessage());
         }

@@ -25,14 +25,28 @@ $(document).ready(function () {
         let orderID = sessionStorage.getItem("order_id");
         let postRequest = $.post("Transact", {isOrderRejected: isOrderRejected, order_id: orderID});
         postRequest.done(function (data, textStatus, jqXHR) {
-            //alert("Transaction performed. Payment rejected? " + isOrderRejected);
-            window.location.href = "homepage.html"; //             window.location.href = "confirmation.html";
+            let order_id = jqXHR.responseJSON.order_id;
+            let order_status = jqXHR.responseJSON.order_status;
             sessionStorage.setItem("pendingOrder", "false");
+
+            if (order_status === "CONFIRMED") {
+                displaySuccesssAlert("Your order has been placed correctly, you will be redirected to the <a href='./homepage.html' class='alert-link'>homepage</a><span>  </span><div class='spinner-border text-success' style='width: 1rem; height: 1rem;' role='status'>\n" +
+                    "  <span class='visually-hidden'>Loading...</span>\n" +
+                    "</div>");
+            } else if (order_status === "REJECTED") {
+                displayWarningAlert("The payment process has been interrupted again, please retry from the <a href='./homepage.html' class='alert-link'>homepage</a> <span>  </span><div class='spinner-border text-danger' style='width: 1rem; height: 1rem;' role='status'>\n" +
+                    "  <span class='visually-hidden'>Loading...</span>\n" +
+                    "</div>");
+            }
+
+            window.setTimeout(function () {
+                window.location.href = "./homepage.html";
+            }, 3000);
         });
         postRequest.fail(function (jqXHR, textStatus, errorThrown) {
             //alert("Transaction failed");
         });
-    };
+    }
 
     $("#idBuyButtonFail").click(
         function (event) {
@@ -80,7 +94,7 @@ $(document).ready(function () {
         postRequest.done(function (data, textStatus, jqXHR) {
             let order_id = jqXHR.responseJSON.order_id;
             let order_status = jqXHR.responseJSON.order_status;
-
+            sessionStorage.setItem("pendingOrder", "false");
 
             if (order_status === "CONFIRMED") {
                 displaySuccesssAlert("Your order has been placed correctly, you will be redirected to the <a href='./homepage.html' class='alert-link'>homepage</a><span>  </span><div class='spinner-border text-success' style='width: 1rem; height: 1rem;' role='status'>\n" +
@@ -94,7 +108,7 @@ $(document).ready(function () {
 
             window.setTimeout(function () {
                 window.location.href = "./homepage.html";
-            }, 5000);
+            }, 3000);
 
         });
         postRequest.fail(function (jqXHR, textStatus, errorThrown) {
