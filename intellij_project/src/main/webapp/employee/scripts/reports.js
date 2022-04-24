@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     function manageTabs() {
 
-        var triggerTabList = [].slice.call(document.querySelectorAll('#goodthings button'))
+        var triggerTabList = [].slice.call(document.querySelectorAll('#sales button'))
         triggerTabList.forEach(function (triggerEl) {
             var tabTrigger = new bootstrap.Tab(triggerEl)
             triggerEl.addEventListener('click', function (event) {
@@ -14,7 +14,7 @@ $(document).ready(function () {
         })
 
 
-        var triggerTabList = [].slice.call(document.querySelectorAll('#badthings button'))
+        var triggerTabList = [].slice.call(document.querySelectorAll('#insolvent button'))
         triggerTabList.forEach(function (triggerEl) {
             var tabTrigger = new bootstrap.Tab(triggerEl)
             triggerEl.addEventListener('click', function (event) {
