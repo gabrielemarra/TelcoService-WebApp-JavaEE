@@ -33,7 +33,7 @@ $(document).ready(function () {
     showAuditTable();
 
     function getServicePackageReport() {
-        let getRequest = $.get("GetServicePackageReport");
+        let getRequest = $.get("../GetServicePackageReport");
         getRequest.done(function (data, textStatus, jqXHR) {
             let response = jqXHR.responseJSON;
             let table = document.getElementById("id_package_report_body")
@@ -61,7 +61,7 @@ $(document).ready(function () {
     };
 
     function getRejectedOrdersReport() {
-        let getRequest = $.get("GetRejectedOrdersReport");
+        let getRequest = $.get("../GetRejectedOrdersReport");
         getRequest.done(function (data, textStatus, jqXHR) {
             let response = jqXHR.responseJSON;
             let table = document.getElementById("id_rejected_orders_table_body")
@@ -86,7 +86,7 @@ $(document).ready(function () {
     };
 
     function getInsolventUsersReport() {
-        let getRequest = $.get("GetInsolventUsersReport");
+        let getRequest = $.get("../GetInsolventUsersReport");
         getRequest.done(function (data, textStatus, jqXHR) {
             let response = jqXHR.responseJSON;
             let table = document.getElementById("id_insolvent_users_table_body")
@@ -112,7 +112,7 @@ $(document).ready(function () {
 
 
     function getBestSeller() {
-        let getRequest = $.get("GetBestSellerOptionalProduct");
+        let getRequest = $.get("../GetBestSellerOptionalProduct");
         getRequest.done(function (data, textStatus, jqXHR) {
             let response = jqXHR.responseJSON;
             document.getElementById("id_best_seller_id").textContent = response.opt_id.toString();
@@ -126,7 +126,7 @@ $(document).ready(function () {
 
     function showAuditTable() {
 
-        let getRequest = $.get("GetAuditingTable");
+        let getRequest = $.get("../GetAuditingTable");
         getRequest.done(function (data, textStatus, jqXHR) {
             let response = jqXHR.responseJSON;
             let table = document.getElementById("id_audit_table_body")
