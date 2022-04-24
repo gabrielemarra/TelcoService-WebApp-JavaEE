@@ -246,7 +246,7 @@ $(document).ready(function () {
      * need to be displayed to the user.
      */
     function showAllOptions() {
-        let getRequest = $.get("GetAllOptionalProducts");
+        let getRequest = $.get("../GetAllOptionalProducts");
         getRequest.done(function (data, textStatus, jqXHR) {
             let options = jqXHR.responseJSON;
             if (options.length > 0) {
@@ -311,7 +311,7 @@ $(document).ready(function () {
      * need to be displayed to the user.
      */
     function showAllServices() {
-        let getRequest = $.get("GetAllServices");
+        let getRequest = $.get("../GetAllServices");
         getRequest.done(function (data, textStatus, jqXHR) {
             let services = jqXHR.responseJSON;
             if (services.length > 0) {

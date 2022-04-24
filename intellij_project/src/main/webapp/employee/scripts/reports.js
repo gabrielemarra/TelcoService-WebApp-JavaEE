@@ -2,9 +2,9 @@ $(document).ready(function () {
 
     $.ajaxSetup({cache: false});
 
-    function manageTabs(){
+    function manageTabs() {
 
-        var triggerTabList = [].slice.call(document.querySelectorAll('#goodthings button'))
+        var triggerTabList = [].slice.call(document.querySelectorAll('#sales button'))
         triggerTabList.forEach(function (triggerEl) {
             var tabTrigger = new bootstrap.Tab(triggerEl)
             triggerEl.addEventListener('click', function (event) {
@@ -14,7 +14,7 @@ $(document).ready(function () {
         })
 
 
-        var triggerTabList = [].slice.call(document.querySelectorAll('#badthings button'))
+        var triggerTabList = [].slice.call(document.querySelectorAll('#insolvent button'))
         triggerTabList.forEach(function (triggerEl) {
             var tabTrigger = new bootstrap.Tab(triggerEl)
             triggerEl.addEventListener('click', function (event) {
@@ -33,12 +33,12 @@ $(document).ready(function () {
     showAuditTable();
 
     function getServicePackageReport() {
-        let getRequest = $.get("GetServicePackageReport");
+        let getRequest = $.get("../GetServicePackageReport");
         getRequest.done(function (data, textStatus, jqXHR) {
             let response = jqXHR.responseJSON;
             let table = document.getElementById("id_package_report_body")
             let template = document.getElementById("id_package_report_template");
-            for(let i = 0; i < response.length; i++) {
+            for (let i = 0; i < response.length; i++) {
                 let clone = template.content.cloneNode(true);
                 let packageID = clone.querySelector("th");
                 let packageInfo = clone.querySelectorAll("td"); // should be size 7
@@ -61,12 +61,12 @@ $(document).ready(function () {
     };
 
     function getRejectedOrdersReport() {
-        let getRequest = $.get("GetRejectedOrdersReport");
+        let getRequest = $.get("../GetRejectedOrdersReport");
         getRequest.done(function (data, textStatus, jqXHR) {
             let response = jqXHR.responseJSON;
             let table = document.getElementById("id_rejected_orders_table_body")
             let template = document.getElementById("id_rejected_orders_template");
-            for(let i = 0; i < response.length; i++) {
+            for (let i = 0; i < response.length; i++) {
                 let clone = template.content.cloneNode(true);
                 let orderID = clone.querySelector("th");
                 let orderInfo = clone.querySelectorAll("td");
@@ -86,12 +86,12 @@ $(document).ready(function () {
     };
 
     function getInsolventUsersReport() {
-        let getRequest = $.get("GetInsolventUsersReport");
+        let getRequest = $.get("../GetInsolventUsersReport");
         getRequest.done(function (data, textStatus, jqXHR) {
             let response = jqXHR.responseJSON;
             let table = document.getElementById("id_insolvent_users_table_body")
             let template = document.getElementById("id_insolvent_users_template");
-            for(let i = 0; i < response.length; i++) {
+            for (let i = 0; i < response.length; i++) {
                 let clone = template.content.cloneNode(true);
                 let userID = clone.querySelector("th");
                 let userInfo = clone.querySelectorAll("td");
@@ -109,10 +109,8 @@ $(document).ready(function () {
     };
 
 
-
-
     function getBestSeller() {
-        let getRequest = $.get("GetBestSellerOptionalProduct");
+        let getRequest = $.get("../GetBestSellerOptionalProduct");
         getRequest.done(function (data, textStatus, jqXHR) {
             let response = jqXHR.responseJSON;
             document.getElementById("id_best_seller_id").textContent = response.opt_id.toString();
@@ -126,12 +124,12 @@ $(document).ready(function () {
 
     function showAuditTable() {
 
-        let getRequest = $.get("GetAuditingTable");
+        let getRequest = $.get("../GetAuditingTable");
         getRequest.done(function (data, textStatus, jqXHR) {
             let response = jqXHR.responseJSON;
             let table = document.getElementById("id_audit_table_body")
             let template = document.getElementById("id_audit_template");
-            for(let i = 0; i < response.length; i++) {
+            for (let i = 0; i < response.length; i++) {
                 let alert = response[i];
                 let clone = template.content.cloneNode(true);
                 let userID = clone.querySelector("th");
@@ -151,9 +149,6 @@ $(document).ready(function () {
         });
 
     }
-
-
-
 
 
 });
