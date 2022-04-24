@@ -44,10 +44,10 @@ $(document).ready(function () {
 
             //Here we save the data into the sessionStorage
             let user_data = jqXHR.responseJSON;
-            sessionStorage.setItem('username', user_data.username);
+            // sessionStorage.setItem('username', user_data.username);
             sessionStorage.setItem('email', user_data.email);
             sessionStorage.setItem('name', user_data.name);
-            sessionStorage.setItem('employee', user_data.employee);
+            sessionStorage.setItem('isEmployee', user_data.employee);
 
             //Redirect to the homepage (if user) or to employee page
             if ((sessionStorage.getItem("pendingOrder") === "true") && (sessionStorage.getItem("employee") === "false")) {

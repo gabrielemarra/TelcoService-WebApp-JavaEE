@@ -1,4 +1,11 @@
 $(document).ready(function () {
+    $.ajaxSetup({cache: false});
+
+    if (sessionStorage.getItem("isEmployee") === "true") {
+        window.location.href = "./employee/homepage.html"
+    }
+
+
     let servicePackagesAvailable;
     let optionalProductsAvailable;
     let servicesAvailable;
@@ -290,9 +297,9 @@ $(document).ready(function () {
     function buyButtonPressed() {
         sessionStorage.setItem('package_id', servicePackageSelected.package_id);
         sessionStorage.setItem('validity_period', validityPeriodSelected);
-        sessionStorage.setItem('total_cost',totalPriceSelected);
-        sessionStorage.setItem('optionalProducts',JSON.stringify(optionalProductsSelected));
-        sessionStorage.setItem('startDate',JSON.stringify(startingDateSelected));
+        sessionStorage.setItem('total_cost', totalPriceSelected);
+        sessionStorage.setItem('optionalProducts', JSON.stringify(optionalProductsSelected));
+        sessionStorage.setItem('startDate', JSON.stringify(startingDateSelected));
 
         sessionStorage.setItem('existingOrder', "false");
 

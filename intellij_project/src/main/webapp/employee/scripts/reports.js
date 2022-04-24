@@ -1,6 +1,11 @@
 $(document).ready(function () {
-
     $.ajaxSetup({cache: false});
+
+    if (sessionStorage.getItem("isisLoggedIn") === "false" || sessionStorage.getItem("isisLoggedIn") === null) {
+        window.location.href = "./"
+    } else if (sessionStorage.getItem("isEmployee") === "false" || sessionStorage.getItem("isEmployee") === null) {
+        window.location.href = "./homepage.html"
+    }
 
     function manageTabs() {
 

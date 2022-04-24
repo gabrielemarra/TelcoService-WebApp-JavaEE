@@ -1,6 +1,10 @@
 $(document).ready(function () {
     $.ajaxSetup({cache: false});
 
+    if (sessionStorage.getItem("isEmployee") === "true") {
+        window.location.href = "./employee/homepage.html"
+    }
+
     buttonFilter();
     showOrderInfo();
     showOptionsInfo();
@@ -9,7 +13,7 @@ $(document).ready(function () {
         function (event) {
             event.preventDefault();
             let isExistingOrder = sessionStorage.getItem("existingOrder");
-            if(isExistingOrder == "false") {
+            if (isExistingOrder === "false") {
                 insertNewOrder(false);
             } else {
                 submitTransaction(false);
@@ -34,7 +38,7 @@ $(document).ready(function () {
         function (event) {
             event.preventDefault();
             let isExistingOrder = sessionStorage.getItem("existingOrder");
-            if(isExistingOrder == "false") {
+            if (isExistingOrder === "false") {
                 insertNewOrder(true);
             } else {
                 submitTransaction(true);
@@ -151,7 +155,7 @@ $(document).ready(function () {
 
     function showOptionsInfo() {
         let items = sessionStorage.getItem('optionalProducts');
-        if (items == null | items == "" | items.length === 0) {
+        if (items == null | items === "" | items.length === 0) {
             document.getElementById("id_options_table2").style.display = "none";
             document.getElementById("id_monthly_options1").style.display = "none";
             document.getElementById("id_monthly_options2").style.display = "none";
