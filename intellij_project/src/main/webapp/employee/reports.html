@@ -1,223 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-  <!--Bootstrap Bundle with Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-          crossorigin="anonymous"></script>
+    <!--Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
 
-  <!--    My CSS -->
-  <link href="stylesheets/employeeHomepage.css" rel="stylesheet">
+    <!--    My CSS -->
+    <link href="stylesheets/employeeHomepage.css" rel="stylesheet">
 
-  <!-- jQuery-->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <!-- My JS-->
-  <script src="scripts/reports.js"></script>
+    <!-- My JS-->
+    <script src="scripts/reports.js"></script>
 
-  <!-- Plots -->
-  <script src="https://cdn.plot.ly/plotly-2.9.0.min.js"></script>
-  <!--script src="plotly-2.9.0.min.js"></script-->
+    <!-- Plots -->
+    <script src="https://cdn.plot.ly/plotly-2.9.0.min.js"></script>
+    <!--script src="plotly-2.9.0.min.js"></script-->
 
 
-
-  <title>Employee Homepage</title>
+    <title>Employee Homepage</title>
 
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Telco Employee Home</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#/employeeHomepage.html">Home</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Reports
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <!-- Number of total purchases per package. -->
-            <!-- Number of total purchases per package and validity period.-->
-            <!-- Total value of sales per package with and without the optional products.-->
-            <li><a class="dropdown-item" href="#">Service Packages</a></li>
-            <!-- Average number of optional products sold together with each service package.-->
-            <!-- List of insolvent users, suspended orders and alerts. -->
-            <li><a class="dropdown-item" href="#">Insolvent Users, Suspended Orders, Alerts</a></li>
-            <!--  Best seller optional product, i.e. the optional product with the greatest value of sales across all the sold service packages.-->
-          </ul>
-        </li>
-      </ul>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Telco Employee Reports</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="./homepage.html">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Reports
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="./reports.html?view=sells">Service Packages &
+                            Optional Products</a></li>
+                        <li><a class="dropdown-item" href="./reports.html?view=insolvent">Insolvent Users,
+                            Suspended Orders, Alerts</a></li>
+                        <!--                        <li><hr class="dropdown-divider"></li>-->
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
     </div>
-  </div>
 </nav>
 
 <div class="container">
-  <ul class="nav nav-tabs" id="myTabs" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="goodthings-tab" data-bs-toggle="tab" data-bs-target="#goodthings" type="button" role="tab" aria-controls="goodthings" aria-selected="true">Service Packages & Optional Products</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="badthings-tab" data-bs-toggle="tab" data-bs-target="#badthings" type="button" role="tab" aria-controls="badthings" aria-selected="false">Insolvent Users, Rejected Orders, Alerts</button>
-    </li>
-  </ul>
-  <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="goodthings" role="tabpanel" aria-labelledby="goodthings-tab-tab">
-      <h3>Reports on Products</h3>
-      <table class="table">
-        <h4>Service Packages</h4>
-        <thead>
-        <tr>
-          <th scope="col">Package ID #</th>
-          <th scope="col">Name</th>
-          <th scope="col">Total Purchases</th>
-          <th scope="col">Purchases for Period 1</th>
-          <th scope="col">Purchases for Period 2</th>
-          <th scope="col">Purchases for Period 3</th>
-          <th scope="col">Sales excluding Options</th>
-          <th scope="col">Sales including Options</th>
-          <th scope="col">Avg Number of Optional Products Sold</th>
+    <ul class="nav nav-tabs" id="myTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="goodthings-tab" data-bs-toggle="tab" data-bs-target="#goodthings"
+                    type="button" role="tab" aria-controls="goodthings" aria-selected="true">Service Packages & Optional
+                Products
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="badthings-tab" data-bs-toggle="tab" data-bs-target="#badthings" type="button"
+                    role="tab" aria-controls="badthings" aria-selected="false">Insolvent Users, Rejected Orders, Alerts
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="goodthings" role="tabpanel" aria-labelledby="goodthings-tab-tab">
+            <h3>Reports on Products</h3>
+            <table class="table">
+                <h4>Service Packages</h4>
+                <thead>
+                <tr>
+                    <th scope="col">Package ID #</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Total Purchases</th>
+                    <th scope="col">Purchases for Period 1</th>
+                    <th scope="col">Purchases for Period 2</th>
+                    <th scope="col">Purchases for Period 3</th>
+                    <th scope="col">Sales excluding Options</th>
+                    <th scope="col">Sales including Options</th>
+                    <th scope="col">Avg Number of Optional Products Sold</th>
 
-        </tr>
-        </thead>
-        <tbody id="id_package_report_body">
-        <template id="id_package_report_template">
-          <tr>
-            <th scope="row">ID</th>
-            <td>name</td>
-            <td>purchases_total</td>
-            <td>purchases_period1</td>
-            <td>purchases_period2</td>
-            <td>purchases_period3</td>
-            <td>sales_base</td>
-            <td>sales_total</td>
-            <td>avg_options_ordered</td>
-          </tr>
-        </template>
-        </tbody>
-      </table>
+                </tr>
+                </thead>
+                <tbody id="id_package_report_body">
+                <template id="id_package_report_template">
+                    <tr>
+                        <th scope="row">ID</th>
+                        <td>name</td>
+                        <td>purchases_total</td>
+                        <td>purchases_period1</td>
+                        <td>purchases_period2</td>
+                        <td>purchases_period3</td>
+                        <td>sales_base</td>
+                        <td>sales_total</td>
+                        <td>avg_options_ordered</td>
+                    </tr>
+                </template>
+                </tbody>
+            </table>
 
 
+            <h4>Best Seller Optional Product</h4>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Sales Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row" id="id_best_seller_id">_id</th>
+                    <td id="id_best_seller_name">_name</td>
+                    <td id="id_best_seller_sales">_sales</td>
+                </tr>
+                </tbody>
+            </table>
 
-      <h4>Best Seller Optional Product</h4>
-      <table class="table">
-        <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Name</th>
-          <th scope="col">Sales Value</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <th scope="row" id="id_best_seller_id">_id</th>
-          <td id="id_best_seller_name">_name</td>
-          <td id="id_best_seller_sales">_sales</td>
-        </tr>
-        </tbody>
-      </table>
+        </div>
 
+
+        <div class="tab-pane fade" id="badthings" role="tabpanel" aria-labelledby="badthings-tab-tab">
+
+            <div class="row" id="id_rejected_orders_table">
+                <table class="table">
+                    <h4>Suspended Orders</h4>
+                    <thead>
+                    <tr>
+                        <th scope="col">Order ID</th>
+                        <th scope="col">Customer ID</th>
+                        <th scope="col">Customer Name</th>
+                        <th scope="col">Package ID</th>
+                        <th scope="col">Package Name</th>
+                        <th scope="col">Total Pending</th>
+                    </tr>
+                    </thead>
+                    <tbody id="id_rejected_orders_table_body">
+                    <template id="id_rejected_orders_template">
+                        <tr>
+                            <th scope="row">Order_ID</th>
+                            <td>User_ID</td>
+                            <td>User_Name</td>
+                            <td>Package_ID</td>
+                            <td>Package_Name</td>
+                            <td>Total_Pending</td>
+                        </tr>
+                    </template>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row" id="id_insolvent_users_table">
+                <table class="table">
+                    <h4>Insolvent Users</h4>
+                    <thead>
+                    <tr>
+                        <th scope="col">User ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col"># Rejected Orders</th>
+                        <th scope="col">Pending Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody id="id_insolvent_users_table_body">
+                    <template id="id_insolvent_users_template">
+                        <tr>
+                            <th scope="row">ID</th>
+                            <td>name</td>
+                            <td>Num_Rejected_Orders</td>
+                            <td>Delinquent_Total</td>
+                        </tr>
+                    </template>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row" id="id_audit_table">
+                <table class="table">
+                    <h4>Alerts</h4>
+                    <thead>
+                    <tr>
+                        <th scope="col" id="id_audit_userid">User ID</th>
+                        <th scope="col" id="id_audit_username">Username</th>
+                        <th scope="col" id="id_audit_email">Email</th>
+                        <th scope="col" id="id_audit_num_rej"># Rejected Orders</th>
+                        <th scope="col" id="id_audit_total_pending">Total Pending Amount €</th>
+                        <th scope="col" id="id_audit_timestamp">Last Rejected Order</th>
+                    </tr>
+                    </thead>
+                    <tbody id="id_audit_table_body">
+                    <template id="id_audit_template">
+                        <tr>
+                            <th scope="row">User ID</th>
+                            <td>username</td>
+                            <td>email</td>
+                            <td>num rejected orders</td>
+                            <td>total pending</td>
+                            <td>last rejected order</td>
+                        </tr>
+                    </template>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
     </div>
-
-
-
-    <div class="tab-pane fade" id="badthings" role="tabpanel" aria-labelledby="badthings-tab-tab">
-
-      <div class="row" id="id_rejected_orders_table">
-        <table class="table">
-          <h4>Suspended Orders</h4>
-          <thead>
-          <tr>
-            <th scope="col">Order ID</th>
-            <th scope="col">Customer ID</th>
-            <th scope="col">Customer Name</th>
-            <th scope="col">Package ID</th>
-            <th scope="col">Package Name</th>
-            <th scope="col">Total Pending</th>
-          </tr>
-          </thead>
-          <tbody id="id_rejected_orders_table_body">
-          <template id="id_rejected_orders_template">
-            <tr>
-              <th scope="row">Order_ID</th>
-              <td>User_ID</td>
-              <td>User_Name</td>
-              <td>Package_ID</td>
-              <td>Package_Name</td>
-              <td>Total_Pending</td>
-            </tr>
-          </template>
-
-          </tbody>
-        </table>
-      </div>
-
-      <div class="row" id="id_insolvent_users_table">
-        <table class="table">
-          <h4>Insolvent Users</h4>
-          <thead>
-          <tr>
-            <th scope="col">User ID</th>
-            <th scope="col">Name</th>
-            <th scope="col"># Rejected Orders</th>
-            <th scope="col">Pending Amount</th>
-          </tr>
-          </thead>
-          <tbody id="id_insolvent_users_table_body">
-          <template id="id_insolvent_users_template">
-            <tr>
-              <th scope="row">ID</th>
-              <td>name</td>
-              <td>Num_Rejected_Orders</td>
-              <td>Delinquent_Total</td>
-            </tr>
-          </template>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="row" id="id_audit_table">
-        <table class="table">
-          <h4>Alerts</h4>
-          <thead>
-          <tr>
-            <th scope="col" id="id_audit_userid">User ID</th>
-            <th scope="col" id="id_audit_username">Username</th>
-            <th scope="col" id="id_audit_email">Email</th>
-            <th scope="col" id="id_audit_num_rej"># Rejected Orders</th>
-            <th scope="col" id="id_audit_total_pending">Total Pending Amount €</th>
-            <th scope="col" id="id_audit_timestamp">Last Rejected Order</th>
-          </tr>
-          </thead>
-          <tbody id="id_audit_table_body">
-          <template id="id_audit_template">
-            <tr>
-              <th scope="row">User ID</th>
-              <td>username</td>
-              <td>email</td>
-              <td>num rejected orders</td>
-              <td>total pending</td>
-              <td>last rejected order</td>
-            </tr>
-          </template>
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-  </div>
 </div>
 
 <!-- Templates

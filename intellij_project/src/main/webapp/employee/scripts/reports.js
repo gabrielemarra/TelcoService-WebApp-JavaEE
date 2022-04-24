@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     $.ajaxSetup({cache: false});
 
-    function manageTabs(){
+    function manageTabs() {
 
         var triggerTabList = [].slice.call(document.querySelectorAll('#goodthings button'))
         triggerTabList.forEach(function (triggerEl) {
@@ -38,7 +38,7 @@ $(document).ready(function () {
             let response = jqXHR.responseJSON;
             let table = document.getElementById("id_package_report_body")
             let template = document.getElementById("id_package_report_template");
-            for(let i = 0; i < response.length; i++) {
+            for (let i = 0; i < response.length; i++) {
                 let clone = template.content.cloneNode(true);
                 let packageID = clone.querySelector("th");
                 let packageInfo = clone.querySelectorAll("td"); // should be size 7
@@ -66,7 +66,7 @@ $(document).ready(function () {
             let response = jqXHR.responseJSON;
             let table = document.getElementById("id_rejected_orders_table_body")
             let template = document.getElementById("id_rejected_orders_template");
-            for(let i = 0; i < response.length; i++) {
+            for (let i = 0; i < response.length; i++) {
                 let clone = template.content.cloneNode(true);
                 let orderID = clone.querySelector("th");
                 let orderInfo = clone.querySelectorAll("td");
@@ -91,7 +91,7 @@ $(document).ready(function () {
             let response = jqXHR.responseJSON;
             let table = document.getElementById("id_insolvent_users_table_body")
             let template = document.getElementById("id_insolvent_users_template");
-            for(let i = 0; i < response.length; i++) {
+            for (let i = 0; i < response.length; i++) {
                 let clone = template.content.cloneNode(true);
                 let userID = clone.querySelector("th");
                 let userInfo = clone.querySelectorAll("td");
@@ -107,8 +107,6 @@ $(document).ready(function () {
             alert("fallen users");
         });
     };
-
-
 
 
     function getBestSeller() {
@@ -131,7 +129,7 @@ $(document).ready(function () {
             let response = jqXHR.responseJSON;
             let table = document.getElementById("id_audit_table_body")
             let template = document.getElementById("id_audit_template");
-            for(let i = 0; i < response.length; i++) {
+            for (let i = 0; i < response.length; i++) {
                 let alert = response[i];
                 let clone = template.content.cloneNode(true);
                 let userID = clone.querySelector("th");
@@ -151,9 +149,6 @@ $(document).ready(function () {
         });
 
     }
-
-
-
 
 
 });
