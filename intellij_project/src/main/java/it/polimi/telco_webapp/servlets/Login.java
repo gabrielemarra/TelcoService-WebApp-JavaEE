@@ -125,7 +125,7 @@ public class Login extends HttpServlet {
                 try {
                     Employee employee = employeeService.checkEmployeeCredentials(email, password);
                     request.getSession().setAttribute("employee", employee.getId());
-                    String url = "employeeHomepage.html";
+                    String url = "employee/homepage.html";
 //                    String url = "Employee/index.html";
 
                     response.setStatus(HttpServletResponse.SC_OK);
