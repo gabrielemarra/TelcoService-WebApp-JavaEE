@@ -64,8 +64,8 @@ $(document).ready(function () {
         function (event) {
             event.preventDefault();
             // TODO: how to properly navigate to login page?
-            window.location.href = window.location.href.replace("confirmation.html", "");
             sessionStorage.setItem("pendingOrder", "true");
+            window.location.href = "./";
         }
     );
 

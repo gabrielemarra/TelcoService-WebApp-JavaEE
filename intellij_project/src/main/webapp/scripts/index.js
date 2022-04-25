@@ -50,7 +50,7 @@ $(document).ready(function () {
             sessionStorage.setItem('isEmployee', user_data.employee);
 
             //Redirect to the homepage (if user) or to employee page
-            if ((sessionStorage.getItem("pendingOrder") === "true") && (sessionStorage.getItem("employee") === "false")) {
+            if ((sessionStorage.getItem("pendingOrder") === "true") && (sessionStorage.getItem("isEmployee") === "false")) {
                 window.location.href = "./" + "confirmation.html";
             } else {
                 window.location.href = "./" + jqXHR.responseJSON.new_url;
