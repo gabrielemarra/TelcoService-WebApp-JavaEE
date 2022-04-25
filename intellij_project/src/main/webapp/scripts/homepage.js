@@ -138,7 +138,7 @@ $(document).ready(function () {
         //alert("button clicked for order:" + order_id);
         let getRequest = $.get("GetOrderInfo", {order_id: order_id});
         getRequest.done(function (data, textStatus, jqXHR) {
-            alert("success?");
+            // alert("success?");
             // add all the info to sesison and navigation to confirmation page
             let allInfo = jqXHR.responseJSON;
             sessionStorage.setItem('order_id', order_id);
