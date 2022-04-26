@@ -3,6 +3,8 @@ package it.polimi.telco_webapp.entities;
 import jakarta.persistence.*;
 import org.eclipse.persistence.annotations.ReadOnly;
 
+import java.math.BigDecimal;
+
 
 @Entity
 @ReadOnly
@@ -18,11 +20,11 @@ public class BestSellerView {
     @Column
     private String optname;
     @Column
-    private float sales_value;
+    private BigDecimal sales_value;
 
 
     public int getOptId(){return opt_id;}
     public String getOptName() {return optname;}
-    public float getSalesValue() {return sales_value;}
+    public BigDecimal getSalesValue() {return sales_value;}
     /* Since this is a view, the data is read-only. No setters. */
 }

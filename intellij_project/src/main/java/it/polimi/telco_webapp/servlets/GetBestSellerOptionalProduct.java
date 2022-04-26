@@ -56,7 +56,7 @@ public class GetBestSellerOptionalProduct extends HttpServlet {
             JsonElement jsonElement = new JsonObject();
             jsonElement.getAsJsonObject().addProperty("opt_id", bestSeller.getOptId());
             jsonElement.getAsJsonObject().addProperty("opt_name", bestSeller.getOptName());
-            jsonElement.getAsJsonObject().addProperty("sales_value", bestSeller.getSalesValue());
+            jsonElement.getAsJsonObject().addProperty("sales_value", bestSeller.getSalesValue().toString());
 
             response.getWriter().println(gson.toJson(jsonElement));
 
