@@ -32,8 +32,8 @@ public class User {
     private String username;
 
     // This is set/updated/changed completely by a trigger in the DB
-    @Column(name = "incomplete_payments")
-    private int incompletePayments;
+    @Column(name = "alert")
+    private int alert;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List <Order> orders;

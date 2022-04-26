@@ -56,8 +56,12 @@ public class Transact extends HttpServlet {
             int orderId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("order_id")));
             if (!externalService.call(isOrderRejected)) {
                 orderService.changeOrderStatus(orderId, OrderStatus.CONFIRMED);
+                orderService.trackOutstandingPayments(orderId, true);
+
+
             } else {
                 orderService.changeOrderStatus(orderId, OrderStatus.REJECTED);
+                orderService.trackOutstandingPayments(orderId, false);
             }
 
             Order order = orderService.getOrder(orderId);

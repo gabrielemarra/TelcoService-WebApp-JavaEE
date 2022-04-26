@@ -87,9 +87,19 @@ public class OrderService {
     }
 
     public void changeOrderStatus(int order_id, OrderStatus status) {
-        Order order = this.getOrder(order_id);
+        //em.createNamedQuery("Order.updateStatus", Order.class).setParameter(1, status).setParameter(2, order_id);
+        Order order = getOrder(order_id);
         order.setStatus(status);
+        em.merge(order);
         // TODO: maybe add some checks here...
+    }
+
+    public void trackOutstandingPayments(int order_id, boolean isOrderFulfilled) {
+        Order order = getOrder(order_id);
+        int incomplete = order.getOutstandingPayments();
+        incomplete = isOrderFulfilled?  0: (incomplete += 1);
+        order.setOutstandingPayments(incomplete);
+        em.merge(order);
     }
 
 }

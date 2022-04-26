@@ -19,6 +19,7 @@ import java.util.List;
 @NamedQuery(name = "Order.getAllOrdersByOption", query = "SELECT o FROM Order o WHERE o.optionalProductOrderedList = ?1")
 @NamedQuery(name = "Order.getAllOrdersByUser", query = "SELECT o FROM Order o WHERE o.user = ?1")
 
+
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,13 +36,10 @@ public class Order {
 
     @Column(name = "timestamp", insertable = false)
     private java.sql.Timestamp timestamp;
-    //private LocalDateTime timestamp;
 
-    //@Column(name = "timestamp", nullable = false)
-    //private LocalDateTime timestamp;
 
-    //@Column(name = "total_price", nullable = false, precision = 2)
-    //private BigDecimal totalPrice;
+    @Column(name = "outstanding_payments")
+    private int outstandingPayments;
 
     @Column(name = "chosen_validity_period", nullable = false)
     private Integer chosenValidityPeriod;
@@ -88,18 +86,12 @@ public class Order {
     }
 
     public Timestamp getTimestamp() {
-
-        //public BigDecimal getTotalPrice() {
-        //    return totalPrice;
-        //}
-
-        //public void setTotalPrice(BigDecimal totalPrice) {
-        //    this.totalPrice = totalPrice;
-        //}
-
-        //public LocalDateTime getTimestamp() {
         return timestamp;
     }
+
+    public int getOutstandingPayments() {return outstandingPayments;}
+
+    public void setOutstandingPayments(int val) {this.outstandingPayments = val;}
 
     public LocalDate getSubscriptionStart() {
         return subscriptionStart;

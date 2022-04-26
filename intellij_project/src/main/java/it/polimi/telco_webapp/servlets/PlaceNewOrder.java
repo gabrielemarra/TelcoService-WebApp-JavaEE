@@ -115,8 +115,13 @@ public class PlaceNewOrder extends HttpServlet {
 
             if (!externalPaymentService.call(isOrderRejected)) {
                 orderService.changeOrderStatus(pendingOrderId, OrderStatus.CONFIRMED);
+                orderService.trackOutstandingPayments(pendingOrderId, true);
+
             } else {
                 orderService.changeOrderStatus(pendingOrderId, OrderStatus.REJECTED);
+                orderService.trackOutstandingPayments(pendingOrderId, false);
+
+
             }
 
             Order newOrder = orderService.getOrder(pendingOrderId);
