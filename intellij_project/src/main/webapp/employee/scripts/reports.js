@@ -1,10 +1,10 @@
 $(document).ready(function () {
     $.ajaxSetup({cache: false});
 
-    if (sessionStorage.getItem("isLoggedIn") === "false" || sessionStorage.getItem("isisLoggedIn") === null) {
-        window.location.href = "./"
+    if (sessionStorage.getItem("isLoggedIn") === "false" || sessionStorage.getItem("isLoggedIn") === null) {
+        window.location.href = "../"
     } else if (sessionStorage.getItem("isEmployee") === "false" || sessionStorage.getItem("isEmployee") === null) {
-        window.location.href = "./homepage.html"
+        window.location.href = "../homepage.html"
     }
 
     function manageTabs() {
