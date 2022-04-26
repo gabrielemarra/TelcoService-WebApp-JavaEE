@@ -129,7 +129,7 @@ $(document).ready(function () {
             document.getElementById("id_packageName").textContent = package_info[0].name;
             let period = sessionStorage.getItem('validity_period');
             // id_start_date
-            document.getElementById("id_start_date").textContent = JSON.parse(sessionStorage.getItem('startDate')).split("T")[0];
+            document.getElementById("id_start_date").textContent = sessionStorage.getItem('startDate');
 
             for (let i = 1; i < package_info.length; i++) {
                 let type = package_info[i].type.replace("_", " ");
