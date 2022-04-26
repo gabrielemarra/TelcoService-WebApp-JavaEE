@@ -143,7 +143,6 @@ $(document).ready(function () {
                 alertInfo[0].textContent = response[i].username;
                 alertInfo[1].textContent = response[i].email
                 alertInfo[2].textContent = response[i].delinq_amount
-                alertInfo[3].textContent = response[i].num_rej
 
                 table.appendChild(clone);
 
