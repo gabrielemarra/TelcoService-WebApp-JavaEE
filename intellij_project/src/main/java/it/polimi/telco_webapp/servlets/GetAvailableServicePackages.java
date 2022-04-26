@@ -78,9 +78,9 @@ public class GetAvailableServicePackages extends HttpServlet {
                 //  services in a for loop BUT only if the JS does NOT use the prices of each service individually
                 for (Service service : aPackage.getServices()) {
                     //Sum the prices
-                    packagePrice1.add(service.getBasePrice1());
-                    packagePrice2.add(service.getBasePrice2());
-                    packagePrice3.add(service.getBasePrice3());
+                    packagePrice1 = packagePrice1.add(service.getBasePrice1());
+                    packagePrice2 = packagePrice2.add(service.getBasePrice2());
+                    packagePrice3 = packagePrice3.add(service.getBasePrice3());
 
                     //Store some properties about the services
                     JsonElement jsonService = new JsonObject();
