@@ -6,6 +6,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.eclipse.persistence.annotations.ReadOnly;
 
+import java.math.BigDecimal;
+
 
 @Entity
 @Table(name = "options_ordered_prices", schema = "telco_db")
@@ -20,11 +22,11 @@ public class OptionsOrderedPricesView {
     @Column
     private int order_id;
     @Column
-    private float sum_sales_of_options;
+    private BigDecimal sum_sales_of_options;
 
 
     public int getPackageId(){return package_id;}
     public int getOrderId(){return order_id;}
-    public float getSumOfSales(){return sum_sales_of_options;}
+    public BigDecimal getSumOfSales(){return sum_sales_of_options;}
     /* Since this is a view, the data is read-only. No setters. */
 }
