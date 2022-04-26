@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name = "audit", schema = "telco_db")
+@Table(name = "alerts", schema = "telco_db")
 @ReadOnly
 /* This view is the auditing table for the employee user. When a user is has three or more
 * rejected orders, the user is added to this auditing table.
@@ -26,17 +26,14 @@ public class AuditView {
     @Column
     private LocalDateTime last;
     @Column
-    private int num_rejected;
-    @Column
-    private float totalAmount;
+    private float amount;
 
 
     public int getUserId(){return user_id;}
     public String getUsername(){return username;}
     public String getEmail(){return email;}
     public LocalDateTime getLastTimestamp() {return last;}
-    public int getNumRejected() {return num_rejected;}
-    public float getTotal() {return totalAmount;}
+    public float getTotal() {return amount;}
 
 
     /* Since this is a view, the data is read-only. No setters. */
