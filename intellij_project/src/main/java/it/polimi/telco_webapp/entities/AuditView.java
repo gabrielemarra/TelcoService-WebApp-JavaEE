@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.eclipse.persistence.annotations.ReadOnly;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
@@ -26,14 +27,14 @@ public class AuditView {
     @Column
     private LocalDateTime last;
     @Column
-    private float amount;
+    private BigDecimal amount;
 
 
     public int getUserId(){return user_id;}
     public String getUsername(){return username;}
     public String getEmail(){return email;}
     public LocalDateTime getLastTimestamp() {return last;}
-    public float getTotal() {return amount;}
+    public BigDecimal getTotal() {return amount;}
 
 
     /* Since this is a view, the data is read-only. No setters. */
