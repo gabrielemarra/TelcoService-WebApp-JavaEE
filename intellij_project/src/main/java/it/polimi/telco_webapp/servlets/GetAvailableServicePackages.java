@@ -96,7 +96,7 @@ public class GetAvailableServicePackages extends HttpServlet {
                     //Store some properties about the services
                     JsonElement jsonOptional = new JsonObject();
                     jsonOptional.getAsJsonObject().addProperty("opt_id", optionalProduct.getId());
-                    jsonOptional.getAsJsonObject().addProperty("opt_cost", optionalProduct.getPrice());
+                    jsonOptional.getAsJsonObject().addProperty("opt_cost", optionalProduct.getPrice().toString());
                     jsonOptional.getAsJsonObject().addProperty("opt_name", optionalProduct.getName());
 
                     jsonArrayOptional.add(jsonOptional);

@@ -87,7 +87,7 @@ public class GetOrderInfo extends HttpServlet {
             for(int i = 0; i <options.size(); i++) {
                 JsonElement option = new JsonObject();
                 option.getAsJsonObject().addProperty("name", options.get(i).getName());
-                option.getAsJsonObject().addProperty("price", options.get(i).getPrice());
+                option.getAsJsonObject().addProperty("price", options.get(i).getPrice().toString());
                 option.getAsJsonObject().addProperty("id", options.get(i).getId());
                 allInfo.add(option);
             }

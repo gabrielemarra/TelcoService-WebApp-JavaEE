@@ -65,7 +65,7 @@ public class GetAllOptionalProducts extends HttpServlet {
                 OptionalProduct temp = options.get(i);
 
                 jsonElement.getAsJsonObject().addProperty("name", temp.getName());
-                jsonElement.getAsJsonObject().addProperty("price", temp.getPrice());
+                jsonElement.getAsJsonObject().addProperty("price", temp.getPrice().toString());
                 jsonElement.getAsJsonObject().addProperty("option_id", temp.getId());
                 jsonArray.add(jsonElement);
             }
