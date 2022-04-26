@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.eclipse.persistence.annotations.ReadOnly;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -33,11 +34,11 @@ public class OrdersAndCostsView {
     @Column
     private int chosen_validity_period;
     @Column
-    private float baseCost;
+    private BigDecimal baseCost;
     @Column
-    private float optionsCost;
+    private BigDecimal optionsCost;
     @Column
-    private float total;
+    private BigDecimal total;
 
 
     public int getOrderId() {return order_id;}
@@ -47,9 +48,9 @@ public class OrdersAndCostsView {
     public int getUserId() {return user_id;}
     public int getPackageId() {return package_id;}
     public int getValidity() {return chosen_validity_period;}
-    public float getBaseCost() {return baseCost;}
-    public float getOptionsCost() {return optionsCost;}
-    public float getTotalCost() {return total;}
+    public BigDecimal getBaseCost() {return baseCost;}
+    public BigDecimal getOptionsCost() {return optionsCost;}
+    public BigDecimal getTotalCost() {return total;}
 
 
 
