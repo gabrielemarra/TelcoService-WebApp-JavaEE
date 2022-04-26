@@ -8,6 +8,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Stateless(name = "PackagePricesView")
@@ -16,8 +17,8 @@ public class PackagePricesViewService {
     private EntityManager em;
     public PackagePricesViewService() {}
 
-    public float getBasePrice(int package_id, int period) {
-        float price = 0;
+    public BigDecimal getBasePrice(int package_id, int period) {
+        BigDecimal price = BigDecimal.ZERO;
         PackagePricesView packagePrices = em.find(PackagePricesView.class, package_id);
         if (period == 1) {
             price = packagePrices.getPeriod1Total();

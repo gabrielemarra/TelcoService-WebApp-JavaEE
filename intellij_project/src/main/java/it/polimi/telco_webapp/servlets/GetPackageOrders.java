@@ -23,6 +23,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @WebServlet(name = "GetPackageOrders", value = "/GetPackageOrders")
@@ -87,10 +88,11 @@ public class GetPackageOrders extends HttpServlet {
                     jsonElement.getAsJsonObject().addProperty("order_id", temp.getId());
 
                     int validity = temp.getChosenValidityPeriod();
-                    float baseCost = packagePricesService.getBasePrice(package_id, validity);
+                    BigDecimal baseCost = packagePricesService.getBasePrice(package_id, validity);
                     jsonElement.getAsJsonObject().addProperty("order_baseCost", baseCost);
 
-                    float total = baseCost + optionsPricesService.getOptionsCost(temp.getId());
+
+                    BigDecimal total = baseCost.add(optionsPricesService.getOptionsCost(temp.getId()));
 
                     jsonElement.getAsJsonObject().addProperty("order_totalCost", total);
                     jsonElement.getAsJsonObject().addProperty("order_validity", temp.getChosenValidityPeriod());

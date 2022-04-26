@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.List;
 
 @WebServlet(name = "GetAllRejectedOrders", value = "/GetAllRejectedOrders")
@@ -71,7 +72,7 @@ public class GetAllRejectedOrders extends HttpServlet {
                 //jsonElement.getAsJsonObject().addProperty("timestamp", temp.getTimestamp());
                 int package_id = rejectedOrders.get(i).getPackageId().getId();
                 int validity = rejectedOrders.get(i).getChosenValidityPeriod();
-                float total_price = pricesService.getBasePrice(package_id, validity);
+                BigDecimal total_price = pricesService.getBasePrice(package_id, validity);
                 jsonElement.getAsJsonObject().addProperty("order_id", rejectedOrders.get(i).getId());
                 jsonElement.getAsJsonObject().addProperty("service_package_name", rejectedOrders.get(i).getPackageId().getName());
                 // TODO: we care are TOTAL price, not base price
