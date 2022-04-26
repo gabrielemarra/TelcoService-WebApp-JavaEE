@@ -230,7 +230,7 @@ $(document).ready(function () {
      * @param price: Decimal number of the monthly price of the optional product
      */
     function addOption(name, price) {
-        let postRequest = $.post("AddOptionalProduct", {name: name, price: price});
+        let postRequest = $.post("../AddOptionalProduct", {name: name, price: price});
         postRequest.done(function (data, textStatus, jqXHR) {
             let response = jqXHR.responseJSON;
             showOneOption(name, price, response.id);
@@ -293,7 +293,7 @@ $(document).ready(function () {
      * This function performs the POST request to add the new service to the DB
      */
     function addService(planType, bp1, bp2, bp3, gigIncl, smsIncl, minIncl, gigExtra, smsExtra, minExtra) {
-        let postRequest = $.post("AddService", {
+        let postRequest = $.post("../AddService", {
             planType: planType, bp1: bp1, bp2: bp2, bp3: bp3, gigIncl: gigIncl, smsIncl: smsIncl, minIncl: minIncl,
             gigExtra: gigExtra, smsExtra: smsExtra, minExtra: minExtra
         });
@@ -381,7 +381,7 @@ $(document).ready(function () {
      * @param listOptions: Array of the optional product IDs to be offered with the new service package.
      */
     function addPackage(name, period, serviceIds, optionIds) {
-        let postRequest = $.post("AddServicePackage", {
+        let postRequest = $.post("../AddServicePackage", {
             name: name,
             period: period,
             serviceIds: serviceIds,
@@ -433,7 +433,7 @@ $(document).ready(function () {
         let id = element.id.replace(/\D/g, '');
         let item_id = "id_item" + type + id;
         let getRequestText = "Get" + type; //(type == "Option")? "GetOptionalProduct" : "GetService";
-        let getRequest = $.get(getRequestText, {id: id});
+        let getRequest = $.get("../" + getRequestText, {id: id});
         getRequest.done(function (data, textStatus, jqXHR) {
             let resp = jqXHR.responseJSON;
             let summaryList = document.getElementById("id_packageSummary");

@@ -67,7 +67,7 @@ public class AddServicePackage extends HttpServlet {
             }
 
             List<OptionalProduct> options = new ArrayList<>();
-            if(options.size() > 0) {
+            if(optionIds.length > 0) {
                 for(int i = 0; i < optionIds.length; i++) {
                     options.add(optionService.getOption(Integer.parseInt(optionIds[i])));
                 }
