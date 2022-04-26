@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @WebServlet(name = "GetAvailableServicePackages", value = "/GetAvailableServicePackages")
@@ -67,9 +68,9 @@ public class GetAvailableServicePackages extends HttpServlet {
 
             for (ServicePackage aPackage : packages) {
 
-                Double packagePrice1 = (double) 0;
-                Double packagePrice2 = (double) 0;
-                Double packagePrice3 = (double) 0;
+                BigDecimal packagePrice1 = BigDecimal.ZERO;
+                BigDecimal packagePrice2 = BigDecimal.ZERO;
+                BigDecimal packagePrice3 = BigDecimal.ZERO;
                 JsonArray jsonArrayServices = new JsonArray();
 
                 // TODO: see HOW this info is being used in the JS. There is potential to get get the prices of the
@@ -77,9 +78,9 @@ public class GetAvailableServicePackages extends HttpServlet {
                 //  services in a for loop BUT only if the JS does NOT use the prices of each service individually
                 for (Service service : aPackage.getServices()) {
                     //Sum the prices
-                    packagePrice1 += service.getBasePrice1();
-                    packagePrice2 += service.getBasePrice2();
-                    packagePrice3 += service.getBasePrice3();
+                    packagePrice1.add(service.getBasePrice1());
+                    packagePrice2.add(service.getBasePrice2());
+                    packagePrice3.add(service.getBasePrice3());
 
                     //Store some properties about the services
                     JsonElement jsonService = new JsonObject();
@@ -109,9 +110,9 @@ public class GetAvailableServicePackages extends HttpServlet {
                 jsonElement.getAsJsonObject().addProperty("default_validity_period", aPackage.getValidityPeriod());
 
                 JsonArray jsonPrices = new JsonArray();
-                jsonPrices.add(packagePrice1);
-                jsonPrices.add(packagePrice2);
-                jsonPrices.add(packagePrice3);
+                jsonPrices.add(packagePrice1.toString());
+                jsonPrices.add(packagePrice2.toString());
+                jsonPrices.add(packagePrice3.toString());
                 jsonElement.getAsJsonObject().add("prices", jsonPrices);
 
                 jsonElement.getAsJsonObject().add("services", jsonArrayServices);
