@@ -26,6 +26,7 @@ $(document).ready(function () {
     $("#id_logoutButton").click(
         function (event) {
             event.preventDefault();
+            window.location.href = "./index.html";
             sessionStorage.clear();
         }
     );
