@@ -129,17 +129,17 @@ $(document).ready(function () {
             document.getElementById("id_packageName").textContent = package_info[0].name;
             let period = sessionStorage.getItem('validity_period');
             // id_start_date
-            document.getElementById("id_start_date").textContent = sessionStorage.getItem('startDate');
+            document.getElementById("id_start_date").textContent = sessionStorage.getItem('startDate').split("T")[0].replace(/["]/g, "");
 
             for (let i = 1; i < package_info.length; i++) {
                 let type = package_info[i].type.replace("_", " ");
                 let cost;
                 if (period === "1") {
-                    cost = package_info[i].bp1;
+                    cost = parseFloat(package_info[i].bp1);
                 } else if (period === "2") {
-                    cost = package_info[i].bp2;
+                    cost = parseFloat(package_info[i].bp2);
                 } else { // period == "3"
-                    cost = package_info[i].bp3;
+                    cost = parseFloat(package_info[i].bp3);
                 }
                 appendTable("id_cost_services_table", type, cost);
             }
@@ -161,7 +161,7 @@ $(document).ready(function () {
 
     function appendTable(tableId, name, cost) {
         let table = document.getElementById(tableId);
-        table.setAttribute("value", parseInt(table.getAttribute("value")) + cost);
+        table.setAttribute("value", parseFloat(table.getAttribute("value")) + parseFloat(cost));
         let newRow = table.insertRow();
         newRow.insertCell().appendChild(document.createTextNode(name));
         newRow.insertCell().appendChild(document.createTextNode(cost));
@@ -195,9 +195,9 @@ $(document).ready(function () {
     }
 
     function grandTotal(id) {
-        let monthly = parseInt(document.getElementById(id).getAttribute("value"));
-        let current = parseInt(document.getElementById("id_grand_total").getAttribute("value"));
-        current = current + (monthly * 12 * parseInt(sessionStorage.getItem("validity_period")));
+        let monthly = parseFloat(document.getElementById(id).getAttribute("value"));
+        let current = parseFloat(document.getElementById("id_grand_total").getAttribute("value"));
+        current = current + (monthly * 12 * parseFloat(sessionStorage.getItem("validity_period")));
         document.getElementById("id_grand_total").setAttribute("value", current.toString());
         document.getElementById("id_grand_total").textContent = "€" + current.toString();
     }
