@@ -290,7 +290,7 @@ $(document).ready(function () {
 
         totalPrice = optProdPriceSum + parseFloat(servicePackageSelected.prices[validityPeriodSelected - 1]);
 
-        $("#summary_total_price").text(totalPrice).removeClass("placeholder");
+        $("#summary_total_price").text(totalPrice.toString()).removeClass("placeholder");
         totalPriceSelected = totalPrice;
     }
 
