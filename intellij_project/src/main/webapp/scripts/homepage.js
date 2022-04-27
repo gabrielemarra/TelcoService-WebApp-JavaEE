@@ -16,30 +16,19 @@ $(document).ready(function () {
 
     getServicePackages();
 
-
-    // $("#selectButton").click(
-    //     function (event) {
-    //         event.preventDefault();
-    //         let startDate = $("#startDate").val();
-    //         let user = $("#userID").val();
-    //         let package = $("#servicePackage").val();
-    //         let options = $("#optionalProducts").val();
-    //         //submitNewOrder(startDate, userID, servicePackage, optionalProducts);
-    //
-    //         /*
-    //         *     public Order insertOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<OptionalProduct> optionalProductList) {
-    //
-    //         * */
-    //     }
-    // );
-
-
     function displayPersonalData() {
         //    Should we make a request? For now we use the stored values
         let personalInfoString = sessionStorage.getItem("name") + " | " + sessionStorage.getItem("email")
         $("#username_right_corner").html(personalInfoString)
 
     }
+
+    $("#id_logoutButton").click(
+        function (event) {
+            event.preventDefault();
+            sessionStorage.clear();
+        }
+    );
 
     function getServicePackages() {
         let packages = $.get("GetAvailableServicePackages");
