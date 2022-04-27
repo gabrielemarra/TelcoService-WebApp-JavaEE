@@ -150,7 +150,7 @@ $(document).ready(function () {
     }
 
     function writeTotal(tableId) {
-        let total = document.getElementById(tableId).getAttribute("value");
+        let total = parseFloat(document.getElementById(tableId).getAttribute("value"));
         if (tableId === "id_cost_services_table") {
             document.getElementById("id_monthly_services").textContent = "€" + total.toString();
         } else {
