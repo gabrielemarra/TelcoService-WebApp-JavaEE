@@ -75,6 +75,7 @@ $(document).ready(function () {
 
             postRequest.done(function (data, textStatus, jqXHR) {
                 //Spawn a success message after now login
+                document.getElementById("id_registration_form").reset();
 
             });
             postRequest.fail(function (jqXHR, textStatus, errorThrown) {
