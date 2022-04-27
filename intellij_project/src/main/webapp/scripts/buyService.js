@@ -272,7 +272,7 @@ $(document).ready(function () {
             let optionProdPrice = clone.querySelector(".summary_opt_prod_price");
 
             optionProdText.textContent = optionalProductsSelected[optionalProductsSelectedKey].name;
-            optionProdPrice.textContent = optionalProductsSelected[optionalProductsSelectedKey].price;
+            optionProdPrice.textContent = parseFloat(optionalProductsSelected[optionalProductsSelectedKey].price);
 
             summaryTableBody.appendChild(clone);
         }
@@ -281,14 +281,14 @@ $(document).ready(function () {
     }
 
     function updateSummaryTotalPrice() {
-        let totalPrice = 0;
-        let optProdPriceSum = 0;
+        let totalPrice = 0.0;
+        let optProdPriceSum = 0.0;
 
         for (let optionalProductsSelectedKey in optionalProductsSelected) {
-            optProdPriceSum += optionalProductsSelected[optionalProductsSelectedKey].price;
+            optProdPriceSum += parseFloat(optionalProductsSelected[optionalProductsSelectedKey].price);
         }
 
-        totalPrice = optProdPriceSum + servicePackageSelected.prices[validityPeriodSelected - 1];
+        totalPrice = optProdPriceSum + parseFloat(servicePackageSelected.prices[validityPeriodSelected - 1]);
 
         $("#summary_total_price").text(totalPrice).removeClass("placeholder");
         totalPriceSelected = totalPrice;
