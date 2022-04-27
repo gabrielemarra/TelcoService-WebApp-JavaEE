@@ -13,7 +13,9 @@ $(document).ready(function () {
     let servicePackageSelected;
     let optionalProductsSelected = [];
     let validityPeriodSelected;
-    let startingDateSelected = null;
+    // Set default to today
+    let startingDateSelected = new Date(Date.now());
+
     let totalPriceSelected;
 
 
