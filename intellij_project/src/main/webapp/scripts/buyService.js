@@ -227,6 +227,7 @@ $(document).ready(function () {
         $("#summary_service_package_price").text(servicePackageSelected.prices[servicePackageSelected.default_validity_period - 1]).removeClass("placeholder");
         updateSummaryValidityPeriod();
 
+        updateSummaryStartingDate();
         updateSummaryEndingDate();
         updateSummaryTotalPrice();
     }
