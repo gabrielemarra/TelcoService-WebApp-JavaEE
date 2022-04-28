@@ -229,6 +229,7 @@ $(document).ready(function () {
     function hideLoggedInFunction() {
         $("#id_rejected_orders_table_row").prop("hidden", true);
         $("#id_activation_schedule_row").prop("hidden", true);
+        $("#id_logoutButton").prop("hidden", true);
     }
 
     function displayLoginButton() {
