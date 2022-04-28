@@ -26,8 +26,17 @@ $(document).ready(function () {
     $("#id_logoutButton").click(
         function (event) {
             event.preventDefault();
-            window.location.href = "./index.html";
             sessionStorage.clear();
+
+            let request = $.get("Logout");
+
+            request.done(function (data, textStatus, jqXHR) {
+                window.location.href = "./index.html";
+            });
+            request.fail(function (jqXHR, textStatus, errorThrown) {
+                alert("Impossible to logout")
+            });
+
         }
     );
 
