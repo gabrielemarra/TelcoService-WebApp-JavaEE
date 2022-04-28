@@ -160,6 +160,28 @@
                 <button class="btn btn-danger" type="button" id="idBuyButtonFail">Buy [fail]</button>
             </div>
         </div>
+
+        <div class="modal fade" id="date_picker_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Select a new date</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Your order contains a date not more valid, please select a new date: </p>
+                        <div id="selectedStartingDateText">
+                            <input type="date" id="startDate" name="startDate" min="2018-01-01"
+                                   data-date-format='dd-mm-yyyy'>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="date_picker_modal_confirm_button">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 </div>
 </body>

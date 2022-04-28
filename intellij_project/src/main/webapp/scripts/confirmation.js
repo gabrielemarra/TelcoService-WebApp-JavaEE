@@ -8,18 +8,44 @@ $(document).ready(function () {
     buttonFilter();
     showOrderInfo();
     showOptionsInfo();
+    checkDateValidity();
+
+    function checkDateValidity() {
+        const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+        let start_date = new Date(JSON.parse(sessionStorage.getItem('startDate')));
+        let today = new Date()
+        let utc_start_date = Date.UTC(start_date.getFullYear(), start_date.getMonth(), start_date.getDate());
+        let utc_today = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+
+        let diff = Math.floor((utc_start_date - utc_today) / _MS_PER_DAY);
+        if (diff < 0) {
+            $("#date_picker_modal").modal('show');
+            $("#startDate").prop('min', new Date().toISOString().split('T')[0]);
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     $("#idBuyButton").click(
         function (event) {
             event.preventDefault();
-            let isExistingOrder = sessionStorage.getItem("existingOrder");
-            if (isExistingOrder === "false") {
-                insertNewOrder(false);
-            } else {
-                submitTransaction(false);
+            if (checkDateValidity()) {
+                let isExistingOrder = sessionStorage.getItem("existingOrder");
+                if (isExistingOrder === "false") {
+                    insertNewOrder(false);
+                } else {
+                    submitTransaction(false);
+                }
             }
         }
     );
+
+    $("#date_picker_modal_confirm_button").click(function () {
+        let startingDateSelected = new Date(Date.parse($("#startDate").val()));
+        sessionStorage.setItem('startDate', JSON.stringify( startingDateSelected))
+        $("#date_picker_modal").modal('hide');
+    })
 
     function submitTransaction(isOrderRejected) {
         let orderID = sessionStorage.getItem("order_id");
@@ -51,11 +77,13 @@ $(document).ready(function () {
     $("#idBuyButtonFail").click(
         function (event) {
             event.preventDefault();
-            let isExistingOrder = sessionStorage.getItem("existingOrder");
-            if (isExistingOrder === "false") {
-                insertNewOrder(true);
-            } else {
-                submitTransaction(true);
+            if (checkDateValidity()) {
+                let isExistingOrder = sessionStorage.getItem("existingOrder");
+                if (isExistingOrder === "false") {
+                    insertNewOrder(true);
+                } else {
+                    submitTransaction(true);
+                }
             }
         }
     );
@@ -119,7 +147,7 @@ $(document).ready(function () {
     }
 
     function showOrderInfo() {
-        //document.getElementById("id_start_date").textContent = JSON.parse(sessionStorage.getItem('startDate')).split("T")[0];
+        document.getElementById("id_start_date").textContent = JSON.parse(sessionStorage.getItem('startDate')).split("T")[0];
         document.getElementById("id_validity_period").textContent = (parseInt(sessionStorage.getItem('validity_period')) * 12).toString() + " months";
         let packageId = sessionStorage.getItem('package_id');
         let getRequest = $.get("GetPackage", {package_id: packageId});
@@ -129,7 +157,7 @@ $(document).ready(function () {
             document.getElementById("id_packageName").textContent = package_info[0].name;
             let period = sessionStorage.getItem('validity_period');
             // id_start_date
-            document.getElementById("id_start_date").textContent = sessionStorage.getItem('startDate').split("T")[0].replace(/["]/g, "");
+            // document.getElementById("id_start_date").textContent = sessionStorage.getItem('startDate').split("T")[0].replace(/["]/g, "");
 
             for (let i = 1; i < package_info.length; i++) {
                 let type = package_info[i].type.replace("_", " ");

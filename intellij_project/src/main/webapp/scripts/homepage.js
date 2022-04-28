@@ -145,7 +145,7 @@ $(document).ready(function () {
             sessionStorage.setItem('package_id', allInfo[0].package_id);
             sessionStorage.setItem('validity_period', allInfo[0].validity_period);
             sessionStorage.setItem('total_cost', allInfo[0].total_cost);
-            sessionStorage.setItem('startDate', allInfo[0].startDate);
+            sessionStorage.setItem('startDate', JSON.stringify(new Date(allInfo[0].startDate)));
             allInfo.splice(0, 1);
             if (allInfo.length > 0) {
                 sessionStorage.setItem('optionalProducts', JSON.stringify(allInfo));

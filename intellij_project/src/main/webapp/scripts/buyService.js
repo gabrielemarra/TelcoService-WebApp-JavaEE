@@ -14,7 +14,7 @@ $(document).ready(function () {
     let optionalProductsSelected = [];
     let validityPeriodSelected;
     // Set default to today
-    let startingDateSelected = new Date(Date.now());
+    let startingDateSelected = new Date();
 
     let totalPriceSelected;
 
@@ -248,11 +248,13 @@ $(document).ready(function () {
 
     function updateSummaryEndingDate() {
         if (startingDateSelected != null) {
-            //let year = startingDateSelected.getFullYear();
-            //let endingDate = new Date(startingDateSelected);
-            //endingDate.setFullYear(year + validityPeriodSelected);
-            let endingDate = new Date(startingDateSelected.setMonth(startingDateSelected.getMonth() + (12 * validityPeriodSelected)));
-            endingDate.setDate(endingDate.getDate() - 1);
+            let year = startingDateSelected.getFullYear();
+            let day = startingDateSelected.getDate();
+            let endingDate = new Date(startingDateSelected);
+            endingDate.setFullYear(year + validityPeriodSelected);
+            endingDate.setDate(day - 1);
+            // let endingDate = new Date(startingDateSelected.setMonth(startingDateSelected.getMonth() + (12 * validityPeriodSelected)));
+            // endingDate.setDate(endingDate.getDate() - 1);
             $("#summary_ending_date").text(endingDate.toDateString());
         }
     }
