@@ -142,7 +142,7 @@ $(document).ready(function () {
                 userID.textContent = response[i].user_id;
                 alertInfo[0].textContent = response[i].username;
                 alertInfo[1].textContent = response[i].email;
-                alertInfo[2].textContent = response[i].delinq_amount;
+                alertInfo[2].textContent = parseFloat(response[i].delinq_amount);
                 alertInfo[3].textContent = response[i].last.replace("T", " ");
 
                 table.appendChild(clone);
