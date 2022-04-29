@@ -22,7 +22,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.LocalDate;

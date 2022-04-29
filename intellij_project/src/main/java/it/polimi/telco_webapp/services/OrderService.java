@@ -7,7 +7,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -86,6 +85,15 @@ public class OrderService {
         return orders;
     }
 
+    public void changeOrderStatusAndDate(int order_id, OrderStatus status, LocalDate subscriptionStartDate) {
+        //em.createNamedQuery("Order.updateStatus", Order.class).setParameter(1, status).setParameter(2, order_id);
+        Order order = getOrder(order_id);
+        order.setSubscriptionStart(subscriptionStartDate);
+        order.setStatus(status);
+        em.merge(order);
+        // TODO: maybe add some checks here...
+    }
+
     public void changeOrderStatus(int order_id, OrderStatus status) {
         //em.createNamedQuery("Order.updateStatus", Order.class).setParameter(1, status).setParameter(2, order_id);
         Order order = getOrder(order_id);
@@ -97,7 +105,7 @@ public class OrderService {
     public void trackOutstandingPayments(int order_id, boolean isOrderFulfilled) {
         Order order = getOrder(order_id);
         int incomplete = order.getOutstandingPayments();
-        incomplete = isOrderFulfilled?  0: (incomplete += 1);
+        incomplete = isOrderFulfilled ? 0 : (incomplete += 1);
         order.setOutstandingPayments(incomplete);
         em.merge(order);
     }

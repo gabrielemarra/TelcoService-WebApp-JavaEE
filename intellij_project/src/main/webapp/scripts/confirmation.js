@@ -49,7 +49,9 @@ $(document).ready(function () {
 
     function submitTransaction(isOrderRejected) {
         let orderID = sessionStorage.getItem("order_id");
-        let postRequest = $.post("Transact", {isOrderRejected: isOrderRejected, order_id: orderID});
+        let startDate = JSON.parse(sessionStorage.getItem('startDate')).split("T")[0];
+
+        let postRequest = $.post("Transact", {isOrderRejected: isOrderRejected, order_id: orderID, start_date: startDate,});
         postRequest.done(function (data, textStatus, jqXHR) {
             let order_id = jqXHR.responseJSON.order_id;
             let order_status = jqXHR.responseJSON.order_status;

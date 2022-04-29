@@ -7,7 +7,6 @@ import it.polimi.telco_webapp.auxiliary.ExternalPaymentService;
 import it.polimi.telco_webapp.auxiliary.OrderStatus;
 import it.polimi.telco_webapp.entities.Order;
 import it.polimi.telco_webapp.services.OrderService;
-import it.polimi.telco_webapp.services.ServiceService;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.servlet.ServletException;
@@ -18,6 +17,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.IOException;
+import java.time.LocalDate;
+
+import static org.apache.commons.text.StringEscapeUtils.escapeJava;
 
 
 @WebServlet(name = "Transact", value = "/Transact")
@@ -49,18 +51,20 @@ public class Transact extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        try{
+        try {
             ExternalPaymentService externalService = new ExternalPaymentService();
             boolean isOrderRejected = Boolean.parseBoolean(StringEscapeUtils.escapeJava(request.getParameter("isOrderRejected")));
 
             int orderId = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("order_id")));
+            LocalDate startDate = LocalDate.parse(escapeJava(request.getParameter("start_date")));
+
             if (!externalService.call(isOrderRejected)) {
-                orderService.changeOrderStatus(orderId, OrderStatus.CONFIRMED);
+                orderService.changeOrderStatusAndDate(orderId, OrderStatus.CONFIRMED, startDate);
                 orderService.trackOutstandingPayments(orderId, true);
 
 
             } else {
-                orderService.changeOrderStatus(orderId, OrderStatus.REJECTED);
+                orderService.changeOrderStatusAndDate(orderId, OrderStatus.REJECTED, startDate);
                 orderService.trackOutstandingPayments(orderId, false);
             }
 
