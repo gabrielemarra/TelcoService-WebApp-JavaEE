@@ -7,4 +7,36 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+
+    <filter>
+        <filter-name>UserRoleFilter</filter-name>
+        <filter-class>it.polimi.telco_webapp.filters.UserRoleFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>EmployeeRoleFilter</filter-name>
+        <filter-class>it.polimi.telco_webapp.filters.EmployeeRoleFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>UserRoleFilter</filter-name>
+        <url-pattern>/GetAllOrders</url-pattern>
+        <url-pattern>/GetAllRejectedOrders</url-pattern>
+        <url-pattern>/GetOrderInfo</url-pattern>
+        <url-pattern>/GetRejectedOrders</url-pattern>
+        <url-pattern>/Logout</url-pattern>
+        <url-pattern>/PlaceNewOrder</url-pattern>
+        <url-pattern>/Transact</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>EmployeeRoleFilter</filter-name>
+        <url-pattern>/AddOptionalProduct</url-pattern>
+        <url-pattern>/AddService</url-pattern>
+        <url-pattern>/AddServicePackage</url-pattern>
+        <url-pattern>/GetBestSellerOptionalProduct</url-pattern>
+        <url-pattern>/GetInsolventUsersReport</url-pattern>
+        <url-pattern>/GetOptionValue</url-pattern>
+        <url-pattern>/GetRejectedOrdersReport</url-pattern>
+        <url-pattern>/GetServicePackageReport</url-pattern>
+    </filter-mapping>
 </web-app>

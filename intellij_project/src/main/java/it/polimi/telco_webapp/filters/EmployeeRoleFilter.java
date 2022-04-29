@@ -25,8 +25,9 @@ public class EmployeeRoleFilter implements jakarta.servlet.Filter {
                 session.getAttribute("employee") == null;
         if (condition) {
             session.invalidate();
-            response.sendRedirect(loginPath);
-            (response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().println("Error: unauthorized user, please log in as employee.");
             return;
         }
