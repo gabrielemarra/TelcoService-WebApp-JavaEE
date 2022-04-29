@@ -20,7 +20,6 @@
     <filter-mapping>
         <filter-name>UserRoleFilter</filter-name>
         <url-pattern>/GetAllOrders</url-pattern>
-        <url-pattern>/GetAllRejectedOrders</url-pattern>
         <url-pattern>/GetOrderInfo</url-pattern>
         <url-pattern>/GetRejectedOrders</url-pattern>
         <url-pattern>/Logout</url-pattern>
@@ -33,6 +32,7 @@
         <url-pattern>/AddOptionalProduct</url-pattern>
         <url-pattern>/AddService</url-pattern>
         <url-pattern>/AddServicePackage</url-pattern>
+        <url-pattern>/GetAuditingTable</url-pattern>
         <url-pattern>/GetBestSellerOptionalProduct</url-pattern>
         <url-pattern>/GetInsolventUsersReport</url-pattern>
         <url-pattern>/GetOptionValue</url-pattern>
