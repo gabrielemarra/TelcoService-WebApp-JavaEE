@@ -342,18 +342,18 @@ $(document).ready(function () {
         let smallElements = clone.querySelectorAll("small");
 
         pElements[0].textContent = planType.replace('_', ' ');
-        pElements[1].textContent = "€" + bp1 + "/mo for 12 months";//gigIncl.toString() + " GB";
+        pElements[1].textContent = "€" + bp1.toFixed(2) + "/mo for 12 months";//gigIncl.toString() + " GB";
         pElements[1].id = "id_defaultPeriod" + service_id;
-        smallElements[0].textContent = "€" + bp2 + " - 24mo | €" + bp3 + " - 36mo";
+        smallElements[0].textContent = "€" + bp2.toFixed(2) + " - 24mo | €" + bp3.toFixed(2) + " - 36mo";
         smallElements[0].id = "id_otherPeriods" + service_id;
         if (planType === "Mobile_Internet" || planType === "Fixed_Internet") { // gigIncl.toString() + " GB"
             pElements[2].textContent = gigIncl.toString() + " GB";
-            smallElements[1].textContent = "€" + gigExtr.toString() + "/extra";
+            smallElements[1].textContent = "€" + gigExtr.toFixed(2).toString() + "/extra";
         } else if (planType === "Mobile_Phone") {
             pElements[2].textContent = minIncl.toString() + " min";
-            smallElements[1].textContent = "€" + minExtr.toString() + "/extra";
+            smallElements[1].textContent = "€" + minExtr.toFixed(2).toString() + "/extra";
             pElements[3].textContent = smsIncl.toString() + " sms";
-            smallElements[2].textContent = "€" + smsIncl.toString() + "/extra";
+            smallElements[2].textContent = "€" + smsExtr.toFixed(2).toString() + "/extra";
         } else {
             pElements[2].textContent = "Unlimited";
         }
@@ -364,9 +364,9 @@ $(document).ready(function () {
         input.addEventListener("click", function () {
             addItemToSummary(this, "Service")
         });
-        input.dataset.bp1 = bp1;
-        input.dataset.bp2 = bp2;
-        input.dataset.bp3 = bp3;
+        input.dataset.bp1 = bp1.toFixed(2);
+        input.dataset.bp2 = bp2.toFixed(2);
+        input.dataset.bp3 = bp3.toFixed(2);
 
         label.setAttribute("for", "id_service" + service_id);
         tilesList.appendChild(clone);
@@ -408,7 +408,7 @@ $(document).ready(function () {
         let prices = priceBasedOnPeriod([element.dataset.bp1, element.dataset.bp2, element.dataset.bp3]);
         let defaultElement = document.getElementById("id_defaultPeriod" + id);
         let otherElement = document.getElementById("id_otherPeriods" + id);
-        defaultElement.textContent = "€" + prices.defaultPrice + "/mo for " + prices.defaultPeriod * 12 + " months";
+        defaultElement.textContent = "€" + (prices.defaultPrice) + "/mo for " + prices.defaultPeriod * 12 + " months";
         otherElement.textContent = "€" + prices.otherPrice1 + " - " + prices.otherPeriod1 * 12 + "mo | €" + prices.otherPrice2 + " - " + prices.otherPeriod2 * 12 + "mo";
     }
 
@@ -480,6 +480,7 @@ $(document).ready(function () {
                 total = total + parseFloat(cartPrices[i].textContent);
             }
         }
+        total = total.toFixed(2);
         document.getElementById("id_summaryTotal").textContent = "€" + total.toString();
     }
 });

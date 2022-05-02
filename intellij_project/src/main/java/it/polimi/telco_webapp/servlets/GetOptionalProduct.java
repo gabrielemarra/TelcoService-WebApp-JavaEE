@@ -57,7 +57,7 @@ public class GetOptionalProduct extends HttpServlet {
             response.setCharacterEncoding("UTF-8");
             JsonElement jsonElement = new JsonObject();
             jsonElement.getAsJsonObject().addProperty("name", option.getName());
-            jsonElement.getAsJsonObject().addProperty("price", option.getPrice());
+            jsonElement.getAsJsonObject().addProperty("price", option.getPrice().toString());
 
             response.getWriter().println(gson.toJson(jsonElement));
         } catch (EJBException e) {

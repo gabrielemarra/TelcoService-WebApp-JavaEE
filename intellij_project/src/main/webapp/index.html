@@ -29,15 +29,21 @@
 <div class="container login-container">
     <div class="row form-row">
         <div class="col-md-6 login-form-1">
-            <h3>Login</h3>
+            <h3 id="loginTitle">Login</h3>
+            <div style="visibility: hidden"><p class="text-danger"><small>Login error.</small>
+            </p></div>
             <form>
                 <div class="form-group mb-3">
                     <input type="email" class="form-control" placeholder="Your Email" value="" id="loginEmailInput"
                            required>
+                    <div style="visibility: hidden"><p class="text-danger"><small>Enter username.</small>
+                    </p></div>
                 </div>
                 <div class="form-group mb-3">
                     <input type="password" class="form-control" placeholder="Your Password" value=""
                            id="loginPasswordInput" required>
+                    <div style="visibility: hidden"><p class="text-danger"><small>Enter password.</small>
+                    </p></div>
                 </div>
                 <div class="form-group mb-3">
                     <button class="btnSubmit" value="Login" id="loginButton">Login</button>
@@ -50,29 +56,42 @@
         </div>
         <div class="col-md-6 signup-form">
             <h3>Register</h3>
-            <form>
+            <form id="id_registration_form" method="post">
                 <div class="form-group mb-3">
                     <input type="email" class="form-control" placeholder="Your Name" value="" id="signupNameInput"
                            required>
+                    <div style="visibility: hidden"><p class="text-danger"><small>Enter your name.</small>
+                    </p></div>
                 </div>
                 <div class="form-group mb-3">
                     <input type="email" class="form-control" placeholder="Your Username" value=""
                            id="signupUsernameInput" required>
+                    <div style="visibility: hidden"><p class="text-danger"><small>Enter a username.</small>
+                    </p></div>
                 </div>
                 <div class="form-group mb-3">
                     <input type="email" class="form-control" placeholder="Your Email" value="" id="signupEmailInput"
                            required>
+                    <div style="visibility: hidden"><p class="text-danger"><small>Enter a valid email</small>
+                    </p></div>
                 </div>
                 <div class="form-group mb-3">
                     <input type="password" class="form-control" placeholder="Your Password" value=""
                            id="signupPasswordInput" required>
+                    <div style="visibility: hidden"><p class="text-danger"><small>Enter a password.</small>
+                    </p></div>
                 </div>
                 <div class="form-group mb-3">
                     <input type="password" class="form-control" placeholder="Confirm your password" value=""
                            id="signupPasswordConfirmation" required>
+                    <div style="visibility: hidden"><p class="text-danger"><small>Passwords must match.</small>
+                    </p></div>
                 </div>
                 <div class="form-group mb-3">
                     <button type="submit" class="btnSubmit" value="Register" id="signupButton">Register</button>
+                    <div style="visibility: hidden"><p class="text-danger"><small>Registration failed.</small>
+                    </p></div>
+
                     <!--                    <input type="submit" class="btnSubmit" value="Register"/>-->
                 </div>
                 <!--                <div class="form-group mb-3">-->

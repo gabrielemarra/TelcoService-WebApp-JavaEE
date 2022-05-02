@@ -25,8 +25,9 @@ public class UserRoleFilter implements jakarta.servlet.Filter {
                 session.getAttribute("user") == null;
         if (condition) {
             session.invalidate();
-            response.sendRedirect(loginPath);
-            (response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().println("error: unauthorized user, please log in.");
             return;
         }

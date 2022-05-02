@@ -60,9 +60,9 @@ public class GetService extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             JsonElement jsonElement = new JsonObject();
-            jsonElement.getAsJsonObject().addProperty("bp1", oneService.getBasePrice1());
-            jsonElement.getAsJsonObject().addProperty("bp2", oneService.getBasePrice2());
-            jsonElement.getAsJsonObject().addProperty("bp3", oneService.getBasePrice3());
+            jsonElement.getAsJsonObject().addProperty("bp1", oneService.getBasePrice1().toString());
+            jsonElement.getAsJsonObject().addProperty("bp2", oneService.getBasePrice2().toString());
+            jsonElement.getAsJsonObject().addProperty("bp3", oneService.getBasePrice3().toString());
             jsonElement.getAsJsonObject().addProperty("service_id", oneService.getId());
             jsonElement.getAsJsonObject().addProperty("type", oneService.getServiceType().toString());
 

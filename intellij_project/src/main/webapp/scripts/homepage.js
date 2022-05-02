@@ -16,30 +16,29 @@ $(document).ready(function () {
 
     getServicePackages();
 
-
-    // $("#selectButton").click(
-    //     function (event) {
-    //         event.preventDefault();
-    //         let startDate = $("#startDate").val();
-    //         let user = $("#userID").val();
-    //         let package = $("#servicePackage").val();
-    //         let options = $("#optionalProducts").val();
-    //         //submitNewOrder(startDate, userID, servicePackage, optionalProducts);
-    //
-    //         /*
-    //         *     public Order insertOrder(LocalDate subscriptionStartDate, User user, ServicePackage servicePackage, List<OptionalProduct> optionalProductList) {
-    //
-    //         * */
-    //     }
-    // );
-
-
     function displayPersonalData() {
         //    Should we make a request? For now we use the stored values
         let personalInfoString = sessionStorage.getItem("name") + " | " + sessionStorage.getItem("email")
         $("#username_right_corner").html(personalInfoString)
 
     }
+
+    $("#id_logoutButton").click(
+        function (event) {
+            event.preventDefault();
+            sessionStorage.clear();
+
+            let request = $.get("Logout");
+
+            request.done(function (data, textStatus, jqXHR) {
+                window.location.href = "./index.html";
+            });
+            request.fail(function (jqXHR, textStatus, errorThrown) {
+                alert("Impossible to logout")
+            });
+
+        }
+    );
 
     function getServicePackages() {
         let packages = $.get("GetAvailableServicePackages");
@@ -146,7 +145,7 @@ $(document).ready(function () {
             sessionStorage.setItem('package_id', allInfo[0].package_id);
             sessionStorage.setItem('validity_period', allInfo[0].validity_period);
             sessionStorage.setItem('total_cost', allInfo[0].total_cost);
-            sessionStorage.setItem('startDate', allInfo[0].startDate);
+            sessionStorage.setItem('startDate', JSON.stringify(new Date(allInfo[0].startDate)));
             allInfo.splice(0, 1);
             if (allInfo.length > 0) {
                 sessionStorage.setItem('optionalProducts', JSON.stringify(allInfo));
@@ -230,6 +229,7 @@ $(document).ready(function () {
     function hideLoggedInFunction() {
         $("#id_rejected_orders_table_row").prop("hidden", true);
         $("#id_activation_schedule_row").prop("hidden", true);
+        $("#id_logoutButton").prop("hidden", true);
     }
 
     function displayLoginButton() {

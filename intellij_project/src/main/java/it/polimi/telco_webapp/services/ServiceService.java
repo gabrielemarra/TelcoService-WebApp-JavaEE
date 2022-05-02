@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceException;
 
+import java.math.BigDecimal;
 import java.security.InvalidParameterException;
 import java.util.List;
 
@@ -33,9 +34,9 @@ public class ServiceService {
     public Service insertNewService(String typeStr, double bp1, double bp2, double bp3, int gigIncl, int minIncl, int smsIncl, double gigExtra, double minExtra, double smsExtra) throws PersistenceException, IllegalArgumentException{
         Service service = new Service();
 
-        service.setBasePrice1(bp1);
-        service.setBasePrice2(bp2);
-        service.setBasePrice3(bp3);
+        service.setBasePrice1(BigDecimal.valueOf(bp1));
+        service.setBasePrice2(BigDecimal.valueOf(bp2));
+        service.setBasePrice3(BigDecimal.valueOf(bp3));
 
         switch(typeStr) {
             case "Fixed_Phone":
@@ -65,7 +66,7 @@ public class ServiceService {
                  */
                 service.setType(ServiceType.Mobile_Internet);
                 service.setGigIncluded(gigIncl);
-                service.setGigExtra(gigExtra);
+                service.setGigExtra(BigDecimal.valueOf(gigExtra));
                 /**
                  * These parameters are already initialized to zero in AddService.java servlet. This is done in the
                  * doPost function so that the unused parameters are still initialized.  By commenting these setfunctions
@@ -84,7 +85,7 @@ public class ServiceService {
                 }
                 service.setType(ServiceType.Fixed_Internet);
                 service.setGigIncluded(gigIncl);
-                service.setGigExtra(gigExtra);
+                service.setGigExtra(BigDecimal.valueOf(gigExtra));
                 /**
                  * These parameters are already initialized to zero in AddService.java servlet. This is done in the
                  * doPost function so that the unused parameters are still initialized. By commenting these setfunctions
@@ -103,9 +104,9 @@ public class ServiceService {
                 }
                 service.setType(ServiceType.Mobile_Phone);
                 service.setMinIncluded(minIncl);
-                service.setMinExtra(minExtra);
+                service.setMinExtra(BigDecimal.valueOf(minExtra));
                 service.setSmsIncluded(smsIncl);
-                service.setSmsExtra(smsExtra);
+                service.setSmsExtra(BigDecimal.valueOf(smsExtra));
                 /**
                  * These parameters are already initialized to zero in AddService.java servlet. This is done in the
                  * doPost function so that the unused parameters are still initialized. By commenting these setfunctions

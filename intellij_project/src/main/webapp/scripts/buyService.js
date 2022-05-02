@@ -13,7 +13,9 @@ $(document).ready(function () {
     let servicePackageSelected;
     let optionalProductsSelected = [];
     let validityPeriodSelected;
-    let startingDateSelected = null;
+    // Set default to today
+    let startingDateSelected = new Date();
+
     let totalPriceSelected;
 
 
@@ -225,6 +227,7 @@ $(document).ready(function () {
         $("#summary_service_package_price").text(servicePackageSelected.prices[servicePackageSelected.default_validity_period - 1]).removeClass("placeholder");
         updateSummaryValidityPeriod();
 
+        updateSummaryStartingDate();
         updateSummaryEndingDate();
         updateSummaryTotalPrice();
     }
@@ -245,11 +248,13 @@ $(document).ready(function () {
 
     function updateSummaryEndingDate() {
         if (startingDateSelected != null) {
-            //let year = startingDateSelected.getFullYear();
-            //let endingDate = new Date(startingDateSelected);
-            //endingDate.setFullYear(year + validityPeriodSelected);
-            let endingDate = new Date(startingDateSelected.setMonth(startingDateSelected.getMonth() + (12 * validityPeriodSelected)));
-            endingDate.setDate(endingDate.getDate() - 1);
+            let year = startingDateSelected.getFullYear();
+            let day = startingDateSelected.getDate();
+            let endingDate = new Date(startingDateSelected);
+            endingDate.setFullYear(year + validityPeriodSelected);
+            endingDate.setDate(day - 1);
+            // let endingDate = new Date(startingDateSelected.setMonth(startingDateSelected.getMonth() + (12 * validityPeriodSelected)));
+            // endingDate.setDate(endingDate.getDate() - 1);
             $("#summary_ending_date").text(endingDate.toDateString());
         }
     }
@@ -272,7 +277,7 @@ $(document).ready(function () {
             let optionProdPrice = clone.querySelector(".summary_opt_prod_price");
 
             optionProdText.textContent = optionalProductsSelected[optionalProductsSelectedKey].name;
-            optionProdPrice.textContent = optionalProductsSelected[optionalProductsSelectedKey].price;
+            optionProdPrice.textContent = parseFloat(optionalProductsSelected[optionalProductsSelectedKey].price);
 
             summaryTableBody.appendChild(clone);
         }
@@ -281,16 +286,16 @@ $(document).ready(function () {
     }
 
     function updateSummaryTotalPrice() {
-        let totalPrice = 0;
-        let optProdPriceSum = 0;
+        let totalPrice = 0.0;
+        let optProdPriceSum = 0.0;
 
         for (let optionalProductsSelectedKey in optionalProductsSelected) {
-            optProdPriceSum += optionalProductsSelected[optionalProductsSelectedKey].price;
+            optProdPriceSum += parseFloat(optionalProductsSelected[optionalProductsSelectedKey].price);
         }
 
-        totalPrice = optProdPriceSum + servicePackageSelected.prices[validityPeriodSelected - 1];
+        totalPrice = optProdPriceSum + parseFloat(servicePackageSelected.prices[validityPeriodSelected - 1]);
 
-        $("#summary_total_price").text(totalPrice).removeClass("placeholder");
+        $("#summary_total_price").text(totalPrice.toString()).removeClass("placeholder");
         totalPriceSelected = totalPrice;
     }
 

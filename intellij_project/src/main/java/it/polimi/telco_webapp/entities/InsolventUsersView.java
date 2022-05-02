@@ -6,6 +6,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.eclipse.persistence.annotations.ReadOnly;
 
+import java.math.BigDecimal;
+
 
 @Entity
 @Table(name = "insolvent_users_view", schema = "telco_db")
@@ -21,10 +23,10 @@ public class InsolventUsersView {
     @Column
     private int num_orders;
     @Column
-    private float total;
+    private BigDecimal total;
 
     public int getUserId(){return user_id;}
     public int getNumOrders() {return num_orders;}
-    public float getTotal() {return total;}
+    public BigDecimal getTotal() {return total;}
     /* Since this is a view, the data is read-only. No setters. */
 }
