@@ -2,7 +2,7 @@
 Project developed for the examination of the Data Bases 2 course at Politecnico di Milano (A.Y. 2021/2022).
 
 ## Specifications
-The complete list of specifications can be found [here](./Specification.pdf).
+The complete list of specifications can be found [here](./Specifications.pdf).
 
 The aim of this project is to create a telco website, where customers can buy telco products/subscriptions, and registered employees can create new packages to sell to customers, with different optional products and services included. Employees can also see lots of statistics on selling performances.
 
