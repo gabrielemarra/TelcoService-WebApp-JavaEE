@@ -15,3 +15,8 @@ There are two different frontends for the two different types of users, while th
 ## Group members
 - **Gabriele Marra** ([@gabrielemarra](https://github.com/gabrielemarra)) <br>
 - **Destiny Mora**([@dmora4](https://github.com/dmora4)) <br>
+
+## Screenshots
+### Customer
+
+###Employee
