@@ -17,6 +17,21 @@ There are two different frontends for the two different types of users, while th
 - **Destiny Mora**([@dmora4](https://github.com/dmora4)) <br>
 
 ## Screenshots
-### Customer
-
-###Employee
+### Login
+![Login](./final_result-screenshots/01-Login.png)
+### Home Page - Logged and unlogged
+![Home Page - Logged user](./final_result-screenshots/03-HomePage-LoggedUser.png)
+![Home Page - Unlogged user](./final_result-screenshots/02-HomePaeg-UnloggedUser.png)
+### Buy Service Page
+![Buy Service Page ](./final_result-screenshots/04-ChoosingProduct.png)
+### Order Confirmation - Failing and successful
+![Order Failing](./final_result-screenshots/05-OrderFailing.png)
+![Order Successful](./final_result-screenshots/06-OrderPlaced.png)
+---
+### Employee Home Page
+![Employee Home Page](./final_result-screenshots/07-EmployeeHomePage.png)
+### Service Creation
+![Service Creation](./final_result-screenshots/08-ServiceCreation.png)
+### Statistics
+![Statistics 1](./final_result-screenshots/09-Statistics1.png)
+![Statistics 2](./final_result-screenshots/10-Statistics2.png)
